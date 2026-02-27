@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Architecture — Layered Expertise</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #2D4066;
+    --blue-accent: #4A7BF7;
+    --blue-soft: #E8EFFF;
+    --warm-gray: #F7F6F3;
+    --warm-gray-dark: #E8E6E1;
+    --text-primary: #1B2A4A;
+    --text-secondary: #5A6478;
+    --text-light: #8892A4;
+    --white: #FFFFFF;
+    --green-soft: #E6F5EC;
+    --green-accent: #2D9B5E;
+    --amber-soft: #FFF3E0;
+    --amber-accent: #E8912D;
+    --purple-soft: #F0E8FF;
+    --purple-accent: #7B4AE2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 60px 40px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--blue-accent);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  h1 span {
+    color: var(--blue-accent);
+  }
+
+  .subtitle {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    max-width: 720px;
+    margin-bottom: 56px;
+  }
+
+  /* ========== THREE-LAYER STACK ========== */
+  .stack-overview {
+    position: relative;
+    max-width: 680px;
+    margin: 0 auto 56px auto;
+  }
+
+  .stack-layer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 28px;
+    background: var(--warm-gray);
+    border: 2px solid var(--warm-gray-dark);
+    transition: all 0.3s ease;
+  }
+
+  .stack-layer:first-child {
+    border-radius: 14px 14px 0 0;
+    border-bottom: none;
+  }
+
+  .stack-layer:last-child {
+    border-radius: 0 0 14px 14px;
+    border-top: none;
+  }
+
+  /* Middle layer — hero treatment */
+  .stack-layer.highlight {
+    background: var(--white);
+    border: 2.5px solid var(--blue-accent);
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin: -1px 0;
+    box-shadow: 0 6px 28px rgba(74, 123, 247, 0.14);
+    z-index: 2;
+  }
+
+  /* Layer number badges */
+  .stack-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    font-family: 'DM Serif Display', serif;
+  }
+
+  .stack-layer:not(.highlight) .stack-number {
+    background: var(--warm-gray-dark);
+    color: var(--text-light);
+  }
+
+  .stack-layer.highlight .stack-number {
+    background: var(--blue-accent);
+    color: white;
+  }
+
+  .stack-text {
+    flex: 1;
+  }
+
+  .stack-title {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+  }
+
+  .stack-layer:not(.highlight) .stack-title {
+    color: var(--text-light);
+  }
+
+  .stack-layer.highlight .stack-title {
+    color: var(--navy);
+    font-size: 16px;
+  }
+
+  .stack-desc {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  .stack-layer:not(.highlight) .stack-desc {
+    color: var(--text-light);
+  }
+
+  .stack-layer.highlight .stack-desc {
+    color: var(--text-secondary);
+  }
+
+  .this-page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .this-page-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* Vertical connection line running behind the stack */
+  .stack-overview::before {
+    content: '';
+    position: absolute;
+    left: 45px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--warm-gray-dark);
+    z-index: 0;
+  }
+
+  /* Arrows between layers */
+  .stack-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stack-arrow svg {
+    position: absolute;
+    top: -8px;
+  }
+
+  /* ========== DETAIL SECTION ========== */
+  .detail-header {
+    margin-bottom: 32px;
+  }
+
+  .detail-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .detail-header p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .main-layers {
+    border: 2px solid var(--blue-accent);
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 4px 30px rgba(74, 123, 247, 0.08);
+  }
+
+  .layer {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    min-height: 180px;
+    border-bottom: 1px solid #ECEEF2;
+    transition: background 0.3s ease;
+  }
+
+  .layer:last-child { border-bottom: none; }
+  .layer:hover { background: #FAFBFF; }
+
+  .layer-info {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid #ECEEF2;
+  }
+
+  .layer-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 6px;
+    width: fit-content;
+    margin-bottom: 14px;
+  }
+
+  .layer-tag.core { background: var(--green-soft); color: var(--green-accent); }
+  .layer-tag.vertical { background: var(--amber-soft); color: var(--amber-accent); }
+  .layer-tag.client { background: var(--purple-soft); color: var(--purple-accent); }
+
+  .layer-tag-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .layer-tag.core .layer-tag-dot { background: var(--green-accent); }
+  .layer-tag.vertical .layer-tag-dot { background: var(--amber-accent); }
+  .layer-tag.client .layer-tag-dot { background: var(--purple-accent); }
+
+  .layer-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .layer-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .layer-examples {
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .examples-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  .examples-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+  }
+
+  .example-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    line-height: 1.4;
+  }
+
+  .example-item::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .layer:nth-child(1) .example-item::before { background: var(--green-accent); }
+  .layer:nth-child(2) .example-item::before { background: var(--amber-accent); }
+  .layer:nth-child(3) .example-item::before { background: var(--purple-accent); }
+
+  /* Bottom callout */
+  .callout {
+    margin-top: 48px;
+    padding: 28px 36px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .callout-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .callout-text {
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .callout-text strong { color: white; }
+
+  @media (max-width: 800px) {
+    body { padding: 32px 20px; }
+    h1 { font-size: 30px; }
+    .layer { grid-template-columns: 1fr; }
+    .layer-info { border-right: none; border-bottom: 1px solid #ECEEF2; }
+    .examples-grid { grid-template-columns: 1fr; }
+    .this-page-badge { display: none; }
+    .stack-overview { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="section-label">How We Deliver</div>
+    <h1>Layered expertise enables <span>client agility.</span></h1>
+    <p class="subtitle">
+      Most firms either give you generic tools or start from scratch every time. 
+      We separate what we know about every business, what we know about your industry, 
+      and what we learn about you specifically — so you get the speed of experience 
+      with the precision of a custom engagement.
+    </p>
+
+    <!-- ========== THREE-LAYER STACK OVERVIEW ========== -->
+    <div class="stack-overview">
+
+      <!-- Layer 3 (top of stack) -->
+      <div class="stack-layer">
+        <div class="stack-number">3</div>
+        <div class="stack-text">
+          <div class="stack-title">AI Platforms</div>
+          <div class="stack-desc">Claude · OpenAI · Gemini — The intelligence layer</div>
+        </div>
+      </div>
+
+      <!-- Layer 2 (middle — highlighted) -->
+      <div class="stack-layer highlight">
+        <div class="stack-number">2</div>
+        <div class="stack-text">
+          <div class="stack-title">Adaptive Integration & Partnership</div>
+          <div class="stack-desc">We assess, connect, configure, train, and adapt — where technology meets your business</div>
+        </div>
+        <div class="this-page-badge">Detailed below</div>
+      </div>
+
+      <!-- Layer 1 (bottom of stack) -->
+      <div class="stack-layer">
+        <div class="stack-number">1</div>
+        <div class="stack-text">
+          <div class="stack-title">Your Existing Systems</div>
+          <div class="stack-desc">Procore · Sage · Workday · QuickBooks — Your data, compliance, and workflows</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========== DETAIL BREAKDOWN ========== -->
+    <div class="detail-header">
+      <h2>Inside our layer: three levels of expertise</h2>
+      <p>Each level compounds the others — proven process, deep industry knowledge, and configurations built just for you.</p>
+    </div>
+
+    <div class="main-layers">
+
+      <!-- Core Methodology -->
+      <div class="layer">
+        <div class="layer-info">
+          <div class="layer-tag core">
+            <div class="layer-tag-dot"></div>
+            Core Methodology
+          </div>
+          <div class="layer-headline">Proven foundation.<br>Every engagement.</div>
+          <div class="layer-desc">Our assessment frameworks, integration tooling, and delivery process — refined across every client we serve.</div>
+        </div>
+        <div class="layer-examples">
+          <div class="examples-label">Real Examples — Construction</div>
+          <div class="examples-grid">
+            <div class="example-item">Tech stack assessment & gap analysis</div>
+            <div class="example-item">AI agent configuration & deployment</div>
+            <div class="example-item">System integration mapping</div>
+            <div class="example-item">Reporting & dashboard setup</div>
+            <div class="example-item">Change management & team training</div>
+            <div class="example-item">Ongoing adaptation protocols</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical Playbook -->
+      <div class="layer">
+        <div class="layer-info">
+          <div class="layer-tag vertical">
+            <div class="layer-tag-dot"></div>
+            Vertical Playbook
+          </div>
+          <div class="layer-headline">Deep industry knowledge.<br>Day one.</div>
+          <div class="layer-desc">We already understand your industry's workflows, compliance requirements, and pain points — and that knowledge deepens with every engagement.</div>
+        </div>
+        <div class="layer-examples">
+          <div class="examples-label">Real Examples — Construction</div>
+          <div class="examples-grid">
+            <div class="example-item">OSHA cert tracking & renewal workflows</div>
+            <div class="example-item">Subcontractor insurance verification</div>
+            <div class="example-item">Prevailing wage / Davis-Bacon compliance</div>
+            <div class="example-item">Site-specific safety documentation</div>
+            <div class="example-item">Equipment utilization tracking</div>
+            <div class="example-item">Certified payroll system connections</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Client-Specific -->
+      <div class="layer">
+        <div class="layer-info">
+          <div class="layer-tag client">
+            <div class="layer-tag-dot"></div>
+            Client-Specific
+          </div>
+          <div class="layer-headline">Your business.<br>Your configurations.</div>
+          <div class="layer-desc">Built in partnership with your team, funded by the retainer, and impossible to replicate — because nobody else knows your operation the way we do.</div>
+        </div>
+        <div class="layer-examples">
+          <div class="examples-label">Real Examples — Construction</div>
+          <div class="examples-grid">
+            <div class="example-item">Custom approval chains in your PM tools</div>
+            <div class="example-item">Regional compliance rules in AI agents</div>
+            <div class="example-item">Branded contractor portal integrations</div>
+            <div class="example-item">ERP / payroll bridge for your specific setup</div>
+            <div class="example-item">Executive KPI dashboards across all systems</div>
+            <div class="example-item">Client-specific credentialing workflows</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom callout -->
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div class="callout-text">
+        <strong>AI platforms provide the brain. Your existing software provides the body.</strong> 
+        We're the nervous system that makes them work together — and the partner who keeps them evolving.
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
