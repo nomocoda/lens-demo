@@ -374,6 +374,7 @@
     .feedback-arrow { display: none; }
     .sources { grid-template-columns: repeat(3, 1fr); }
     .agents { grid-template-columns: 1fr 1fr; }
+    .phase [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
   }
 </style>
 </head>
@@ -493,16 +494,36 @@
         <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#E07A5F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
 
-      <!-- LAYER 4: RETRIEVE -->
+      <!-- LAYER 4: RETRIEVE — TWO PATTERNS -->
       <div class="phase retrieve">
         <div class="phase-number">4</div>
         <div class="phase-header">
           <h3 class="phase-title">Retrieve</h3>
-          <span class="phase-tag">Targeted Context Delivery</span>
+          <span class="phase-tag">Two Retrieval Patterns</span>
         </div>
-        <p class="phase-desc">When any agent starts a task, it pulls only the relevant slice of organizational context — not everything, just what it needs. The agent starts informed, drawing from the full organizational understanding without overloading its context window.</p>
-        <div class="phase-example">
-          <strong>Example retrieval:</strong> The Monday Report agent pulls: "Project Alpha — over budget 3 weeks, client concern flagged, team member on leave. Vendor X — compliance risk escalating. New hire starting Sales Monday." The agent generates a report informed by weeks of accumulated context — in seconds.
+        <p class="phase-desc">Organizational AI Memory serves two audiences through two distinct patterns. Agents receive contextual briefings before executing tasks. People query the memory when they need cross-system intelligence for a specific decision.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+          <div style="background: var(--teal-light); border: 1.5px solid var(--teal); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.2rem;">🤖</span>
+              <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0;">Contextual Briefing</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Before an agent starts its task, it receives the most current synthesized understanding relevant to its scope. The agent doesn't ask for specific facts — it shows up informed and works through that lens.</p>
+            <div class="phase-example">
+              <strong>Example:</strong> The Monday Report agent receives a briefing of all notable changes across projects, people, and vendors this week — then generates a report that reflects the full organizational picture, not just raw data pulls.
+            </div>
+          </div>
+          <div style="background: var(--coral-light); border: 1.5px solid var(--coral); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.2rem;">👤</span>
+              <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0;">On-Demand Query</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Leadership and teams ask questions and receive answers drawn from the full organizational memory — across every system, every team, every historical pattern. The full picture, on demand.</p>
+            <div class="phase-example">
+              <strong>Example:</strong> A VP asks: "Give me everything I need to evaluate client renewal and attrition risk." The system pulls relationship history, project health trends, support patterns, and billing data into a unified intelligence brief — in seconds.
+            </div>
+          </div>
         </div>
       </div>
 
@@ -510,28 +531,63 @@
         <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#E07A5F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
 
-      <!-- OUTPUT: AGENTS -->
-      <div class="agents">
-        <div class="agent-card">
-          <div class="agent-icon">📊</div>
-          <h4>Monday Report Agent</h4>
-          <p>Cross-system status with full context</p>
+      <!-- OUTPUT: TWO ROWS -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+        <!-- Agents column -->
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--teal); margin-bottom: 10px; text-align: center;">Agents — Proactively Informed</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">📊</div>
+              <h4>Monday Report</h4>
+              <p>Cross-system status with full context</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">🔍</div>
+              <h4>Compliance</h4>
+              <p>Vendor tracking with pattern history</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">💲</div>
+              <h4>Budget</h4>
+              <p>Trend-aware financial monitoring</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">🧑‍💼</div>
+              <h4>Onboarding</h4>
+              <p>Context-rich new hire support</p>
+            </div>
+          </div>
         </div>
-        <div class="agent-card">
-          <div class="agent-icon">🔍</div>
-          <h4>Compliance Agent</h4>
-          <p>Vendor tracking with pattern history</p>
+
+        <!-- People column -->
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--coral); margin-bottom: 10px; text-align: center;">People — On-Demand Intelligence</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">🎯</div>
+              <h4>Executive Review</h4>
+              <p>Client health, renewal risk, strategic decisions</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">📈</div>
+              <h4>Sales Intelligence</h4>
+              <p>Relationship context, account history, opportunities</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">⚙️</div>
+              <h4>Ops Planning</h4>
+              <p>Cross-team capacity, workflow patterns, bottlenecks</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">🛡️</div>
+              <h4>Risk Assessment</h4>
+              <p>Vendor reliability, compliance gaps, exposure</p>
+            </div>
+          </div>
         </div>
-        <div class="agent-card">
-          <div class="agent-icon">💲</div>
-          <h4>Budget Agent</h4>
-          <p>Trend-aware financial monitoring</p>
-        </div>
-        <div class="agent-card">
-          <div class="agent-icon">🧑‍💼</div>
-          <h4>Onboarding Agent</h4>
-          <p>Context-rich new hire support</p>
-        </div>
+
       </div>
 
     </div>
