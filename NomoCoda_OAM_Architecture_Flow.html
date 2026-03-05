@@ -17,6 +17,8 @@
     --amber-light: #FFF5E0;
     --coral: #E07A5F;
     --coral-light: #FDEEE9;
+    --purple: #7C5CBF;
+    --purple-light: #F0EBF8;
     --gray-50: #F8F9FA;
     --gray-100: #F0F1F3;
     --gray-200: #E0E2E6;
@@ -393,7 +395,7 @@
     <div class="feedback-arrow">
       <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L8 14M8 2L4 6M8 2L12 6" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
       <div class="line"></div>
-      <div class="label">Agents feed back new signals</div>
+      <div class="label">Agents + humans feed back new signals</div>
       <div class="line"></div>
       <svg viewBox="0 0 16 16" fill="none"><path d="M8 14L8 2M8 14L4 10M8 14L12 10" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
     </div>
@@ -401,30 +403,54 @@
     <div class="flow">
 
       <!-- SOURCE SYSTEMS -->
-      <div class="sources">
-        <div class="source-card">
-          <div class="source-icon">📋</div>
-          <span>Project Mgmt</span>
+      <div style="margin-bottom: 8px;">
+        <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--teal); margin-bottom: 8px; text-align: center;">Systems of Record — Automated Signals</p>
+        <div class="sources">
+          <div class="source-card">
+            <div class="source-icon">📋</div>
+            <span>Project Mgmt</span>
+          </div>
+          <div class="source-card">
+            <div class="source-icon">💰</div>
+            <span>Accounting</span>
+          </div>
+          <div class="source-card">
+            <div class="source-icon">🤝</div>
+            <span>CRM</span>
+          </div>
+          <div class="source-card">
+            <div class="source-icon">👥</div>
+            <span>HR</span>
+          </div>
+          <div class="source-card">
+            <div class="source-icon">✅</div>
+            <span>Compliance</span>
+          </div>
         </div>
-        <div class="source-card">
-          <div class="source-icon">💰</div>
-          <span>Accounting</span>
-        </div>
-        <div class="source-card">
-          <div class="source-icon">🤝</div>
-          <span>CRM</span>
-        </div>
-        <div class="source-card">
-          <div class="source-icon">👥</div>
-          <span>HR</span>
-        </div>
-        <div class="source-card">
-          <div class="source-icon">✅</div>
-          <span>Compliance</span>
-        </div>
-        <div class="source-card">
-          <div class="source-icon">🧠</div>
-          <span>Human Context</span>
+      </div>
+      <div style="margin-bottom: 0;">
+        <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--purple); margin-bottom: 8px; text-align: center;">Human Signals — Continuous &amp; Natural</p>
+        <div class="sources">
+          <div class="source-card" style="border-color: var(--purple-light); background: var(--purple-light);">
+            <div class="source-icon">💬</div>
+            <span>Passive Capture</span>
+            <span style="font-size: 0.68rem; color: var(--gray-400);">Jira comments, CRM notes, Slack threads</span>
+          </div>
+          <div class="source-card" style="border-color: var(--purple-light); background: var(--purple-light);">
+            <div class="source-icon">🤖</div>
+            <span>AI Interactions</span>
+            <span style="font-size: 0.68rem; color: var(--gray-400);">Reasoning captured through conversations</span>
+          </div>
+          <div class="source-card" style="border-color: var(--purple-light); background: var(--purple-light);">
+            <div class="source-icon">❓</div>
+            <span>Decision Prompts</span>
+            <span style="font-size: 0.68rem; color: var(--gray-400);">Lightweight questions at key moments</span>
+          </div>
+          <div class="source-card" style="border-color: var(--purple-light); background: var(--purple-light);">
+            <div class="source-icon">🔧</div>
+            <span>Partner Calibration</span>
+            <span style="font-size: 0.68rem; color: var(--gray-400);">Periodic validation &amp; strategic context</span>
+          </div>
         </div>
       </div>
 
@@ -437,11 +463,28 @@
         <div class="phase-number">1</div>
         <div class="phase-header">
           <h3 class="phase-title">Capture</h3>
-          <span class="phase-tag">Operational Signals</span>
+          <span class="phase-tag">Three Categories of Knowledge</span>
         </div>
-        <p class="phase-desc">Agents and human partners generate structured micro-observations from every connected system. Not raw data dumps — lightweight context snapshots of what happened, what changed, and what it might mean.</p>
-        <div class="phase-example">
-          <strong>Example signals:</strong> "Budget trending 12% over plan on Project Alpha" · "Vendor X late for third consecutive time" · "PM consistently edits the sentiment section of weekly reports" · "Finance and project teams define 'committed cost' differently"
+        <p class="phase-desc">Signals flow in from two directions — automated system observations and natural human workflow interactions — producing three distinct categories of knowledge.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 14px;">
+          <div style="background: var(--teal-light); border-radius: 10px; padding: 14px; border: 1px solid #B8E4DE;">
+            <div style="font-size: 1.1rem; margin-bottom: 4px;">📡</div>
+            <h4 style="font-size: 0.8rem; font-weight: 700; color: var(--navy); margin-bottom: 4px;">Operational Signals</h4>
+            <p style="font-size: 0.75rem; color: var(--gray-600); line-height: 1.45; margin-bottom: 6px;">What happened. Observable facts from connected systems.</p>
+            <p style="font-size: 0.7rem; color: var(--teal); font-weight: 600;">Automated — agents monitor systems</p>
+          </div>
+          <div style="background: var(--amber-light); border-radius: 10px; padding: 14px; border: 1px solid #F0D78C;">
+            <div style="font-size: 1.1rem; margin-bottom: 4px;">🔄</div>
+            <h4 style="font-size: 0.8rem; font-weight: 700; color: var(--navy); margin-bottom: 4px;">Patterns</h4>
+            <p style="font-size: 0.75rem; color: var(--gray-600); line-height: 1.45; margin-bottom: 6px;">What keeps happening. Emergent intelligence visible only over time and across systems.</p>
+            <p style="font-size: 0.7rem; color: var(--amber); font-weight: 600;">Synthesized — system identifies over time</p>
+          </div>
+          <div style="background: var(--purple-light); border-radius: 10px; padding: 14px; border: 1px solid #C8B8E8;">
+            <div style="font-size: 1.1rem; margin-bottom: 4px;">🧠</div>
+            <h4 style="font-size: 0.8rem; font-weight: 700; color: var(--navy); margin-bottom: 4px;">Decision Context</h4>
+            <p style="font-size: 0.75rem; color: var(--gray-600); line-height: 1.45; margin-bottom: 6px;">Why it happened. The reasoning, tradeoffs, and institutional logic behind human decisions.</p>
+            <p style="font-size: 0.7rem; color: var(--purple); font-weight: 600;">Human-generated — natural workflow capture</p>
+          </div>
         </div>
       </div>
 
@@ -454,12 +497,13 @@
         <div class="phase-number">2</div>
         <div class="phase-header">
           <h3 class="phase-title">Synthesize</h3>
-          <span class="phase-tag">Organizational Knowledge</span>
+          <span class="phase-tag">Unified Organizational Intelligence</span>
         </div>
-        <p class="phase-desc">Raw signals get compressed into structured, usable knowledge. Hundreds of micro-observations become clear organizational intelligence — organized by project, team, vendor, time period, and topic.</p>
+        <p class="phase-desc">This is the most critical layer. All three knowledge categories — operational signals, patterns, and decision context — are woven into a unified organizational understanding. Individual observations stop being fragments and become a coherent narrative. The system doesn't store files in labeled folders. It builds understanding.</p>
         <div class="phase-example">
-          <strong>Example synthesis:</strong> "This week: Project Alpha over budget for third consecutive week. Client flagged timeline concern Tuesday. Key team member on leave starting Friday. Vendor X non-responsive on compliance — third time this quarter."
+          <strong>Example synthesis:</strong> "Project Alpha trending over budget for third consecutive week. Client flagged timeline concern Tuesday. PM chose to delay rather than add resources — based on past experience that mid-project onboarding slows teams short-term. Key team member on leave starting Friday. Vendor X non-responsive on compliance for the third time this quarter, matching the pattern that preceded contract termination with Vendor Y last year."
         </div>
+        <p style="font-size: 0.82rem; color: var(--gray-600); margin-top: 12px; line-height: 1.5; font-style: italic;">Notice: this synthesis weaves facts (signals), historical trends (patterns), and human reasoning (decision context) into a single unified picture — not three separate reports.</p>
       </div>
 
       <div class="connector">
@@ -501,7 +545,7 @@
           <h3 class="phase-title">Retrieve</h3>
           <span class="phase-tag">Two Retrieval Patterns</span>
         </div>
-        <p class="phase-desc">Organizational AI Memory serves two audiences through two distinct patterns. Agents receive contextual briefings before executing tasks. People query the memory when they need cross-system intelligence for a specific decision.</p>
+        <p class="phase-desc">Organizational AI Memory serves two audiences through two distinct patterns. Both draw from the full unified understanding — not filtered slices. The system delivers synthesized intelligence briefs with citations back to the individual contextual moments that informed them.</p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
           <div style="background: var(--teal-light); border: 1.5px solid var(--teal); border-radius: 12px; padding: 20px;">
@@ -509,9 +553,9 @@
               <span style="font-size: 1.2rem;">🤖</span>
               <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0;">Contextual Briefing</h4>
             </div>
-            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Before an agent starts its task, it receives the most current synthesized understanding relevant to its scope. The agent doesn't ask for specific facts — it shows up informed and works through that lens.</p>
+            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Before an agent starts its task, it receives the current unified understanding of the organization — not a filtered slice, but the full synthesized picture relevant to its scope. The agent shows up informed the way a well-briefed colleague would.</p>
             <div class="phase-example">
-              <strong>Example:</strong> The Monday Report agent receives a briefing of all notable changes across projects, people, and vendors this week — then generates a report that reflects the full organizational picture, not just raw data pulls.
+              <strong>Example:</strong> The Monday Report agent receives the full organizational picture for the week — project health, people changes, vendor issues, client sentiment, and the reasoning behind recent decisions — then generates a report that reflects all of it, not just raw data pulls.
             </div>
           </div>
           <div style="background: var(--coral-light); border: 1.5px solid var(--coral); border-radius: 12px; padding: 20px;">
@@ -519,9 +563,9 @@
               <span style="font-size: 1.2rem;">👤</span>
               <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0;">On-Demand Query</h4>
             </div>
-            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Leadership and teams ask questions and receive answers drawn from the full organizational memory — across every system, every team, every historical pattern. The full picture, on demand.</p>
+            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Leadership and teams ask questions and receive a synthesized intelligence brief — a coherent answer built from the full organizational memory, supported by citations back to the individual contextual moments that informed it. Not 27 raw data points. One informed perspective with the evidence behind it.</p>
             <div class="phase-example">
-              <strong>Example:</strong> A VP asks: "Give me everything I need to evaluate client renewal and attrition risk." The system pulls relationship history, project health trends, support patterns, and billing data into a unified intelligence brief — in seconds.
+              <strong>Example:</strong> A VP asks: "Are any clients at risk of being unhappy?" The system responds with a synthesized assessment — "Client X shows three risk indicators: project timeline slipped twice, primary contact hasn't responded to two check-ins, budget utilization 40% below plan" — citing 14 contextual moments across CRM, project data, and partner check-in notes.
             </div>
           </div>
         </div>
@@ -596,10 +640,10 @@
   <!-- Key insight -->
   <div class="insight">
     <h3>The Key Insight</h3>
-    <p>Organizational AI Memory doesn't require solving the model memory research problem. It works within the existing AI ecosystem — capturing signals, structuring context, and retrieving the right knowledge at the right time. The storage is lightweight. The value is enormous.</p>
+    <p>OAM captures three categories of knowledge — operational signals (what happened), patterns (what keeps happening), and decision context (why and how people think). These flow into a synthesis layer that weaves them into a unified organizational understanding. What comes out isn't a search result — it's an intelligence brief with citations. The system doesn't require solving the model memory research problem. It works within the existing AI ecosystem.</p>
     <div class="size-callout">
       A client's entire Organizational AI Memory = megabytes, not gigabytes.<br>
-      Synthesized knowledge, not raw data. Meaning, not mass.
+      Synthesized understanding, not raw data. The brain can change. The memory stays.
     </div>
   </div>
 
