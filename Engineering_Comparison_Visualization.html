@@ -3,465 +3,607 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Engineering Model Comparison — Traditional SaaS vs. Adaptive SaaS</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>NomoCoda — Organizational AI Memory Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #3B6CB5;
+    --blue-light: #E8F0FE;
+    --blue-mid: #B8D0F0;
+    --teal: #2A9D8F;
+    --teal-light: #E6F5F3;
+    --amber: #E9A820;
+    --amber-light: #FFF5E0;
+    --coral: #E07A5F;
+    --coral-light: #FDEEE9;
+    --gray-50: #F8F9FA;
+    --gray-100: #F0F1F3;
+    --gray-200: #E0E2E6;
+    --gray-400: #9CA3AF;
+    --gray-600: #6B7280;
+    --gray-800: #333;
+    --white: #FFFFFF;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
-    background: #FAFBFD;
-    color: #1A2138;
-    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    padding: 40px 20px;
   }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
   .header {
-    background: linear-gradient(135deg, #FFFFFF 0%, #F4F6FB 50%, #EDF1F9 100%);
-    padding: 40px 32px 32px;
-    border-bottom: 1px solid #E2E8F0;
+    text-align: center;
+    margin-bottom: 60px;
   }
-  .container { max-width: 1100px; margin: 0 auto; }
-  .mono { font-family: 'JetBrains Mono', monospace; }
-  .subtitle-tag {
-    font-size: 11px; letter-spacing: 3px; color: #2563EB;
-    text-transform: uppercase; margin-bottom: 8px;
-  }
-  h1 { font-size: 32px; font-weight: 700; line-height: 1.2; color: #0F172A; margin-bottom: 8px; }
-  h1 .vs { color: #94A3B8; }
-  .desc { color: #64748B; font-size: 15px; max-width: 600px; }
 
-  /* Stat bar */
-  .stat-bar-label { font-size: 12px; font-weight: 500; color: #64748B; text-align: center; margin-bottom: 10px; letter-spacing: 0.3px; }
-  .stat-bar {
-    display: grid; grid-template-columns: 1fr auto 1fr;
-    background: linear-gradient(135deg, #FFF5F5 0%, #FFFFFF 50%, #F0F7FF 100%);
-    border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden;
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.4rem;
+    color: var(--navy);
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
   }
-  .stat-box { padding: 22px 28px; text-align: center; }
-  .stat-num { font-size: 42px; font-weight: 700; line-height: 1; }
-  .stat-num.red { color: #DC2626; }
-  .stat-num.green { color: #059669; }
-  .stat-label { font-size: 9px; margin-top: 8px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.6; }
-  .stat-label.red { color: #B91C1C; }
-  .stat-label.green { color: #047857; }
-  .stat-divider {
-    display: flex; align-items: center; justify-content: center;
-    padding: 16px 24px; border-left: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0;
-  }
-  .stat-divider span { font-size: 11px; color: #94A3B8; font-weight: 600; letter-spacing: 1px; }
 
-  /* Toggle buttons */
-  .toggle-bar { padding: 24px 32px 0; }
-  .toggle-bar .btns { display: flex; gap: 8px; }
-  .toggle-btn {
-    padding: 8px 20px; border-radius: 6px; font-size: 13px; font-weight: 500;
-    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
-    border: 1px solid #D1D5DB; background: #FFFFFF; color: #64748B;
+  .header p {
+    font-size: 1.05rem;
+    color: var(--gray-600);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
   }
-  .toggle-btn.active { border-color: #2563EB; background: #EFF6FF; color: #2563EB; }
 
-  /* Content area */
-  .content { padding: 32px; }
-
-  /* Stage buttons */
-  .stage-btns { display: flex; gap: 4px; margin-bottom: 32px; flex-wrap: wrap; }
-  .stage-btn {
-    padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 400;
-    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.25s;
-    flex: 1 1 auto; min-width: 120px; text-align: center;
-    border: 1px solid #E2E8F0; background: #FFFFFF; color: #64748B;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  /* Flow section */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
   }
-  .stage-btn.active {
-    border-color: #2563EB; background: linear-gradient(135deg, #2563EB, #3B82F6);
-    color: #fff; font-weight: 600; box-shadow: 0 2px 8px rgba(37,99,235,0.25);
-  }
-  .stage-btn .num { font-size: 10px; opacity: 0.5; display: block; margin-bottom: 2px; }
 
-  /* Cards */
-  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .card { border-radius: 16px; padding: 28px; transition: all 0.3s; }
-  .card.trad {
-    background: linear-gradient(180deg, #FFFAFA 0%, #FFFFFF 100%);
-    border: 1px solid #FECACA; box-shadow: 0 1px 4px rgba(220,38,38,0.06);
+  /* Connector arrows */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
   }
-  .card.adapt {
-    background: linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 100%);
-    border: 1px solid #BFDBFE; box-shadow: 0 1px 4px rgba(37,99,235,0.06);
+
+  .connector svg {
+    width: 40px;
+    height: 40px;
   }
-  .card-tag { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-  .card-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .card-dot.red { background: #DC2626; }
-  .card-dot.blue { background: #2563EB; }
-  .card-tag-text { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-  .card-tag-text.red { color: #DC2626; }
-  .card-tag-text.blue { color: #2563EB; }
-  .card h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; color: #0F172A; }
-  .card p { color: #475569; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
-  .time-badge { display: inline-block; font-size: 11px; padding: 4px 10px; border-radius: 4px; margin-bottom: 16px; }
-  .time-badge.red { color: #DC2626; background: #FEF2F2; border: 1px solid #FECACA; }
-  .time-badge.green { color: #059669; background: #F0FDF4; border: 1px solid #BBF7D0; }
-  .callout { border-radius: 8px; padding: 12px 16px; font-size: 13px; line-height: 1.5; }
-  .callout.pain { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; font-style: italic; }
-  .callout.win { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1E40AF; }
 
-  /* Timeline */
-  .timeline-desc { margin-bottom: 16px; color: #64748B; font-size: 14px; }
-  .week-markers { display: flex; justify-content: space-between; margin-bottom: 8px; padding: 0 120px 0 140px; }
-  .week-markers span { font-size: 10px; color: #94A3B8; }
-  .tl-box { border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
-  .tl-box.trad { background: #FFFAFA; border: 1px solid #FECACA; }
-  .tl-box.adapt { background: #F0F9FF; border: 1px solid #BFDBFE; }
-  .tl-row { display: flex; align-items: center; margin-bottom: 16px; }
-  .tl-label { width: 120px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
-  .tl-label.red { color: #DC2626; }
-  .tl-label.blue { color: #2563EB; }
-  .tl-track { flex: 1; height: 32px; border-radius: 6px; position: relative; overflow: hidden; }
-  .tl-track.trad { background: #FEF2F2; }
-  .tl-track.adapt { background: #EFF6FF; }
-  .tl-seg {
-    position: absolute; height: 100%; display: flex; align-items: center; justify-content: center;
-    font-size: 9px; padding: 0 4px; text-align: center; overflow: hidden; white-space: nowrap;
-    border-right: 1px solid rgba(0,0,0,0.06); transition: opacity 0.5s ease;
+  /* Source systems row */
+  .sources {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 8px;
   }
-  .tl-total { font-size: 18px; font-weight: 700; }
-  .tl-total.red { color: #DC2626; text-align: right; }
-  .tl-total.green { color: #059669; text-align: left; padding-left: 120px; }
-  .tl-total .faster { font-size: 13px; color: #2563EB; font-weight: 400; }
 
-  /* Breakdown */
-  .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px; }
-  .bd-box { background: #FFFFFF; border-radius: 12px; padding: 24px; border: 1px solid #E2E8F0; }
-  .bd-title { font-size: 10px; letter-spacing: 2px; margin-bottom: 16px; }
-  .bd-title.red { color: #DC2626; }
-  .bd-title.blue { color: #2563EB; }
-  .bd-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-  .bd-row-label { width: 160px; font-size: 12px; color: #475569; }
-  .bd-bar-bg { flex: 1; height: 14px; background: #F1F5F9; border-radius: 3px; overflow: hidden; }
-  .bd-bar { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
-  .bd-bar.red { background: #FCA5A5; }
-  .bd-bar.amber { background: #F59E0B; }
-  .bd-bar.blue { background: #3B82F6; }
-  .bd-bar.lightblue { background: #93C5FD; }
-  .bd-weeks { width: 50px; text-align: right; font-size: 11px; color: #94A3B8; }
-  .bd-note { margin-top: 12px; font-size: 12px; font-style: italic; }
-  .bd-note.red { color: #B91C1C; }
-  .bd-note.blue { color: #1E40AF; }
-
-  /* Summary table */
-  .summary-grid { display: grid; grid-template-columns: 200px 1fr 1fr; }
-  .sg-header { padding: 16px 20px; text-align: center; }
-  .sg-header.empty { border-bottom: 2px solid #E2E8F0; }
-  .sg-header.red { border-bottom: 2px solid #FECACA; }
-  .sg-header.blue { border-bottom: 2px solid #93C5FD; }
-  .sg-header .label { font-size: 10px; letter-spacing: 2px; }
-  .sg-header .label.red { color: #DC2626; }
-  .sg-header .label.blue { color: #2563EB; }
-  .sg-cell {
-    padding: 14px 20px; font-size: 13px; border-bottom: 1px solid #F1F5F9;
-    display: flex; align-items: center;
+  .source-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: all 0.3s ease;
   }
-  .sg-dim { font-weight: 600; color: #475569; font-size: 12px; }
-  .sg-trad { color: #991B1B; justify-content: center; text-align: center; }
-  .sg-adapt { color: #1E40AF; justify-content: center; text-align: center; }
-  .sg-even-trad { background: #FFFBFB; }
-  .sg-even-adapt { background: #FAFCFF; }
 
-  /* Bottom CTA */
-  .bottom-cta {
-    margin-top: 40px; padding: 32px; text-align: center; border-radius: 16px;
-    background: linear-gradient(135deg, #EFF6FF 0%, #F0FDF4 100%);
-    border: 1px solid #BFDBFE;
+  .source-card:hover {
+    border-color: var(--blue);
+    box-shadow: 0 4px 16px rgba(59,108,181,0.1);
+    transform: translateY(-2px);
   }
-  .bottom-cta h2 { font-size: 22px; font-weight: 700; line-height: 1.3; color: #0F172A; margin-bottom: 8px; }
-  .bottom-cta .highlight { color: #2563EB; }
-  .bottom-cta .sub { color: #64748B; font-size: 14px; margin-top: 12px; }
 
-  .hidden { display: none; }
+  .source-icon {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+
+  .source-card span {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    display: block;
+  }
+
+  /* Phase cards */
+  .phase {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px 36px;
+    border-left: 5px solid var(--blue);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .phase:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  .phase.capture { border-left-color: var(--teal); }
+  .phase.synthesize { border-left-color: var(--amber); }
+  .phase.store { border-left-color: var(--blue); }
+  .phase.retrieve { border-left-color: var(--coral); }
+
+  .phase-number {
+    position: absolute;
+    top: -14px;
+    left: 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .capture .phase-number { background: var(--teal); }
+  .synthesize .phase-number { background: var(--amber); }
+  .store .phase-number { background: var(--blue); }
+  .retrieve .phase-number { background: var(--coral); }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .phase-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    color: var(--navy);
+  }
+
+  .phase-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .capture .phase-tag { background: var(--teal-light); color: var(--teal); }
+  .synthesize .phase-tag { background: var(--amber-light); color: var(--amber); }
+  .store .phase-tag { background: var(--blue-light); color: var(--blue); }
+  .retrieve .phase-tag { background: var(--coral-light); color: var(--coral); }
+
+  .phase-desc {
+    font-size: 0.95rem;
+    color: var(--gray-600);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .phase-example {
+    background: var(--gray-50);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.55;
+    border: 1px solid var(--gray-100);
+  }
+
+  .phase-example strong {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* Storage detail */
+  .storage-types {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .storage-type {
+    background: var(--gray-50);
+    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--gray-100);
+  }
+
+  .storage-type h4 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .storage-type p {
+    font-size: 0.78rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+  }
+
+  /* Agent output row */
+  .agents {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .agent-card {
+    background: var(--white);
+    border: 1.5px solid var(--coral);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .agent-card:hover {
+    background: var(--coral-light);
+    transform: translateY(-2px);
+  }
+
+  .agent-icon {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+
+  .agent-card h4 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .agent-card p {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    line-height: 1.4;
+  }
+
+  /* Key insight box */
+  .insight {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A3F6A 100%);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-top: 48px;
+    color: var(--white);
+    text-align: center;
+  }
+
+  .insight h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: var(--white);
+  }
+
+  .insight p {
+    font-size: 0.95rem;
+    color: var(--blue-mid);
+    line-height: 1.65;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+
+  .size-callout {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: var(--blue-light);
+  }
+
+  /* Feedback loop */
+  .feedback-label {
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gray-400);
+    white-space: nowrap;
+  }
+
+  .flow-wrapper {
+    position: relative;
+    padding-right: 80px;
+  }
+
+  .feedback-arrow {
+    position: absolute;
+    right: 20px;
+    top: 15%;
+    bottom: 15%;
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feedback-arrow .line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(to bottom, var(--teal), var(--coral));
+    border-radius: 1px;
+    opacity: 0.3;
+  }
+
+  .feedback-arrow .label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gray-400);
+    padding: 12px 0;
+  }
+
+  .feedback-arrow svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.4;
+  }
+
+  @media (max-width: 768px) {
+    .header h1 { font-size: 1.8rem; }
+    .phase { padding: 24px 20px; }
+    .storage-types { grid-template-columns: 1fr; }
+    .flow-wrapper { padding-right: 0; }
+    .feedback-arrow { display: none; }
+    .sources { grid-template-columns: repeat(3, 1fr); }
+    .agents { grid-template-columns: 1fr 1fr; }
+    .phase [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+  }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="container">
-    <div class="mono subtitle-tag">Engineering Model Comparison</div>
-    <h1>Traditional SaaS <span class="vs">vs.</span> Adaptive SaaS</h1>
-    <p class="desc">How your feature request actually moves through engineering — from idea to live in your operation.</p>
+<div class="container">
 
-    <!-- Killer stat -->
-    <div style="margin-top:24px">
-      <div class="stat-bar-label">Percentage of elapsed time spent on actual development work</div>
-      <div class="stat-bar">
-        <div class="stat-box">
-          <div class="mono stat-num red">18%</div>
-          <div class="mono stat-label red">Traditional SaaS</div>
+  <div class="header">
+    <h1>How Organizational AI Memory Works</h1>
+    <p>Signals flow from your existing systems through four layers — captured, synthesized, stored, and retrieved — so every AI interaction draws from shared organizational understanding.</p>
+  </div>
+
+  <div class="flow-wrapper">
+
+    <!-- Feedback loop arrow -->
+    <div class="feedback-arrow">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 2L8 14M8 2L4 6M8 2L12 6" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="line"></div>
+      <div class="label">Agents feed back new signals</div>
+      <div class="line"></div>
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 14L8 2M8 14L4 10M8 14L12 10" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+
+    <div class="flow">
+
+      <!-- SOURCE SYSTEMS -->
+      <div class="sources">
+        <div class="source-card">
+          <div class="source-icon">📋</div>
+          <span>Project Mgmt</span>
         </div>
-        <div class="stat-divider"><span>vs.</span></div>
-        <div class="stat-box">
-          <div class="mono stat-num green">71%</div>
-          <div class="mono stat-label green">Adaptive SaaS</div>
+        <div class="source-card">
+          <div class="source-icon">💰</div>
+          <span>Accounting</span>
+        </div>
+        <div class="source-card">
+          <div class="source-icon">🤝</div>
+          <span>CRM</span>
+        </div>
+        <div class="source-card">
+          <div class="source-icon">👥</div>
+          <span>HR</span>
+        </div>
+        <div class="source-card">
+          <div class="source-icon">✅</div>
+          <span>Compliance</span>
+        </div>
+        <div class="source-card">
+          <div class="source-icon">🧠</div>
+          <span>Human Context</span>
         </div>
       </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#2A9D8F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 1: CAPTURE -->
+      <div class="phase capture">
+        <div class="phase-number">1</div>
+        <div class="phase-header">
+          <h3 class="phase-title">Capture</h3>
+          <span class="phase-tag">Operational Signals</span>
+        </div>
+        <p class="phase-desc">Agents and human partners generate structured micro-observations from every connected system. Not raw data dumps — lightweight context snapshots of what happened, what changed, and what it might mean.</p>
+        <div class="phase-example">
+          <strong>Example signals:</strong> "Budget trending 12% over plan on Project Alpha" · "Vendor X late for third consecutive time" · "PM consistently edits the sentiment section of weekly reports" · "Finance and project teams define 'committed cost' differently"
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#E9A820" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 2: SYNTHESIZE -->
+      <div class="phase synthesize">
+        <div class="phase-number">2</div>
+        <div class="phase-header">
+          <h3 class="phase-title">Synthesize</h3>
+          <span class="phase-tag">Organizational Knowledge</span>
+        </div>
+        <p class="phase-desc">Raw signals get compressed into structured, usable knowledge. Hundreds of micro-observations become clear organizational intelligence — organized by project, team, vendor, time period, and topic.</p>
+        <div class="phase-example">
+          <strong>Example synthesis:</strong> "This week: Project Alpha over budget for third consecutive week. Client flagged timeline concern Tuesday. Key team member on leave starting Friday. Vendor X non-responsive on compliance — third time this quarter."
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#3B6CB5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 3: STORE -->
+      <div class="phase store">
+        <div class="phase-number">3</div>
+        <div class="phase-header">
+          <h3 class="phase-title">Store</h3>
+          <span class="phase-tag">Persistent Knowledge System</span>
+        </div>
+        <p class="phase-desc">Synthesized context lives in a persistent external knowledge system — outside any single AI model's context window. It persists across sessions, across agents, across time. The storage is lightweight: synthesized knowledge, not raw data.</p>
+        <div class="storage-types">
+          <div class="storage-type">
+            <h4>Vector Database</h4>
+            <p>Stores meaning, not just words. Enables semantic search — find relevant context even when the question uses different language than the stored knowledge.</p>
+          </div>
+          <div class="storage-type">
+            <h4>Knowledge Graph</h4>
+            <p>Maps relationships between people, projects, vendors, systems. Lets agents traverse connections no single system holds.</p>
+          </div>
+          <div class="storage-type">
+            <h4>Structured Records</h4>
+            <p>Factual data — budgets, thresholds, contracts, roles. Straightforward, searchable, reliable.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#E07A5F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- LAYER 4: RETRIEVE — TWO PATTERNS -->
+      <div class="phase retrieve">
+        <div class="phase-number">4</div>
+        <div class="phase-header">
+          <h3 class="phase-title">Retrieve</h3>
+          <span class="phase-tag">Two Retrieval Patterns</span>
+        </div>
+        <p class="phase-desc">Organizational AI Memory serves two audiences through two distinct patterns. Agents receive contextual briefings before executing tasks. People query the memory when they need cross-system intelligence for a specific decision.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+          <div style="background: var(--teal-light); border: 1.5px solid var(--teal); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.2rem;">🤖</span>
+              <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0;">Contextual Briefing</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Before an agent starts its task, it receives the most current synthesized understanding relevant to its scope. The agent doesn't ask for specific facts — it shows up informed and works through that lens.</p>
+            <div class="phase-example">
+              <strong>Example:</strong> The Monday Report agent receives a briefing of all notable changes across projects, people, and vendors this week — then generates a report that reflects the full organizational picture, not just raw data pulls.
+            </div>
+          </div>
+          <div style="background: var(--coral-light); border: 1.5px solid var(--coral); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+              <span style="font-size: 1.2rem;">👤</span>
+              <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin: 0;">On-Demand Query</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 12px;">Leadership and teams ask questions and receive answers drawn from the full organizational memory — across every system, every team, every historical pattern. The full picture, on demand.</p>
+            <div class="phase-example">
+              <strong>Example:</strong> A VP asks: "Give me everything I need to evaluate client renewal and attrition risk." The system pulls relationship history, project health trends, support patterns, and billing data into a unified intelligence brief — in seconds.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg viewBox="0 0 40 40" fill="none"><path d="M20 8L20 32M20 32L12 24M20 32L28 24" stroke="#E07A5F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- OUTPUT: TWO ROWS -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+
+        <!-- Agents column -->
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--teal); margin-bottom: 10px; text-align: center;">Agents — Proactively Informed</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">📊</div>
+              <h4>Monday Report</h4>
+              <p>Cross-system status with full context</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">🔍</div>
+              <h4>Compliance</h4>
+              <p>Vendor tracking with pattern history</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">💲</div>
+              <h4>Budget</h4>
+              <p>Trend-aware financial monitoring</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--teal);">
+              <div class="agent-icon">🧑‍💼</div>
+              <h4>Onboarding</h4>
+              <p>Context-rich new hire support</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- People column -->
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--coral); margin-bottom: 10px; text-align: center;">People — On-Demand Intelligence</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">🎯</div>
+              <h4>Executive Review</h4>
+              <p>Client health, renewal risk, strategic decisions</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">📈</div>
+              <h4>Sales Intelligence</h4>
+              <p>Relationship context, account history, opportunities</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">⚙️</div>
+              <h4>Ops Planning</h4>
+              <p>Cross-team capacity, workflow patterns, bottlenecks</p>
+            </div>
+            <div class="agent-card" style="border-color: var(--coral);">
+              <div class="agent-icon">🛡️</div>
+              <h4>Risk Assessment</h4>
+              <p>Vendor reliability, compliance gaps, exposure</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
-</div>
 
-<!-- VIEW TOGGLE -->
-<div class="toggle-bar">
-  <div class="container">
-    <div class="btns">
-      <button class="toggle-btn active" data-view="stages">Stage by Stage</button>
-      <button class="toggle-btn" data-view="timeline">Timeline View</button>
-      <button class="toggle-btn" data-view="summary">The Full Picture</button>
+  <!-- Key insight -->
+  <div class="insight">
+    <h3>The Key Insight</h3>
+    <p>Organizational AI Memory doesn't require solving the model memory research problem. It works within the existing AI ecosystem — capturing signals, structuring context, and retrieving the right knowledge at the right time. The storage is lightweight. The value is enormous.</p>
+    <div class="size-callout">
+      A client's entire Organizational AI Memory = megabytes, not gigabytes.<br>
+      Synthesized knowledge, not raw data. Meaning, not mass.
     </div>
   </div>
+
 </div>
 
-<!-- CONTENT -->
-<div class="content">
-  <div class="container">
-
-    <!-- ====== STAGES VIEW ====== -->
-    <div id="view-stages">
-      <div class="stage-btns" id="stage-btns"></div>
-      <div class="cards" id="stage-cards"></div>
-    </div>
-
-    <!-- ====== TIMELINE VIEW ====== -->
-    <div id="view-timeline" class="hidden">
-      <div class="timeline-desc">The same feature request. Two completely different timelines.</div>
-
-      <div class="week-markers" id="week-markers"></div>
-
-      <!-- Traditional -->
-      <div class="tl-box trad">
-        <div class="tl-row">
-          <div class="mono tl-label red">Traditional</div>
-          <div class="tl-track trad" id="tl-track-trad"></div>
-        </div>
-        <div class="mono tl-total red">22 weeks</div>
-      </div>
-
-      <!-- Adaptive -->
-      <div class="tl-box adapt">
-        <div class="tl-row">
-          <div class="mono tl-label blue">Adaptive</div>
-          <div class="tl-track adapt" id="tl-track-adapt"></div>
-        </div>
-        <div class="mono tl-total green">3.5 weeks <span class="faster">— 6× faster</span></div>
-      </div>
-
-      <!-- Breakdown -->
-      <div class="breakdown">
-        <div class="bd-box">
-          <div class="mono bd-title red">WHERE THE TIME GOES — TRADITIONAL</div>
-          <div id="bd-trad"></div>
-          <div class="bd-note red">Only 18% of the timeline is actual development.</div>
-        </div>
-        <div class="bd-box">
-          <div class="mono bd-title blue">WHERE THE TIME GOES — ADAPTIVE</div>
-          <div id="bd-adapt"></div>
-          <div class="bd-note blue">71% of the timeline is actual development.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ====== SUMMARY VIEW ====== -->
-    <div id="view-summary" class="hidden">
-      <div class="summary-grid" id="summary-grid"></div>
-      <div class="bottom-cta">
-        <h2>Traditional SaaS makes you wait in line.<br><span class="highlight">Adaptive SaaS builds the line around you.</span></h2>
-        <div class="sub">Your roadmap. Your build team. Your timeline. That's Adaptive SaaS.</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<script>
-// ===== DATA =====
-const stages = [
-  { id:"request", label:"Feature Request",
-    traditional:{ title:"Submit a ticket", desc:"Your request enters a shared backlog with hundreds of other clients' requests.", time:"Day 1", pain:"You're ticket #847 in a queue you can't see." },
-    adaptive:{ title:"Talk to your partner", desc:"Your dedicated partner scopes the build with you in a single conversation.", time:"Day 1", win:"Your partner already knows your operation." }},
-  { id:"prioritize", label:"Prioritization",
-    traditional:{ title:"Roadmap committee votes", desc:"Product team weighs your request against every other client. Biggest accounts win.", time:"Week 2–6", pain:"Your $50K contract loses to a $2M enterprise client. Every time." },
-    adaptive:{ title:"You decide", desc:"Your buildout is funded by your engagement. No competing priorities. No committee.", time:"Day 2–3", win:"Your business funds your build. Period." }},
-  { id:"develop", label:"Development",
-    traditional:{ title:"Sprint planning → backlog grooming → estimation → sprint", desc:"Your feature enters a 2-week sprint cycle shared across the entire product.", time:"Month 2–4", pain:"Scope creep from other features delays yours. Again." },
-    adaptive:{ title:"Dedicated build sprint", desc:"Senior engineer assigned to your project. Focused. Uninterrupted. Building for YOU.", time:"Week 1–3", win:"120 hours of focused engineering on your operation." }},
-  { id:"deploy", label:"Deployment",
-    traditional:{ title:"Wait for quarterly release", desc:"Feature is done but sits in staging until the next batch release window.", time:"Month 4–6", pain:"Done in March. Ships in June. You've been waiting 5 months." },
-    adaptive:{ title:"Ships when it's ready", desc:"Continuous deployment to your instance. Built Tuesday, live Wednesday.", time:"Same week", win:"No batch cycles. No release trains. No waiting." }},
-  { id:"bugs", label:"Bug Fixes",
-    traditional:{ title:"Submit ticket → triage → prioritize → sprint", desc:"Bug enters the same backlog as features. Critical bugs get fast-tracked. Yours probably isn't critical.", time:"1–8 weeks", pain:"Your team works around the bug for 2 months while it sits in the backlog." },
-    adaptive:{ title:"Direct fix", desc:"Report to your partner. Engineer patches your instance. Deployed.", time:"24–72 hours", win:"Your bugs don't compete with anyone else's priorities." }},
-  { id:"feedback", label:"Feedback Loop",
-    traditional:{ title:"Annual survey or NPS score", desc:"Your feedback goes into an aggregated report. Product team reads the summary. Maybe.", time:"Annual", pain:"You're a data point, not a partner." },
-    adaptive:{ title:"Continuous conversation", desc:"Your partner monitors your usage data, surfaces insights, and translates them into build recommendations.", time:"Ongoing", win:"Every conversation becomes a build decision that compounds value." }}
-];
-
-const tlTrad = [
-  {week:0,label:"Request submitted",phase:"waiting"},{week:4,label:"Roadmap review",phase:"waiting"},
-  {week:8,label:"Sprint planned",phase:"waiting"},{week:10,label:"Dev starts",phase:"active"},
-  {week:14,label:"Dev complete",phase:"active"},{week:16,label:"QA & staging",phase:"waiting"},
-  {week:22,label:"Ships in batch release",phase:"done"}
-];
-const tlAdapt = [
-  {week:0,label:"Conversation with partner",phase:"active"},{week:0.5,label:"Scoped & scheduled",phase:"active"},
-  {week:1,label:"Build starts",phase:"active"},{week:3,label:"Build complete",phase:"active"},
-  {week:3.5,label:"Deployed to your instance",phase:"done"}
-];
-const maxWeek = 24;
-
-const bdTrad = [
-  {label:"Waiting in backlog",weeks:"4 wks",pct:18,dev:false},
-  {label:"Roadmap prioritization",weeks:"4 wks",pct:18,dev:false},
-  {label:"Sprint planning",weeks:"2 wks",pct:9,dev:false},
-  {label:"Actual development",weeks:"4 wks",pct:18,dev:true},
-  {label:"QA & staging",weeks:"2 wks",pct:9,dev:false},
-  {label:"Waiting for batch release",weeks:"6 wks",pct:27,dev:false}
-];
-const bdAdapt = [
-  {label:"Partner scoping",weeks:"2 days",pct:7,dev:false},
-  {label:"Scheduling",weeks:"1 day",pct:3,dev:false},
-  {label:"Actual development",weeks:"2.5 wks",pct:71,dev:true},
-  {label:"Deploy & validate",weeks:"2 days",pct:7,dev:false}
-];
-
-const summaryRows = [
-  {dim:"Feature Request → Live",trad:"3–6 months",adapt:"2–4 weeks"},
-  {dim:"Who Prioritizes",trad:"Product committee",adapt:"You + your partner"},
-  {dim:"Roadmap",trad:"Shared across all clients",adapt:"Yours. Funded by your engagement."},
-  {dim:"Bug Fix Timeline",trad:"1–8 weeks (backlog queue)",adapt:"24–72 hours (direct fix)"},
-  {dim:"Deployment Cycle",trad:"Quarterly batch releases",adapt:"Continuous — ships when ready"},
-  {dim:"Your Voice",trad:"Ticket #847 in a shared queue",adapt:"Direct line to your build team"},
-  {dim:"Innovation Driver",trad:"Roadmap votes (biggest client wins)",adapt:"Your operation drives the build"},
-  {dim:"Dev Time on YOUR Needs",trad:"~18% of elapsed timeline",adapt:"~71% of elapsed timeline"},
-  {dim:"Feedback Loop",trad:"Annual NPS survey",adapt:"Continuous partner conversation"},
-  {dim:"What You Pay For",trad:"Access to a product built for everyone",adapt:"Software built around your operation"}
-];
-
-// ===== STATE =====
-let activeStage = 0;
-let currentView = 'stages';
-
-// ===== RENDER FUNCTIONS =====
-function renderStageButtons() {
-  const el = document.getElementById('stage-btns');
-  el.innerHTML = stages.map((s,i) =>
-    `<button class="stage-btn${i===activeStage?' active':''}" data-stage="${i}">
-      <span class="mono num">0${i+1}</span>${s.label}
-    </button>`
-  ).join('');
-  el.querySelectorAll('.stage-btn').forEach(btn => {
-    btn.addEventListener('click', () => { activeStage = parseInt(btn.dataset.stage); renderStageButtons(); renderCards(); });
-  });
-}
-
-function renderCards() {
-  const s = stages[activeStage];
-  document.getElementById('stage-cards').innerHTML = `
-    <div class="card trad">
-      <div class="card-tag"><div class="card-dot red"></div><span class="mono card-tag-text red">Traditional SaaS</span></div>
-      <h3>${s.traditional.title}</h3>
-      <p>${s.traditional.desc}</p>
-      <div><span class="mono time-badge red">⏱ ${s.traditional.time}</span></div>
-      ${s.traditional.pain ? `<div class="callout pain">"${s.traditional.pain}"</div>` : ''}
-    </div>
-    <div class="card adapt">
-      <div class="card-tag"><div class="card-dot blue"></div><span class="mono card-tag-text blue">Adaptive SaaS</span></div>
-      <h3>${s.adaptive.title}</h3>
-      <p>${s.adaptive.desc}</p>
-      <div><span class="mono time-badge green">⚡ ${s.adaptive.time}</span></div>
-      ${s.adaptive.win ? `<div class="callout win">✦ ${s.adaptive.win}</div>` : ''}
-    </div>`;
-}
-
-function renderTimeline() {
-  // Week markers
-  document.getElementById('week-markers').innerHTML = [0,4,8,12,16,20,24].map(w =>
-    `<span class="mono">${'Wk '+w}</span>`).join('');
-
-  // Traditional track
-  const tradTrack = document.getElementById('tl-track-trad');
-  tradTrack.innerHTML = tlTrad.map((item,i) => {
-    const next = i < tlTrad.length-1 ? tlTrad[i+1].week : maxWeek;
-    const left = (item.week/maxWeek)*100;
-    const width = ((next-item.week)/maxWeek)*100;
-    const colors = {waiting:'rgba(220,38,38,0.12)',active:'rgba(234,179,8,0.25)',done:'rgba(5,150,105,0.15)'};
-    const textColor = item.phase==='waiting' ? '#991B1B' : '#065F46';
-    return `<div class="tl-seg mono" style="left:${left}%;width:${width}%;background:${colors[item.phase]};color:${textColor};opacity:0;transition-delay:${i*100}ms">${width>8?item.label:''}</div>`;
-  }).join('');
-
-  // Adaptive track
-  const adaptTrack = document.getElementById('tl-track-adapt');
-  adaptTrack.innerHTML = tlAdapt.map((item,i) => {
-    const next = i < tlAdapt.length-1 ? tlAdapt[i+1].week : 4;
-    const left = (item.week/maxWeek)*100;
-    const width = Math.max(((next-item.week)/maxWeek)*100, 2);
-    const colors = {active:'rgba(37,99,235,0.2)',done:'rgba(5,150,105,0.2)'};
-    return `<div class="tl-seg mono" style="left:${left}%;width:${width}%;background:${colors[item.phase]};color:#1E40AF;opacity:0;transition-delay:${i*100}ms">${width>3?item.label:''}</div>`;
-  }).join('');
-
-  // Animate in
-  requestAnimationFrame(() => {
-    document.querySelectorAll('.tl-seg').forEach(el => { el.style.opacity = '1'; });
-  });
-
-  // Breakdowns
-  renderBreakdown('bd-trad', bdTrad, 'trad');
-  renderBreakdown('bd-adapt', bdAdapt, 'adapt');
-}
-
-function renderBreakdown(containerId, data, type) {
-  const el = document.getElementById(containerId);
-  el.innerHTML = data.map((item,i) => {
-    const barClass = type==='trad' ? (item.dev?'amber':'red') : (item.dev?'blue':'lightblue');
-    return `<div class="bd-row">
-      <div class="bd-row-label">${item.label}</div>
-      <div class="bd-bar-bg"><div class="bd-bar ${barClass}" style="width:0%;transition-delay:${i*100}ms"></div></div>
-      <div class="mono bd-weeks">${item.weeks}</div>
-    </div>`;
-  }).join('');
-  requestAnimationFrame(() => {
-    el.querySelectorAll('.bd-bar').forEach((bar,i) => { bar.style.width = data[i].pct+'%'; });
-  });
-}
-
-function renderSummary() {
-  const grid = document.getElementById('summary-grid');
-  let html = `
-    <div class="sg-header empty"></div>
-    <div class="sg-header red"><div class="mono label red">TRADITIONAL SAAS</div></div>
-    <div class="sg-header blue"><div class="mono label blue">ADAPTIVE SAAS</div></div>`;
-  summaryRows.forEach((row,i) => {
-    const even = i%2===0;
-    html += `
-      <div class="sg-cell sg-dim">${row.dim}</div>
-      <div class="sg-cell sg-trad${even?' sg-even-trad':''}">${row.trad}</div>
-      <div class="sg-cell sg-adapt${even?' sg-even-adapt':''}">${row.adapt}</div>`;
-  });
-  grid.innerHTML = html;
-}
-
-// ===== VIEW SWITCHING =====
-function switchView(view) {
-  currentView = view;
-  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b.dataset.view===view));
-  document.getElementById('view-stages').classList.toggle('hidden', view!=='stages');
-  document.getElementById('view-timeline').classList.toggle('hidden', view!=='timeline');
-  document.getElementById('view-summary').classList.toggle('hidden', view!=='summary');
-  if (view==='timeline') renderTimeline();
-  if (view==='summary') renderSummary();
-}
-
-document.querySelectorAll('.toggle-btn').forEach(btn => {
-  btn.addEventListener('click', () => switchView(btn.dataset.view));
-});
-
-// ===== INIT =====
-renderStageButtons();
-renderCards();
-</script>
 </body>
 </html>
