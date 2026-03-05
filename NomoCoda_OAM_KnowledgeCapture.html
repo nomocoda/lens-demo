@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NomoCoda — Human Signal Capture & Knowledge Categories</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #3B6CB5;
+    --blue-light: #E8F0FE;
+    --teal: #2A9D8F;
+    --teal-light: #E6F5F3;
+    --amber: #E9A820;
+    --amber-light: #FFF5E0;
+    --coral: #E07A5F;
+    --coral-light: #FDEEE9;
+    --purple: #7C5CBF;
+    --purple-light: #F0EBF8;
+    --gray-50: #F8F9FA;
+    --gray-100: #F0F1F3;
+    --gray-200: #E0E2E6;
+    --gray-400: #9CA3AF;
+    --gray-600: #6B7280;
+    --gray-800: #333;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--gray-50); color: var(--gray-800); padding: 40px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 48px; }
+  .header h1 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--navy); margin-bottom: 10px; }
+  .header p { font-size: 1rem; color: var(--gray-600); max-width: 720px; margin: 0 auto; line-height: 1.6; }
+
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--navy); margin-bottom: 8px; text-align: center; }
+  .section-sub { font-size: 0.9rem; color: var(--gray-600); text-align: center; margin-bottom: 28px; line-height: 1.5; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+  /* THREE KNOWLEDGE CATEGORIES */
+  .categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 56px; }
+
+  .cat-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px 24px;
+    border-top: 5px solid;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .cat-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); transform: translateY(-3px); }
+  .cat-card.signals { border-top-color: var(--teal); }
+  .cat-card.patterns { border-top-color: var(--amber); }
+  .cat-card.decisions { border-top-color: var(--purple); }
+
+  .cat-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .cat-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--navy); margin-bottom: 4px; }
+  .cat-subtitle { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .cat-card.signals .cat-subtitle { color: var(--teal); }
+  .cat-card.patterns .cat-subtitle { color: var(--amber); }
+  .cat-card.decisions .cat-subtitle { color: var(--purple); }
+
+  .cat-card p { font-size: 0.85rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 14px; }
+
+  .cat-examples {
+    background: var(--gray-50);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+    border: 1px solid var(--gray-100);
+  }
+  .cat-examples strong { color: var(--navy); }
+
+  .cat-capture {
+    margin-top: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .cat-card.signals .cat-capture { background: var(--teal-light); color: var(--teal); }
+  .cat-card.patterns .cat-capture { background: var(--amber-light); color: var(--amber); }
+  .cat-card.decisions .cat-capture { background: var(--purple-light); color: var(--purple); }
+
+  /* CONNECTOR */
+  .flow-connector { text-align: center; padding: 16px 0 24px; }
+  .flow-connector svg { width: 48px; height: 48px; }
+  .flow-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray-400); margin-top: 4px; }
+
+  /* FOUR CAPTURE LAYERS */
+  .layers { display: flex; flex-direction: column; gap: 0; margin-bottom: 48px; }
+
+  .layer-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .layer-row:last-child { border-bottom: none; }
+
+  .layer-label-cell {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 3px solid;
+  }
+  .layer-row:nth-child(1) .layer-label-cell { border-right-color: var(--teal); background: var(--teal-light); }
+  .layer-row:nth-child(2) .layer-label-cell { border-right-color: var(--blue); background: var(--blue-light); }
+  .layer-row:nth-child(3) .layer-label-cell { border-right-color: var(--amber); background: var(--amber-light); }
+  .layer-row:nth-child(4) .layer-label-cell { border-right-color: var(--purple); background: var(--purple-light); }
+
+  .layer-num { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px; }
+  .layer-row:nth-child(1) .layer-num { color: var(--teal); }
+  .layer-row:nth-child(2) .layer-num { color: var(--blue); }
+  .layer-row:nth-child(3) .layer-num { color: var(--amber); }
+  .layer-row:nth-child(4) .layer-num { color: var(--purple); }
+
+  .layer-name { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--navy); }
+
+  .layer-content { padding: 24px 28px; background: var(--white); }
+  .layer-content h4 { font-size: 0.85rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .layer-content p { font-size: 0.85rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 10px; }
+
+  .layer-example {
+    background: var(--gray-50);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.8rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+    border: 1px solid var(--gray-100);
+    font-style: italic;
+  }
+
+  .layer-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .layer-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--gray-100);
+    color: var(--gray-600);
+  }
+
+  /* SYNTHESIS CALLOUT */
+  .synthesis-box {
+    background: linear-gradient(135deg, var(--navy) 0%, #2A3F6A 100%);
+    border-radius: 16px;
+    padding: 32px 36px;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .synthesis-box h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 14px; }
+  .synthesis-box p { font-size: 0.92rem; color: #B8D0F0; line-height: 1.65; max-width: 800px; margin: 0 auto; }
+
+  .synthesis-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .synth-step {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 0.82rem;
+    color: var(--blue-light);
+    font-weight: 500;
+  }
+  .synth-arrow { color: rgba(255,255,255,0.4); font-size: 1.2rem; }
+
+  /* DESIGN PRINCIPLE */
+  .principle {
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid var(--gray-200);
+    padding: 28px 32px;
+    text-align: center;
+  }
+  .principle h3 { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--navy); margin-bottom: 10px; }
+  .principle p { font-size: 0.9rem; color: var(--gray-600); line-height: 1.6; max-width: 650px; margin: 0 auto; }
+  .principle em { color: var(--navy); font-weight: 600; font-style: normal; }
+
+  @media (max-width: 768px) {
+    .categories { grid-template-columns: 1fr; }
+    .layer-row { grid-template-columns: 1fr; }
+    .layer-label-cell { border-right: none; border-bottom: 3px solid; padding: 16px 20px; }
+    .header h1 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>What OAM Knows &amp; How It Learns</h1>
+    <p>Three categories of knowledge live in Organizational AI Memory. Each is captured differently — from fully automated system observation to natural human workflow interactions.</p>
+  </div>
+
+  <!-- THREE KNOWLEDGE CATEGORIES -->
+  <h2 class="section-title">Three Categories of Knowledge</h2>
+  <p class="section-sub">All three live in OAM. The first two can be largely automated. The third requires humans — and it's the most valuable.</p>
+
+  <div class="categories">
+    <div class="cat-card signals">
+      <div class="cat-icon">📡</div>
+      <h3>Operational Signals</h3>
+      <div class="cat-subtitle">What Happened</div>
+      <p>Observable facts. Timestamped, system-generated events captured from connected tools and agents. Objective and automated.</p>
+      <div class="cat-examples">
+        <strong>Examples:</strong> Vendor X was late. Budget trending 12% over. Task velocity dropped 20%. Client didn't respond to last two check-ins. New hire started Monday.
+      </div>
+      <div class="cat-capture">Captured by: Agents monitoring systems</div>
+    </div>
+
+    <div class="cat-card patterns">
+      <div class="cat-icon">🔄</div>
+      <h3>Patterns</h3>
+      <div class="cat-subtitle">What Keeps Happening</div>
+      <p>Emergent intelligence visible only when signals accumulate over time and across systems. No single signal reveals a pattern. This is where compounding lives.</p>
+      <div class="cat-examples">
+        <strong>Examples:</strong> Vendor late 3x in 90 days across two projects. Client engagement drops 30 days before churn. Onboarding 2+ people in a month dips velocity for 3 weeks.
+      </div>
+      <div class="cat-capture">Captured by: System synthesis over time</div>
+    </div>
+
+    <div class="cat-card decisions">
+      <div class="cat-icon">🧠</div>
+      <h3>Decision Context</h3>
+      <div class="cat-subtitle">Why It Happened &amp; How People Think</div>
+      <p>The reasoning behind human decisions. Institutional logic, tradeoffs, and frameworks that walk out the door when someone leaves. The most valuable and hardest to capture.</p>
+      <div class="cat-examples">
+        <strong>Examples:</strong> Delayed project because mid-project onboarding slows teams short-term. Approved overage because client relationship is strategic. Restructured approvals because undocumented bottleneck existed.
+      </div>
+      <div class="cat-capture">Captured by: Human workflow interactions</div>
+    </div>
+  </div>
+
+  <!-- CONNECTOR -->
+  <div class="flow-connector">
+    <svg viewBox="0 0 48 48" fill="none"><path d="M24 8L24 40M24 40L14 30M24 40L34 30" stroke="#1B2A4A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="flow-label">How human signals get captured</div>
+  </div>
+
+  <!-- FOUR CAPTURE LAYERS -->
+  <h2 class="section-title">Four Layers of Human Capture</h2>
+  <p class="section-sub">The goal: make capture invisible. People don't change how they work. The system gets smarter by learning from what they're already doing.</p>
+
+  <div class="layers" style="background: var(--white); border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); overflow: hidden;">
+
+    <div class="layer-row">
+      <div class="layer-label-cell">
+        <div class="layer-num">Layer 1</div>
+        <div class="layer-name">Passive Capture</div>
+      </div>
+      <div class="layer-content">
+        <h4>From existing behavior — zero extra effort</h4>
+        <p>Agents monitor the systems people already work in and extract contextual signals from human-generated content. The human didn't do anything extra. They just did their job.</p>
+        <div class="layer-example">
+          PM writes in Jira: "Moved deadline because client shifted priorities to Q2 launch." · Sales rep logs in HubSpot: "Client mentioned budget pressure from new CFO — renewal timing may shift." · Ops leader in Slack: "Holding off on vendor switch until after compliance audit."
+        </div>
+        <div class="layer-tags">
+          <span class="layer-tag">Jira comments</span>
+          <span class="layer-tag">CRM notes</span>
+          <span class="layer-tag">Slack decisions</span>
+          <span class="layer-tag">Email context</span>
+          <span class="layer-tag">Report edits</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-row">
+      <div class="layer-label-cell">
+        <div class="layer-num">Layer 2</div>
+        <div class="layer-name">Structured AI Interactions</div>
+      </div>
+      <div class="layer-content">
+        <h4>Reasoning captured through natural AI conversations</h4>
+        <p>When someone works through a problem with an AI agent — exploring options, weighing tradeoffs, arriving at a decision — the conversation itself becomes organizational memory. Not just the outcome, but the logic behind it.</p>
+        <div class="layer-example">
+          A 30-minute conversation where an ops leader works through staffing options with an AI agent. The outcome: "Chose Option B." The captured context: "Chose Option B because client relationship matters more than short-term budget hit, and historically prioritizing budget over relationship with this client led to escalation."
+        </div>
+        <div class="layer-tags">
+          <span class="layer-tag">AI agent conversations</span>
+          <span class="layer-tag">Decision reasoning</span>
+          <span class="layer-tag">Tradeoff analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-row">
+      <div class="layer-label-cell">
+        <div class="layer-num">Layer 3</div>
+        <div class="layer-name">Lightweight Prompts</div>
+      </div>
+      <div class="layer-content">
+        <h4>One question at the moment of decision — not a form</h4>
+        <p>At key decision points — approving a budget, closing a deal, completing a phase — the system asks one simple question. Captured at the moment of the decision, not as a retrospective exercise nobody wants to do.</p>
+        <div class="layer-example">
+          "You approved the overage on Project Alpha. Anything the team should know about why?" → A single sentence response becomes rich decision context. Takes seconds, not minutes.
+        </div>
+        <div class="layer-tags">
+          <span class="layer-tag">Budget approvals</span>
+          <span class="layer-tag">Deal closures</span>
+          <span class="layer-tag">Phase completions</span>
+          <span class="layer-tag">Escalation decisions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-row">
+      <div class="layer-label-cell">
+        <div class="layer-num">Layer 4</div>
+        <div class="layer-name">Partner Calibration</div>
+      </div>
+      <div class="layer-content">
+        <h4>NomoCoda as context architect and validator — not daily capturer</h4>
+        <p>The partner isn't in every meeting. They're not the bottleneck for daily capture. Layers 1–3 handle that. The partner's role is designing the capture logic, validating what the system learned, correcting misinterpretations, and injecting strategic context no system can detect.</p>
+        <div class="layer-example">
+          "We just lost our biggest account." · "New VP wants reports structured differently." · "We're switching accounting systems next quarter." · Reviewing automated captures: "The system logged this as a negative signal, but the team actually sees this as a positive — correct the interpretation."
+        </div>
+        <div class="layer-tags">
+          <span class="layer-tag">Strategic context</span>
+          <span class="layer-tag">Memory validation</span>
+          <span class="layer-tag">Capture design</span>
+          <span class="layer-tag">Monthly/quarterly</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SYNTHESIS -->
+  <div class="synthesis-box">
+    <h3>From Signals to Unified Intelligence</h3>
+    <p>All three knowledge categories — operational signals, patterns, and decision context — flow into the synthesis layer and become a unified organizational understanding. When anything flows out, it draws from the whole picture, not individual fragments. The VP gets an intelligence brief, not 27 raw data points — with citations back to the contextual moments that informed it.</p>
+    <div class="synthesis-flow">
+      <div class="synth-step">📡 Signals</div>
+      <div class="synth-arrow">+</div>
+      <div class="synth-step">🔄 Patterns</div>
+      <div class="synth-arrow">+</div>
+      <div class="synth-step">🧠 Decisions</div>
+      <div class="synth-arrow">→</div>
+      <div class="synth-step" style="background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4);">🏛️ Unified Intelligence</div>
+      <div class="synth-arrow">→</div>
+      <div class="synth-step">📋 Synthesized Brief + Citations</div>
+    </div>
+  </div>
+
+  <!-- DESIGN PRINCIPLE -->
+  <div class="principle">
+    <h3>The Design Principle</h3>
+    <p>The best organizational memory system is one that <em>people don't even realize they're feeding</em> — because they're just doing their jobs and the system is smart enough to learn from it. Layers 1–3 handle daily capture at scale. Layer 4 ensures the quality, accuracy, and strategic depth of what's being captured.</p>
+  </div>
+
+</div>
+</body>
+</html>
