@@ -3,14 +3,16 @@
 <head>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-.app{font-family:var(--font-sans);max-width:720px;margin:0 auto;padding:1.5rem 0}
+body{font-family:var(--font-sans)}
+
+/* --- WIDGET (default embedded view) --- */
+.app{max-width:720px;margin:0 auto;padding:1.5rem 0;position:relative}
 .card{background:var(--color-background-primary);border:0.5px solid #CECBF6;border-radius:16px;overflow:hidden}
 .header{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:0.5px solid #CECBF6}
 .logo{width:30px;height:30px;background:#534AB7;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .htext{flex:1}
 .hname{font-size:14px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.01em}
-.hsub{font-size:11px;color:#7F77DD;margin-top:1px}
-.hright{display:flex;align-items:center;gap:5px}
+.hright{display:flex;align-items:center;gap:8px}
 .live{width:6px;height:6px;border-radius:50%;background:#1D9E75}
 .live-txt{font-size:11px;color:var(--color-text-tertiary)}
 .chat{height:320px;overflow-y:auto;padding:24px 22px;display:flex;flex-direction:column;gap:16px;background:var(--color-background-primary);scroll-behavior:smooth}
@@ -40,46 +42,102 @@
 .btn:hover{background:#3C3489}
 .btn:disabled{background:#CECBF6;cursor:not-allowed}
 .foot{text-align:center;font-size:11px;color:#AFA9EC;padding:7px 0 1px;letter-spacing:0.02em;font-weight:500}
+
+/* --- OVERLAY on widget --- */
+.widget-overlay{position:absolute;inset:0;background:rgba(255,255,255,0.55);backdrop-filter:blur(2px);border-radius:16px;display:flex;align-items:center;justify-content:center;z-index:10;cursor:pointer;transition:opacity .2s}
+.ask-btn{background:#534AB7;color:#fff;font-size:14px;font-weight:500;padding:12px 28px;border-radius:24px;border:none;cursor:pointer;letter-spacing:0.01em;box-shadow:0 4px 20px rgba(83,74,183,0.35);transition:background .15s,transform .15s}
+.ask-btn:hover{background:#3C3489;transform:scale(1.03)}
+
+/* --- FULLSCREEN MODAL --- */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(20,18,40,0.6);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--color-background-primary,#fff);border:0.5px solid #CECBF6;border-radius:20px;width:min(680px,95vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(20,18,40,0.25);animation:rise .25s ease}
+@keyframes rise{from{opacity:0;transform:translateY(16px) scale(0.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.modal .header{padding:16px 20px}
+.close-btn{background:none;border:none;cursor:pointer;font-size:13px;color:#AFA9EC;padding:4px 10px;border-radius:8px;transition:background .15s;font-weight:500;letter-spacing:0.01em}
+.close-btn:hover{background:#EEEDFE;color:#534AB7}
+.modal .chat{height:auto;flex:1;min-height:300px;max-height:calc(90vh - 180px)}
 </style>
 </head>
 <body>
+
+<!-- WIDGET -->
 <div class="app">
-<div class="card">
-  <div class="header">
-    <div class="logo">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="7" cy="7" r="3.5" stroke="#CECBF6" stroke-width="1.5"/>
-        <line x1="9.8" y1="9.8" x2="13" y2="13" stroke="#CECBF6" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <div class="htext">
-      <div class="hname">CEO Workspace</div>
-      <div class="hsub">Acme Industrial · 5 systems connected</div>
-    </div>
-    <div class="hright">
-      <div class="live"></div>
-      <span class="live-txt">Live</span>
-    </div>
-  </div>
-  <div class="chat" id="chat"></div>
-  <div class="sugs" id="sugs">
-    <button class="sug" onclick="useSug(this)">Which clients need my attention this week?</button>
-    <button class="sug" onclick="useSug(this)">How does the Manufacturing World event impact our pipeline?</button>
-    <button class="sug" onclick="useSug(this)">If freight rates keep climbing, where does our margin break?</button>
-  </div>
-  <div class="bottom">
-    <div class="ibox">
-      <textarea id="inp" placeholder="Ask Lens anything about Acme Industrial..." rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
-      <button class="btn" id="sendbtn" onclick="go()">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M1 7H13M13 7L8 2M13 7L8 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <div class="card">
+    <div class="header">
+      <div class="logo">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="3.5" stroke="#CECBF6" stroke-width="1.5"/>
+          <line x1="9.8" y1="9.8" x2="13" y2="13" stroke="#CECBF6" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
-      </button>
+      </div>
+      <div class="htext">
+        <div class="hname">CEO Workspace</div>
+      </div>
+      <div class="hright">
+        <div class="live"></div>
+        <span class="live-txt">Live</span>
+      </div>
     </div>
-    <div class="foot">Lens</div>
+    <div class="chat" id="chat-widget"></div>
+    <div class="sugs" id="sugs-widget">
+      <button class="sug" onclick="useSugWidget(this)">Which clients need my attention this week?</button>
+      <button class="sug" onclick="useSugWidget(this)">How does the Manufacturing World event impact our pipeline?</button>
+      <button class="sug" onclick="useSugWidget(this)">If freight rates keep climbing, where does our margin break?</button>
+    </div>
+    <div class="bottom">
+      <div class="ibox">
+        <textarea id="inp-widget" placeholder="Ask Lens anything about Acme Industrial..." rows="1" onkeydown="onKeyWidget(event)" oninput="grow(this)"></textarea>
+        <button class="btn" id="sendbtn-widget" onclick="goWidget()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L8 2M13 7L8 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="foot">Lens</div>
+    </div>
+  </div>
+  <!-- OVERLAY -->
+  <div class="widget-overlay" id="widget-overlay" onclick="openModal()">
+    <button class="ask-btn">Ask Lens</button>
   </div>
 </div>
+
+<!-- FULLSCREEN MODAL -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="header">
+      <div class="logo">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="7" cy="7" r="3.5" stroke="#CECBF6" stroke-width="1.5"/>
+          <line x1="9.8" y1="9.8" x2="13" y2="13" stroke="#CECBF6" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="htext">
+        <div class="hname">CEO Workspace</div>
+      </div>
+      <div class="hright">
+        <div class="live"></div>
+        <span class="live-txt">Live</span>
+        <button class="close-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+    <div class="chat" id="chat-modal"></div>
+    <div class="sugs" id="sugs-modal">
+      <button class="sug" onclick="useSugModal(this)">Which clients need my attention this week?</button>
+      <button class="sug" onclick="useSugModal(this)">How does the Manufacturing World event impact our pipeline?</button>
+      <button class="sug" onclick="useSugModal(this)">If freight rates keep climbing, where does our margin break?</button>
+    </div>
+    <div class="bottom">
+      <div class="ibox">
+        <textarea id="inp-modal" placeholder="Ask Lens anything about Acme Industrial..." rows="1" onkeydown="onKeyModal(event)" oninput="grow(this)"></textarea>
+        <button class="btn" id="sendbtn-modal" onclick="goModal()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7H13M13 7L8 2M13 7L8 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="foot">Lens</div>
+    </div>
+  </div>
 </div>
+
 <script>
 const SYS=`You are Lens, the strategic intelligence layer for Acme Industrial — a 300-person mid-market manufacturer in Columbus, Ohio. Custom precision components for automotive, aerospace, and industrial equipment. Complete visibility across all connected systems.
 
@@ -93,46 +151,39 @@ SLACK: Dave Kowalski "Third time flagging press line 3 — need budget decision 
 
 You ARE Lens. Never say you are Claude or an AI. Be concise, synthesized, actionable. Reference specific data naturally. When restricted access applies, acknowledge what you can see, note the gap, offer to facilitate. Remember everything from this conversation.`;
 
-let hist=[],busy=false;
+let histModal=[],busyModal=false;
 
-function add(role,text){
-  const c=document.getElementById('chat');
+function addMsg(chatId,role,text){
+  const c=document.getElementById(chatId);
   const w=document.createElement('div');
   w.className='msg '+(role==='u'?'u':'l');
-  const lb=document.createElement('div');
-  lb.className='label';
-  lb.textContent=role==='u'?'You':'Lens';
-  const b=document.createElement('div');
-  b.className='bub';
-  b.textContent=text;
+  const lb=document.createElement('div');lb.className='label';lb.textContent=role==='u'?'You':'Lens';
+  const b=document.createElement('div');b.className='bub';b.textContent=text;
   w.appendChild(lb);w.appendChild(b);
   c.appendChild(w);c.scrollTop=c.scrollHeight;
 }
 
-function showT(){
-  const c=document.getElementById('chat');
-  const w=document.createElement('div');
-  w.id='t';w.className='msg l';
-  const lb=document.createElement('div');
-  lb.className='label';lb.textContent='Lens';
-  const b=document.createElement('div');
-  b.className='trow';
+function showThinking(chatId){
+  const c=document.getElementById(chatId);
+  const w=document.createElement('div');w.id='thinking-'+chatId;w.className='msg l';
+  const lb=document.createElement('div');lb.className='label';lb.textContent='Lens';
+  const b=document.createElement('div');b.className='trow';
   b.innerHTML='<span class="tlbl">Thinking</span><div class="tdots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>';
   w.appendChild(lb);w.appendChild(b);
   c.appendChild(w);c.scrollTop=c.scrollHeight;
 }
 
-function hideT(){const t=document.getElementById('t');if(t)t.remove();}
+function hideThinking(chatId){const t=document.getElementById('thinking-'+chatId);if(t)t.remove();}
 
-async function go(){
-  const inp=document.getElementById('inp');
+async function sendMsg(inputId,chatId,sugsId,btnId,hist){
+  const inp=document.getElementById(inputId);
   const txt=inp.value.trim();
-  if(!txt||busy)return;
+  if(!txt||busyModal)return;
   inp.value='';grow(inp);
-  document.getElementById('sugs').style.display='none';
-  busy=true;document.getElementById('sendbtn').disabled=true;
-  add('u',txt);hist.push({role:'user',content:txt});
-  showT();
+  document.getElementById(sugsId).style.display='none';
+  busyModal=true;document.getElementById(btnId).disabled=true;
+  addMsg(chatId,'u',txt);hist.push({role:'user',content:txt});
+  showThinking(chatId);
   try{
     const r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
@@ -141,20 +192,45 @@ async function go(){
     });
     const d=await r.json();
     const reply=d.content?.[0]?.text||'Something went wrong. Please try again.';
-    hideT();add('l',reply);
+    hideThinking(chatId);addMsg(chatId,'l',reply);
     hist.push({role:'assistant',content:reply});
-    document.getElementById('chat').scrollTop=document.getElementById('chat').scrollHeight;
-  }catch(e){hideT();add('l','Unable to connect. Please try again.');}
-  busy=false;document.getElementById('sendbtn').disabled=false;
+    document.getElementById(chatId).scrollTop=document.getElementById(chatId).scrollHeight;
+  }catch(e){hideThinking(chatId);addMsg(chatId,'l','Unable to connect. Please try again.');}
+  busyModal=false;document.getElementById(btnId).disabled=false;
 }
 
-function useSug(b){document.getElementById('inp').value=b.textContent;go();}
-function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go();}}
+// Modal controls
+function openModal(){
+  document.getElementById('modal-backdrop').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('inp-modal').focus(),300);
+}
+function closeModal(){
+  document.getElementById('modal-backdrop').classList.remove('open');
+  document.body.style.overflow='';
+}
+// Close on backdrop click
+document.getElementById('modal-backdrop').addEventListener('click',function(e){
+  if(e.target===this)closeModal();
+});
+
+// Modal chat
+function goModal(){sendMsg('inp-modal','chat-modal','sugs-modal','sendbtn-modal',histModal);}
+function useSugModal(b){document.getElementById('inp-modal').value=b.textContent;goModal();}
+function onKeyModal(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();goModal();}}
+
+// Widget (behind overlay — decorative only)
+function goWidget(){}
+function useSugWidget(b){}
+function onKeyWidget(e){}
+
 function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
 
+// Init opening message in modal
 const open=`Good morning. What should we tackle today?`;
-
-add('l',open);hist.push({role:'assistant',content:open});
+addMsg('chat-modal','l',open);histModal.push({role:'assistant',content:open});
+// Also show in widget (blurred behind overlay)
+addMsg('chat-widget','l',open);
 </script>
 </body>
 </html>
