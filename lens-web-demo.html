@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{font-family:var(--font-sans);max-width:720px;margin:0 auto;padding:1.5rem 0}
+.card{background:var(--color-background-primary);border:0.5px solid #CECBF6;border-radius:16px;overflow:hidden}
+.header{display:flex;align-items:center;gap:12px;padding:16px 22px;border-bottom:0.5px solid #CECBF6}
+.logo{width:30px;height:30px;background:#534AB7;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.htext{flex:1}
+.hname{font-size:14px;font-weight:500;color:var(--color-text-primary);letter-spacing:-0.01em}
+.hsub{font-size:11px;color:#7F77DD;margin-top:1px}
+.hright{display:flex;align-items:center;gap:5px}
+.live{width:6px;height:6px;border-radius:50%;background:#1D9E75}
+.live-txt{font-size:11px;color:var(--color-text-tertiary)}
+.chat{height:440px;overflow-y:auto;padding:24px 22px;display:flex;flex-direction:column;gap:16px;background:var(--color-background-primary);scroll-behavior:smooth}
+.msg{display:flex;flex-direction:column;gap:3px}
+.msg.u{align-items:flex-end;max-width:75%;align-self:flex-end}
+.msg.l{align-items:flex-start;max-width:88%}
+.label{font-size:10px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:#AFA9EC;padding:0 3px}
+.bub{padding:12px 16px;font-size:13.5px;line-height:1.75;white-space:pre-wrap;color:var(--color-text-primary)}
+.msg.u .bub{background:#EEEDFE;border-radius:14px 14px 3px 14px}
+.msg.l .bub{background:var(--color-background-primary);border:0.5px solid #CECBF6;border-radius:3px 14px 14px 14px}
+.trow{display:flex;align-items:center;gap:8px;padding:12px 16px;border:0.5px solid #CECBF6;border-radius:3px 14px 14px 14px}
+.tlbl{font-size:11px;color:#AFA9EC}
+.tdots{display:flex;gap:4px}
+.tdot{width:5px;height:5px;border-radius:50%;background:#AFA9EC;animation:pop 1.2s ease-in-out infinite}
+.tdot:nth-child(2){animation-delay:.2s}
+.tdot:nth-child(3){animation-delay:.4s}
+@keyframes pop{0%,60%,100%{opacity:.3;transform:scale(1)}30%{opacity:1;transform:scale(1.3)}}
+.sugs{padding:10px 22px 8px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;border-top:0.5px solid #CECBF6}
+.sug{font-size:12px;padding:7px 14px;border-radius:20px;border:0.5px solid #CECBF6;color:#534AB7;background:var(--color-background-primary);cursor:pointer;transition:all .15s;line-height:1.4;text-align:right;max-width:90%}
+.sug:hover{background:#EEEDFE;border-color:#7F77DD}
+.bottom{padding:10px 16px 14px;border-top:0.5px solid #CECBF6}
+.ibox{display:flex;align-items:flex-end;gap:10px;background:#EEEDFE;border:0.5px solid #CECBF6;border-radius:12px;padding:9px 9px 9px 16px;transition:border-color .15s}
+.ibox:focus-within{border-color:#534AB7}
+.ibox textarea{flex:1;resize:none;font-size:13.5px;background:transparent;border:none;outline:none;color:var(--color-text-primary);font-family:var(--font-sans);line-height:1.55;min-height:22px;max-height:110px;padding-top:1px}
+.ibox textarea::placeholder{color:#AFA9EC}
+.btn{width:32px;height:32px;border-radius:8px;background:#534AB7;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.btn:hover{background:#3C3489}
+.btn:disabled{background:#CECBF6;cursor:not-allowed}
+.foot{text-align:center;font-size:11px;color:#AFA9EC;padding:7px 0 1px;letter-spacing:0.02em;font-weight:500}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="card">
+  <div class="header">
+    <div class="logo">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="7" cy="7" r="3.5" stroke="#CECBF6" stroke-width="1.5"/>
+        <line x1="9.8" y1="9.8" x2="13" y2="13" stroke="#CECBF6" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="htext">
+      <div class="hname">CEO Workspace</div>
+      <div class="hsub">Acme Industrial · 5 systems connected</div>
+    </div>
+    <div class="hright">
+      <div class="live"></div>
+      <span class="live-txt">Live</span>
+    </div>
+  </div>
+  <div class="chat" id="chat"></div>
+  <div class="sugs" id="sugs">
+    <button class="sug" onclick="useSug(this)">Which clients need my attention this week?</button>
+    <button class="sug" onclick="useSug(this)">How does the Manufacturing World event impact our pipeline?</button>
+    <button class="sug" onclick="useSug(this)">If freight rates keep climbing, where does our margin break?</button>
+    <button class="sug" onclick="useSug(this)">Are we positioned to win Summit Defense given the defense sector outlook?</button>
+  </div>
+  <div class="bottom">
+    <div class="ibox">
+      <textarea id="inp" placeholder="Ask Lens anything about Acme Industrial..." rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
+      <button class="btn" id="sendbtn" onclick="go()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 7H13M13 7L8 2M13 7L8 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="foot">Lens</div>
+  </div>
+</div>
+</div>
+<script>
+const SYS=`You are Lens, the strategic intelligence layer for Acme Industrial — a 300-person mid-market manufacturer in Columbus, Ohio. Custom precision components for automotive, aerospace, and industrial equipment. Complete visibility across all connected systems.
+
+FINANCIALS: $38M revenue, Q1 tracking 3% below Q2 target of $9.8M. Gross margin 34%. Steel costs up 11% since Jan. Overdue: Keller Automotive $214K (45+ days), Midwest Fabricators $87K. CapEx: $1.2M approved for Facility 2 press upgrade, pending contractor.
+CLIENTS: 42 active contracts. HIGH RISK — Keller Automotive: $4.1M, renewal 67 days, engagement dropping, 2 QBRs missed. HEALTHY — Orion Aerospace: $6.8M, 2-year extension just signed. WATCH — Hartwell Equipment: $1.1M new client, 3 quality concerns in 60 days. PIPELINE — Summit Defense $3.2M final negotiations (wants July 15 vs Aug); Meridian Auto Parts $2.1M went quiet 3 weeks ago.
+PRODUCTION: Facility 1 Columbus 94% capacity on schedule. Facility 2 Cleveland 78% — press line 3 calibration issue causing 6-8% yield loss on aerospace parts, Dave Kowalski flagged 3x. Facility 3 Detroit 61% ramping for Hartwell. OTD 91.3% vs 95% target.
+VENDORS: Midwest Steel renewal 45 days, wants +8% increase. Alternative: Great Lakes Alloys qualified not contracted. RISK: Precision Coatings Inc sole-source aerospace supplier, late 2 of last 4 deliveries, no alternative — Orion contract depends on this. Freight rates up 7%.
+PEOPLE: Director of Quality Priya Nair resigned, last day April 15 — was AS9100 audit lead, recert June 14, no replacement search started. Plant Mgr F2 Dave Kowalski waiting on maintenance budget. Engineering fully allocated through Q2 on Summit Defense pre-production. Open: 4 CNC operators, 1 Quality Engineer.
+MARKET: Manufacturing World conference May 12 Chicago — major defense and aerospace procurement teams attending, Summit Defense rumored present. Steel tariffs under Congressional review — potential 15% increase. Competitor Apex Precision expanding into aerospace. Regional freight consortium forming — members locking 3-year rates 12% below spot market, deadline April 30.
+SLACK: Dave Kowalski "Third time flagging press line 3 — need budget decision this week or we'll miss Orion window." Finance "Keller payment outstanding — flag to CEO?" Sales "Summit Defense asking for accelerated timeline."
+
+You ARE Lens. Never say you are Claude or an AI. Be concise, synthesized, actionable. Reference specific data naturally. When restricted access applies, acknowledge what you can see, note the gap, offer to facilitate. Remember everything from this conversation.`;
+
+let hist=[],busy=false;
+
+function add(role,text){
+  const c=document.getElementById('chat');
+  const w=document.createElement('div');
+  w.className='msg '+(role==='u'?'u':'l');
+  const lb=document.createElement('div');
+  lb.className='label';
+  lb.textContent=role==='u'?'You':'Lens';
+  const b=document.createElement('div');
+  b.className='bub';
+  b.textContent=text;
+  w.appendChild(lb);w.appendChild(b);
+  c.appendChild(w);c.scrollTop=c.scrollHeight;
+}
+
+function showT(){
+  const c=document.getElementById('chat');
+  const w=document.createElement('div');
+  w.id='t';w.className='msg l';
+  const lb=document.createElement('div');
+  lb.className='label';lb.textContent='Lens';
+  const b=document.createElement('div');
+  b.className='trow';
+  b.innerHTML='<span class="tlbl">Thinking</span><div class="tdots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>';
+  w.appendChild(lb);w.appendChild(b);
+  c.appendChild(w);c.scrollTop=c.scrollHeight;
+}
+
+function hideT(){const t=document.getElementById('t');if(t)t.remove();}
+
+async function go(){
+  const inp=document.getElementById('inp');
+  const txt=inp.value.trim();
+  if(!txt||busy)return;
+  inp.value='';grow(inp);
+  document.getElementById('sugs').style.display='none';
+  busy=true;document.getElementById('sendbtn').disabled=true;
+  add('u',txt);hist.push({role:'user',content:txt});
+  showT();
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})
+    });
+    const d=await r.json();
+    const reply=d.content?.[0]?.text||'Something went wrong. Please try again.';
+    hideT();add('l',reply);
+    hist.push({role:'assistant',content:reply});
+  }catch(e){hideT();add('l','Unable to connect. Please try again.');}
+  busy=false;document.getElementById('sendbtn').disabled=false;
+}
+
+function useSug(b){document.getElementById('inp').value=b.textContent;go();}
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go();}}
+function grow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px';}
+
+const open=`Good morning. What should we tackle today?`;
+
+add('l',open);hist.push({role:'assistant',content:open});
+</script>
+</body>
+</html>
