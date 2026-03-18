@@ -143,6 +143,7 @@ async function go(){
     const reply=d.content?.[0]?.text||'Something went wrong. Please try again.';
     hideT();add('l',reply);
     hist.push({role:'assistant',content:reply});
+    document.getElementById('chat').scrollTop=document.getElementById('chat').scrollHeight;
   }catch(e){hideT();add('l','Unable to connect. Please try again.');}
   busy=false;document.getElementById('sendbtn').disabled=false;
 }
