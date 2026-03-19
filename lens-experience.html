@@ -129,6 +129,9 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid #f0edff;
 }
 
 /* ─── Action bar: the two buttons ─── */
@@ -615,17 +618,37 @@ function autoResizeInput() {
 }
 msgInput.addEventListener('input', autoResizeInput);
 
-// Mobile keyboard
-if (window.visualViewport) {
-  const app = document.getElementById('app');
-  window.visualViewport.addEventListener('resize', () => {
-    app.style.height = window.visualViewport.height + 'px';
-    scrollToBottom();
-  });
-  window.visualViewport.addEventListener('scroll', () => {
-    app.style.height = window.visualViewport.height + 'px';
-  });
+// Mobile keyboard handling
+const app = document.getElementById('app');
+const bottomSection = document.getElementById('bottom-section');
+
+function handleViewportChange() {
+  if (!window.visualViewport) return;
+  const vv = window.visualViewport;
+  // Set app height to visual viewport
+  app.style.height = vv.height + 'px';
+  // Pin bottom section to visual viewport bottom
+  const offset = window.innerHeight - vv.height - vv.offsetTop;
+  bottomSection.style.transform = offset > 0 ? `translateY(-${offset}px)` : '';
+  scrollToBottom();
 }
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', handleViewportChange);
+  window.visualViewport.addEventListener('scroll', handleViewportChange);
+}
+
+// Also handle focus/blur to ensure input stays visible
+msgInput.addEventListener('focus', () => {
+  setTimeout(() => {
+    handleViewportChange();
+    scrollToBottom();
+  }, 300);
+});
+msgInput.addEventListener('blur', () => {
+  app.style.height = '';
+  bottomSection.style.transform = '';
+});
 </script>
 </body>
 </html>
