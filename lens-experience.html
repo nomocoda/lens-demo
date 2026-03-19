@@ -184,8 +184,16 @@ html, body {
   border: 2px solid #6C5CE7;
   border-radius: 24px;
   box-shadow: none;
+  animation: buoyBob 3s ease-in-out infinite;
 }
 #explore-action:hover { background: #f5f3ff; }
+
+@keyframes buoyBob {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-4px); }
+  50% { transform: translateY(1px); }
+  75% { transform: translateY(-2px); }
+}
 
 /* State: balanced */
 #action-bar.state-balanced .action-btn {
