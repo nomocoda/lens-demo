@@ -196,9 +196,41 @@
     .layer-label-cell { border-right: none; border-bottom: 3px solid; padding: 16px 20px; }
     .header h1 { font-size: 1.7rem; }
   }
+  .tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 16px;
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab-nav a {
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--gray-600);
+    transition: all 0.2s;
+  }
+  .tab-nav a:hover { background: var(--gray-50); color: var(--navy); }
+  .tab-nav a.active {
+    background: var(--navy);
+    color: var(--white);
+  }
 </style>
 </head>
 <body>
+
+<nav class="tab-nav">
+  <a href="NomoCoda_OAM_Architecture_Flow.html">Architecture Flow</a>
+  <a href="NomoCoda_OAM_KnowledgeCapture.html" class="active">Knowledge Capture</a>
+</nav>
+
 <div class="container">
 
   <!-- HEADER -->
