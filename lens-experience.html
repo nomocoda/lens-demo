@@ -250,13 +250,6 @@ html, body {
   margin-top: 0;
 }
 
-#input-wrapper {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-}
-
 #msg-input {
   width: 100%;
   border: 1.5px solid #e5e5e7;
@@ -264,7 +257,7 @@ html, body {
   color: #1a1a1a;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
-  padding: 10px 48px 10px 16px;
+  padding: 10px 16px;
   border-radius: 22px;
   outline: none;
   resize: none;
@@ -278,25 +271,6 @@ html, body {
   box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
 }
 #msg-input::placeholder { color: #c0c0c4; }
-
-#send-btn {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  width: 36px; height: 36px;
-  border: none;
-  background: #6C5CE7;
-  color: white;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-#send-btn:hover { background: #5a4bd6; }
-#send-btn:active { transform: scale(0.92); }
-#send-btn:disabled { background: #d4d0f0; cursor: default; }
-#send-btn svg { width: 16px; height: 16px; }
 
 /* --- Explore question card --- */
 #explore-strip {
@@ -462,12 +436,7 @@ html, body {
 
     <!-- Input bar -->
     <div id="input-bar">
-      <div id="input-wrapper">
-        <textarea id="msg-input" rows="1" placeholder="Ask Lens anything..."></textarea>
-        <button id="send-btn" aria-label="Send">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-        </button>
-      </div>
+      <textarea id="msg-input" rows="1" placeholder="Ask Lens anything..."></textarea>
     </div>
 
     <!-- Action buttons -->
@@ -528,7 +497,6 @@ const exploreStrip = document.getElementById('explore-strip');
 const exploreCard = document.getElementById('explore-card');
 const exploreQuestion = document.getElementById('explore-question');
 const msgInput = document.getElementById('msg-input');
-const sendBtn = document.getElementById('send-btn');
 
 const exploreDots = document.getElementById('explore-dots');
 
@@ -686,7 +654,7 @@ function scrollToBottom() {
 async function sendMessage(text) {
   if (!text.trim() || isWaiting) return;
   isWaiting = true;
-  sendBtn.disabled = true;
+  msgInput.disabled = true;
 
   addMessage('user', text);
   conversationHistory.push({ role: 'user', content: text });
@@ -718,11 +686,10 @@ async function sendMessage(text) {
   }
 
   isWaiting = false;
-  sendBtn.disabled = false;
+  msgInput.disabled = false;
   setTimeout(() => setMode('balanced'), 800);
 }
 
-sendBtn.addEventListener('click', () => sendMessage(msgInput.value));
 msgInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
