@@ -286,34 +286,8 @@ html, body {
   opacity: 1;
 }
 
-#explore-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-}
-
-/* Vertical scroll dots on left */
-#explore-dots {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex-shrink: 0;
-  padding: 4px 0;
-}
-#explore-dots span {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #ddd;
-  transition: background 0.3s, transform 0.3s;
-}
-#explore-dots span.active {
-  background: #6C5CE7;
-  transform: scale(1.4);
-}
-
 #explore-card {
+  margin: 0 14px;
   flex: 1;
   position: relative;
   padding: 12px 16px;
@@ -408,11 +382,8 @@ html, body {
   <div id="bottom-section">
     <!-- Explore question card -->
     <div id="explore-strip">
-      <div id="explore-row">
-        <div id="explore-dots"></div>
-        <div id="explore-card">
-          <div id="explore-question"></div>
-        </div>
+      <div id="explore-card">
+        <div id="explore-question"></div>
       </div>
     </div>
 
@@ -503,21 +474,8 @@ const exploreCard = document.getElementById('explore-card');
 const exploreQuestion = document.getElementById('explore-question');
 const msgInput = document.getElementById('msg-input');
 
-const exploreDots = document.getElementById('explore-dots');
-
-// Build dots
-function renderDots() {
-  exploreDots.innerHTML = '';
-  EXPLORE_QUESTIONS.forEach((_, i) => {
-    const dot = document.createElement('span');
-    if (i === currentExploreIdx) dot.className = 'active';
-    exploreDots.appendChild(dot);
-  });
-}
-
 // Show first question
 exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
-renderDots();
 
 // Poof to next/prev question
 function poofToQuestion(newIdx) {
@@ -529,7 +487,6 @@ function poofToQuestion(newIdx) {
   setTimeout(() => {
     currentExploreIdx = newIdx;
     exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
-    renderDots();
     exploreQuestion.classList.remove('poof-out');
     exploreQuestion.classList.add('poof-in');
 
@@ -576,7 +533,13 @@ askAction.addEventListener('click', () => {
   setMode(currentMode === 'ask' ? 'balanced' : 'ask');
 });
 exploreAction.addEventListener('click', () => {
-  setMode(currentMode === 'explore' ? 'balanced' : 'explore');
+  if (currentMode === 'explore') {
+    // Already in explore mode — cycle to next question
+    const next = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
+    poofToQuestion(next);
+  } else {
+    setMode('explore');
+  }
 });
 
 // Swipe on explore card — one at a time, no auto-advance
