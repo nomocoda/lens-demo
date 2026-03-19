@@ -184,15 +184,30 @@ html, body {
   border: 2px solid #6C5CE7;
   border-radius: 24px;
   box-shadow: none;
-  animation: buoyBob 3s ease-in-out infinite;
 }
 #explore-action:hover { background: #f5f3ff; }
 
-@keyframes buoyBob {
-  0%, 100% { transform: translateY(0); }
-  25% { transform: translateY(-4px); }
-  50% { transform: translateY(1px); }
-  75% { transform: translateY(-2px); }
+/* Compass needle wander */
+.compass-needle {
+  transform-origin: 12px 12px;
+  animation: needleWander 12s ease-in-out infinite;
+}
+
+@keyframes needleWander {
+  0%   { transform: rotate(0deg); }
+  8%   { transform: rotate(35deg); }
+  15%  { transform: rotate(22deg); }
+  24%  { transform: rotate(-48deg); }
+  30%  { transform: rotate(-30deg); }
+  38%  { transform: rotate(15deg); }
+  45%  { transform: rotate(60deg); }
+  52%  { transform: rotate(42deg); }
+  60%  { transform: rotate(-25deg); }
+  68%  { transform: rotate(-55deg); }
+  74%  { transform: rotate(-15deg); }
+  82%  { transform: rotate(28deg); }
+  90%  { transform: rotate(-8deg); }
+  100% { transform: rotate(0deg); }
 }
 
 /* State: balanced */
@@ -403,7 +418,7 @@ html, body {
     <!-- Action buttons -->
     <div id="action-bar" class="state-balanced">
       <button id="explore-action" class="action-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon class="compass-needle" points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
         <span class="btn-label">Explore</span>
       </button>
       <button id="ask-action" class="action-btn">
