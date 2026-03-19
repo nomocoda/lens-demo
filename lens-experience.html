@@ -6,7 +6,7 @@
 <title>Lens — NomoCoda</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,44 +16,63 @@ html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 15px;
   line-height: 1.6;
-  background: #FFFFFF;
+  background: #f5f3ff;
   color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ─── App container ─── */
 #app {
   display: flex;
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
   width: 100%;
-  max-width: 600px;
+  max-width: 480px;
   margin: 0 auto;
   position: relative;
+  background: #ffffff;
+}
+
+/* On larger screens, float as a card */
+@media (min-width: 540px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f5f3ff 100%);
+  }
+  #app {
+    height: min(92vh, 820px);
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(108, 92, 231, 0.12), 0 2px 8px rgba(0,0,0,0.04);
+    overflow: hidden;
+  }
 }
 
 /* ─── Close button ─── */
 #close-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
   border: none;
-  background: rgba(255,255,255,0.9);
+  background: rgba(245, 243, 255, 0.9);
   border-radius: 50%;
-  font-size: 18px;
-  color: #999;
+  font-size: 16px;
+  color: #a8a0d0;
   cursor: pointer;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  transition: color 0.2s;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-#close-btn:hover { color: #333; }
+#close-btn:hover { color: #6C5CE7; background: #ede9fe; }
 
 /* ─── Chat area ─── */
 #chat-area {
@@ -69,8 +88,14 @@ html, body {
 .msg-group {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin-bottom: 12px;
+  gap: 3px;
+  margin-bottom: 14px;
+  animation: msgFadeIn 0.3s ease-out;
+}
+
+@keyframes msgFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .msg-label {
@@ -79,13 +104,13 @@ html, body {
   letter-spacing: 0.8px;
   color: #AFA9EC;
   font-weight: 600;
-  padding: 0 4px;
+  padding: 0 6px;
 }
 .msg-label.user-label { text-align: right; }
 
 .msg-bubble {
   max-width: 85%;
-  padding: 10px 14px;
+  padding: 12px 16px;
   background: #FFFFFF;
   border: 0.5px solid #CECBF6;
   font-size: 15px;
@@ -93,20 +118,28 @@ html, body {
   word-wrap: break-word;
   white-space: pre-wrap;
 }
-.msg-bubble.lens { border-radius: 3px 14px 14px 14px; align-self: flex-start; }
-.msg-bubble.user { border-radius: 14px 14px 3px 14px; align-self: flex-end; }
+.msg-bubble.lens {
+  border-radius: 4px 18px 18px 18px;
+  align-self: flex-start;
+  background: #faf9ff;
+}
+.msg-bubble.user {
+  border-radius: 18px 18px 4px 18px;
+  align-self: flex-end;
+  background: #ffffff;
+}
 
 /* Thinking dots */
 .thinking-dots {
   display: flex;
-  gap: 4px;
-  padding: 12px 14px;
+  gap: 5px;
+  padding: 14px 16px;
   align-self: flex-start;
 }
 .thinking-dots span {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: #CECBF6;
+  background: #C4BFEE;
   animation: dotPulse 1.4s ease-in-out infinite;
 }
 .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
@@ -119,160 +152,184 @@ html, body {
 /* ─── Bottom section ─── */
 #bottom-section {
   flex-shrink: 0;
-  border-top: 1px solid #f0f0f0;
   background: #fff;
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
-/* ─── Mode toggle (Ask / Explore) ─── */
+/* ─── Mode toggle ─── */
 #mode-toggle {
   display: flex;
-  height: 44px;
-  position: relative;
-  overflow: hidden;
+  gap: 8px;
+  padding: 8px 16px 4px;
 }
 
-#ask-tab, #explore-tab {
+.mode-btn {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  height: 40px;
   border: none;
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
   cursor: pointer;
+  border-radius: 20px;
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
+}
+
+#ask-btn {
+  background: #f5f3ff;
+  color: #7c6dc7;
+  border: 1px solid #e9e5fb;
+}
+#ask-btn.active {
+  background: #6C5CE7;
   color: white;
+  border-color: #6C5CE7;
+  box-shadow: 0 2px 12px rgba(108, 92, 231, 0.3);
+}
+#ask-btn:not(.active):hover { background: #ede9fe; }
+
+#explore-btn {
+  background: #f5f3ff;
+  color: #7c6dc7;
+  border: 1px solid #e9e5fb;
+}
+#explore-btn.active {
+  background: #8B7CF7;
+  color: white;
+  border-color: #8B7CF7;
+  box-shadow: 0 2px 12px rgba(139, 124, 247, 0.3);
+}
+#explore-btn:not(.active):hover { background: #ede9fe; }
+
+/* Press animation */
+.mode-btn:active {
+  transform: scale(0.96);
 }
 
-#ask-tab { background: #4A90D9; }
-#explore-tab { background: #4CAF50; }
+.mode-icon { font-size: 14px; }
 
-/* Active/inactive states */
-#mode-toggle.mode-ask #ask-tab { flex: 4; }
-#mode-toggle.mode-ask #explore-tab { flex: 1; }
-#mode-toggle.mode-explore #ask-tab { flex: 1; }
-#mode-toggle.mode-explore #explore-tab { flex: 4; }
-#mode-toggle.mode-balanced #ask-tab { flex: 1; }
-#mode-toggle.mode-balanced #explore-tab { flex: 1; }
-
-.tab-icon { font-size: 14px; }
-.tab-label { white-space: nowrap; }
-
-/* Compression animation */
-#ask-tab:active, #explore-tab:active {
-  transform: scaleY(0.94);
-}
-#ask-tab, #explore-tab {
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* ─── Explore questions strip ─── */
+/* ─── Explore strip ─── */
 #explore-strip {
-  display: none;
-  padding: 10px 16px;
-  background: #f8faf8;
-  border-top: 1px solid #e8f5e9;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), padding 0.35s;
+  padding: 0 16px;
+  background: #faf9ff;
 }
 
-#explore-strip.visible { display: block; }
+#explore-strip.visible {
+  max-height: 140px;
+  padding: 10px 16px;
+  border-top: 1px solid #f0edff;
+}
 
 #explore-question {
   font-size: 14px;
   line-height: 1.5;
-  color: #2e7d32;
+  color: #5a4eb0;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid #c8e6c9;
+  padding: 10px 16px;
+  border-radius: 14px;
+  border: 1px solid #e2dff8;
   background: white;
   text-align: center;
-  transition: background 0.2s;
+  transition: all 0.2s;
   user-select: none;
 }
-#explore-question:hover { background: #f1f8e9; }
-#explore-question:active { background: #e8f5e9; }
+#explore-question:hover { background: #f5f3ff; border-color: #c4bfee; }
+#explore-question:active { transform: scale(0.98); background: #ede9fe; }
 
 #explore-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
   margin-top: 8px;
 }
 
 #explore-nav button {
   background: none;
   border: none;
-  color: #4CAF50;
-  font-size: 18px;
+  color: #8B7CF7;
+  font-size: 20px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 2px 10px;
+  border-radius: 8px;
   transition: background 0.15s;
+  line-height: 1;
 }
-#explore-nav button:hover { background: #e8f5e9; }
+#explore-nav button:hover { background: #f0edff; }
 
 #explore-counter {
   font-size: 11px;
-  color: #999;
+  color: #b0a8d8;
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 /* ─── Input bar ─── */
 #input-bar {
   display: flex;
   align-items: flex-end;
-  padding: 8px 12px 8px 12px;
+  padding: 8px 12px 10px 12px;
   gap: 8px;
   background: #fff;
 }
 
 #msg-input {
   flex: 1;
-  border: 1px solid #e0e0e0;
-  background: #fafafa;
+  border: 1.5px solid #e9e5fb;
+  background: #faf9ff;
   color: #1a1a1a;
   font-family: 'Inter', sans-serif;
   font-size: 15px;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 22px;
   outline: none;
   resize: none;
   max-height: 100px;
-  min-height: 42px;
+  min-height: 44px;
   line-height: 1.4;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-#msg-input:focus { border-color: #CECBF6; }
-#msg-input::placeholder { color: #bbb; }
+#msg-input:focus {
+  border-color: #C4BFEE;
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
+}
+#msg-input::placeholder { color: #c4bfee; }
 
 #send-btn {
-  width: 42px; height: 42px;
+  width: 44px; height: 44px;
   border: none;
-  background: #4A90D9;
+  background: #6C5CE7;
   color: white;
   border-radius: 50%;
-  font-size: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.2s, transform 0.15s;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.25);
 }
-#send-btn:hover { background: #3a7bc8; }
-#send-btn:active { transform: scale(0.93); }
-#send-btn:disabled { background: #ccc; cursor: default; }
+#send-btn:hover { background: #5a4bd6; box-shadow: 0 4px 14px rgba(108, 92, 231, 0.35); }
+#send-btn:active { transform: scale(0.92); }
+#send-btn:disabled { background: #d4d0f0; box-shadow: none; cursor: default; }
+
+#send-btn svg {
+  width: 18px;
+  height: 18px;
+}
 
 /* ─── Scrollbar ─── */
 #chat-area::-webkit-scrollbar { width: 3px; }
-#chat-area::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 2px; }
+#chat-area::-webkit-scrollbar-thumb { background: #e9e5fb; border-radius: 2px; }
 
 /* ─── Message formatting ─── */
 .msg-bubble strong { font-weight: 600; }
@@ -298,39 +355,42 @@ html, body {
 
   <div id="bottom-section">
     <!-- Mode toggle -->
-    <div id="mode-toggle" class="mode-balanced">
-      <button id="ask-tab">
-        <span class="tab-icon">&#9998;</span>
-        <span class="tab-label">Ask</span>
+    <div id="mode-toggle">
+      <button id="ask-btn" class="mode-btn active">
+        <span class="mode-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <span>Ask</span>
       </button>
-      <button id="explore-tab">
-        <span class="tab-icon">&#10024;</span>
-        <span class="tab-label">Explore</span>
+      <button id="explore-btn" class="mode-btn">
+        <span class="mode-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16c2-3 4-5 8-2s6-1 8-4"/><polyline points="18 6 18 10 14 10"/><path d="M18 10l-2-4"/></svg>
+        </span>
+        <span>Explore</span>
       </button>
     </div>
 
-    <!-- Explore question strip (shown when Explore is active) -->
+    <!-- Explore questions -->
     <div id="explore-strip">
       <div id="explore-question"></div>
       <div id="explore-nav">
-        <button id="prev-q" aria-label="Previous question">&#8249;</button>
+        <button id="prev-q" aria-label="Previous">&#8249;</button>
         <span id="explore-counter"></span>
-        <button id="next-q" aria-label="Next question">&#8250;</button>
+        <button id="next-q" aria-label="Next">&#8250;</button>
       </div>
     </div>
 
-    <!-- Input bar (always visible) -->
+    <!-- Input -->
     <div id="input-bar">
       <textarea id="msg-input" rows="1" placeholder="Ask Lens anything..."></textarea>
       <button id="send-btn" aria-label="Send">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
       </button>
     </div>
   </div>
 </div>
 
 <script>
-// ─── CONFIG ───
 const PROXY_URL = 'https://lens-api-proxy.nomocoda.workers.dev';
 
 const SYSTEM_PROMPT = `You are Lens, the strategic intelligence layer for Acme Industrial — a 300-person mid-market manufacturer in Columbus, Ohio. Custom precision components for automotive, aerospace, and industrial equipment. Complete visibility across all connected systems.
@@ -350,115 +410,105 @@ Tone: Lead with optimism and opportunity, not just risk. For every challenge you
 const EXPLORE_QUESTIONS = [
   "Are any projects at risk of missing their milestones this week?",
   "If we switch vendors on our primary supplier contract, does the ops team have capacity to manage the transition?",
-  "We have a booth at Manufacturing World in May — what's our current readiness across sales, ops, and product?",
+  "We have a booth at Manufacturing World in May \u2014 what's our current readiness across sales, ops, and product?",
   "What decisions are awaiting a response from me right now?",
   "Which clients show signs of reduced engagement and could be good candidates for AI alternatives?",
   "Which vendor contracts or renewals are coming up in the next 90 days?",
   "What market shifts could affect our operations in the next 2 quarters?",
-  "What's the status of our top 3 active client engagements this week?",
+  "What\u2019s the status of our top 3 active client engagements this week?",
   "Where does our internal AI compliance workflow stand, and are we on track for the next audit cycle?"
 ];
 
-// ─── STATE ───
+// State
 let conversationHistory = [];
 let currentExploreIdx = 0;
-let currentMode = 'balanced';
+let currentMode = 'ask';
 let isWaiting = false;
 
-// ─── DOM ───
+// DOM
 const chatArea = document.getElementById('chat-area');
-const modeToggle = document.getElementById('mode-toggle');
-const askTab = document.getElementById('ask-tab');
-const exploreTab = document.getElementById('explore-tab');
+const askBtn = document.getElementById('ask-btn');
+const exploreBtn = document.getElementById('explore-btn');
 const exploreStrip = document.getElementById('explore-strip');
 const exploreQuestion = document.getElementById('explore-question');
 const exploreCounter = document.getElementById('explore-counter');
 const msgInput = document.getElementById('msg-input');
 const sendBtn = document.getElementById('send-btn');
-const closeBtn = document.getElementById('close-btn');
 
-// ─── INIT ───
+// Init
 updateExploreDisplay();
 
-// ─── CLOSE ───
-closeBtn.addEventListener('click', () => {
+// Close
+document.getElementById('close-btn').addEventListener('click', () => {
   if (window.opener) window.close();
   else if (document.referrer) window.location.href = document.referrer;
   else window.close();
 });
 
-// ─── MODE SWITCHING ───
+// Mode switching
 function setMode(mode) {
   currentMode = mode;
-  modeToggle.className = 'mode-' + mode;
+  askBtn.classList.toggle('active', mode === 'ask');
+  exploreBtn.classList.toggle('active', mode === 'explore');
 
   if (mode === 'explore') {
     exploreStrip.classList.add('visible');
-    msgInput.placeholder = 'Or type your own question...';
+    msgInput.placeholder = 'Or type your own...';
   } else {
     exploreStrip.classList.remove('visible');
     msgInput.placeholder = 'Ask Lens anything...';
-  }
-
-  if (mode === 'ask') {
     msgInput.focus();
   }
-
   scrollToBottom();
 }
 
-askTab.addEventListener('click', () => {
-  setMode(currentMode === 'ask' ? 'balanced' : 'ask');
-});
+askBtn.addEventListener('click', () => setMode('ask'));
+exploreBtn.addEventListener('click', () => setMode('explore'));
 
-exploreTab.addEventListener('click', () => {
-  setMode(currentMode === 'explore' ? 'balanced' : 'explore');
-});
-
-// ─── EXPLORE ───
+// Explore
 function updateExploreDisplay() {
   exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
-  exploreCounter.textContent = (currentExploreIdx + 1) + ' / ' + EXPLORE_QUESTIONS.length;
+  exploreCounter.textContent = (currentExploreIdx + 1) + ' of ' + EXPLORE_QUESTIONS.length;
 }
 
 document.getElementById('next-q').addEventListener('click', () => {
   currentExploreIdx = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
-  updateExploreDisplay();
+  animateQuestionChange();
 });
-
 document.getElementById('prev-q').addEventListener('click', () => {
   currentExploreIdx = (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
-  updateExploreDisplay();
+  animateQuestionChange();
 });
+
+function animateQuestionChange() {
+  exploreQuestion.style.opacity = '0';
+  exploreQuestion.style.transform = 'translateY(4px)';
+  setTimeout(() => {
+    updateExploreDisplay();
+    exploreQuestion.style.opacity = '1';
+    exploreQuestion.style.transform = 'translateY(0)';
+  }, 150);
+}
+exploreQuestion.style.transition = 'opacity 0.15s, transform 0.15s';
 
 exploreQuestion.addEventListener('click', () => {
-  const q = EXPLORE_QUESTIONS[currentExploreIdx];
-  sendMessage(q);
+  sendMessage(EXPLORE_QUESTIONS[currentExploreIdx]);
 });
 
-// Swipe up/down on explore strip to cycle
-let exploreTouchStartY = 0;
-exploreStrip.addEventListener('touchstart', (e) => {
-  exploreTouchStartY = e.touches[0].clientY;
-}, { passive: true });
-exploreStrip.addEventListener('touchend', (e) => {
-  const dy = exploreTouchStartY - e.changedTouches[0].clientY;
+// Swipe on explore strip
+let eTouchY = 0;
+exploreStrip.addEventListener('touchstart', e => { eTouchY = e.touches[0].clientY; }, { passive: true });
+exploreStrip.addEventListener('touchend', e => {
+  const dy = eTouchY - e.changedTouches[0].clientY;
   if (Math.abs(dy) > 30) {
-    if (dy > 0) {
-      currentExploreIdx = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
-    } else {
-      currentExploreIdx = (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
-    }
-    exploreQuestion.style.transition = 'opacity 0.15s';
-    exploreQuestion.style.opacity = '0';
-    setTimeout(() => {
-      updateExploreDisplay();
-      exploreQuestion.style.opacity = '1';
-    }, 150);
+    currentExploreIdx = dy > 0
+      ? (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length
+      : (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
+    animateQuestionChange();
   }
 });
 
-// ─── CHAT ───
+// Chat
 function addMessage(role, text) {
   const group = document.createElement('div');
   group.className = 'msg-group';
@@ -482,18 +532,15 @@ function formatText(text) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/^[-\u2022] (.+)$/gm, '<li>$1</li>')
     .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
-
   html = html.replace(/((?:<li>.+?<\/li>\n?)+)/g, '<ul>$1</ul>');
-
   html = html.split('\n\n').map(p => {
     p = p.trim();
     if (!p) return '';
     if (p.startsWith('<ul>') || p.startsWith('<ol>')) return p;
     return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
   }).join('');
-
   return html || text;
 }
 
@@ -512,9 +559,7 @@ function removeThinking() {
 }
 
 function scrollToBottom() {
-  requestAnimationFrame(() => {
-    chatArea.scrollTop = chatArea.scrollHeight;
-  });
+  requestAnimationFrame(() => { chatArea.scrollTop = chatArea.scrollHeight; });
 }
 
 async function sendMessage(text) {
@@ -524,7 +569,6 @@ async function sendMessage(text) {
 
   addMessage('user', text);
   conversationHistory.push({ role: 'user', content: text });
-
   msgInput.value = '';
   autoResizeInput();
   showThinking();
@@ -540,31 +584,25 @@ async function sendMessage(text) {
         max_tokens: 1024
       })
     });
-
     if (!res.ok) throw new Error('API error: ' + res.status);
-
     const data = await res.json();
     const reply = data.content?.[0]?.text || data.text || "I couldn't process that. Let me try again.";
-
     removeThinking();
     addMessage('assistant', reply);
     conversationHistory.push({ role: 'assistant', content: reply });
   } catch (err) {
     removeThinking();
-    addMessage('assistant', 'Connection issue — please try again in a moment.');
+    addMessage('assistant', 'Connection issue \u2014 please try again in a moment.');
     console.error('API Error:', err);
   }
 
   isWaiting = false;
   sendBtn.disabled = false;
-
-  // Return to balanced after response
-  setTimeout(() => setMode('balanced'), 800);
 }
 
-// ─── INPUT ───
+// Input
 sendBtn.addEventListener('click', () => sendMessage(msgInput.value));
-msgInput.addEventListener('keydown', (e) => {
+msgInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     sendMessage(msgInput.value);
@@ -577,21 +615,19 @@ function autoResizeInput() {
 }
 msgInput.addEventListener('input', autoResizeInput);
 
-// ─── MOBILE KEYBOARD HANDLING ───
+// Mobile keyboard
 if (window.visualViewport) {
+  const app = document.getElementById('app');
   window.visualViewport.addEventListener('resize', () => {
-    document.getElementById('app').style.height = window.visualViewport.height + 'px';
+    app.style.height = window.visualViewport.height + 'px';
     scrollToBottom();
   });
   window.visualViewport.addEventListener('scroll', () => {
-    document.getElementById('app').style.height = window.visualViewport.height + 'px';
+    app.style.height = window.visualViewport.height + 'px';
   });
 }
 
-// Focus input on load for desktop
-if (!/Mobi|Android/i.test(navigator.userAgent)) {
-  msgInput.focus();
-}
+if (!/Mobi|Android/i.test(navigator.userAgent)) msgInput.focus();
 </script>
 </body>
 </html>
