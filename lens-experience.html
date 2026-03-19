@@ -128,7 +128,7 @@ html, body {
   40% { opacity: 1; transform: scale(1); }
 }
 
-/* ─── Bottom section ─── */
+/* --- Bottom section --- */
 #bottom-section {
   flex-shrink: 0;
   background: #fff;
@@ -141,7 +141,7 @@ html, body {
   z-index: 10;
 }
 
-/* ─── Action bar ─── */
+/* --- Action bar --- */
 #action-bar {
   display: flex;
   gap: 10px;
@@ -160,7 +160,6 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: white;
   transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
   white-space: nowrap;
@@ -173,17 +172,20 @@ html, body {
 
 #ask-action {
   background: #6C5CE7;
+  color: white;
   border-radius: 24px;
   box-shadow: 0 2px 12px rgba(108, 92, 231, 0.3);
 }
 #ask-action:hover { background: #5a4bd6; }
 
 #explore-action {
-  background: #8B7CF7;
+  background: #ffffff;
+  color: #6C5CE7;
+  border: 2px solid #6C5CE7;
   border-radius: 24px;
-  box-shadow: 0 2px 12px rgba(139, 124, 247, 0.25);
+  box-shadow: none;
 }
-#explore-action:hover { background: #7a6be6; }
+#explore-action:hover { background: #f5f3ff; }
 
 /* State: balanced */
 #action-bar.state-balanced .action-btn {
@@ -229,7 +231,7 @@ html, body {
   opacity: 0; width: 0; overflow: hidden;
 }
 
-/* ─── Input bar ─── */
+/* --- Input bar --- */
 #input-bar {
   display: flex;
   align-items: flex-end;
@@ -287,7 +289,7 @@ html, body {
 #send-btn:disabled { background: #d4d0f0; box-shadow: none; cursor: default; }
 #send-btn svg { width: 18px; height: 18px; }
 
-/* ─── Explore carousel ─── */
+/* --- Explore question card --- */
 #explore-strip {
   max-height: 0;
   overflow: hidden;
@@ -297,80 +299,76 @@ html, body {
   position: relative;
 }
 #explore-strip.visible {
-  max-height: 160px;
+  max-height: 140px;
   opacity: 1;
 }
 
-#explore-carousel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+#explore-card {
   position: relative;
-  height: 130px;
-  overflow: hidden;
+  margin: 4px 4px 8px 4px;
+  padding: 16px 20px;
+  background: #faf9ff;
+  border: 1px solid #ebe8f6;
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
   touch-action: pan-y;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.explore-item {
-  position: absolute;
-  left: 0; right: 0;
-  text-align: center;
+#explore-question {
   font-size: 14px;
   line-height: 1.5;
   color: #5a4eb0;
-  padding: 0 20px;
-  cursor: pointer;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.4s ease;
   user-select: none;
-}
-.explore-item.center {
-  top: 50%;
-  transform: translateY(-50%);
-  opacity: 1;
-}
-.explore-item.above {
-  top: 50%;
-  transform: translateY(calc(-50% - 52px));
-  opacity: 0.35;
-  font-size: 13px;
-  color: #b0a8d8;
-}
-.explore-item.below {
-  top: 50%;
-  transform: translateY(calc(-50% + 52px));
-  opacity: 0.35;
-  font-size: 13px;
-  color: #b0a8d8;
-}
-.explore-item.hidden-above {
-  top: 50%;
-  transform: translateY(calc(-50% - 96px));
-  opacity: 0;
-}
-.explore-item.hidden-below {
-  top: 50%;
-  transform: translateY(calc(-50% + 96px));
-  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-/* Soft fade at top and bottom edges */
-#explore-carousel::before,
-#explore-carousel::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0;
-  height: 16px;
-  pointer-events: none;
-  z-index: 1;
+/* Poof / disintegrate animation */
+@keyframes poofOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.08);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+    filter: blur(12px);
+  }
 }
-#explore-carousel::before {
-  top: 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0));
+
+@keyframes poofIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+    filter: blur(8px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.98);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
 }
-#explore-carousel::after {
-  bottom: 0;
-  background: linear-gradient(to top, rgba(255,255,255,0.8), rgba(255,255,255,0));
+
+#explore-question.poof-out {
+  animation: poofOut 0.3s ease-out forwards;
+}
+#explore-question.poof-in {
+  animation: poofIn 0.35s ease-out forwards;
 }
 
 /* Scrollbar */
@@ -400,9 +398,11 @@ html, body {
   </div>
 
   <div id="bottom-section">
-    <!-- Explore carousel -->
+    <!-- Explore question card -->
     <div id="explore-strip">
-      <div id="explore-carousel"></div>
+      <div id="explore-card">
+        <div id="explore-question"></div>
+      </div>
     </div>
 
     <!-- Input bar -->
@@ -430,15 +430,15 @@ html, body {
 <script>
 const PROXY_URL = 'https://lens-api-proxy.nomocoda.workers.dev';
 
-const SYSTEM_PROMPT = `You are Lens, the strategic intelligence layer for Acme Industrial — a 300-person mid-market manufacturer in Columbus, Ohio. Custom precision components for automotive, aerospace, and industrial equipment. Complete visibility across all connected systems.
+const SYSTEM_PROMPT = `You are Lens, the strategic intelligence layer for Acme Industrial \u2014 a 300-person mid-market manufacturer in Columbus, Ohio. Custom precision components for automotive, aerospace, and industrial equipment. Complete visibility across all connected systems.
 
 FINANCIALS: $38M revenue, Q1 tracking 3% below Q2 target of $9.8M. Gross margin 34%. Steel costs up 11% since Jan. Overdue: Keller Automotive $214K (45+ days), Midwest Fabricators $87K. CapEx: $1.2M approved for Facility 2 press upgrade, pending contractor.
-CLIENTS: 42 active contracts. HIGH RISK — Keller Automotive: $4.1M, renewal 67 days, engagement dropping, 2 QBRs missed. HEALTHY — Orion Aerospace: $6.8M, 2-year extension just signed. WATCH — Hartwell Equipment: $1.1M new client, 3 quality concerns in 60 days. PIPELINE — Summit Defense $3.2M final negotiations (wants July 15 vs Aug); Meridian Auto Parts $2.1M went quiet 3 weeks ago.
-PRODUCTION: Facility 1 Columbus 94% capacity on schedule. Facility 2 Cleveland 78% — press line 3 calibration issue causing 6-8% yield loss on aerospace parts, Dave Kowalski flagged 3x. Facility 3 Detroit 61% ramping for Hartwell. OTD 91.3% vs 95% target.
-VENDORS: Midwest Steel renewal 45 days, wants +8% increase. Alternative: Great Lakes Alloys qualified not contracted. RISK: Precision Coatings Inc sole-source aerospace supplier, late 2 of last 4 deliveries, no alternative — Orion contract depends on this. Freight rates up 7%.
-PEOPLE: Director of Quality Priya Nair resigned, last day April 15 — was AS9100 audit lead, recert June 14, no replacement search started. Plant Mgr F2 Dave Kowalski waiting on maintenance budget. Engineering fully allocated through Q2 on Summit Defense pre-production. Open: 4 CNC operators, 1 Quality Engineer.
-MARKET: Manufacturing World conference May 12 Chicago — major defense and aerospace procurement teams attending, Summit Defense rumored present. Steel tariffs under Congressional review — potential 15% increase. Competitor Apex Precision expanding into aerospace. Regional freight consortium forming — members locking 3-year rates 12% below spot market, deadline April 30.
-SLACK: Dave Kowalski "Third time flagging press line 3 — need budget decision this week or we'll miss Orion window." Finance "Keller payment outstanding — flag to CEO?" Sales "Summit Defense asking for accelerated timeline."
+CLIENTS: 42 active contracts. HIGH RISK \u2014 Keller Automotive: $4.1M, renewal 67 days, engagement dropping, 2 QBRs missed. HEALTHY \u2014 Orion Aerospace: $6.8M, 2-year extension just signed. WATCH \u2014 Hartwell Equipment: $1.1M new client, 3 quality concerns in 60 days. PIPELINE \u2014 Summit Defense $3.2M final negotiations (wants July 15 vs Aug); Meridian Auto Parts $2.1M went quiet 3 weeks ago.
+PRODUCTION: Facility 1 Columbus 94% capacity on schedule. Facility 2 Cleveland 78% \u2014 press line 3 calibration issue causing 6-8% yield loss on aerospace parts, Dave Kowalski flagged 3x. Facility 3 Detroit 61% ramping for Hartwell. OTD 91.3% vs 95% target.
+VENDORS: Midwest Steel renewal 45 days, wants +8% increase. Alternative: Great Lakes Alloys qualified not contracted. RISK: Precision Coatings Inc sole-source aerospace supplier, late 2 of last 4 deliveries, no alternative \u2014 Orion contract depends on this. Freight rates up 7%.
+PEOPLE: Director of Quality Priya Nair resigned, last day April 15 \u2014 was AS9100 audit lead, recert June 14, no replacement search started. Plant Mgr F2 Dave Kowalski waiting on maintenance budget. Engineering fully allocated through Q2 on Summit Defense pre-production. Open: 4 CNC operators, 1 Quality Engineer.
+MARKET: Manufacturing World conference May 12 Chicago \u2014 major defense and aerospace procurement teams attending, Summit Defense rumored present. Steel tariffs under Congressional review \u2014 potential 15% increase. Competitor Apex Precision expanding into aerospace. Regional freight consortium forming \u2014 members locking 3-year rates 12% below spot market, deadline April 30.
+SLACK: Dave Kowalski "Third time flagging press line 3 \u2014 need budget decision this week or we'll miss Orion window." Finance "Keller payment outstanding \u2014 flag to CEO?" Sales "Summit Defense asking for accelerated timeline."
 
 You ARE Lens. Never say you are Claude or an AI. Be concise, synthesized, actionable. Reference specific data naturally. When restricted access applies, acknowledge what you can see, note the gap, offer to facilitate. Remember everything from this conversation.
 
@@ -447,12 +447,12 @@ Tone: Lead with optimism and opportunity, not just risk. For every challenge you
 const EXPLORE_QUESTIONS = [
   "Are any projects at risk of missing their milestones this week?",
   "If we switch vendors on our primary supplier contract, does the ops team have capacity to manage the transition?",
-  "We have a booth at Manufacturing World in May — what's our current readiness across sales, ops, and product?",
+  "We have a booth at Manufacturing World in May \u2014 what's our current readiness across sales, ops, and product?",
   "What decisions are awaiting a response from me right now?",
   "Which clients show signs of reduced engagement and could be good candidates for AI alternatives?",
   "Which vendor contracts or renewals are coming up in the next 90 days?",
   "What market shifts could affect our operations in the next 2 quarters?",
-  "What's the status of our top 3 active client engagements this week?",
+  "What\u2019s the status of our top 3 active client engagements this week?",
   "Where does our internal AI compliance workflow stand, and are we on track for the next audit cycle?"
 ];
 
@@ -460,7 +460,7 @@ let conversationHistory = [];
 let currentExploreIdx = 0;
 let currentMode = 'balanced';
 let isWaiting = false;
-let isSnapping = false;
+let isPoofing = false;
 
 const chatArea = document.getElementById('chat-area');
 const actionBar = document.getElementById('action-bar');
@@ -468,101 +468,34 @@ const askAction = document.getElementById('ask-action');
 const exploreAction = document.getElementById('explore-action');
 const inputBar = document.getElementById('input-bar');
 const exploreStrip = document.getElementById('explore-strip');
-const carousel = document.getElementById('explore-carousel');
+const exploreCard = document.getElementById('explore-card');
+const exploreQuestion = document.getElementById('explore-question');
 const msgInput = document.getElementById('msg-input');
 const sendBtn = document.getElementById('send-btn');
 
-// Build carousel items
-function renderCarousel() {
-  carousel.innerHTML = '';
-  const total = EXPLORE_QUESTIONS.length;
-  const prevIdx = (currentExploreIdx - 1 + total) % total;
-  const nextIdx = (currentExploreIdx + 1) % total;
+// Show first question
+exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
 
-  const items = [
-    { idx: prevIdx, pos: 'above' },
-    { idx: currentExploreIdx, pos: 'center' },
-    { idx: nextIdx, pos: 'below' }
-  ];
+// Poof to next/prev question
+function poofToQuestion(newIdx) {
+  if (isPoofing) return;
+  isPoofing = true;
 
-  items.forEach(({ idx, pos }) => {
-    const el = document.createElement('div');
-    el.className = 'explore-item ' + pos;
-    el.textContent = EXPLORE_QUESTIONS[idx];
-    el.dataset.idx = idx;
-    if (pos === 'center') {
-      el.addEventListener('click', () => {
-        const q = EXPLORE_QUESTIONS[idx];
-        setMode('ask');
-        setTimeout(() => sendMessage(q), 100);
-      });
-    }
-    carousel.appendChild(el);
-  });
-}
+  // Poof out
+  exploreQuestion.classList.add('poof-out');
 
-function snapTo(newIdx, direction) {
-  if (isSnapping) return;
-  isSnapping = true;
-
-  const total = EXPLORE_QUESTIONS.length;
-  const oldItems = carousel.querySelectorAll('.explore-item');
-
-  // Move existing items
-  oldItems.forEach(item => {
-    if (item.classList.contains('center')) {
-      item.classList.remove('center');
-      item.classList.add(direction === 'up' ? 'hidden-above' : 'hidden-below');
-    } else if (item.classList.contains('above')) {
-      item.classList.remove('above');
-      item.classList.add(direction === 'up' ? 'hidden-above' : 'center');
-    } else if (item.classList.contains('below')) {
-      item.classList.remove('below');
-      item.classList.add(direction === 'up' ? 'center' : 'hidden-below');
-    }
-  });
-
-  // Add new edge item
-  const newEdgeIdx = direction === 'up'
-    ? (newIdx + 1) % total
-    : (newIdx - 1 + total) % total;
-
-  const newEl = document.createElement('div');
-  newEl.className = 'explore-item ' + (direction === 'up' ? 'hidden-below' : 'hidden-above');
-  newEl.textContent = EXPLORE_QUESTIONS[newEdgeIdx];
-  newEl.dataset.idx = newEdgeIdx;
-  carousel.appendChild(newEl);
-
-  // Force reflow then animate in
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      newEl.classList.remove('hidden-below', 'hidden-above');
-      newEl.classList.add(direction === 'up' ? 'below' : 'above');
-    });
-  });
-
-  currentExploreIdx = newIdx;
-
-  // Clean up old hidden items after transition
   setTimeout(() => {
-    const hidden = carousel.querySelectorAll('.hidden-above, .hidden-below');
-    hidden.forEach(el => el.remove());
+    currentExploreIdx = newIdx;
+    exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
+    exploreQuestion.classList.remove('poof-out');
+    exploreQuestion.classList.add('poof-in');
 
-    // Make center item clickable
-    const centerEl = carousel.querySelector('.center');
-    if (centerEl) {
-      centerEl.onclick = () => {
-        const q = EXPLORE_QUESTIONS[currentExploreIdx];
-        setMode('ask');
-        setTimeout(() => sendMessage(q), 100);
-      };
-    }
-
-    isSnapping = false;
-  }, 450);
+    setTimeout(() => {
+      exploreQuestion.classList.remove('poof-in');
+      isPoofing = false;
+    }, 350);
+  }, 300);
 }
-
-renderCarousel();
 
 // Close
 document.getElementById('close-btn').addEventListener('click', () => {
@@ -580,7 +513,6 @@ function setMode(mode) {
     inputBar.classList.add('visible');
     exploreStrip.classList.remove('visible');
     stopExploreAutoAdvance();
-    // Only auto-focus on desktop — on mobile, let user tap to avoid keyboard jarring
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (!isMobile) {
       setTimeout(() => msgInput.focus(), 350);
@@ -590,7 +522,6 @@ function setMode(mode) {
     inputBar.classList.remove('visible');
     exploreStrip.classList.add('visible');
     msgInput.blur();
-    renderCarousel();
     startExploreAutoAdvance();
   } else {
     inputBar.classList.remove('visible');
@@ -613,9 +544,9 @@ let exploreInterval = null;
 function startExploreAutoAdvance() {
   stopExploreAutoAdvance();
   exploreInterval = setInterval(() => {
-    if (currentMode === 'explore' && !isSnapping) {
+    if (currentMode === 'explore' && !isPoofing) {
       const next = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
-      snapTo(next, 'up');
+      poofToQuestion(next);
     }
   }, 5000);
 }
@@ -623,24 +554,32 @@ function stopExploreAutoAdvance() {
   if (exploreInterval) { clearInterval(exploreInterval); exploreInterval = null; }
 }
 
-// Swipe — one item at a time, regardless of velocity
+// Swipe on explore card — one at a time
 let eTouchY = 0;
-carousel.addEventListener('touchstart', e => {
+exploreCard.addEventListener('touchstart', e => {
   eTouchY = e.touches[0].clientY;
   stopExploreAutoAdvance();
 }, { passive: true });
 
-carousel.addEventListener('touchend', e => {
+exploreCard.addEventListener('touchend', e => {
   const dy = eTouchY - e.changedTouches[0].clientY;
   const total = EXPLORE_QUESTIONS.length;
   if (Math.abs(dy) > 20) {
     if (dy > 0) {
-      snapTo((currentExploreIdx + 1) % total, 'up');
+      poofToQuestion((currentExploreIdx + 1) % total);
     } else {
-      snapTo((currentExploreIdx - 1 + total) % total, 'down');
+      poofToQuestion((currentExploreIdx - 1 + total) % total);
     }
   }
   startExploreAutoAdvance();
+});
+
+// Tap explore question to send it
+exploreCard.addEventListener('click', () => {
+  if (isPoofing) return;
+  const q = EXPLORE_QUESTIONS[currentExploreIdx];
+  setMode('ask');
+  setTimeout(() => sendMessage(q), 100);
 });
 
 // Chat
@@ -664,7 +603,7 @@ function formatText(text) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/^[-\u2022] (.+)$/gm, '<li>$1</li>')
     .replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
   html = html.replace(/((?:<li>.+?<\/li>\n?)+)/g, '<ul>$1</ul>');
   html = html.split('\n\n').map(p => {
@@ -723,7 +662,7 @@ async function sendMessage(text) {
     conversationHistory.push({ role: 'assistant', content: reply });
   } catch (err) {
     removeThinking();
-    addMessage('assistant', 'Connection issue — please try again in a moment.');
+    addMessage('assistant', 'Connection issue \u2014 please try again in a moment.');
     console.error('API Error:', err);
   }
 
@@ -746,35 +685,28 @@ function autoResizeInput() {
 }
 msgInput.addEventListener('input', autoResizeInput);
 
-// ─── Mobile keyboard handling ───
-// Use a CSS custom property to always match the visual viewport height.
-// This runs on every viewport change (keyboard open/close/resize).
+// --- Mobile keyboard handling ---
 const app = document.getElementById('app');
 
 function setAppHeight() {
   const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
   document.documentElement.style.setProperty('--app-height', h + 'px');
-  // On iOS, the viewport can scroll — pin app to top of visible area
   if (window.visualViewport) {
     app.style.top = window.visualViewport.offsetTop + 'px';
   }
   scrollToBottom();
 }
 
-// Set immediately
 setAppHeight();
 
-// Listen to visualViewport for reliable keyboard detection
 if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', setAppHeight);
   window.visualViewport.addEventListener('scroll', setAppHeight);
 }
-// Fallback
 window.addEventListener('resize', setAppHeight);
 
-// Extra insurance: poll briefly after focus to catch keyboard animation
+// Poll after focus to catch iOS keyboard animation
 msgInput.addEventListener('focus', () => {
-  // Poll every 50ms for 600ms to catch the iOS keyboard animation
   let polls = 0;
   const poller = setInterval(() => {
     setAppHeight();
