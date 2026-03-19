@@ -16,7 +16,7 @@ html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 15px;
   line-height: 1.6;
-  background: #f5f3ff;
+  background: #f7f7f8;
   color: #1a1a1a;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
@@ -39,12 +39,12 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f5f3ff 100%);
+    background: #f0f0f1;
   }
   #app {
     height: min(92vh, 820px);
     border-radius: 24px;
-    box-shadow: 0 8px 40px rgba(108, 92, 231, 0.12), 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.03);
     overflow: hidden;
   }
 }
@@ -55,10 +55,10 @@ html, body {
   top: 14px; right: 14px;
   width: 30px; height: 30px;
   border: none;
-  background: rgba(245, 243, 255, 0.9);
+  background: rgba(255,255,255,0.8);
   border-radius: 50%;
   font-size: 16px;
-  color: #a8a0d0;
+  color: #bbb;
   cursor: pointer;
   z-index: 100;
   display: flex; align-items: center; justify-content: center;
@@ -66,7 +66,7 @@ html, body {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
-#close-btn:hover { color: #6C5CE7; background: #ede9fe; }
+#close-btn:hover { color: #6C5CE7; background: #f5f3ff; }
 
 /* Chat */
 #chat-area {
@@ -90,21 +90,26 @@ html, body {
 
 .msg-label {
   font-size: 10px; letter-spacing: 0.5px;
-  color: #AFA9EC; font-weight: 600; padding: 0 6px;
+  color: #999; font-weight: 600; padding: 0 6px;
 }
 .msg-label.user-label { text-align: right; }
 
 .msg-bubble {
   max-width: 85%; padding: 12px 16px;
-  background: #FFFFFF; border: 0.5px solid #CECBF6;
   font-size: 15px; line-height: 1.6;
   word-wrap: break-word; white-space: pre-wrap;
 }
 .msg-bubble.lens {
-  border-radius: 4px 18px 18px 18px; align-self: flex-start; background: #faf9ff;
+  border-radius: 4px 18px 18px 18px;
+  align-self: flex-start;
+  background: #f8f8f9;
+  color: #1a1a1a;
 }
 .msg-bubble.user {
-  border-radius: 18px 18px 4px 18px; align-self: flex-end; background: #ffffff;
+  border-radius: 18px 18px 4px 18px;
+  align-self: flex-end;
+  background: #6C5CE7;
+  color: #ffffff;
 }
 
 /* Thinking */
@@ -131,10 +136,9 @@ html, body {
   gap: 10px;
   position: relative;
   z-index: 10;
-  border-top: 1px solid #f0edff;
 }
 
-/* ─── Action bar: the two buttons ─── */
+/* ─── Action bar ─── */
 #action-bar {
   display: flex;
   gap: 10px;
@@ -142,7 +146,6 @@ html, body {
   min-height: 48px;
 }
 
-/* Shared button base */
 .action-btn {
   border: none;
   font-family: 'Inter', sans-serif;
@@ -165,23 +168,21 @@ html, body {
 .action-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 .action-btn .btn-label { transition: opacity 0.25s, width 0.4s; }
 
-/* Ask button */
 #ask-action {
   background: #6C5CE7;
   border-radius: 24px;
-  box-shadow: 0 2px 10px rgba(108, 92, 231, 0.25);
+  box-shadow: 0 2px 12px rgba(108, 92, 231, 0.3);
 }
 #ask-action:hover { background: #5a4bd6; }
 
-/* Explore button */
 #explore-action {
   background: #8B7CF7;
   border-radius: 24px;
-  box-shadow: 0 2px 10px rgba(139, 124, 247, 0.2);
+  box-shadow: 0 2px 12px rgba(139, 124, 247, 0.25);
 }
 #explore-action:hover { background: #7a6be6; }
 
-/* ─── State: default (balanced) ─── */
+/* State: balanced */
 #action-bar.state-balanced .action-btn {
   flex: 1;
   padding: 0 20px;
@@ -189,7 +190,7 @@ html, body {
   height: 48px;
 }
 
-/* ─── State: ask active ─── */
+/* State: ask active */
 #action-bar.state-ask #ask-action {
   flex: 1;
   padding: 0 20px;
@@ -204,12 +205,10 @@ html, body {
   border-radius: 50%;
 }
 #action-bar.state-ask #explore-action .btn-label {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
+  opacity: 0; width: 0; overflow: hidden;
 }
 
-/* ─── State: explore active ─── */
+/* State: explore active */
 #action-bar.state-explore #explore-action {
   flex: 1;
   padding: 0 20px;
@@ -224,12 +223,10 @@ html, body {
   border-radius: 50%;
 }
 #action-bar.state-explore #ask-action .btn-label {
-  opacity: 0;
-  width: 0;
-  overflow: hidden;
+  opacity: 0; width: 0; overflow: hidden;
 }
 
-/* ─── Input bar (hidden by default) ─── */
+/* ─── Input bar ─── */
 #input-bar {
   display: flex;
   align-items: flex-end;
@@ -250,8 +247,8 @@ html, body {
 
 #msg-input {
   flex: 1;
-  border: 1.5px solid #e9e5fb;
-  background: #faf9ff;
+  border: 1.5px solid #e5e5e7;
+  background: #fafafa;
   color: #1a1a1a;
   font-family: 'Inter', sans-serif;
   font-size: 15px;
@@ -268,7 +265,7 @@ html, body {
   border-color: #C4BFEE;
   box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
 }
-#msg-input::placeholder { color: #c4bfee; }
+#msg-input::placeholder { color: #c0c0c4; }
 
 #send-btn {
   width: 44px; height: 44px;
@@ -287,7 +284,7 @@ html, body {
 #send-btn:disabled { background: #d4d0f0; box-shadow: none; cursor: default; }
 #send-btn svg { width: 18px; height: 18px; }
 
-/* ─── Explore strip ─── */
+/* ─── Explore strip with rolling effect ─── */
 #explore-strip {
   max-height: 0;
   overflow: hidden;
@@ -296,41 +293,70 @@ html, body {
               opacity 0.3s ease;
 }
 #explore-strip.visible {
-  max-height: 140px;
+  max-height: 100px;
   opacity: 1;
 }
 
+#explore-roller {
+  position: relative;
+  height: 56px;
+  overflow: hidden;
+  perspective: 200px;
+}
+
 #explore-question {
-  font-size: 14px; line-height: 1.5;
+  font-size: 14px; line-height: 1.4;
   color: #5a4eb0; cursor: pointer;
   padding: 10px 16px;
   border-radius: 14px;
-  border: 1px solid #e2dff8;
+  border: 1px solid #eae8f5;
   background: #faf9ff;
   text-align: center;
-  transition: all 0.2s;
   user-select: none;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.35s ease;
 }
-#explore-question:hover { background: #f0edff; border-color: #c4bfee; }
-#explore-question:active { transform: scale(0.98); background: #ede9fe; }
+#explore-question:hover { background: #f5f3ff; border-color: #d4d0f0; }
+#explore-question:active { transform: scale(0.98); }
+
+/* Rolling animation classes */
+#explore-question.roll-out-up {
+  transform: translateY(-100%) rotateX(30deg);
+  opacity: 0;
+}
+#explore-question.roll-out-down {
+  transform: translateY(100%) rotateX(-30deg);
+  opacity: 0;
+}
+#explore-question.roll-in-from-below {
+  transform: translateY(100%) rotateX(-30deg);
+  opacity: 0;
+}
+#explore-question.roll-in-from-above {
+  transform: translateY(-100%) rotateX(30deg);
+  opacity: 0;
+}
+#explore-question.roll-center {
+  transform: translateY(0) rotateX(0deg);
+  opacity: 1;
+}
 
 #explore-nav {
   display: flex; align-items: center; justify-content: center;
-  gap: 20px; margin-top: 8px;
+  gap: 28px; margin-top: 6px;
 }
 #explore-nav button {
-  background: none; border: none; color: #8B7CF7;
-  font-size: 20px; cursor: pointer; padding: 2px 10px;
-  border-radius: 8px; transition: background 0.15s; line-height: 1;
+  background: none; border: none; color: #bbb;
+  font-size: 18px; cursor: pointer; padding: 2px 10px;
+  border-radius: 8px; transition: color 0.15s, background 0.15s; line-height: 1;
 }
-#explore-nav button:hover { background: #f0edff; }
-#explore-counter {
-  font-size: 11px; color: #b0a8d8; font-weight: 500; letter-spacing: 0.5px;
-}
+#explore-nav button:hover { color: #8B7CF7; background: #f5f3ff; }
 
 /* Scrollbar */
 #chat-area::-webkit-scrollbar { width: 3px; }
-#chat-area::-webkit-scrollbar-thumb { background: #e9e5fb; border-radius: 2px; }
+#chat-area::-webkit-scrollbar-thumb { background: #e8e8ea; border-radius: 2px; }
 
 /* Message formatting */
 .msg-bubble strong { font-weight: 600; }
@@ -355,17 +381,18 @@ html, body {
   </div>
 
   <div id="bottom-section">
-    <!-- Explore questions (shown when explore active) -->
+    <!-- Explore questions -->
     <div id="explore-strip">
-      <div id="explore-question"></div>
+      <div id="explore-roller">
+        <div id="explore-question" class="roll-center"></div>
+      </div>
       <div id="explore-nav">
         <button id="prev-q" aria-label="Previous">&#8249;</button>
-        <span id="explore-counter"></span>
         <button id="next-q" aria-label="Next">&#8250;</button>
       </div>
     </div>
 
-    <!-- Input bar (shown when ask active) -->
+    <!-- Input bar -->
     <div id="input-bar">
       <textarea id="msg-input" rows="1" placeholder="Ask Lens anything..."></textarea>
       <button id="send-btn" aria-label="Send">
@@ -380,7 +407,7 @@ html, body {
         <span class="btn-label">Ask</span>
       </button>
       <button id="explore-action" class="action-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c4-4 4-8 8-8"/><path d="M12 12c-2-2-2-4 0-5s2 1 0 3"/><path d="M12 10c2 2 2-3 0-5s-2 1 0 3"/><path d="M12 8c4 0 4-4 8-4"/><polyline points="18 2 20 4 18 6"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 C6 14, 8 16, 10 12 C11 10, 9 8, 11 7 C13 6, 13 10, 14 8 C15 6, 16 4, 20 4"/><polyline points="17 3 20 4 19 7"/></svg>
         <span class="btn-label">Explore</span>
       </button>
     </div>
@@ -418,8 +445,9 @@ const EXPLORE_QUESTIONS = [
 
 let conversationHistory = [];
 let currentExploreIdx = 0;
-let currentMode = 'balanced'; // 'balanced' | 'ask' | 'explore'
+let currentMode = 'balanced';
 let isWaiting = false;
+let isRolling = false;
 
 const chatArea = document.getElementById('chat-area');
 const actionBar = document.getElementById('action-bar');
@@ -428,11 +456,10 @@ const exploreAction = document.getElementById('explore-action');
 const inputBar = document.getElementById('input-bar');
 const exploreStrip = document.getElementById('explore-strip');
 const exploreQuestion = document.getElementById('explore-question');
-const exploreCounter = document.getElementById('explore-counter');
 const msgInput = document.getElementById('msg-input');
 const sendBtn = document.getElementById('send-btn');
 
-updateExploreDisplay();
+exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
 
 // Close
 document.getElementById('close-btn').addEventListener('click', () => {
@@ -469,36 +496,43 @@ exploreAction.addEventListener('click', () => {
   setMode(currentMode === 'explore' ? 'balanced' : 'explore');
 });
 
-// Explore
-function updateExploreDisplay() {
-  exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
-  exploreCounter.textContent = (currentExploreIdx + 1) + ' of ' + EXPLORE_QUESTIONS.length;
+// Explore — rolling wheel navigation
+function rollToQuestion(newIdx, direction) {
+  if (isRolling) return;
+  isRolling = true;
+
+  const outClass = direction === 'up' ? 'roll-out-up' : 'roll-out-down';
+  const inClass = direction === 'up' ? 'roll-in-from-below' : 'roll-in-from-above';
+
+  exploreQuestion.classList.remove('roll-center');
+  exploreQuestion.classList.add(outClass);
+
+  setTimeout(() => {
+    currentExploreIdx = newIdx;
+    exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
+
+    exploreQuestion.classList.remove(outClass);
+    exploreQuestion.style.transition = 'none';
+    exploreQuestion.classList.add(inClass);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        exploreQuestion.style.transition = '';
+        exploreQuestion.classList.remove(inClass);
+        exploreQuestion.classList.add('roll-center');
+        isRolling = false;
+      });
+    });
+  }, 300);
 }
 
 document.getElementById('next-q').addEventListener('click', () => {
-  currentExploreIdx = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
-  animateQuestionChange();
+  const next = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
+  rollToQuestion(next, 'up');
 });
 document.getElementById('prev-q').addEventListener('click', () => {
-  currentExploreIdx = (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
-  animateQuestionChange();
-});
-
-function animateQuestionChange() {
-  exploreQuestion.style.opacity = '0';
-  exploreQuestion.style.transform = 'translateY(4px)';
-  setTimeout(() => {
-    updateExploreDisplay();
-    exploreQuestion.style.opacity = '1';
-    exploreQuestion.style.transform = 'translateY(0)';
-  }, 150);
-}
-exploreQuestion.style.transition = 'opacity 0.15s, transform 0.15s';
-
-exploreQuestion.addEventListener('click', () => {
-  const q = EXPLORE_QUESTIONS[currentExploreIdx];
-  setMode('ask');
-  setTimeout(() => sendMessage(q), 100);
+  const prev = (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
+  rollToQuestion(prev, 'down');
 });
 
 // Swipe on explore strip
@@ -507,11 +541,20 @@ exploreStrip.addEventListener('touchstart', e => { eTouchY = e.touches[0].client
 exploreStrip.addEventListener('touchend', e => {
   const dy = eTouchY - e.changedTouches[0].clientY;
   if (Math.abs(dy) > 30) {
-    currentExploreIdx = dy > 0
-      ? (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length
-      : (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
-    animateQuestionChange();
+    if (dy > 0) {
+      const next = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
+      rollToQuestion(next, 'up');
+    } else {
+      const prev = (currentExploreIdx - 1 + EXPLORE_QUESTIONS.length) % EXPLORE_QUESTIONS.length;
+      rollToQuestion(prev, 'down');
+    }
   }
+});
+
+exploreQuestion.addEventListener('click', () => {
+  const q = EXPLORE_QUESTIONS[currentExploreIdx];
+  setMode('ask');
+  setTimeout(() => sendMessage(q), 100);
 });
 
 // Chat
@@ -600,7 +643,6 @@ async function sendMessage(text) {
 
   isWaiting = false;
   sendBtn.disabled = false;
-  // Return to balanced after response
   setTimeout(() => setMode('balanced'), 800);
 }
 
@@ -625,9 +667,7 @@ const bottomSection = document.getElementById('bottom-section');
 function handleViewportChange() {
   if (!window.visualViewport) return;
   const vv = window.visualViewport;
-  // Set app height to visual viewport
   app.style.height = vv.height + 'px';
-  // Pin bottom section to visual viewport bottom
   const offset = window.innerHeight - vv.height - vv.offsetTop;
   bottomSection.style.transform = offset > 0 ? `translateY(-${offset}px)` : '';
   scrollToBottom();
@@ -638,7 +678,6 @@ if (window.visualViewport) {
   window.visualViewport.addEventListener('scroll', handleViewportChange);
 }
 
-// Also handle focus/blur to ensure input stays visible
 msgInput.addEventListener('focus', () => {
   setTimeout(() => {
     handleViewportChange();
