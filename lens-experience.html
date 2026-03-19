@@ -235,7 +235,6 @@ html, body {
 #input-bar {
   display: flex;
   align-items: flex-end;
-  gap: 8px;
   max-height: 0;
   overflow: hidden;
   opacity: 0;
@@ -243,6 +242,7 @@ html, body {
               opacity 0.3s ease,
               margin 0.4s;
   margin-top: 0;
+  position: relative;
 }
 #input-bar.visible {
   max-height: 120px;
@@ -250,14 +250,21 @@ html, body {
   margin-top: 0;
 }
 
-#msg-input {
+#input-wrapper {
   flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+#msg-input {
+  width: 100%;
   border: 1.5px solid #e5e5e7;
   background: #fafafa;
   color: #1a1a1a;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
-  padding: 10px 16px;
+  padding: 10px 48px 10px 16px;
   border-radius: 22px;
   outline: none;
   resize: none;
@@ -273,7 +280,10 @@ html, body {
 #msg-input::placeholder { color: #c0c0c4; }
 
 #send-btn {
-  width: 44px; height: 44px;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 36px; height: 36px;
   border: none;
   background: #6C5CE7;
   color: white;
@@ -282,12 +292,11 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.25);
 }
 #send-btn:hover { background: #5a4bd6; }
 #send-btn:active { transform: scale(0.92); }
-#send-btn:disabled { background: #d4d0f0; box-shadow: none; cursor: default; }
-#send-btn svg { width: 18px; height: 18px; }
+#send-btn:disabled { background: #d4d0f0; cursor: default; }
+#send-btn svg { width: 16px; height: 16px; }
 
 /* --- Explore question card --- */
 #explore-strip {
@@ -303,14 +312,40 @@ html, body {
   opacity: 1;
 }
 
+#explore-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+}
+
+/* Vertical scroll dots on left */
+#explore-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 4px 0;
+}
+#explore-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ddd;
+  transition: background 0.3s, transform 0.3s;
+}
+#explore-dots span.active {
+  background: #6C5CE7;
+  transform: scale(1.4);
+}
+
 #explore-card {
+  flex: 1;
   position: relative;
-  margin: 4px 16px 4px 16px;
   padding: 12px 16px;
   background: #f8f8f9;
-  border-radius: 4px 18px 18px 18px;
+  border-radius: 18px;
   text-align: left;
-  cursor: pointer;
   touch-action: pan-y;
   min-height: 44px;
   display: flex;
@@ -325,24 +360,21 @@ html, body {
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-/* Scroll hint dots */
-#explore-dots {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  padding: 6px 0 2px 0;
-}
-#explore-dots span {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #ddd;
-  transition: background 0.3s, transform 0.3s;
-}
-#explore-dots span.active {
+/* Explore submit button on right */
+#explore-submit {
+  width: 36px; height: 36px;
+  border: none;
   background: #6C5CE7;
-  transform: scale(1.3);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
 }
+#explore-submit:hover { background: #5a4bd6; }
+#explore-submit:active { transform: scale(0.92); }
+#explore-submit svg { width: 16px; height: 16px; }
 
 /* Poof / disintegrate animation */
 @keyframes poofOut {
@@ -417,18 +449,25 @@ html, body {
   <div id="bottom-section">
     <!-- Explore question card -->
     <div id="explore-strip">
-      <div id="explore-card">
-        <div id="explore-question"></div>
+      <div id="explore-row">
+        <div id="explore-dots"></div>
+        <div id="explore-card">
+          <div id="explore-question"></div>
+        </div>
+        <button id="explore-submit" aria-label="Ask this question">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        </button>
       </div>
-      <div id="explore-dots"></div>
     </div>
 
     <!-- Input bar -->
     <div id="input-bar">
-      <textarea id="msg-input" rows="1" placeholder="Ask Lens anything..."></textarea>
-      <button id="send-btn" aria-label="Send">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-      </button>
+      <div id="input-wrapper">
+        <textarea id="msg-input" rows="1" placeholder="Ask Lens anything..."></textarea>
+        <button id="send-btn" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </div>
     </div>
 
     <!-- Action buttons -->
@@ -585,8 +624,9 @@ exploreCard.addEventListener('touchend', e => {
   }
 });
 
-// Tap explore question to send it
-exploreCard.addEventListener('click', () => {
+// Tap explore submit button to send current question
+const exploreSubmit = document.getElementById('explore-submit');
+exploreSubmit.addEventListener('click', () => {
   if (isPoofing) return;
   const q = EXPLORE_QUESTIONS[currentExploreIdx];
   setMode('ask');
