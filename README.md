@@ -1,2 +1,2 @@
-# nomocoda-pages
-All relevant messaging and positioning pages for NomoCoda
+# nomocoda-demo
+Product demo pages for NomoCoda, served at demo.nomocoda.com
