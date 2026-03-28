@@ -392,6 +392,26 @@ html, body {
   animation: poofIn 0.35s ease-out forwards;
 }
 
+/* Flying clone for explore-to-chat animation */
+.flying-question {
+  position: fixed;
+  background: #f8f8f9;
+  border-radius: 18px;
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1a1a1a;
+  z-index: 9999;
+  pointer-events: none;
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flying-question.morph-to-user {
+  background: #6C5CE7;
+  color: #ffffff;
+  border-radius: 18px 18px 4px 18px;
+  opacity: 0;
+}
+
 /* Scrollbar */
 #chat-area::-webkit-scrollbar { width: 3px; }
 #chat-area::-webkit-scrollbar-thumb { background: #e8e8ea; border-radius: 2px; }
@@ -607,10 +627,54 @@ let didSwipe = false;
 exploreCard.addEventListener('touchstart', () => { didSwipe = false; }, { passive: true });
 exploreCard.addEventListener('touchmove', () => { didSwipe = true; }, { passive: true });
 exploreCard.addEventListener('click', () => {
-  if (isPoofing || didSwipe) return;
+  if (isPoofing || didSwipe || isWaiting) return;
   const q = EXPLORE_QUESTIONS[currentExploreIdx];
-  setMode('ask');
-  setTimeout(() => sendMessage(q), 100);
+
+  // Advance to next question so Explore shows a new one next time
+  currentExploreIdx = (currentExploreIdx + 1) % EXPLORE_QUESTIONS.length;
+  exploreQuestion.textContent = EXPLORE_QUESTIONS[currentExploreIdx];
+
+  // Get the starting position of the explore card
+  const cardRect = exploreCard.getBoundingClientRect();
+
+  // Create a flying clone
+  const clone = document.createElement('div');
+  clone.className = 'flying-question';
+  clone.textContent = q;
+  clone.style.left = cardRect.left + 'px';
+  clone.style.top = cardRect.top + 'px';
+  clone.style.width = cardRect.width + 'px';
+  document.body.appendChild(clone);
+
+  // Hide the original question text immediately
+  exploreQuestion.style.opacity = '0';
+
+  // Return buttons to balanced and hide explore strip
+  setMode('balanced');
+
+  // After a brief frame, fly the clone up to where the user bubble will land
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      // Calculate target: right-aligned in chat area, near the bottom
+      const chatRect = chatArea.getBoundingClientRect();
+      const targetRight = chatRect.right - 16;
+      const targetTop = chatRect.bottom - 60;
+      const targetWidth = Math.min(cardRect.width, chatRect.width * 0.85);
+      const targetLeft = targetRight - targetWidth;
+
+      clone.style.left = targetLeft + 'px';
+      clone.style.top = targetTop + 'px';
+      clone.style.width = targetWidth + 'px';
+      clone.classList.add('morph-to-user');
+
+      // After flight animation completes, remove clone and send the message
+      setTimeout(() => {
+        clone.remove();
+        exploreQuestion.style.opacity = '';
+        sendMessage(q);
+      }, 450);
+    });
+  });
 });
 
 // Chat
@@ -672,6 +736,9 @@ async function sendMessage(text) {
   conversationHistory.push({ role: 'user', content: text });
   msgInput.value = '';
   autoResizeInput();
+
+  // Return buttons to balanced immediately while waiting for response
+  setMode('balanced');
   showThinking();
 
   try {
@@ -699,7 +766,6 @@ async function sendMessage(text) {
 
   isWaiting = false;
   msgInput.disabled = false;
-  setTimeout(() => setMode('balanced'), 800);
 }
 
 msgInput.addEventListener('keydown', e => {
