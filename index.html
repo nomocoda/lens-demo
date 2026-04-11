@@ -289,7 +289,7 @@ body {
    Rule: biggest bubble (most insights) gets center gravity */
 .bubble-pipeline {
   width: 92px; height: 92px;
-  top: 34%; left: 50%; transform: translateX(-50%);
+  top: 34%; left: calc(50% - 46px);
   animation: sway1 7s ease-in-out infinite;
 }
 .bubble-revenue {
@@ -318,11 +318,15 @@ body {
   animation: sway6 8.5s ease-in-out infinite;
 }
 
-/* Each bubble gets its own unique sway — different direction, speed, amplitude */
+/* Each bubble gets its own unique sway — different direction, speed, amplitude.
+   Pipeline bubble used to prefix translateX(-50%) here for centering, but that
+   conflicted with the .bubble:hover { transform: scale(1.08) } rule (the hover
+   replaced the centering and made pipeline jump right on tap). Centering is now
+   handled via left: calc(50% - 46px), freeing transform for sway and hover. */
 @keyframes sway1 {
-  0%, 100% { transform: translateX(-50%) translate(0, 0); }
-  33% { transform: translateX(-50%) translate(1.5px, -1px); }
-  66% { transform: translateX(-50%) translate(-1px, 1.5px); }
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(1.5px, -1px); }
+  66% { transform: translate(-1px, 1.5px); }
 }
 @keyframes sway2 {
   0%, 100% { transform: translate(0, 0); }
@@ -849,22 +853,22 @@ body {
 
       <!-- Bubble Cluster -->
       <div class="bubble-cluster zoomed-out" id="bubble-cluster">
-        <button class="bubble bubble-pipeline has-new" onclick="openBubble('customers')">
+        <button class="bubble bubble-pipeline has-new" onclick="openBubble('customers', this)">
           <span class="bubble-label">Pipeline</span>
         </button>
-        <button class="bubble bubble-revenue has-new" onclick="openBubble('revenue')">
+        <button class="bubble bubble-revenue has-new" onclick="openBubble('revenue', this)">
           <span class="bubble-label">Revenue</span>
         </button>
-        <button class="bubble bubble-customers has-new" onclick="openBubble('team')">
+        <button class="bubble bubble-customers has-new" onclick="openBubble('team', this)">
           <span class="bubble-label">Customers</span>
         </button>
-        <button class="bubble bubble-operations has-new" onclick="openBubble('ops')">
+        <button class="bubble bubble-operations has-new" onclick="openBubble('ops', this)">
           <span class="bubble-label">Operations</span>
         </button>
-        <button class="bubble bubble-talent" onclick="openBubble('market')">
+        <button class="bubble bubble-talent" onclick="openBubble('market', this)">
           <span class="bubble-label">Talent</span>
         </button>
-        <button class="bubble bubble-market has-new" onclick="openBubble('risk')">
+        <button class="bubble bubble-market has-new" onclick="openBubble('risk', this)">
           <span class="bubble-label">Market</span>
         </button>
       </div>
@@ -1215,6 +1219,12 @@ function switchTab(tab) {
   document.getElementById('advise-view').classList.toggle('hidden', tab !== 'advise');
   document.getElementById('ask-view').classList.toggle('hidden', tab !== 'ask');
   document.getElementById('save-view').classList.toggle('hidden', tab !== 'save');
+  // Tapping the Advise tab always returns to the bubble screen — if a bubble
+  // is currently open in detail view, close it so the tab press feels like
+  // "go back to Advise" rather than a no-op.
+  if (tab === 'advise' && document.getElementById('detail-view').classList.contains('active')) {
+    closeBubble();
+  }
   if (tab === 'save') renderSaveFeed();
 }
 
@@ -1252,9 +1262,20 @@ function renderSaveFeed() {
   `).join('');
 }
 
-function openBubble(name) {
+function openBubble(name, bubbleEl) {
   currentBubble = name;
   carouselIndex = 0;
+  // Camera-on-scene: set the cluster's transform-origin to the tapped bubble's
+  // center so the scale animation feels like we're pushing INTO that bubble
+  // rather than zooming toward the middle of the screen.
+  const cluster = document.getElementById('bubble-cluster');
+  if (bubbleEl) {
+    const cRect = cluster.getBoundingClientRect();
+    const bRect = bubbleEl.getBoundingClientRect();
+    const originX = ((bRect.left + bRect.width / 2) - cRect.left) / cRect.width * 100;
+    const originY = ((bRect.top + bRect.height / 2) - cRect.top) / cRect.height * 100;
+    cluster.style.transformOrigin = `${originX}% ${originY}%`;
+  }
   const data = insightData[name] || insightData.customers;
   document.getElementById('detail-title').textContent = data.title;
   document.getElementById('detail-subtitle').innerHTML = data.subtitle;
