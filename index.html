@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Lens</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+button { border: none; background: none; font: inherit; color: inherit; outline: none; -webkit-appearance: none; appearance: none; }
+
+:root {
+  /* Refined purple palette — deeper, more navy-rich */
+  --purple-deep: #1A1540;
+  --purple-dark: #2D2660;
+  --purple-core: #4A3F8F;
+  --purple: #6C5CE7;
+  --purple-medium: #8B7CF0;
+  --purple-light: #C8C0F0;
+  --purple-wash: #FCFCFD;
+  --purple-faint: #FAFAFD;
+  --purple-bg: #FCFCFD;
+
+  /* Refined orange — warmer, richer, more amber-gold character */
+  --accent: #E8944A;
+  --accent-warm: #D4863F;
+  --accent-glow: #F2A85E;
+  --accent-deep: #C47435;
+  --accent-light: rgba(232, 148, 74, 0.15);
+
+  --white: #FFFFFF;
+  --gray-text: #6B6B80;
+  --dark-text: #1A1A2E;
+  --glass: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(108, 92, 231, 0.12);
+  --shadow-card: 0 4px 24px rgba(108, 92, 231, 0.1), 0 1px 4px rgba(0,0,0,0.04);
+  --radius-card: 18px;
+  --radius-button: 24px;
+  --radius-input: 16px;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #F0F0F2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.phone-frame {
+  width: 390px;
+  height: 844px;
+  background: var(--purple-wash);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+/* Status Bar */
+.status-bar {
+  height: 54px;
+  padding: 14px 28px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 100;
+}
+.status-time { font-size: 15px; font-weight: 600; color: var(--purple-dark); }
+.status-icons { font-size: 12px; color: var(--purple-dark); letter-spacing: 3px; }
+.dynamic-island {
+  width: 120px; height: 34px;
+  background: #000; border-radius: 20px;
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+}
+
+/* Bottom Tab Bar */
+.bottom-tab-bar {
+  display: flex;
+  gap: 0;
+  height: 52px;
+  position: relative;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--glass-border);
+}
+.bottom-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--gray-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.2px;
+}
+.bottom-tab.active {
+  color: white;
+  font-weight: 600;
+  background: var(--purple);
+}
+
+/* Main Content Area */
+.content-area {
+  position: relative;
+  height: calc(100% - 54px - 52px);
+  overflow: hidden;
+}
+
+/* ============================
+   ADVISE VIEW
+   ============================ */
+.advise-view {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.advise-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
+
+/* Edge fade — atmospheric perspective, things dissolve into the distance */
+.edge-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, var(--purple-bg) 0%, transparent 16%, transparent 84%, var(--purple-bg) 100%),
+    linear-gradient(to right, var(--purple-bg) 0%, transparent 12%, transparent 88%, var(--purple-bg) 100%);
+}
+
+/* ============================
+   SIGNAL UNIVERSE — 3-layer depth field
+   ============================ */
+.signal-universe {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.signal-particle {
+  position: absolute;
+  border-radius: 50%;
+}
+/* Medium-sized background "signal" circles with outline style */
+.signal-node {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(108, 92, 231, 0.12);
+  background: rgba(108, 92, 231, 0.04);
+  pointer-events: none;
+}
+/* Endpoint connector nodes — frosted circle with center dot */
+.connector-node {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 192, 240, 0.3);
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(108, 92, 231, 0.06);
+}
+.connector-node-dot {
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: var(--purple-light);
+  opacity: 0.5;
+}
+/* Connector lines from endpoint nodes to nearby signal nodes */
+.connector-line-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+@keyframes particleDrift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(var(--dx1, 2px), var(--dy1, -3px)); }
+  50% { transform: translate(var(--dx2, -1px), var(--dy2, -5px)); }
+  75% { transform: translate(var(--dx3, 3px), var(--dy3, -1px)); }
+}
+
+/* ============================
+   BUBBLE CLUSTER
+   ============================ */
+.bubble-cluster {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.bubble-cluster.zoomed-out { opacity: 1; transform: scale(1); }
+.bubble-cluster.zooming { opacity: 0; transform: scale(2.5); pointer-events: none; }
+
+/* Bubble — white circle with purple text and purple border */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 1.5px solid rgba(108, 92, 231, 0.2);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 2px 12px rgba(108, 92, 231, 0.1),
+    0 6px 24px rgba(108, 92, 231, 0.05);
+}
+.bubble:hover {
+  transform: scale(1.08) !important;
+  box-shadow:
+    0 4px 18px rgba(108, 92, 231, 0.12),
+    0 8px 32px rgba(108, 92, 231, 0.06);
+}
+.bubble-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--purple-core);
+  letter-spacing: 0.3px;
+}
+
+/* Bubble with new signals — glow layered on top of sway */
+.bubble-pipeline.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway1 7s ease-in-out infinite; }
+.bubble-revenue.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway2 9s ease-in-out infinite; }
+.bubble-customers.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway3 8s ease-in-out infinite; }
+.bubble-operations.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway4 11s ease-in-out infinite; }
+.bubble-talent.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway5 10s ease-in-out infinite; }
+.bubble-market.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway6 8.5s ease-in-out infinite; }
+.bubble.has-new {
+  border-color: rgba(108, 92, 231, 0.4);
+}
+@keyframes bubbleGlow {
+  0%, 100% {
+    box-shadow:
+      0 2px 12px rgba(108, 92, 231, 0.1),
+      0 6px 24px rgba(108, 92, 231, 0.05),
+      0 0 0 0 rgba(108, 92, 231, 0);
+  }
+  50% {
+    box-shadow:
+      0 2px 12px rgba(108, 92, 231, 0.15),
+      0 6px 24px rgba(108, 92, 231, 0.08),
+      0 0 12px 3px rgba(108, 92, 231, 0.15);
+  }
+}
+
+/* Outer ring — REMOVED */
+.bubble::before {
+  display: none;
+}
+
+/* Individual bubble positions — glanceable zone, largest near center
+   Invisible fence: ~15-72% horizontal, ~12-78% vertical
+   Rule: biggest bubble (most insights) gets center gravity */
+.bubble-pipeline {
+  width: 92px; height: 92px;
+  top: 34%; left: 50%; transform: translateX(-50%);
+  animation: sway1 7s ease-in-out infinite;
+}
+.bubble-revenue {
+  width: 72px; height: 72px;
+  top: 10%; left: 22%;
+  animation: sway2 9s ease-in-out infinite;
+}
+.bubble-customers {
+  width: 84px; height: 84px;
+  top: 14%; right: 16%;
+  animation: sway3 8s ease-in-out infinite;
+}
+.bubble-operations {
+  width: 66px; height: 66px;
+  top: 54%; left: 16%;
+  animation: sway4 11s ease-in-out infinite;
+}
+.bubble-talent {
+  width: 78px; height: 78px;
+  bottom: 16%; right: 18%;
+  animation: sway5 10s ease-in-out infinite;
+}
+.bubble-market {
+  width: 60px; height: 60px;
+  bottom: 14%; left: 26%;
+  animation: sway6 8.5s ease-in-out infinite;
+}
+
+/* Each bubble gets its own unique sway — different direction, speed, amplitude */
+@keyframes sway1 {
+  0%, 100% { transform: translateX(-50%) translate(0, 0); }
+  33% { transform: translateX(-50%) translate(1.5px, -1px); }
+  66% { transform: translateX(-50%) translate(-1px, 1.5px); }
+}
+@keyframes sway2 {
+  0%, 100% { transform: translate(0, 0); }
+  40% { transform: translate(-1px, -2px); }
+  80% { transform: translate(1.5px, 0.5px); }
+}
+@keyframes sway3 {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(1px, 1.5px); }
+  70% { transform: translate(-1.5px, -1px); }
+}
+@keyframes sway4 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(2px, -1px); }
+}
+@keyframes sway5 {
+  0%, 100% { transform: translate(0, 0); }
+  35% { transform: translate(-1.5px, 1px); }
+  65% { transform: translate(0.5px, -2px); }
+}
+@keyframes sway6 {
+  0%, 100% { transform: translate(0, 0); }
+  45% { transform: translate(1px, 1.5px); }
+  85% { transform: translate(-1.5px, -0.5px); }
+}
+
+/* User bubble — REMOVED: user is the observer, not a node */
+
+/* Connection lines — REMOVED: spatial proximity tells the story */
+
+/* ============================
+   DETAIL VIEW
+   ============================ */
+.detail-view {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  display: flex;
+  flex-direction: column;
+}
+.detail-view.active { opacity: 1; pointer-events: auto; }
+
+.detail-header {
+  padding: 12px 20px 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.detail-back {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--purple);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.detail-back:hover { transform: scale(1.1); }
+.detail-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--purple-dark);
+}
+.detail-subtitle {
+  font-size: 12px;
+  color: var(--gray-text);
+  padding: 0 20px 12px 68px;
+}
+.detail-subtitle .separator {
+  margin: 0 6px;
+  color: var(--purple);
+}
+.detail-subtitle .new-count {
+  color: var(--purple);
+  font-weight: 600;
+}
+
+.carousel-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 0 20px;
+}
+.carousel-track {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.insight-card {
+  flex: 0 0 100%;
+  height: 100%;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.insight-card::before { display: none; }
+
+/* Unread card — purple left accent bar */
+.insight-card.unread {
+  border-left: 3px solid var(--purple);
+}
+/* Read card — no accent */
+.insight-card.read {
+  border-left: 1px solid var(--glass-border);
+}
+
+.insight-type {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: var(--purple);
+}
+
+.insight-context {
+  font-size: 12px;
+  color: var(--gray-text);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  padding: 10px 0;
+}
+.insight-context-label,
+.insight-means-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--purple-medium);
+  margin-bottom: 4px;
+}
+.insight-means {
+  font-size: 13px;
+  color: var(--purple-dark);
+  line-height: 1.5;
+  font-weight: 500;
+}
+.insight-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--purple-dark);
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.insight-card-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 12px;
+}
+.insight-chat-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--purple);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.insight-chat-btn:hover {
+  transform: scale(1.08);
+  background: var(--purple-dark);
+}
+.insight-chat-btn svg { width: 18px; height: 18px; fill: white; }
+
+.suggestion-chip {
+  display: inline-block;
+  padding: 8px 14px;
+  background: var(--purple-faint);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--purple);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.3;
+}
+.suggestion-chip:hover {
+  background: var(--purple-light);
+  border-color: var(--purple-medium);
+}
+
+.thumbnail-strip {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 5;
+}
+.thumb-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--purple-light);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+.thumb-dot.active {
+  height: 20px;
+  border-radius: 3px;
+  background: var(--purple);
+}
+
+/* ============================
+   ASK VIEW
+   ============================ */
+.ask-view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ask-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.chat-messages::-webkit-scrollbar { width: 0; }
+
+.message {
+  max-width: 88%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  position: relative;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  animation: messageIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes messageIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.message-user {
+  align-self: flex-end;
+  background: rgba(255, 255, 255, 0.8);
+  border-right: 3px solid var(--accent);
+}
+.message-lens {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.85);
+  border-left: 3px solid var(--purple);
+}
+
+.message-sender {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+.message-user .message-sender { color: var(--accent); text-align: right; }
+.message-lens .message-sender { color: var(--purple); }
+
+.message-text {
+  font-size: 14px;
+  color: var(--dark-text);
+  line-height: 1.55;
+}
+.message-lens .message-highlight {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--purple-dark);
+  font-size: 15px;
+}
+.message-time {
+  font-size: 10px;
+  color: var(--gray-text);
+  margin-top: 6px;
+  opacity: 0.7;
+}
+
+.chat-input-bar {
+  padding: 8px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chat-input {
+  flex: 1;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-input);
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--dark-text);
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.chat-input::placeholder { color: var(--gray-text); opacity: 0.6; }
+.chat-input:focus {
+  border-color: var(--purple-light);
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
+}
+.send-btn {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--purple);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.send-btn:hover {
+  transform: scale(1.08);
+  background: var(--purple-dark);
+}
+.send-btn svg { width: 18px; height: 18px; fill: white; }
+
+/* Breathing animation — very subtle lavender shift */
+@keyframes breathe {
+  0%, 100% { background-color: #FCFCFD; }
+  50% { background-color: #FEFEFE; }
+}
+.phone-frame { animation: breathe 6s ease-in-out infinite; }
+
+/* ============================
+   MOBILE: Full-screen real-app mode
+   When viewed on an actual phone, strip the frame and go edge-to-edge.
+   ============================ */
+@media (max-width: 430px) {
+  html, body {
+    background: #FCFCFD;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .phone-frame {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Hide the fake status bar and dynamic island — the real phone has these */
+  .status-bar { display: none; }
+  .dynamic-island { display: none; }
+  /* Content area fills remaining space via flex */
+  .content-area {
+    flex: 1 !important;
+    height: auto !important;
+    padding-top: env(safe-area-inset-top, 44px);
+  }
+  /* Bottom tab bar — pinned at bottom, respect the home indicator */
+  .bottom-tab-bar {
+    flex-shrink: 0;
+    padding-bottom: env(safe-area-inset-bottom, 20px);
+  }
+}
+
+/* Touch interactivity — make all clickable things work on mobile */
+.bubble, .bottom-tab, .detail-back, .insight-chat-btn,
+.suggestion-chip, .send-btn, .thumb-dot {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="dynamic-island"></div>
+    <span class="status-icons">&#9679;&#9679;&#9679;&#9679; &#9681;</span>
+  </div>
+
+  <div class="content-area" style="height: calc(100% - 54px - 52px);">
+
+    <!-- ADVISE VIEW -->
+    <div class="advise-view" id="advise-view">
+
+      <!-- Signal Universe — 3 depth layers generated by JS -->
+      <div class="signal-universe" id="signal-universe"></div>
+
+      <!-- Edge fade — atmospheric dissolve at all edges -->
+      <div class="edge-fade"></div>
+
+      <!-- Bubble Cluster -->
+      <div class="bubble-cluster zoomed-out" id="bubble-cluster">
+        <button class="bubble bubble-pipeline has-new" onclick="openBubble('customers')">
+          <span class="bubble-label">Pipeline</span>
+        </button>
+        <button class="bubble bubble-revenue has-new" onclick="openBubble('revenue')">
+          <span class="bubble-label">Revenue</span>
+        </button>
+        <button class="bubble bubble-customers has-new" onclick="openBubble('team')">
+          <span class="bubble-label">Customers</span>
+        </button>
+        <button class="bubble bubble-operations has-new" onclick="openBubble('ops')">
+          <span class="bubble-label">Operations</span>
+        </button>
+        <button class="bubble bubble-talent" onclick="openBubble('market')">
+          <span class="bubble-label">Talent</span>
+        </button>
+        <button class="bubble bubble-market has-new" onclick="openBubble('risk')">
+          <span class="bubble-label">Market</span>
+        </button>
+      </div>
+
+      <div class="guidance-bubble" id="guidance-bubble" style="display:none;"></div>
+
+      <!-- Detail view -->
+      <div class="detail-view" id="detail-view">
+        <div class="detail-header">
+          <button class="detail-back" id="detail-back-btn" onclick="closeBubble()">&larr;</button>
+          <div class="detail-title" id="detail-title">Customers</div>
+        </div>
+        <div class="detail-subtitle" id="detail-subtitle">8 insights <span class="separator">&middot;</span> <span class="new-count">3 new</span></div>
+        <div class="carousel-container">
+          <div class="carousel-track" id="carousel-track"></div>
+          <div class="thumbnail-strip" id="thumbnail-strip"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASK VIEW -->
+    <div class="ask-view hidden" id="ask-view">
+      <div class="chat-messages" id="chat-messages">
+        <div class="message message-lens">
+          <div class="message-sender">Lens</div>
+          <div class="message-text">
+            <span class="message-highlight">Good morning.</span> I've been watching your systems overnight. Three things worth knowing about today.
+          </div>
+          <div class="message-time">9:12 AM</div>
+        </div>
+        <div class="message message-user">
+          <div class="message-sender">You</div>
+          <div class="message-text">What's the most important thing I should focus on today?</div>
+          <div class="message-time">9:14 AM</div>
+        </div>
+        <div class="message message-lens">
+          <div class="message-sender">Lens</div>
+          <div class="message-text">
+            <span class="message-highlight">Five families from your spring enrollment campaign opened inquiry emails in the last week</span> — three of them haven't received a follow-up in over 7 days. Based on your historical conversion patterns, families who get a response within 48 hours enroll at 2.3x the rate of those who wait longer.
+          </div>
+          <div class="message-time">9:14 AM</div>
+        </div>
+        <div class="message message-user">
+          <div class="message-sender">You</div>
+          <div class="message-text">Which three families? And what did their inquiry emails say?</div>
+          <div class="message-time">9:15 AM</div>
+        </div>
+        <div class="message message-lens">
+          <div class="message-sender">Lens</div>
+          <div class="message-text">
+            The Thompson family asked about your Tuesday/Thursday schedule availability. The Garcias inquired about your yoga curriculum for 3-year-olds. And Sarah Chen forwarded your Mailchimp newsletter to her husband with the note <span class="message-highlight">"this is the one I was telling you about."</span>
+            <br><br>All three engaged with 2+ email campaigns before reaching out — your strongest conversion indicator.
+          </div>
+          <div class="message-time">9:15 AM</div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <input class="chat-input" type="text" placeholder="Ask Lens anything..." />
+        <button class="send-btn">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottom-tab-bar">
+    <button class="bottom-tab active" id="tab-advise" onclick="switchTab('advise')">Advise</button>
+    <button class="bottom-tab" id="tab-ask" onclick="switchTab('ask')">Ask</button>
+  </div>
+</div>
+
+<script>
+// ============================
+// SIGNAL UNIVERSE — 3 layers of depth
+// ============================
+function generateSignalUniverse() {
+  const container = document.getElementById('signal-universe');
+
+  // ============================================
+  // 5 DEPTH LEVELS — smooth spectrum from dust to main bubbles
+  // Level 1: Very distant dust (2-4px, very faint)
+  // Level 2: Small visible (6-12px, faint)
+  // Level 3: Medium (16-26px, moderate)
+  // Level 4: Near-field (30-46px, more present)
+  // Level 5: Main bubbles (62-105px) — these are the HTML elements
+  // ============================================
+
+  // ============================================
+  // CLEAN SPHERE APPROACH
+  // Simple, solid purple circles at varying sizes and opacities.
+  // No smoky gradients on small ones — just clean circles.
+  // Distributed EVENLY across the full screen, not just perimeter.
+  // 5 levels: dust → small → medium → near → main bubbles
+  // ============================================
+
+  // ============================================
+  // LIGHT FROSTED SPHERES — like glass orbs in atmosphere
+  // Inspired by Elli App / Dtail Studio references:
+  // Background elements are LIGHTER than canvas, not darker.
+  // Frosted white/lavender, subtle borders, airy feel.
+  // ============================================
+
+  function createLightSphere(size, x, y, opacity, delay) {
+    const el = document.createElement('div');
+    el.className = 'signal-particle';
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = x + '%';
+    el.style.top = y + '%';
+
+    if (size <= 8) {
+      // Tiny — solid lavender dot, visible
+      el.style.background = 'rgba(180, 170, 230, 0.7)';
+    } else if (size <= 18) {
+      // Small/medium — white with clear purple border
+      el.style.background = 'rgba(255, 255, 255, 0.8)';
+      el.style.border = '1px solid rgba(108, 92, 231, 0.18)';
+      el.style.boxShadow = '0 1px 6px rgba(108, 92, 231, 0.08)';
+    } else {
+      // Larger — white sphere with purple border, visible
+      el.style.background = 'rgba(255, 255, 255, 0.85)';
+      el.style.border = '1px solid rgba(108, 92, 231, 0.15)';
+      el.style.boxShadow = '0 2px 10px rgba(108, 92, 231, 0.07)';
+    }
+
+    // Appear instantly — no fade-in
+    el.style.opacity = opacity;
+
+    const dur = 12 + Math.random() * 18;
+    const drift = Math.max(1, 3 - size * 0.04);
+    el.style.setProperty('--dx1', (Math.random() * drift * 2 - drift) + 'px');
+    el.style.setProperty('--dy1', (Math.random() * drift * 2 - drift) + 'px');
+    el.style.setProperty('--dx2', (Math.random() * drift * 2 - drift) + 'px');
+    el.style.setProperty('--dy2', (Math.random() * drift * 2 - drift) + 'px');
+    el.style.setProperty('--dx3', (Math.random() * drift * 2 - drift) + 'px');
+    el.style.setProperty('--dy3', (Math.random() * drift * 2 - drift) + 'px');
+    el.style.animation = `particleDrift ${dur}s ease-in-out infinite`;
+    el.style.animationDelay = (Math.random() * dur) + 's';
+
+    container.appendChild(el);
+  }
+
+  // LEVEL 1: Dust (2-5px) — small lavender dots, visible
+  for (let i = 0; i < 25; i++) {
+    createLightSphere(
+      2 + Math.random() * 3,
+      5 + Math.random() * 90,
+      5 + Math.random() * 90,
+      0.5 + Math.random() * 0.3,
+      Math.random() * 3
+    );
+  }
+
+  // LEVEL 2: Small (6-12px) — white circles with purple border
+  for (let i = 0; i < 12; i++) {
+    createLightSphere(
+      6 + Math.random() * 6,
+      8 + Math.random() * 84,
+      8 + Math.random() * 84,
+      0.65 + Math.random() * 0.2,
+      0.5 + Math.random() * 2.5
+    );
+  }
+
+  // LEVEL 3: Medium (14-24px) — clearly visible white orbs
+  for (let i = 0; i < 7; i++) {
+    createLightSphere(
+      14 + Math.random() * 10,
+      10 + Math.random() * 80,
+      8 + Math.random() * 84,
+      0.7 + Math.random() * 0.2,
+      1 + Math.random() * 2.5
+    );
+  }
+
+  // LEVEL 4: Near-field (28-42px) — prominent white spheres bridging to main
+  const nearPositions = [
+    { x: 6, y: 6 }, { x: 76, y: 84 }, { x: 84, y: 14 },
+    { x: 8, y: 76 }, { x: 52, y: 4 },
+  ];
+  nearPositions.forEach((pos) => {
+    createLightSphere(
+      28 + Math.random() * 14,
+      pos.x + Math.random() * 6 - 3,
+      pos.y + Math.random() * 6 - 3,
+      0.75 + Math.random() * 0.2,
+      1.5 + Math.random() * 2
+    );
+  });
+
+  // DECORATIVE MINI SQUARES — echoing the rounded-square card shape
+  // Like the website's small scattered squares between main cards
+  const miniSquares = [
+    { x: 42, y: 24 }, { x: 58, y: 52 }, { x: 30, y: 68 },
+    { x: 70, y: 38 }, { x: 48, y: 80 }, { x: 22, y: 42 },
+  ];
+
+  miniSquares.forEach((sq) => {
+    const size = 10 + Math.random() * 10;
+    const node = document.createElement('div');
+    node.className = 'signal-particle';
+    node.style.width = size + 'px';
+    node.style.height = size + 'px';
+    node.style.left = sq.x + '%';
+    node.style.top = sq.y + '%';
+    node.style.borderRadius = (size * 0.25) + 'px';
+    node.style.background = 'rgba(255, 255, 255, 0.7)';
+    node.style.border = '1px solid rgba(108, 92, 231, 0.1)';
+    node.style.boxShadow = '0 1px 4px rgba(108, 92, 231, 0.06)';
+    node.style.opacity = 0.5 + Math.random() * 0.3;
+    container.appendChild(node);
+  });
+
+  // CONNECTOR DOTS — small accent dots scattered in field
+  const connectorDots = [
+    { x: 18, y: 28 }, { x: 72, y: 16 }, { x: 80, y: 50 },
+    { x: 20, y: 62 }, { x: 62, y: 76 }, { x: 38, y: 10 },
+    { x: 50, y: 46 }, { x: 32, y: 50 },
+  ];
+
+  connectorDots.forEach((cn) => {
+    const size = 5 + Math.random() * 4;
+    const node = document.createElement('div');
+    node.className = 'connector-node';
+    node.style.width = size + 'px';
+    node.style.height = size + 'px';
+    node.style.left = cn.x + '%';
+    node.style.top = cn.y + '%';
+    node.style.opacity = 0.5 + Math.random() * 0.3;
+    node.innerHTML = '<div class="connector-node-dot"></div>';
+    container.appendChild(node);
+  });
+}
+
+generateSignalUniverse();
+
+
+// ============================
+// STATE
+// ============================
+let currentView = 'advise';
+let currentBubble = null;
+let carouselIndex = 0;
+
+const insightData = {
+  customers: {
+    title: 'Pipeline',
+    subtitle: '8 insights <span class="separator">&middot;</span> <span class="new-count">3 new</span>',
+    cards: [
+      {
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
+        headline: '12 trial users hit their activation milestone this week',
+        context: 'Your product analytics show these users completed onboarding and used the core feature at least 3 times — the behavior pattern that predicts conversion at 4.2x the average rate.',
+        means: 'This is your highest-leverage sales motion right now. A personal outreach to these 12 accounts within the next 48 hours could convert half of them before the trial expires Friday.'
+      },
+      {
+        type: 'trend', typeLabel: 'Trend', isNew: true,
+        headline: 'Enterprise deals are closing 18 days faster this quarter',
+        context: 'Across your last 9 closed-won enterprise deals, average sales cycle dropped from 62 days to 44. The common thread: all 9 received a custom ROI deck within the first week of discovery.',
+        means: 'Your sales team discovered a repeatable accelerant. Consider making the ROI deck a standard step in your enterprise playbook — it could shave 3 weeks off every deal.'
+      },
+      {
+        type: 'risk', typeLabel: 'Risk', isNew: true,
+        headline: 'Net Promoter Score dropped 8 points in the Southeast region',
+        context: 'Your latest CSAT survey shows the Southeast dipped from 72 to 64. Support tickets from that region mention shipping delays 3x more than any other topic. Your logistics partner changed regional carriers last month.',
+        means: 'This isn\'t a product problem — it\'s a fulfillment problem with a clear cause. A conversation with your logistics partner about the carrier switch could stop the bleed before it hits retention.'
+      },
+      {
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: false,
+        headline: 'Your top competitor just raised their mid-tier pricing 20%',
+        context: 'Industry monitoring flagged a pricing page update yesterday. Their Growth plan went from $49 to $59/seat. Social channels are showing early frustration from their customer base.',
+        means: 'There\'s a window here. A targeted campaign to their mid-tier customers — emphasizing your price stability and migration support — could capture accounts actively reconsidering.'
+      },
+      {
+        type: 'trend', typeLabel: 'Trend', isNew: false,
+        headline: 'Customers who attend webinars renew at 91% vs. 74% baseline',
+        context: 'Looking at renewal data over the past 12 months, customers who attended at least one webinar renewed at a significantly higher rate. The effect is strongest when attendance happens in the first 90 days.',
+        means: 'Your CS team should prioritize webinar invitations during onboarding. This single touchpoint correlates with a 17-point lift in retention — more than any other engagement metric you track.'
+      }
+    ]
+  },
+  revenue: {
+    title: 'Revenue', subtitle: '6 insights <span class="separator">&middot;</span> <span class="new-count">1 new</span>',
+    cards: [
+      { type: 'opportunity', typeLabel: 'Opportunity', isNew: true, headline: 'Q2 pipeline is 34% ahead of same point last year', context: 'Your CRM shows $2.1M in qualified pipeline vs. $1.57M at this point in Q2 last year. The growth is concentrated in the mid-market segment, driven by inbound from your recent content push.', means: 'You\'re in a position to raise your Q2 target. But the concentration in mid-market means a slowdown in content output could stall the pipeline. Keep the editorial calendar locked in.' },
+      { type: 'risk', typeLabel: 'Risk', isNew: false, headline: 'Three of your top 10 accounts are up for renewal next month with no activity', context: 'These accounts represent $380K in ARR combined. None have logged into the platform in the last 21 days, and none have a renewal meeting scheduled.', means: 'This needs immediate CS attention. Schedule health checks this week — the 21-day silence is a reliable warning sign, and you still have time to re-engage before renewal conversations start.' }
+    ]
+  },
+  team: {
+    title: 'Customers', subtitle: '5 insights <span class="separator">&middot;</span> <span class="new-count">2 new</span>',
+    cards: [
+      { type: 'trend', typeLabel: 'Trend', isNew: true, headline: 'Engineering velocity increased 22% after switching to weekly sprints', context: 'Since moving from biweekly to weekly sprint cycles 6 weeks ago, story points completed per developer rose from 14 to 17. Bug count per sprint also dropped.', means: 'The experiment worked. Formalizing weekly sprints as your default cadence and sharing these results with the team would reinforce the change and lock in the gains.' }
+    ]
+  },
+  ops: {
+    title: 'Operations', subtitle: '4 insights <span class="separator">&middot;</span> <span class="new-count">1 new</span>',
+    cards: [
+      { type: 'risk', typeLabel: 'Risk', isNew: true, headline: 'Server costs grew 28% month-over-month with flat usage', context: 'Your cloud spend jumped from $14.2K to $18.1K this month, but active user count and API calls remained flat. The spike correlates with a logging configuration change deployed on March 22.', means: 'This is likely a misconfiguration, not organic growth. Rolling back the logging change or adjusting retention settings could recover most of that $3.9K monthly overspend immediately.' }
+    ]
+  },
+  market: {
+    title: 'Market', subtitle: '3 insights <span class="separator">&middot;</span> <span class="new-count">1 new</span>',
+    cards: [
+      { type: 'opportunity', typeLabel: 'Opportunity', isNew: true, headline: 'Your category just got mentioned in a Forrester report', context: 'A new Forrester landscape report published this week names your product category as a top investment priority for mid-market companies in 2026. Your company wasn\'t listed, but two direct competitors were.', means: 'This is validation and urgency at the same time. Getting included in the next iteration of this report should be a priority — and the analyst relations outreach to make that happen should start now.' }
+    ]
+  },
+  risk: {
+    title: 'Talent', subtitle: '3 insights <span class="separator">&middot;</span> <span class="new-count">0 new</span>',
+    cards: [
+      { type: 'risk', typeLabel: 'Risk', isNew: false, headline: 'Your primary payment processor flagged a compliance update due in 30 days', context: 'New PCI DSS requirements take effect May 8. Your processor sent a compliance notice that your integration needs an update to the v3 API. Non-compliance could result in transaction holds.', means: 'This is a 30-day countdown with real consequences. Engineering should scope the API migration this week — if it\'s more than a few days of work, it needs to jump the priority queue.' }
+    ]
+  }
+};
+
+function switchTab(tab) {
+  currentView = tab;
+  document.getElementById('tab-advise').classList.toggle('active', tab === 'advise');
+  document.getElementById('tab-ask').classList.toggle('active', tab === 'ask');
+  document.getElementById('advise-view').classList.toggle('hidden', tab !== 'advise');
+  document.getElementById('ask-view').classList.toggle('hidden', tab !== 'ask');
+}
+
+function openBubble(name) {
+  currentBubble = name;
+  carouselIndex = 0;
+  const data = insightData[name] || insightData.customers;
+  document.getElementById('detail-title').textContent = data.title;
+  document.getElementById('detail-subtitle').innerHTML = data.subtitle;
+  const track = document.getElementById('carousel-track');
+  track.innerHTML = '';
+  data.cards.forEach((card, i) => {
+    const el = document.createElement('div');
+    const readState = card.isNew ? 'unread' : 'read';
+    el.className = `insight-card signal-${card.type} ${readState}`;
+    el.innerHTML = `
+      <div class="insight-type">${card.typeLabel}</div>
+      <div class="insight-headline">${card.headline}</div>
+      <div class="insight-context"><div class="insight-context-label">Context</div>${card.context}</div>
+      <div class="insight-means-label">What this means for you</div>
+      <div class="insight-means">${card.means}</div>
+      <div class="insight-card-footer">
+        <button class="insight-chat-btn" onclick="bridgeToChat(${i})">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>`;
+    track.appendChild(el);
+  });
+  const strip = document.getElementById('thumbnail-strip');
+  strip.innerHTML = '';
+  data.cards.forEach((card, i) => {
+    const dot = document.createElement('div');
+    dot.className = `thumb-dot ${i === 0 ? 'active' : ''}`;
+    dot.onclick = () => goToCard(i);
+    strip.appendChild(dot);
+  });
+  document.getElementById('bubble-cluster').classList.remove('zoomed-out');
+  document.getElementById('bubble-cluster').classList.add('zooming');
+  setTimeout(() => document.getElementById('detail-view').classList.add('active'), 400);
+  updateCarousel();
+}
+
+function closeBubble() {
+  document.getElementById('detail-view').classList.remove('active');
+  setTimeout(() => {
+    document.getElementById('bubble-cluster').classList.remove('zooming');
+    document.getElementById('bubble-cluster').classList.add('zoomed-out');
+    currentBubble = null;
+  }, 300);
+}
+
+function goToCard(i) { carouselIndex = i; updateCarousel(); }
+
+function updateCarousel() {
+  const container = document.querySelector('.carousel-container');
+  const track = document.getElementById('carousel-track');
+  track.style.transform = `translateY(-${carouselIndex * container.clientHeight}px)`;
+  document.querySelectorAll('.thumb-dot').forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
+}
+
+// ============================
+// CAROUSEL SWIPE — scoped to carousel only
+// ============================
+let touchStartY = 0;
+const carouselEl = document.querySelector('.carousel-container');
+if (carouselEl) {
+  carouselEl.addEventListener('touchstart', e => { touchStartY = e.changedTouches[0].screenY; }, { passive: true });
+  carouselEl.addEventListener('touchend', e => {
+    if (!currentBubble) return;
+    const data = insightData[currentBubble] || insightData.customers;
+    const diff = touchStartY - e.changedTouches[0].screenY;
+    if (Math.abs(diff) > 50) {
+      e.preventDefault();
+      if (diff > 0 && carouselIndex < data.cards.length - 1) carouselIndex++;
+      else if (diff < 0 && carouselIndex > 0) carouselIndex--;
+      updateCarousel();
+    }
+  }, { passive: false });
+
+  // Mouse drag (desktop)
+  let mouseDown = false, mouseStartY = 0;
+  carouselEl.addEventListener('mousedown', e => { mouseDown = true; mouseStartY = e.clientY; });
+  document.addEventListener('mouseup', e => {
+    if (!mouseDown || !currentBubble) return;
+    mouseDown = false;
+    const data = insightData[currentBubble] || insightData.customers;
+    const diff = mouseStartY - e.clientY;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0 && carouselIndex < data.cards.length - 1) carouselIndex++;
+      else if (diff < 0 && carouselIndex > 0) carouselIndex--;
+      updateCarousel();
+    }
+  });
+
+  // Wheel (desktop)
+  let wheelCooldown = false;
+  carouselEl.addEventListener('wheel', e => {
+    if (!currentBubble || wheelCooldown) return;
+    e.preventDefault();
+    const data = insightData[currentBubble] || insightData.customers;
+    if (e.deltaY > 15 && carouselIndex < data.cards.length - 1) {
+      carouselIndex++; updateCarousel(); wheelCooldown = true; setTimeout(() => wheelCooldown = false, 600);
+    } else if (e.deltaY < -15 && carouselIndex > 0) {
+      carouselIndex--; updateCarousel(); wheelCooldown = true; setTimeout(() => wheelCooldown = false, 600);
+    }
+  }, { passive: false });
+}
+
+// Prevent page bounce/scroll on iOS (keeps everything locked in frame)
+document.body.addEventListener('touchmove', function(e) {
+  if (!e.target.closest('.chat-messages, .carousel-container')) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+function bridgeToChat(cardIndex) {
+  const data = insightData[currentBubble] || insightData.customers;
+  const card = data.cards[cardIndex];
+  const suggestions = {
+    opportunity: ['Show me the full data behind this', 'What should I do first?', 'Who on my team should own this?'],
+    trend: ['How confident is this trend?', 'Show me the underlying data', 'How can we double down on this?'],
+    risk: ['What\'s the worst-case scenario?', 'What\'s the fastest fix?', 'Who needs to know about this?']
+  };
+  const chips = suggestions[card.type] || suggestions.opportunity;
+  closeBubble();
+  setTimeout(() => {
+    document.getElementById('chat-messages').innerHTML = `
+      <div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">${card.headline}</span><br><br>${card.means}</div><div class="message-time">Just now</div></div>
+      <div class="message message-lens" style="max-width:72%;"><div class="message-sender">Lens</div><div class="message-text" style="font-size:13px;">How would you like to explore this?<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">${chips.map(s => `<span class="suggestion-chip" role="button">${s}</span>`).join('')}</div></div></div>`;
+    switchTab('ask');
+  }, 500);
+}
+
+function sendChip(el) {
+  const text = el.textContent;
+  const chat = document.getElementById('chat-messages');
+  el.parentElement.style.opacity = '0';
+  el.parentElement.style.transition = 'opacity 0.3s ease';
+  setTimeout(() => {
+    chat.innerHTML += `<div class="message message-user"><div class="message-sender">You</div><div class="message-text">${text}</div><div class="message-time">Just now</div></div>`;
+    setTimeout(() => {
+      chat.innerHTML += `<div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">Working on it</span> — pulling the latest data now...</div><div class="message-time">Just now</div></div>`;
+      chat.scrollTop = chat.scrollHeight;
+    }, 800);
+    chat.scrollTop = chat.scrollHeight;
+  }, 300);
+}
+</script>
+
+</body>
+</html>
