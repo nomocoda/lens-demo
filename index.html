@@ -1083,40 +1083,10 @@ body {
 
     <!-- ASK VIEW -->
     <div class="ask-view hidden" id="ask-view">
-      <div class="chat-messages" id="chat-messages">
-        <div class="message message-lens">
-          <div class="message-sender">Lens</div>
-          <div class="message-text">
-            <span class="message-highlight">Good morning.</span> I've been watching your systems overnight. Three things worth knowing about today.
-          </div>
-          <div class="message-time">9:12 AM</div>
-        </div>
-        <div class="message message-user">
-          <div class="message-sender">You</div>
-          <div class="message-text">What's the most important thing I should focus on today?</div>
-          <div class="message-time">9:14 AM</div>
-        </div>
-        <div class="message message-lens">
-          <div class="message-sender">Lens</div>
-          <div class="message-text">
-            <span class="message-highlight">Five families from your spring enrollment campaign opened inquiry emails in the last week</span> — three of them haven't received a follow-up in over 7 days. Based on your historical conversion patterns, families who get a response within 48 hours enroll at 2.3x the rate of those who wait longer.
-          </div>
-          <div class="message-time">9:14 AM</div>
-        </div>
-        <div class="message message-user">
-          <div class="message-sender">You</div>
-          <div class="message-text">Which three families? And what did their inquiry emails say?</div>
-          <div class="message-time">9:15 AM</div>
-        </div>
-        <div class="message message-lens">
-          <div class="message-sender">Lens</div>
-          <div class="message-text">
-            The Thompson family asked about your Tuesday/Thursday schedule availability. The Garcias inquired about your yoga curriculum for 3-year-olds. And Sarah Chen forwarded your Mailchimp newsletter to her husband with the note <span class="message-highlight">"this is the one I was telling you about."</span>
-            <br><br>All three engaged with 2+ email campaigns before reaching out — your strongest conversion indicator.
-          </div>
-          <div class="message-time">9:15 AM</div>
-        </div>
-      </div>
+      <!-- Empty on first arrival. The user hasn't chatted yet — fresh screen.
+           bridgeToChat() from an insight card or a saved card will populate
+           this div on demand. -->
+      <div class="chat-messages" id="chat-messages"></div>
       <div class="chat-input-bar">
         <input class="chat-input" type="text" placeholder="Ask Lens anything..." />
         <button class="send-btn">
