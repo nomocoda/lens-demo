@@ -848,9 +848,11 @@ body {
   cursor: default;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
+/* All saved cards use purple on the side regardless of signal type — Lens is
+   purple, user accent is orange, and saved cards are all from Lens. */
 .saved-card.signal-opportunity { border-left: 3px solid var(--purple); }
-.saved-card.signal-trend { border-left: 3px solid var(--purple-medium); }
-.saved-card.signal-risk { border-left: 3px solid var(--accent); }
+.saved-card.signal-trend { border-left: 3px solid var(--purple); }
+.saved-card.signal-risk { border-left: 3px solid var(--purple); }
 
 .saved-card-type {
   font-size: 9px;
@@ -859,7 +861,6 @@ body {
   letter-spacing: 1.3px;
   color: var(--purple);
 }
-.saved-card.signal-risk .saved-card-type { color: var(--accent-warm); }
 .saved-card-title {
   font-family: 'Playfair Display', serif;
   font-size: 15px;
@@ -961,9 +962,11 @@ body {
   display: flex;
   flex-direction: column;
 }
+/* Same rule as .saved-card: everything on the Save tab is Lens content,
+   which means purple on the side always, never orange. */
 .save-detail-card.signal-opportunity { border-left: 3px solid var(--purple); }
-.save-detail-card.signal-trend { border-left: 3px solid var(--purple-medium); }
-.save-detail-card.signal-risk { border-left: 3px solid var(--accent); }
+.save-detail-card.signal-trend { border-left: 3px solid var(--purple); }
+.save-detail-card.signal-risk { border-left: 3px solid var(--purple); }
 
 /* Breathing animation — very subtle lavender shift */
 @keyframes breathe {
@@ -1489,6 +1492,17 @@ const savedCards = [
 
 let currentSavedCardIndex = null; // tracks which saved card is in the detail view
 
+// Cards that have been saved from Advise this session are removed from the
+// Advise carousel so the "inbox" feel holds — saving is like archiving.
+// Keyed by bubble data-key, valued by Set of original card indices.
+// Invariant: if a card is in savedCards, it is also in removedFromAdvise.
+// The seed savedCards entries below are hydrated into this set at startup.
+const removedFromAdvise = {};
+savedCards.forEach(entry => {
+  if (!removedFromAdvise[entry.sourceBubble]) removedFromAdvise[entry.sourceBubble] = new Set();
+  removedFromAdvise[entry.sourceBubble].add(entry.sourceIndex);
+});
+
 function getSavedCardData(entry) {
   const data = insightData[entry.sourceBubble];
   if (!data || !data.cards[entry.sourceIndex]) return null;
@@ -1548,18 +1562,52 @@ function closeSavedCard() {
   currentSavedCardIndex = null;
 }
 
-// Save a card from Advise into savedCards. Prevents duplicates.
-function saveCardFromAdvise(i) {
+// Save a card from Advise: moves it to the Save tab and removes it from the
+// Advise carousel. After removal, advance to the next card (or fall back to
+// previous, or close the bubble if the carousel is now empty).
+function saveCardFromAdvise(origIdx) {
   if (!currentBubble) return;
-  const exists = savedCards.some(c => c.sourceBubble === currentBubble && c.sourceIndex === i);
-  if (!exists) {
-    savedCards.unshift({ sourceBubble: currentBubble, sourceIndex: i, savedAt: 'Just now' });
+  const bubble = currentBubble;
+  const alreadySaved = savedCards.some(c => c.sourceBubble === bubble && c.sourceIndex === origIdx);
+  if (alreadySaved) {
+    showSphereToast(origIdx, 'Already saved');
+    closeAllSpheres();
+    return;
   }
-  showSphereToast(i, exists ? 'Already saved' : 'Saved');
+  // Push into savedCards (newest first) and mark removed from Advise view.
+  savedCards.unshift({ sourceBubble: bubble, sourceIndex: origIdx, savedAt: 'Just now' });
+  if (!removedFromAdvise[bubble]) removedFromAdvise[bubble] = new Set();
+  removedFromAdvise[bubble].add(origIdx);
   closeAllSpheres();
+
+  const remainingCount = getVisibleAdviseCount(bubble);
+  if (remainingCount === 0) {
+    // Nothing left in this bubble — return to the cluster view.
+    closeBubble();
+    return;
+  }
+  // Decide the new carousel position. The saved card was at visible position
+  // `carouselIndex`. After removal:
+  //  - if there's still a card at that visible position, show it (it's the
+  //    old next card, now at the saved card's slot).
+  //  - if the saved card was the last one, step back to the new last card.
+  if (carouselIndex >= remainingCount) carouselIndex = remainingCount - 1;
+
+  // Re-render without animating the transform, so the swap feels instant
+  // instead of scrolling.
+  const track = document.getElementById('carousel-track');
+  const prevTransition = track.style.transition;
+  track.style.transition = 'none';
+  renderAdviseCarousel();
+  updateCarousel();
+  // Force a reflow so the transition: none takes effect before we restore it
+  void track.offsetHeight;
+  track.style.transition = prevTransition;
 }
 
-// Chat bridge from the save-detail sphere — uses the currently-open saved card
+// Chat bridge from the save-detail sphere — uses the currently-open saved card.
+// Populates chat first, then swaps tabs, then silently closes the save-detail
+// pane behind the now-hidden Save view so there's no visible transition flash.
 function bridgeToChatFromSave() {
   if (currentSavedCardIndex == null) return;
   const entry = savedCards[currentSavedCardIndex];
@@ -1571,13 +1619,14 @@ function bridgeToChatFromSave() {
     risk: ["What's the worst-case scenario?", "What's the fastest fix?", 'Who needs to know about this?']
   };
   const chips = suggestions[card.type] || suggestions.opportunity;
-  closeSavedCard();
-  setTimeout(() => {
-    document.getElementById('chat-messages').innerHTML = `
-      <div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">${card.headline}</span><br><br>${card.means}</div><div class="message-time">Just now</div></div>
-      <div class="message message-lens" style="max-width:72%;"><div class="message-sender">Lens</div><div class="message-text" style="font-size:13px;">How would you like to explore this?<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">${chips.map(s => `<span class="suggestion-chip" role="button">${s}</span>`).join('')}</div></div></div>`;
-    switchTab('ask');
-  }, 350);
+  document.getElementById('chat-messages').innerHTML = `
+    <div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">${card.headline}</span><br><br>${card.means}</div><div class="message-time">Just now</div></div>
+    <div class="message message-lens" style="max-width:72%;"><div class="message-sender">Lens</div><div class="message-text" style="font-size:13px;">How would you like to explore this?<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">${chips.map(s => `<span class="suggestion-chip" role="button">${s}</span>`).join('')}</div></div></div>`;
+  switchTab('ask');
+  // Silent reset behind the now-hidden Save tab
+  closeAllSpheres();
+  document.getElementById('save-detail').classList.remove('active');
+  currentSavedCardIndex = null;
 }
 
 function openBubble(name, bubbleEl) {
@@ -1594,12 +1643,29 @@ function openBubble(name, bubbleEl) {
     const originY = ((bRect.top + bRect.height / 2) - cRect.top) / cRect.height * 100;
     cluster.style.transformOrigin = `${originX}% ${originY}%`;
   }
-  const data = insightData[name] || insightData.customers;
+  renderAdviseCarousel();
+  cluster.classList.remove('zoomed-out');
+  cluster.classList.add('zooming');
+  setTimeout(() => document.getElementById('detail-view').classList.add('active'), 400);
+  updateCarousel();
+}
+
+// Render the Advise carousel for the currentBubble, honoring removedFromAdvise
+// so saved cards disappear from the visible list. Each rendered card's sphere
+// onclicks pass the ORIGINAL insightData index so lookups stay correct even
+// though the visible position may differ.
+function renderAdviseCarousel() {
+  if (!currentBubble) return;
+  const data = insightData[currentBubble] || insightData.customers;
+  const removed = removedFromAdvise[currentBubble] || new Set();
   document.getElementById('detail-title').textContent = data.title;
   document.getElementById('detail-subtitle').innerHTML = data.subtitle;
   const track = document.getElementById('carousel-track');
   track.innerHTML = '';
-  data.cards.forEach((card, i) => {
+  let visibleCount = 0;
+  data.cards.forEach((card, origIdx) => {
+    if (removed.has(origIdx)) return;
+    visibleCount++;
     const el = document.createElement('div');
     const readState = card.isNew ? 'unread' : 'read';
     el.className = `insight-card signal-${card.type} ${readState}`;
@@ -1610,63 +1676,63 @@ function openBubble(name, bubbleEl) {
       <div class="insight-means-label">What this means for you</div>
       <div class="insight-means">${card.means}</div>
       <div class="insight-card-footer">
-        <div class="insight-sphere-wrap" data-card-index="${i}">
-          <div class="sphere-tray" id="sphere-tray-${i}">
+        <div class="insight-sphere-wrap" data-card-index="${origIdx}">
+          <div class="sphere-tray" id="sphere-tray-${origIdx}">
             <!-- Copy link (top of stack, last to bloom) -->
-            <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink(${i})" aria-label="Copy link">
+            <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink(${origIdx})" aria-label="Copy link">
               <svg viewBox="0 0 24 24">
                 <path d="M10.59 13.41a1 1 0 0 0 1.41 0l1.42-1.41a1 1 0 0 1 1.41 1.41l-1.41 1.42a3 3 0 0 1-4.24 0l-1.41-1.42a3 3 0 0 1 0-4.24l1.41-1.41a1 1 0 0 1 1.41 1.41L9.17 9.17a1 1 0 0 0 0 1.41z"/>
                 <path d="M13.41 10.59a1 1 0 0 0-1.41 0l-1.42 1.41a1 1 0 0 1-1.41-1.41l1.41-1.42a3 3 0 0 1 4.24 0l1.41 1.42a3 3 0 0 1 0 4.24l-1.41 1.41a1 1 0 0 1-1.41-1.41l1.41-1.41a1 1 0 0 0 0-1.41z"/>
               </svg>
             </button>
             <!-- Slack (official 4-color brand mark) -->
-            <button class="tray-icon tray-slack" onclick="event.stopPropagation(); shareToSlack(${i})" aria-label="Post to Slack">
+            <button class="tray-icon tray-slack" onclick="event.stopPropagation(); shareToSlack(${origIdx})" aria-label="Post to Slack">
               <svg viewBox="0 0 24 24">
-                <!-- Top (green) — horizontal pill -->
                 <rect x="9.6" y="2" width="4.8" height="6.8" rx="2.4" fill="#2EB67D"/>
                 <circle cx="12" cy="8.8" r="2.4" fill="#2EB67D"/>
-                <!-- Right (blue) — vertical pill -->
                 <rect x="15.2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#36C5F0"/>
                 <circle cx="15.2" cy="12" r="2.4" fill="#36C5F0"/>
-                <!-- Bottom (red) -->
                 <rect x="9.6" y="15.2" width="4.8" height="6.8" rx="2.4" fill="#E01E5A"/>
                 <circle cx="12" cy="15.2" r="2.4" fill="#E01E5A"/>
-                <!-- Left (yellow) -->
                 <rect x="2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#ECB22E"/>
                 <circle cx="8.8" cy="12" r="2.4" fill="#ECB22E"/>
               </svg>
             </button>
             <!-- Submit to chat -->
-            <button class="tray-icon tray-chat" onclick="event.stopPropagation(); bridgeToChat(${i})" aria-label="Submit to chat">
+            <button class="tray-icon tray-chat" onclick="event.stopPropagation(); bridgeToChat(${origIdx})" aria-label="Submit to chat">
               <svg viewBox="0 0 24 24">
                 <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H8z"/>
               </svg>
             </button>
             <!-- Save (bottom, closest to sphere, first to bloom) -->
-            <button class="tray-icon tray-save" onclick="event.stopPropagation(); saveCardFromAdvise(${i})" aria-label="Save">
+            <button class="tray-icon tray-save" onclick="event.stopPropagation(); saveCardFromAdvise(${origIdx})" aria-label="Save">
               <svg viewBox="0 0 24 24">
                 <path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/>
               </svg>
             </button>
           </div>
-          <button class="insight-sphere" id="sphere-${i}" onclick="event.stopPropagation(); toggleSphere(${i})" aria-label="Actions"></button>
-          <div class="sphere-toast" id="sphere-toast-${i}"></div>
+          <button class="insight-sphere" id="sphere-${origIdx}" onclick="event.stopPropagation(); toggleSphere(${origIdx})" aria-label="Actions"></button>
+          <div class="sphere-toast" id="sphere-toast-${origIdx}"></div>
         </div>
       </div>`;
     track.appendChild(el);
   });
   const strip = document.getElementById('thumbnail-strip');
   strip.innerHTML = '';
-  data.cards.forEach((card, i) => {
+  for (let vi = 0; vi < visibleCount; vi++) {
     const dot = document.createElement('div');
-    dot.className = `thumb-dot ${i === 0 ? 'active' : ''}`;
-    dot.onclick = () => goToCard(i);
+    dot.className = `thumb-dot ${vi === carouselIndex ? 'active' : ''}`;
+    dot.onclick = () => goToCard(vi);
     strip.appendChild(dot);
-  });
-  document.getElementById('bubble-cluster').classList.remove('zoomed-out');
-  document.getElementById('bubble-cluster').classList.add('zooming');
-  setTimeout(() => document.getElementById('detail-view').classList.add('active'), 400);
-  updateCarousel();
+  }
+}
+
+// Helper: how many cards are currently visible in Advise for a given bubble.
+function getVisibleAdviseCount(bubble) {
+  const data = insightData[bubble];
+  if (!data) return 0;
+  const removed = removedFromAdvise[bubble] || new Set();
+  return data.cards.length - removed.size;
 }
 
 function closeBubble() {
@@ -1766,11 +1832,11 @@ if (carouselEl) {
   carouselEl.addEventListener('touchstart', e => { touchStartY = e.changedTouches[0].screenY; }, { passive: true });
   carouselEl.addEventListener('touchend', e => {
     if (!currentBubble) return;
-    const data = insightData[currentBubble] || insightData.customers;
+    const visibleCount = getVisibleAdviseCount(currentBubble);
     const diff = touchStartY - e.changedTouches[0].screenY;
     if (Math.abs(diff) > 50) {
       e.preventDefault();
-      if (diff > 0 && carouselIndex < data.cards.length - 1) carouselIndex++;
+      if (diff > 0 && carouselIndex < visibleCount - 1) carouselIndex++;
       else if (diff < 0 && carouselIndex > 0) carouselIndex--;
       updateCarousel();
     }
@@ -1782,10 +1848,10 @@ if (carouselEl) {
   document.addEventListener('mouseup', e => {
     if (!mouseDown || !currentBubble) return;
     mouseDown = false;
-    const data = insightData[currentBubble] || insightData.customers;
+    const visibleCount = getVisibleAdviseCount(currentBubble);
     const diff = mouseStartY - e.clientY;
     if (Math.abs(diff) > 50) {
-      if (diff > 0 && carouselIndex < data.cards.length - 1) carouselIndex++;
+      if (diff > 0 && carouselIndex < visibleCount - 1) carouselIndex++;
       else if (diff < 0 && carouselIndex > 0) carouselIndex--;
       updateCarousel();
     }
@@ -1796,8 +1862,8 @@ if (carouselEl) {
   carouselEl.addEventListener('wheel', e => {
     if (!currentBubble || wheelCooldown) return;
     e.preventDefault();
-    const data = insightData[currentBubble] || insightData.customers;
-    if (e.deltaY > 15 && carouselIndex < data.cards.length - 1) {
+    const visibleCount = getVisibleAdviseCount(currentBubble);
+    if (e.deltaY > 15 && carouselIndex < visibleCount - 1) {
       carouselIndex++; updateCarousel(); wheelCooldown = true; setTimeout(() => wheelCooldown = false, 600);
     } else if (e.deltaY < -15 && carouselIndex > 0) {
       carouselIndex--; updateCarousel(); wheelCooldown = true; setTimeout(() => wheelCooldown = false, 600);
@@ -1818,16 +1884,23 @@ function bridgeToChat(cardIndex) {
   const suggestions = {
     opportunity: ['Show me the full data behind this', 'What should I do first?', 'Who on my team should own this?'],
     trend: ['How confident is this trend?', 'Show me the underlying data', 'How can we double down on this?'],
-    risk: ['What\'s the worst-case scenario?', 'What\'s the fastest fix?', 'Who needs to know about this?']
+    risk: ["What's the worst-case scenario?", "What's the fastest fix?", 'Who needs to know about this?']
   };
   const chips = suggestions[card.type] || suggestions.opportunity;
-  closeBubble();
-  setTimeout(() => {
-    document.getElementById('chat-messages').innerHTML = `
-      <div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">${card.headline}</span><br><br>${card.means}</div><div class="message-time">Just now</div></div>
-      <div class="message message-lens" style="max-width:72%;"><div class="message-sender">Lens</div><div class="message-text" style="font-size:13px;">How would you like to explore this?<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">${chips.map(s => `<span class="suggestion-chip" role="button">${s}</span>`).join('')}</div></div></div>`;
-    switchTab('ask');
-  }, 500);
+  // Populate chat BEFORE swapping tabs so Ask lands fully-rendered on first paint.
+  document.getElementById('chat-messages').innerHTML = `
+    <div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">${card.headline}</span><br><br>${card.means}</div><div class="message-time">Just now</div></div>
+    <div class="message message-lens" style="max-width:72%;"><div class="message-sender">Lens</div><div class="message-text" style="font-size:13px;">How would you like to explore this?<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">${chips.map(s => `<span class="suggestion-chip" role="button">${s}</span>`).join('')}</div></div></div>`;
+  switchTab('ask');
+  // Silently reset the Advise state behind the now-hidden Advise tab so there's
+  // no visible cluster-zoom-back animation during the card→chat transition.
+  // If the user returns to Advise later they get a clean cluster view.
+  closeAllSpheres();
+  document.getElementById('detail-view').classList.remove('active');
+  const cluster = document.getElementById('bubble-cluster');
+  cluster.classList.remove('zooming');
+  cluster.classList.add('zoomed-out');
+  currentBubble = null;
 }
 
 function sendChip(el) {
