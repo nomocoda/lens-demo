@@ -1171,6 +1171,15 @@ body {
                       <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H8z"/>
                     </svg>
                   </button>
+                  <!-- Unsave (bottom, closest to sphere, first to bloom). Amber
+                       bookmark with a white minus cut across the middle to read
+                       as "remove from saved / return to Advise". -->
+                  <button class="tray-icon tray-unsave" onclick="event.stopPropagation(); unsaveCardFromSave()" aria-label="Remove from saved">
+                    <svg viewBox="0 0 24 24">
+                      <path fill="#E8944A" d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/>
+                      <rect fill="#ffffff" x="9" y="10.6" width="6" height="2.2" rx="1.1"/>
+                    </svg>
+                  </button>
                 </div>
                 <button class="insight-sphere" id="sphere-save" onclick="event.stopPropagation(); toggleSphere('save')" aria-label="Actions"></button>
                 <div class="sphere-toast" id="sphere-toast-save"></div>
@@ -1436,14 +1445,47 @@ const insightData = {
       { type: 'risk', typeLabel: 'Risk', isNew: true, headline: 'Server costs grew 28% month-over-month with flat usage', context: 'Your cloud spend jumped from $14.2K to $18.1K this month, but active user count and API calls remained flat. The spike correlates with a logging configuration change deployed on March 22.', means: 'This is likely a misconfiguration, not organic growth. Rolling back the logging change or adjusting retention settings could recover most of that $3.9K monthly overspend immediately.' }
     ]
   },
+  // NOTE on keys: historically the 'market' key powers the Talent bubble and
+  // the 'risk' key powers the Market bubble — the data-key names were never
+  // updated when the bubble labels were. The titles below correctly reflect
+  // which bubble each dataset belongs to; the key names are legacy.
   market: {
-    title: 'Market', subtitle: '3 insights <span class="separator">&middot;</span> <span class="new-count">1 new</span>',
+    title: 'Talent', subtitle: '5 insights <span class="separator">&middot;</span> <span class="new-count">2 new</span>',
     cards: [
-      { type: 'opportunity', typeLabel: 'Opportunity', isNew: true, headline: 'Your category just got mentioned in a Forrester report', context: 'A new Forrester landscape report published this week names your product category as a top investment priority for mid-market companies in 2026. Your company wasn\'t listed, but two direct competitors were.', means: 'This is validation and urgency at the same time. Getting included in the next iteration of this report should be a priority — and the analyst relations outreach to make that happen should start now.' }
+      {
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
+        headline: 'Three senior engineers from your top competitor just updated their LinkedIn profiles',
+        context: 'Your talent pipeline tool flagged activity from high-priority passive candidates at your main competitor in the last 48 hours. All three match Staff+ roles you\'ve had open for 60+ days, and one previously declined your recruiter in Q4.',
+        means: 'There\'s a recruiting window here. A personal outreach from your CTO in the next 72 hours — while the signal is fresh — has a much higher response rate than cold InMail a week from now.'
+      },
+      {
+        type: 'risk', typeLabel: 'Risk', isNew: true,
+        headline: 'Your Staff+ IC retention is trending below the industry benchmark',
+        context: 'Internal tenure data shows your Staff and Principal engineers average 18 months at the company, vs. 31 months at peer-stage companies. Three of your top five ICs are approaching that 18-month mark in the next quarter.',
+        means: 'This is a leading indicator of attrition. A compensation review or expanded growth track discussion with the at-risk ICs now could prevent departures that would cost roughly 9-12 months of productivity per replacement.'
+      },
+      {
+        type: 'trend', typeLabel: 'Trend', isNew: false,
+        headline: 'Engineering PR review time has dropped 40% since the async-first rollout',
+        context: 'Over the past 90 days, average time from PR open to first review fell from 14 hours to 8.4 hours. The shift coincides with the async-first policy introduced in February and correlates with a 22% increase in shipped stories per sprint.',
+        means: 'The policy change is working. Documenting what specifically changed — and sharing the playbook with the Product and Design teams — could accelerate similar gains in review-heavy workflows elsewhere in the org.'
+      },
+      {
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: false,
+        headline: 'Three mid-level engineers just opted into the interview panel this month',
+        context: 'Voluntary signups for the hiring committee are up from a 6-month average of 0.5 per month to 3 in March. Two cited mentorship and "seeing how we hire" as their reasons in the signup form.',
+        means: 'Rare engagement signal. Formalizing their role with clear feedback loops, dedicated practice sessions, and visible recognition would turn this interest into long-term retention — and strengthen your interview bar at the same time.'
+      },
+      {
+        type: 'risk', typeLabel: 'Risk', isNew: false,
+        headline: 'Your Director of Engineering\'s 1:1 cadence dropped 60% last month',
+        context: 'Calendar data shows Jordan\'s 1:1s with their eight direct reports went from weekly to roughly bi-weekly in March. The pattern started the week after Q2 planning. Two reports have already flagged communication gaps in their most recent engagement survey responses.',
+        means: 'This is the kind of problem that compounds if left alone. A quick rebalance conversation with Jordan — and redistributing some 1:1 load to a skip-level or senior IC manager — could address it before it shows up in attrition.'
+      }
     ]
   },
   risk: {
-    title: 'Talent', subtitle: '3 insights <span class="separator">&middot;</span> <span class="new-count">0 new</span>',
+    title: 'Market', subtitle: '1 insight <span class="separator">&middot;</span> <span class="new-count">0 new</span>',
     cards: [
       { type: 'risk', typeLabel: 'Risk', isNew: false, headline: 'Your primary payment processor flagged a compliance update due in 30 days', context: 'New PCI DSS requirements take effect May 8. Your processor sent a compliance notice that your integration needs an update to the v3 API. Non-compliance could result in transaction holds.', means: 'This is a 30-day countdown with real consequences. Engineering should scope the API migration this week — if it\'s more than a few days of work, it needs to jump the priority queue.' }
     ]
@@ -1603,6 +1645,34 @@ function saveCardFromAdvise(origIdx) {
   // Force a reflow so the transition: none takes effect before we restore it
   void track.offsetHeight;
   track.style.transition = prevTransition;
+}
+
+// Unsave: remove the currently-open saved card from savedCards and restore it
+// to Advise at its original position. Matches the product model where cards
+// are persistent intelligence until newer intel replaces them — saving and
+// unsaving move a card between the Save tab and its source bubble in Advise.
+function unsaveCardFromSave() {
+  if (currentSavedCardIndex == null) return;
+  const entry = savedCards[currentSavedCardIndex];
+  if (!entry) return;
+
+  // Close the tray (but not the toast — we want the user to see confirmation)
+  const tray = document.getElementById('sphere-tray-save');
+  const sphere = document.getElementById('sphere-save');
+  if (tray) tray.classList.remove('open');
+  if (sphere) sphere.classList.remove('open');
+  showSphereToast('save', 'Returned to Advise');
+
+  // Let the toast render, then mutate state and close the detail view.
+  setTimeout(() => {
+    savedCards.splice(currentSavedCardIndex, 1);
+    if (removedFromAdvise[entry.sourceBubble]) {
+      removedFromAdvise[entry.sourceBubble].delete(entry.sourceIndex);
+    }
+    document.getElementById('save-detail').classList.remove('active');
+    currentSavedCardIndex = null;
+    renderSaveFeed();
+  }, 950);
 }
 
 // Chat bridge from the save-detail sphere — uses the currently-open saved card.
