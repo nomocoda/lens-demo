@@ -520,45 +520,32 @@ body {
   align-items: center;
 }
 .insight-sphere {
-  width: 44px; height: 44px;
+  width: 48px; height: 48px;
   border-radius: 50%;
-  background: var(--purple);
+  /* Real NomoCoda brand mark (white logo on the brand purple circle). This is
+     a full-bleed raster: button has no fill of its own, the PNG IS the sphere. */
+  background: var(--purple) url('nomocoda-mark.png') center/cover no-repeat;
   border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0;
   cursor: pointer;
   position: relative;
   z-index: 2;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 4px 14px rgba(108, 92, 231, 0.28), 0 2px 6px rgba(0,0,0,0.08);
 }
 .insight-sphere:hover {
   transform: scale(1.06);
-  background: var(--purple-dark);
+  filter: brightness(0.9);
 }
 .insight-sphere.open {
-  background: var(--purple-dark);
+  filter: brightness(0.82) saturate(1.1);
   box-shadow: 0 4px 18px rgba(108, 92, 231, 0.42), 0 2px 6px rgba(0,0,0,0.08);
-}
-.insight-sphere svg.sphere-logomark {
-  width: 22px;
-  height: 22px;
-  stroke: #fff;
-  stroke-width: 3;
-  stroke-linecap: round;
-  fill: none;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
-}
-.insight-sphere.open svg.sphere-logomark {
-  transform: rotate(45deg) scale(0.85);
-  opacity: 0.65;
 }
 
 /* Sphere tray — vertical stack of action icons that blooms upward */
 .sphere-tray {
   position: absolute;
-  bottom: 52px; /* sit directly above the 44px sphere + 8px gap */
+  bottom: 56px; /* sit directly above the 48px sphere + 8px gap */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -569,41 +556,38 @@ body {
   z-index: 3;
 }
 .sphere-tray .tray-icon {
-  width: 40px; height: 40px;
+  width: 42px; height: 42px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
+  background: #fff;
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 4px 14px rgba(108, 92, 231, 0.18), 0 1px 3px rgba(0,0,0,0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--purple);
   opacity: 0;
   transform: translateY(12px) scale(0.6);
   transition:
     opacity 0.3s ease,
     transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    background 0.2s ease;
+    box-shadow 0.2s ease;
   pointer-events: none; /* re-enabled via .sphere-tray.open below */
 }
 .sphere-tray .tray-icon:hover {
-  background: #fff;
-  color: var(--purple-dark);
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.26), 0 1px 3px rgba(0,0,0,0.08);
 }
 .sphere-tray .tray-icon svg {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  width: 22px;
+  height: 22px;
+  display: block;
 }
+/* Per-icon brand colors — full color per Travis's direction */
+.tray-icon.tray-save svg { fill: #E8944A; } /* amber accent */
+.tray-icon.tray-chat svg { fill: #6C5CE7; } /* lens purple */
+.tray-icon.tray-copy svg { fill: #3B82F6; } /* link blue */
+/* Slack uses its actual 4-color brand mark — fills set inline on each rect */
+
 /* Open state: pointer-events become live and each child blooms in with stagger.
-   Children are rendered in source order: Copy (top) → Slack → Chat (bottom).
    Stagger from the bottom (closest to sphere) upward so the animation reads
    as "unfurling from the sphere". */
 .sphere-tray.open { pointer-events: auto; }
@@ -612,9 +596,14 @@ body {
   transform: translateY(0) scale(1);
   pointer-events: auto;
 }
-.sphere-tray.open .tray-icon:nth-child(3) { transition-delay: 0s; }     /* Chat first */
-.sphere-tray.open .tray-icon:nth-child(2) { transition-delay: 0.06s; }  /* Slack */
-.sphere-tray.open .tray-icon:nth-child(1) { transition-delay: 0.12s; }  /* Copy last */
+/* Bottom-to-top stagger. Last child (in DOM order) is visually closest to the
+   sphere and blooms first. Order in Advise tray (4 icons):
+   DOM: Copy → Slack → Chat → Save    (top to bottom visually)
+   Bloom: Save → Chat → Slack → Copy (first to last) */
+.sphere-tray.open .tray-icon:nth-last-child(1) { transition-delay: 0s; }
+.sphere-tray.open .tray-icon:nth-last-child(2) { transition-delay: 0.06s; }
+.sphere-tray.open .tray-icon:nth-last-child(3) { transition-delay: 0.12s; }
+.sphere-tray.open .tray-icon:nth-last-child(4) { transition-delay: 0.18s; }
 
 /* Small toast that floats in above the sphere after Copy / Slack actions */
 .sphere-toast {
@@ -901,6 +890,81 @@ body {
   color: var(--gray-text);
 }
 
+/* Save detail — tapping a saved card opens this pane over the feed.
+   Same visual DNA as the Advise insight card, minus the vertical carousel. */
+.save-detail {
+  position: absolute;
+  inset: 0;
+  background: var(--purple-wash);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.save-detail.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.save-detail-header {
+  padding: 12px 20px 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.save-detail-back {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--glass);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--purple);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.save-detail-back:hover { transform: scale(1.1); }
+.save-detail-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--purple-dark);
+}
+.save-detail-subtitle {
+  font-size: 11px;
+  color: var(--gray-text);
+  padding: 0 20px 12px 68px;
+  letter-spacing: 0.2px;
+}
+.save-detail-body {
+  flex: 1;
+  padding: 0 20px 20px;
+  overflow-y: auto;
+}
+.save-detail-body::-webkit-scrollbar { width: 0; }
+.save-detail-card {
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.save-detail-card.signal-opportunity { border-left: 3px solid var(--purple); }
+.save-detail-card.signal-trend { border-left: 3px solid var(--purple-medium); }
+.save-detail-card.signal-risk { border-left: 3px solid var(--accent); }
+
 /* Breathing animation — very subtle lavender shift */
 @keyframes breathe {
   0%, 100% { background-color: #FCFCFD; }
@@ -1065,6 +1129,53 @@ body {
         <div class="save-count" id="save-count"></div>
       </div>
       <div class="save-feed" id="save-feed"></div>
+
+      <!-- Save detail — opens when a saved card is tapped. Same visual DNA as
+           an Advise insight card, but with its own sphere that has only 3 icons
+           (no Save, because it's already saved). -->
+      <div class="save-detail" id="save-detail">
+        <div class="save-detail-header">
+          <button class="save-detail-back" onclick="closeSavedCard()" aria-label="Back to saved feed">&larr;</button>
+          <div class="save-detail-title" id="save-detail-title">Saved insight</div>
+        </div>
+        <div class="save-detail-subtitle" id="save-detail-subtitle"></div>
+        <div class="save-detail-body">
+          <div class="save-detail-card" id="save-detail-card">
+            <!-- content populated by openSavedCard() -->
+            <div class="insight-card-footer">
+              <div class="insight-sphere-wrap" data-card-index="save">
+                <div class="sphere-tray" id="sphere-tray-save">
+                  <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink('save')" aria-label="Copy link">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M10.59 13.41a1 1 0 0 0 1.41 0l1.42-1.41a1 1 0 0 1 1.41 1.41l-1.41 1.42a3 3 0 0 1-4.24 0l-1.41-1.42a3 3 0 0 1 0-4.24l1.41-1.41a1 1 0 0 1 1.41 1.41L9.17 9.17a1 1 0 0 0 0 1.41z"/>
+                      <path d="M13.41 10.59a1 1 0 0 0-1.41 0l-1.42 1.41a1 1 0 0 1-1.41-1.41l1.41-1.42a3 3 0 0 1 4.24 0l1.41 1.42a3 3 0 0 1 0 4.24l-1.41 1.41a1 1 0 0 1-1.41-1.41l1.41-1.41a1 1 0 0 0 0-1.41z"/>
+                    </svg>
+                  </button>
+                  <button class="tray-icon tray-slack" onclick="event.stopPropagation(); shareToSlack('save')" aria-label="Post to Slack">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="9.6" y="2" width="4.8" height="6.8" rx="2.4" fill="#2EB67D"/>
+                      <circle cx="12" cy="8.8" r="2.4" fill="#2EB67D"/>
+                      <rect x="15.2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#36C5F0"/>
+                      <circle cx="15.2" cy="12" r="2.4" fill="#36C5F0"/>
+                      <rect x="9.6" y="15.2" width="4.8" height="6.8" rx="2.4" fill="#E01E5A"/>
+                      <circle cx="12" cy="15.2" r="2.4" fill="#E01E5A"/>
+                      <rect x="2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#ECB22E"/>
+                      <circle cx="8.8" cy="12" r="2.4" fill="#ECB22E"/>
+                    </svg>
+                  </button>
+                  <button class="tray-icon tray-chat" onclick="event.stopPropagation(); bridgeToChatFromSave()" aria-label="Submit to chat">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H8z"/>
+                    </svg>
+                  </button>
+                </div>
+                <button class="insight-sphere" id="sphere-save" onclick="event.stopPropagation(); toggleSphere('save')" aria-label="Actions"></button>
+                <div class="sphere-toast" id="sphere-toast-save"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -1350,23 +1461,39 @@ function switchTab(tab) {
   if (tab === 'advise' && document.getElementById('detail-view').classList.contains('active')) {
     closeBubble();
   }
-  if (tab === 'save') renderSaveFeed();
+  // Tapping the Save tab always returns to the feed — if a saved card detail
+  // view is open, close it. Same "go back to Save" semantics as Advise.
+  if (tab === 'save') {
+    closeSavedCard();
+    renderSaveFeed();
+  }
+  closeAllSpheres();
 }
 
 // ============================
-// SAVE FEED — category + title pointers only
-// When the Sphere is built, its Save icon will push onto this list.
+// SAVE FEED — category + title pointers only, backed by references into
+// insightData so the saved-card detail view can regenerate the full card
+// content at click time (the "query handle, not payload" architecture).
 // ============================
-// Seed data: pretend the user has already saved a few things. Uses cards
-// drawn from the insightData below. Each entry stores only what the brief
-// says should be shared: category + title (+ a tiny "saved when" marker).
+// Seed data: pretend the user has already saved a few things. Each entry is
+// a pointer { sourceBubble, sourceIndex } into insightData plus a savedAt
+// timestamp. Any saved-card rendering looks up the full card data at render
+// time — this is the same model a real backend would use.
 const savedCards = [
-  { type: 'opportunity', typeLabel: 'Opportunity', title: '12 trial accounts have hit the "power user" threshold in the last 72 hours', savedAt: 'Today, 9:14 AM' },
-  { type: 'risk',        typeLabel: 'Risk',        title: 'Net Promoter Score dropped 8 points in the Southeast region',             savedAt: 'Today, 8:51 AM' },
-  { type: 'trend',       typeLabel: 'Trend',       title: 'Enterprise deals are closing 18 days faster this quarter',                savedAt: 'Yesterday, 4:22 PM' },
-  { type: 'opportunity', typeLabel: 'Opportunity', title: 'Your category just got mentioned in a Forrester report',                  savedAt: 'Yesterday, 11:08 AM' },
-  { type: 'risk',        typeLabel: 'Risk',        title: 'Server costs grew 28% month-over-month with flat usage',                  savedAt: '2 days ago' }
+  { sourceBubble: 'customers', sourceIndex: 0, savedAt: 'Today, 9:14 AM' },
+  { sourceBubble: 'customers', sourceIndex: 2, savedAt: 'Today, 8:51 AM' },
+  { sourceBubble: 'customers', sourceIndex: 1, savedAt: 'Yesterday, 4:22 PM' },
+  { sourceBubble: 'market',    sourceIndex: 0, savedAt: 'Yesterday, 11:08 AM' },
+  { sourceBubble: 'ops',       sourceIndex: 0, savedAt: '2 days ago' }
 ];
+
+let currentSavedCardIndex = null; // tracks which saved card is in the detail view
+
+function getSavedCardData(entry) {
+  const data = insightData[entry.sourceBubble];
+  if (!data || !data.cards[entry.sourceIndex]) return null;
+  return data.cards[entry.sourceIndex];
+}
 
 function renderSaveFeed() {
   const feed = document.getElementById('save-feed');
@@ -1378,13 +1505,79 @@ function renderSaveFeed() {
     feed.innerHTML = `<div class="save-empty">Nothing saved yet.<br>Tap the sphere on any card to bookmark it here.</div>`;
     return;
   }
-  feed.innerHTML = savedCards.map(c => `
-    <div class="saved-card signal-${c.type}">
-      <div class="saved-card-type">${c.typeLabel}</div>
-      <div class="saved-card-title">${c.title}</div>
-      <div class="saved-card-meta">Saved &middot; ${c.savedAt}</div>
-    </div>
-  `).join('');
+  feed.innerHTML = savedCards.map((entry, i) => {
+    const card = getSavedCardData(entry);
+    if (!card) return '';
+    return `
+      <div class="saved-card signal-${card.type}" onclick="openSavedCard(${i})">
+        <div class="saved-card-type">${card.typeLabel}</div>
+        <div class="saved-card-title">${card.headline}</div>
+        <div class="saved-card-meta">Saved &middot; ${entry.savedAt}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openSavedCard(i) {
+  const entry = savedCards[i];
+  if (!entry) return;
+  const card = getSavedCardData(entry);
+  if (!card) return;
+  currentSavedCardIndex = i;
+  const detailCard = document.getElementById('save-detail-card');
+  document.getElementById('save-detail-title').textContent = insightData[entry.sourceBubble]?.title || 'Saved insight';
+  document.getElementById('save-detail-subtitle').textContent = `Saved · ${entry.savedAt}`;
+  // Rebuild the card body while preserving the sphere footer (it lives in
+  // a fixed child under save-detail-card and doesn't need to be re-rendered).
+  const footerNode = detailCard.querySelector('.insight-card-footer');
+  detailCard.className = `save-detail-card signal-${card.type}`;
+  detailCard.innerHTML = `
+    <div class="insight-type">${card.typeLabel}</div>
+    <div class="insight-headline">${card.headline}</div>
+    <div class="insight-context"><div class="insight-context-label">Context</div>${card.context}</div>
+    <div class="insight-means-label">What this means for you</div>
+    <div class="insight-means">${card.means}</div>
+  `;
+  detailCard.appendChild(footerNode);
+  document.getElementById('save-detail').classList.add('active');
+}
+
+function closeSavedCard() {
+  document.getElementById('save-detail').classList.remove('active');
+  closeAllSpheres();
+  currentSavedCardIndex = null;
+}
+
+// Save a card from Advise into savedCards. Prevents duplicates.
+function saveCardFromAdvise(i) {
+  if (!currentBubble) return;
+  const exists = savedCards.some(c => c.sourceBubble === currentBubble && c.sourceIndex === i);
+  if (!exists) {
+    savedCards.unshift({ sourceBubble: currentBubble, sourceIndex: i, savedAt: 'Just now' });
+  }
+  showSphereToast(i, exists ? 'Already saved' : 'Saved');
+  closeAllSpheres();
+}
+
+// Chat bridge from the save-detail sphere — uses the currently-open saved card
+function bridgeToChatFromSave() {
+  if (currentSavedCardIndex == null) return;
+  const entry = savedCards[currentSavedCardIndex];
+  const card = getSavedCardData(entry);
+  if (!card) return;
+  const suggestions = {
+    opportunity: ['Show me the full data behind this', 'What should I do first?', 'Who on my team should own this?'],
+    trend: ['How confident is this trend?', 'Show me the underlying data', 'How can we double down on this?'],
+    risk: ["What's the worst-case scenario?", "What's the fastest fix?", 'Who needs to know about this?']
+  };
+  const chips = suggestions[card.type] || suggestions.opportunity;
+  closeSavedCard();
+  setTimeout(() => {
+    document.getElementById('chat-messages').innerHTML = `
+      <div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">${card.headline}</span><br><br>${card.means}</div><div class="message-time">Just now</div></div>
+      <div class="message message-lens" style="max-width:72%;"><div class="message-sender">Lens</div><div class="message-text" style="font-size:13px;">How would you like to explore this?<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">${chips.map(s => `<span class="suggestion-chip" role="button">${s}</span>`).join('')}</div></div></div>`;
+    switchTab('ask');
+  }, 350);
 }
 
 function openBubble(name, bubbleEl) {
@@ -1419,35 +1612,44 @@ function openBubble(name, bubbleEl) {
       <div class="insight-card-footer">
         <div class="insight-sphere-wrap" data-card-index="${i}">
           <div class="sphere-tray" id="sphere-tray-${i}">
-            <!-- Copy link (top of stack) -->
-            <button class="tray-icon" onclick="event.stopPropagation(); copyCardLink(${i})" aria-label="Copy link">
+            <!-- Copy link (top of stack, last to bloom) -->
+            <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink(${i})" aria-label="Copy link">
               <svg viewBox="0 0 24 24">
-                <path d="M10 14 a4 4 0 0 0 5.66 0 l3.5 -3.5 a4 4 0 0 0 -5.66 -5.66 l-1.5 1.5"/>
-                <path d="M14 10 a4 4 0 0 0 -5.66 0 l-3.5 3.5 a4 4 0 0 0 5.66 5.66 l1.5 -1.5"/>
+                <path d="M10.59 13.41a1 1 0 0 0 1.41 0l1.42-1.41a1 1 0 0 1 1.41 1.41l-1.41 1.42a3 3 0 0 1-4.24 0l-1.41-1.42a3 3 0 0 1 0-4.24l1.41-1.41a1 1 0 0 1 1.41 1.41L9.17 9.17a1 1 0 0 0 0 1.41z"/>
+                <path d="M13.41 10.59a1 1 0 0 0-1.41 0l-1.42 1.41a1 1 0 0 1-1.41-1.41l1.41-1.42a3 3 0 0 1 4.24 0l1.41 1.42a3 3 0 0 1 0 4.24l-1.41 1.41a1 1 0 0 1-1.41-1.41l1.41-1.41a1 1 0 0 0 0-1.41z"/>
               </svg>
             </button>
-            <!-- Slack (middle) -->
-            <button class="tray-icon" onclick="event.stopPropagation(); shareToSlack(${i})" aria-label="Post to Slack">
+            <!-- Slack (official 4-color brand mark) -->
+            <button class="tray-icon tray-slack" onclick="event.stopPropagation(); shareToSlack(${i})" aria-label="Post to Slack">
               <svg viewBox="0 0 24 24">
-                <rect x="4" y="10" width="6" height="4" rx="2"/>
-                <rect x="10" y="4" width="4" height="6" rx="2"/>
-                <rect x="14" y="10" width="6" height="4" rx="2"/>
-                <rect x="10" y="14" width="4" height="6" rx="2"/>
+                <!-- Top (green) — horizontal pill -->
+                <rect x="9.6" y="2" width="4.8" height="6.8" rx="2.4" fill="#2EB67D"/>
+                <circle cx="12" cy="8.8" r="2.4" fill="#2EB67D"/>
+                <!-- Right (blue) — vertical pill -->
+                <rect x="15.2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#36C5F0"/>
+                <circle cx="15.2" cy="12" r="2.4" fill="#36C5F0"/>
+                <!-- Bottom (red) -->
+                <rect x="9.6" y="15.2" width="4.8" height="6.8" rx="2.4" fill="#E01E5A"/>
+                <circle cx="12" cy="15.2" r="2.4" fill="#E01E5A"/>
+                <!-- Left (yellow) -->
+                <rect x="2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#ECB22E"/>
+                <circle cx="8.8" cy="12" r="2.4" fill="#ECB22E"/>
               </svg>
             </button>
-            <!-- Chat / submit to chat (bottom, closest to sphere) -->
-            <button class="tray-icon" onclick="event.stopPropagation(); bridgeToChat(${i})" aria-label="Submit to chat">
+            <!-- Submit to chat -->
+            <button class="tray-icon tray-chat" onclick="event.stopPropagation(); bridgeToChat(${i})" aria-label="Submit to chat">
               <svg viewBox="0 0 24 24">
-                <path d="M4 5.5 A2.5 2.5 0 0 1 6.5 3 H17.5 A2.5 2.5 0 0 1 20 5.5 V14 A2.5 2.5 0 0 1 17.5 16.5 H11 L7 20.5 V16.5 H6.5 A2.5 2.5 0 0 1 4 14 Z"/>
+                <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H8z"/>
+              </svg>
+            </button>
+            <!-- Save (bottom, closest to sphere, first to bloom) -->
+            <button class="tray-icon tray-save" onclick="event.stopPropagation(); saveCardFromAdvise(${i})" aria-label="Save">
+              <svg viewBox="0 0 24 24">
+                <path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/>
               </svg>
             </button>
           </div>
-          <button class="insight-sphere" id="sphere-${i}" onclick="event.stopPropagation(); toggleSphere(${i})" aria-label="Actions">
-            <!-- Inline v4 NomoCoda logomark, re-stroked white -->
-            <svg class="sphere-logomark" viewBox="0 0 48 48">
-              <path d="M 6,34 C 2,18 14,44 12,28 C 10,12 24,40 24,24 L 24,8 L 38,8 L 38,30 L 44,30"/>
-            </svg>
-          </button>
+          <button class="insight-sphere" id="sphere-${i}" onclick="event.stopPropagation(); toggleSphere(${i})" aria-label="Actions"></button>
           <div class="sphere-toast" id="sphere-toast-${i}"></div>
         </div>
       </div>`;
