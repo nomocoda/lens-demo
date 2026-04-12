@@ -454,19 +454,9 @@ body {
 }
 .insight-card::before { display: none; }
 
-/* Unread card — straight purple accent line, no corner curve */
+/* Unread card — purple accent line that follows the card's curved edges */
 .insight-card.unread {
-  position: relative;
-}
-.insight-card.unread::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 18px;
-  bottom: 18px;
-  width: 3px;
-  background: var(--purple);
-  border-radius: 2px;
+  border-left: 3px solid var(--purple);
 }
 /* Read card — no accent */
 .insight-card.read {}
