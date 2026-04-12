@@ -255,7 +255,7 @@ body {
     0 8px 32px rgba(108, 92, 231, 0.06);
 }
 .bubble-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--purple-core);
   letter-spacing: 0.3px;
@@ -292,36 +292,35 @@ body {
 }
 
 /* Individual bubble positions — uniform size, tight cluster.
-   All bubbles are the same diameter for visual consistency.
-   Two rows of two flanking a center bubble, one anchoring bottom. */
+   All bubbles 129px (50% larger than 86px). Repositioned to fit. */
 .bubble-pipeline {
-  width: 86px; height: 86px;
-  top: 30%; left: calc(50% - 43px);
+  width: 129px; height: 129px;
+  top: 28%; left: calc(50% - 65px);
   animation: sway1 7s ease-in-out infinite;
 }
 .bubble-revenue {
-  width: 86px; height: 86px;
-  top: 12%; left: 18%;
+  width: 129px; height: 129px;
+  top: 4%; left: 6%;
   animation: sway2 9s ease-in-out infinite;
 }
 .bubble-customers {
-  width: 86px; height: 86px;
-  top: 12%; right: 18%;
+  width: 129px; height: 129px;
+  top: 4%; right: 6%;
   animation: sway3 8s ease-in-out infinite;
 }
 .bubble-operations {
-  width: 86px; height: 86px;
-  top: 50%; left: 16%;
+  width: 129px; height: 129px;
+  top: 52%; left: 4%;
   animation: sway4 11s ease-in-out infinite;
 }
 .bubble-talent {
-  width: 86px; height: 86px;
-  top: 50%; right: 16%;
+  width: 129px; height: 129px;
+  top: 52%; right: 4%;
   animation: sway5 10s ease-in-out infinite;
 }
 .bubble-market {
-  width: 86px; height: 86px;
-  top: 68%; left: calc(50% - 43px);
+  width: 129px; height: 129px;
+  top: 74%; left: calc(50% - 65px);
   animation: sway6 8.5s ease-in-out infinite;
 }
 
