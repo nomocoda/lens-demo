@@ -772,23 +772,62 @@ body {
   border-color: var(--purple-light);
   box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
 }
-.send-btn {
+.send-btn, .mic-btn {
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: var(--purple);
-  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+.send-btn {
+  background: var(--purple);
 }
 .send-btn:hover {
   transform: scale(1.08);
   background: var(--purple-dark);
 }
 .send-btn svg { width: 18px; height: 18px; fill: white; }
+.mic-btn {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+}
+.mic-btn:hover {
+  transform: scale(1.08);
+  background: rgba(108, 92, 231, 0.08);
+}
+.mic-btn svg { width: 20px; height: 20px; stroke: var(--purple-core); stroke-width: 1.8; fill: none; }
+.mic-btn.recording {
+  background: rgba(232, 74, 74, 0.12);
+  border-color: rgba(232, 74, 74, 0.3);
+  animation: micPulse 1.5s ease-in-out infinite;
+}
+.mic-btn.recording svg { stroke: #E84A4A; }
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 74, 74, 0.2); }
+  50% { box-shadow: 0 0 0 8px rgba(232, 74, 74, 0); }
+}
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 4px 0;
+}
+.typing-indicator span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--purple-light);
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
 
 /* ============================
    SAVE VIEW — social-feed of saved cards
@@ -1088,8 +1127,11 @@ body {
            this div on demand. -->
       <div class="chat-messages" id="chat-messages"></div>
       <div class="chat-input-bar">
-        <input class="chat-input" type="text" placeholder="Ask Lens anything..." />
-        <button class="send-btn">
+        <button class="mic-btn" id="mic-btn" onclick="toggleMic()" aria-label="Voice input">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </button>
+        <input class="chat-input" id="chat-input" type="text" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter')sendMessage()" />
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
       </div>
@@ -1943,19 +1985,144 @@ function bridgeToChat(cardIndex) {
   currentBubble = null;
 }
 
+// ---------------------------------------------------------------------------
+// Chat — connected to Worker (/chat endpoint)
+// ---------------------------------------------------------------------------
+
+const WORKER_URL = 'https://lens-api-proxy.nomocoda.workers.dev';
+let chatHistory = []; // { role: 'user'|'assistant', content: '...' }
+
+function appendMessage(role, html) {
+  const chat = document.getElementById('chat-messages');
+  const isUser = role === 'user';
+  chat.innerHTML += `<div class="message message-${isUser ? 'user' : 'lens'}"><div class="message-sender">${isUser ? 'You' : 'Lens'}</div><div class="message-text">${html}</div><div class="message-time">Just now</div></div>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat-messages');
+  chat.innerHTML += `<div class="message message-lens" id="typing-msg"><div class="message-sender">Lens</div><div class="message-text"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-msg');
+  if (el) el.remove();
+}
+
+async function sendToLens(userText) {
+  appendMessage('user', userText);
+  chatHistory.push({ role: 'user', content: userText });
+  showTyping();
+
+  try {
+    const res = await fetch(WORKER_URL + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userText, history: chatHistory.slice(0, -1) }),
+    });
+
+    removeTyping();
+
+    if (!res.ok) {
+      appendMessage('lens', 'Something went wrong connecting to Lens. Try again in a moment.');
+      return;
+    }
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'No response received.';
+    chatHistory.push({ role: 'assistant', content: reply });
+    appendMessage('lens', reply);
+  } catch (err) {
+    removeTyping();
+    appendMessage('lens', 'Connection issue. Check your network and try again.');
+  }
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  sendToLens(text);
+}
+
 function sendChip(el) {
   const text = el.textContent;
-  const chat = document.getElementById('chat-messages');
   el.parentElement.style.opacity = '0';
   el.parentElement.style.transition = 'opacity 0.3s ease';
-  setTimeout(() => {
-    chat.innerHTML += `<div class="message message-user"><div class="message-sender">You</div><div class="message-text">${text}</div><div class="message-time">Just now</div></div>`;
-    setTimeout(() => {
-      chat.innerHTML += `<div class="message message-lens"><div class="message-sender">Lens</div><div class="message-text"><span class="message-highlight">Working on it</span> — pulling the latest data now...</div><div class="message-time">Just now</div></div>`;
-      chat.scrollTop = chat.scrollHeight;
-    }, 800);
-    chat.scrollTop = chat.scrollHeight;
-  }, 300);
+  setTimeout(() => sendToLens(text), 300);
+}
+
+// ---------------------------------------------------------------------------
+// Voice input — mic button → Worker /transcribe → fills chat input
+// ---------------------------------------------------------------------------
+
+let mediaRecorder = null;
+let audioChunks = [];
+let isRecording = false;
+
+function toggleMic() {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+
+    mediaRecorder.onstop = async () => {
+      // Stop all tracks so the browser mic indicator goes away
+      stream.getTracks().forEach(t => t.stop());
+
+      const blob = new Blob(audioChunks, { type: 'audio/webm' });
+      if (blob.size < 1000) return; // too short, ignore
+
+      const input = document.getElementById('chat-input');
+      input.placeholder = 'Transcribing...';
+
+      try {
+        const form = new FormData();
+        form.append('audio', blob, 'voice.webm');
+
+        const res = await fetch(WORKER_URL + '/transcribe', { method: 'POST', body: form });
+
+        if (res.ok) {
+          const data = await res.json();
+          const transcript = data.text?.trim();
+          if (transcript) {
+            input.value = transcript;
+            input.focus();
+          }
+        }
+      } catch (err) {
+        console.error('Transcription failed:', err);
+      } finally {
+        input.placeholder = 'Ask Lens anything...';
+      }
+    };
+
+    mediaRecorder.start();
+    isRecording = true;
+    document.getElementById('mic-btn').classList.add('recording');
+  } catch (err) {
+    console.error('Mic access denied:', err);
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+  }
+  isRecording = false;
+  document.getElementById('mic-btn').classList.remove('recording');
 }
 </script>
 

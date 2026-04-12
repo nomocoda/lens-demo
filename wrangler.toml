@@ -1,0 +1,14 @@
+name = "lens-api-proxy"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Bundle .md files as text so worker.js can import them
+[[rules]]
+type = "Text"
+globs = ["**/*.md"]
+fallthrough = true
+
+[vars]
+# Do NOT put the API key here. Use: wrangler secret put ANTHROPIC_API_KEY
+
+# Route will be configured later in Cloudflare dashboard if needed
