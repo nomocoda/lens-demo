@@ -451,7 +451,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
 }
 .insight-card::before { display: none; }
 
@@ -462,8 +461,11 @@ body {
 /* Read card — no accent */
 .insight-card.read {}
 
+/* Two font sizes within cards:
+   Labels (type, context label, means label) — smaller
+   Body text (headline, context, means) — slightly larger */
 .insight-type {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -472,17 +474,15 @@ body {
 }
 
 .insight-context {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--gray-text);
   line-height: 1.5;
   margin-bottom: 14px;
   padding: 10px 0;
-  flex-shrink: 1;
-  overflow: hidden;
 }
 .insight-context-label,
 .insight-means-label {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.2px;
@@ -494,15 +494,12 @@ body {
   color: var(--purple-dark);
   line-height: 1.5;
   font-weight: 500;
-  flex-shrink: 1;
-  overflow: hidden;
 }
 .insight-headline {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--purple-dark);
-  line-height: 1.35;
+  line-height: 1.5;
   margin-bottom: 10px;
 }
 
@@ -512,7 +509,6 @@ body {
   margin-top: auto;
   padding-top: 12px;
   position: relative; /* anchor for absolutely-positioned sphere tray */
-  flex-shrink: 0;
 }
 
 /* ============================
