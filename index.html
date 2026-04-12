@@ -146,227 +146,93 @@ body {
 .advise-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
 /* Edge fade — atmospheric perspective, things dissolve into the distance */
-.edge-fade {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--purple-bg) 0%, transparent 16%, transparent 84%, var(--purple-bg) 100%),
-    linear-gradient(to right, var(--purple-bg) 0%, transparent 12%, transparent 88%, var(--purple-bg) 100%);
-}
+/* Signal universe and edge-fade removed — category cards now */
 
 /* ============================
-   SIGNAL UNIVERSE — 3-layer depth field
-   ============================ */
-.signal-universe {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-.signal-particle {
-  position: absolute;
-  border-radius: 50%;
-}
-/* Medium-sized background "signal" circles with outline style */
-.signal-node {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(108, 92, 231, 0.12);
-  background: rgba(108, 92, 231, 0.04);
-  pointer-events: none;
-}
-/* Endpoint connector nodes — frosted circle with center dot */
-.connector-node {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(200, 192, 240, 0.3);
-  background: rgba(255, 255, 255, 0.4);
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 1px 3px rgba(108, 92, 231, 0.06);
-}
-.connector-node-dot {
-  width: 30%;
-  height: 30%;
-  border-radius: 50%;
-  background: var(--purple-light);
-  opacity: 0.5;
-}
-/* Connector lines from endpoint nodes to nearby signal nodes */
-.connector-line-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-@keyframes particleDrift {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(var(--dx1, 2px), var(--dy1, -3px)); }
-  50% { transform: translate(var(--dx2, -1px), var(--dy2, -5px)); }
-  75% { transform: translate(var(--dx3, 3px), var(--dy3, -1px)); }
-}
-
-/* ============================
-   BUBBLE CLUSTER
+   CATEGORY CARDS — advise tab entry points
    ============================ */
 .bubble-cluster {
   position: absolute;
   inset: 0;
   z-index: 10;
-  /* Only transform + opacity animate. transform-origin is set inline in JS
-     right before the .zooming class is applied — it must change INSTANTLY
-     so the scale animates from the correct pivot point. With 'all' here,
-     transform-origin would animate alongside transform on the first tap,
-     making the camera pivot slide during the zoom and causing it to feel
-     like it overshoots the bubble. */
   transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
               opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .bubble-cluster.zoomed-out { opacity: 1; transform: scale(1); }
 .bubble-cluster.zooming { opacity: 0; transform: scale(2.5); pointer-events: none; }
 
-/* Bubble — white circle with purple text and purple border */
+/* Category card — same design language as insight cards */
 .bubble {
   position: absolute;
-  border-radius: 50%;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   border: 1.5px solid rgba(108, 92, 231, 0.2);
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
   background: rgba(255, 255, 255, 0.95);
   box-shadow:
-    0 2px 12px rgba(108, 92, 231, 0.1),
-    0 6px 24px rgba(108, 92, 231, 0.05);
+    0 2px 12px rgba(108, 92, 231, 0.08),
+    0 4px 16px rgba(108, 92, 231, 0.04);
+  padding: 12px 8px;
 }
-.bubble:hover {
-  transform: scale(1.08) !important;
+.bubble:hover, .bubble:active {
+  transform: scale(1.04);
   box-shadow:
     0 4px 18px rgba(108, 92, 231, 0.12),
-    0 8px 32px rgba(108, 92, 231, 0.06);
+    0 8px 24px rgba(108, 92, 231, 0.06);
 }
 .bubble-label {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--purple-dark);
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+.bubble-subtitle {
+  font-size: 0.6875rem;
+  font-weight: 400;
   color: var(--purple-core);
-  letter-spacing: 0.3px;
+  margin-top: 4px;
+  opacity: 0.7;
 }
-
-/* Bubble with new signals — glow layered on top of sway */
-.bubble-pipeline.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway1 7s ease-in-out infinite; }
-.bubble-revenue.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway2 9s ease-in-out infinite; }
-.bubble-customers.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway3 8s ease-in-out infinite; }
-.bubble-operations.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway4 11s ease-in-out infinite; }
-.bubble-talent.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway5 10s ease-in-out infinite; }
-.bubble-market.has-new { animation: bubbleGlow 3s ease-in-out infinite, sway6 8.5s ease-in-out infinite; }
 .bubble.has-new {
-  border-color: rgba(108, 92, 231, 0.4);
-}
-@keyframes bubbleGlow {
-  0%, 100% {
-    box-shadow:
-      0 2px 12px rgba(108, 92, 231, 0.1),
-      0 6px 24px rgba(108, 92, 231, 0.05),
-      0 0 0 0 rgba(108, 92, 231, 0);
-  }
-  50% {
-    box-shadow:
-      0 2px 12px rgba(108, 92, 231, 0.15),
-      0 6px 24px rgba(108, 92, 231, 0.08),
-      0 0 12px 3px rgba(108, 92, 231, 0.15);
-  }
+  border-color: rgba(108, 92, 231, 0.35);
 }
 
-/* Outer ring — REMOVED */
-.bubble::before {
-  display: none;
-}
-
-/* Individual bubble positions — uniform 129px, organic arrangement.
+/* Individual card positions — organic, non-aligned layout.
    ARRANGEMENT RULES:
-   1. No two bubbles share the same top %. Each must differ by ≥ 3%.
-   2. No two bubbles share the same horizontal center. Offset by ≥ 4%.
-   3. The cluster should feel like stones scattered on a table —
-      recognizably grouped, but never grid-aligned or symmetric.
-   4. Maintain ≥ 12px visual gap between any two bubble edges. */
+   1. No two cards share the same top position.
+   2. No two cards share the same left/right position.
+   3. Roughly two columns, but offset so nothing aligns to a grid.
+   4. Maintain ≥ 10px visual gap between any two card edges. */
 .bubble-pipeline {
-  width: 129px; height: 129px;
-  top: 4%; right: 14%;
-  animation: sway1 7s ease-in-out infinite;
+  width: 145px; height: 80px;
+  top: 3%; left: 8%;
 }
 .bubble-revenue {
-  width: 129px; height: 129px;
-  top: 8%; left: 10%;
-  animation: sway2 9s ease-in-out infinite;
+  width: 140px; height: 80px;
+  top: 7%; right: 10%;
 }
 .bubble-customers {
-  width: 129px; height: 129px;
-  top: 27%; left: calc(50% - 58px);
-  animation: sway3 8s ease-in-out infinite;
+  width: 148px; height: 80px;
+  top: 22%; left: 18%;
 }
 .bubble-operations {
-  width: 129px; height: 129px;
-  top: 45%; right: 8%;
-  animation: sway4 11s ease-in-out infinite;
+  width: 142px; height: 80px;
+  top: 36%; right: 6%;
 }
 .bubble-talent {
-  width: 129px; height: 129px;
-  top: 50%; left: 12%;
-  animation: sway5 10s ease-in-out infinite;
+  width: 138px; height: 80px;
+  top: 51%; left: 10%;
 }
 .bubble-market {
-  width: 129px; height: 129px;
-  top: 71%; left: calc(50% - 46px);
-  animation: sway6 8.5s ease-in-out infinite;
+  width: 144px; height: 80px;
+  top: 65%; right: 14%;
 }
-
-/* Each bubble gets its own unique sway — different direction, speed, amplitude.
-   Pipeline bubble used to prefix translateX(-50%) here for centering, but that
-   conflicted with the .bubble:hover { transform: scale(1.08) } rule (the hover
-   replaced the centering and made pipeline jump right on tap). Centering is now
-   handled via left: calc(50% - 46px), freeing transform for sway and hover. */
-@keyframes sway1 {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(1.5px, -1px); }
-  66% { transform: translate(-1px, 1.5px); }
-}
-@keyframes sway2 {
-  0%, 100% { transform: translate(0, 0); }
-  40% { transform: translate(-1px, -2px); }
-  80% { transform: translate(1.5px, 0.5px); }
-}
-@keyframes sway3 {
-  0%, 100% { transform: translate(0, 0); }
-  30% { transform: translate(1px, 1.5px); }
-  70% { transform: translate(-1.5px, -1px); }
-}
-@keyframes sway4 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(2px, -1px); }
-}
-@keyframes sway5 {
-  0%, 100% { transform: translate(0, 0); }
-  35% { transform: translate(-1.5px, 1px); }
-  65% { transform: translate(0.5px, -2px); }
-}
-@keyframes sway6 {
-  0%, 100% { transform: translate(0, 0); }
-  45% { transform: translate(1px, 1.5px); }
-  85% { transform: translate(-1.5px, -0.5px); }
-}
-
-/* User bubble — REMOVED: user is the observer, not a node */
-
-/* Connection lines — REMOVED: spatial proximity tells the story */
 
 /* ============================
    DETAIL VIEW
@@ -732,6 +598,22 @@ body {
 .chat-header {
   padding: 12px 20px 8px;
   text-align: center;
+  position: relative;
+  z-index: 2;
+}
+/* Slit-shadow — a partial horizontal shadow that suggests two overlapping
+   layers, like a sheet of paper cut partway across and folded slightly.
+   Narrower than full-width so the edges breathe. */
+.chat-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  width: 70%;
+  height: 1px;
+  background: rgba(108, 92, 231, 0.06);
+  box-shadow: 0 1px 4px rgba(108, 92, 231, 0.08),
+              0 2px 8px rgba(108, 92, 231, 0.04);
 }
 .chat-title {
   font-family: 'Playfair Display', serif;
@@ -1181,31 +1063,31 @@ body {
     <!-- ADVISE VIEW -->
     <div class="advise-view" id="advise-view">
 
-      <!-- Signal Universe — 3 depth layers generated by JS -->
-      <div class="signal-universe" id="signal-universe"></div>
-
-      <!-- Edge fade — atmospheric dissolve at all edges -->
-      <div class="edge-fade"></div>
-
-      <!-- Bubble Cluster -->
+      <!-- Category Cards -->
       <div class="bubble-cluster zoomed-out" id="bubble-cluster">
         <button class="bubble bubble-pipeline has-new" onclick="openBubble('pipeline', this)">
           <span class="bubble-label">Pipeline</span>
+          <span class="bubble-subtitle">5 insights · 3 new</span>
         </button>
         <button class="bubble bubble-revenue has-new" onclick="openBubble('revenue', this)">
           <span class="bubble-label">Revenue</span>
+          <span class="bubble-subtitle">4 insights · 3 new</span>
         </button>
         <button class="bubble bubble-customers has-new" onclick="openBubble('customers', this)">
           <span class="bubble-label">Customers</span>
+          <span class="bubble-subtitle">4 insights · 3 new</span>
         </button>
         <button class="bubble bubble-operations has-new" onclick="openBubble('operations', this)">
           <span class="bubble-label">Operations</span>
+          <span class="bubble-subtitle">4 insights · 3 new</span>
         </button>
         <button class="bubble bubble-talent has-new" onclick="openBubble('talent', this)">
           <span class="bubble-label">Talent</span>
+          <span class="bubble-subtitle">4 insights · 3 new</span>
         </button>
         <button class="bubble bubble-market has-new" onclick="openBubble('market', this)">
           <span class="bubble-label">Market</span>
+          <span class="bubble-subtitle">3 insights · 3 new</span>
         </button>
       </div>
 
@@ -1339,7 +1221,9 @@ body {
 // ============================
 // SIGNAL UNIVERSE — 3 layers of depth
 // ============================
+// Signal universe removed — replaced by category cards.
 function generateSignalUniverse() {
+  return; // no-op: floating background elements removed
   const container = document.getElementById('signal-universe');
 
   // ============================================
@@ -1771,11 +1655,11 @@ function switchTab(tab) {
 // timestamp. Any saved-card rendering looks up the full card data at render
 // time — this is the same model a real backend would use.
 const savedCards = [
-  { sourceBubble: 'pipeline',   sourceIndex: 3, savedAt: 'Today, 9:14 AM' },
-  { sourceBubble: 'market',     sourceIndex: 2, savedAt: 'Today, 8:51 AM' },
-  { sourceBubble: 'revenue',    sourceIndex: 0, savedAt: 'Yesterday, 4:22 PM' },
-  { sourceBubble: 'customers',  sourceIndex: 2, savedAt: 'Yesterday, 11:08 AM' },
-  { sourceBubble: 'operations', sourceIndex: 1, savedAt: '2 days ago' }
+  { sourceBubble: 'pipeline',   sourceIndex: 3, createdAt: 'April 12, 2026' },
+  { sourceBubble: 'market',     sourceIndex: 2, createdAt: 'April 11, 2026' },
+  { sourceBubble: 'revenue',    sourceIndex: 0, createdAt: 'April 10, 2026' },
+  { sourceBubble: 'customers',  sourceIndex: 2, createdAt: 'April 8, 2026' },
+  { sourceBubble: 'operations', sourceIndex: 1, createdAt: 'April 2, 2026' }
 ];
 
 let currentSavedCardIndex = null; // tracks which saved card is in the detail view
@@ -1814,7 +1698,7 @@ function renderSaveFeed() {
       <div class="saved-card signal-${card.type}" onclick="openSavedCard(${i})">
         <div class="saved-card-type">${card.typeLabel}</div>
         <div class="saved-card-title">${card.headline}</div>
-        <div class="saved-card-meta">Saved &middot; ${entry.savedAt}</div>
+        <div class="saved-card-meta">Created ${entry.createdAt}</div>
       </div>
     `;
   }).join('');
@@ -1828,7 +1712,7 @@ function openSavedCard(i) {
   currentSavedCardIndex = i;
   const detailCard = document.getElementById('save-detail-card');
   document.getElementById('save-detail-title').textContent = insightData[entry.sourceBubble]?.title || 'Saved insight';
-  document.getElementById('save-detail-subtitle').textContent = `Saved · ${entry.savedAt}`;
+  document.getElementById('save-detail-subtitle').textContent = `Created ${entry.createdAt}`;
   // Rebuild the card body while preserving the sphere footer (it lives in
   // a fixed child under save-detail-card and doesn't need to be re-rendered).
   const footerNode = detailCard.querySelector('.insight-card-footer');
@@ -1852,6 +1736,25 @@ function closeSavedCard() {
   currentSavedCardIndex = null;
 }
 
+// Swipe up/down on saved detail to navigate between saved cards
+(function() {
+  const detail = document.getElementById('save-detail');
+  let startY = 0;
+  detail.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  detail.addEventListener('touchend', e => {
+    if (currentSavedCardIndex === null) return;
+    const dy = startY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) < 50) return; // ignore small swipes
+    if (dy > 0 && currentSavedCardIndex < savedCards.length - 1) {
+      openSavedCard(currentSavedCardIndex + 1);
+    } else if (dy < 0 && currentSavedCardIndex > 0) {
+      openSavedCard(currentSavedCardIndex - 1);
+    }
+  }, { passive: true });
+})();
+
 // Save a card from Advise: moves it to the Save tab and removes it from the
 // Advise carousel. After removal, advance to the next card (or fall back to
 // previous, or close the bubble if the carousel is now empty).
@@ -1865,7 +1768,7 @@ function saveCardFromAdvise(origIdx) {
     return;
   }
   // Push into savedCards (newest first) and mark removed from Advise view.
-  savedCards.unshift({ sourceBubble: bubble, sourceIndex: origIdx, savedAt: 'Just now' });
+  savedCards.unshift({ sourceBubble: bubble, sourceIndex: origIdx, createdAt: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) });
   if (!removedFromAdvise[bubble]) removedFromAdvise[bubble] = new Set();
   removedFromAdvise[bubble].add(origIdx);
   closeAllSpheres();
@@ -1964,8 +1867,6 @@ function openBubble(name, bubbleEl) {
   renderAdviseCarousel();
   cluster.classList.remove('zoomed-out');
   cluster.classList.add('zooming');
-  document.getElementById('signal-universe').style.display = 'none';
-  document.querySelector('.edge-fade').style.display = 'none';
   setTimeout(() => document.getElementById('detail-view').classList.add('active'), 400);
   updateCarousel();
 }
@@ -2059,8 +1960,6 @@ function getVisibleAdviseCount(bubble) {
 
 function closeBubble() {
   document.getElementById('detail-view').classList.remove('active');
-  document.getElementById('signal-universe').style.display = '';
-  document.querySelector('.edge-fade').style.display = '';
   setTimeout(() => {
     document.getElementById('bubble-cluster').classList.remove('zooming');
     document.getElementById('bubble-cluster').classList.add('zoomed-out');
