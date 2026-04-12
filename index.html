@@ -329,36 +329,6 @@ body {
   animation: sway6 8.5s ease-in-out infinite;
 }
 
-/* Bubble surfacing — bubbles rise from below like they're floating up through
-   water to the surface. Each bubble gets a unique delay so they arrive at
-   slightly different moments, just like real bubbles. */
-@keyframes bubbleSurface {
-  0% {
-    opacity: 0;
-    transform: translateY(18px) scale(0.97);
-  }
-  70% {
-    opacity: 1;
-    transform: translateY(-2px) scale(1.01);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-.bubble.surfacing {
-  animation-name: bubbleSurface !important;
-  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  animation-fill-mode: backwards;
-  animation-duration: 0.7s;
-}
-.bubble-pipeline.surfacing  { animation-delay: 0.03s !important; }
-.bubble-revenue.surfacing   { animation-delay: 0.12s !important; }
-.bubble-customers.surfacing { animation-delay: 0.07s !important; }
-.bubble-operations.surfacing { animation-delay: 0.19s !important; }
-.bubble-talent.surfacing    { animation-delay: 0.15s !important; }
-.bubble-market.surfacing    { animation-delay: 0.24s !important; }
-
 /* Each bubble gets its own unique sway — different direction, speed, amplitude.
    Pipeline bubble used to prefix translateX(-50%) here for centering, but that
    conflicted with the .bubble:hover { transform: scale(1.08) } rule (the hover
@@ -1721,20 +1691,49 @@ const insightData = {
   }
 };
 
-// Replay the bubble-surfacing animation. Removes the class first (forcing
-// a reflow) so the animation restarts every time the bubble screen appears.
+// Bubble surfacing — each bubble fades in at a randomised moment, like
+// bubbles arriving at the water's surface at slightly different times.
+// Uses only inline opacity so it never conflicts with the sway animations.
 function surfaceBubbles() {
-  const bubbles = document.querySelectorAll('.bubble');
-  bubbles.forEach(b => b.classList.remove('surfacing'));
-  // Force reflow so the browser sees the removal before re-adding.
-  void document.body.offsetHeight;
-  bubbles.forEach(b => b.classList.add('surfacing'));
-  // After the longest animation completes (0.28s delay + 0.6s duration),
-  // remove the class so the idle sway animations can resume cleanly.
+  const bubbles = Array.from(document.querySelectorAll('.bubble'));
+  // Immediately hide all bubbles (no transition so it's instant).
+  bubbles.forEach(b => {
+    b.style.transition = 'none';
+    b.style.opacity = '0';
+  });
+  void document.body.offsetHeight; // flush
+
+  // Shuffle arrival order so it's never the same twice and never
+  // follows the top-to-bottom spatial layout.
+  const order = bubbles.map((b, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+
+  // Stagger each bubble's fade-in. The gaps between arrivals vary
+  // slightly so they don't feel metronomic.
+  const baseGap = 70; // ms between each bubble on average
+  let elapsed = 30;   // small initial pause
+  order.forEach((idx) => {
+    const jitter = Math.round((Math.random() - 0.5) * 40); // ±20ms
+    const delay = elapsed + jitter;
+    setTimeout(() => {
+      bubbles[idx].style.transition = 'opacity 0.45s ease-out';
+      bubbles[idx].style.opacity = '1';
+    }, Math.max(0, delay));
+    elapsed += baseGap;
+  });
+
+  // Clean up inline styles after everything has settled so hover/sway
+  // animations aren't affected long-term.
   clearTimeout(surfaceBubbles._timer);
   surfaceBubbles._timer = setTimeout(() => {
-    bubbles.forEach(b => b.classList.remove('surfacing'));
-  }, 950);
+    bubbles.forEach(b => {
+      b.style.transition = '';
+      b.style.opacity = '';
+    });
+  }, 900);
 }
 
 function switchTab(tab) {
