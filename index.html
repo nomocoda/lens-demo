@@ -152,116 +152,33 @@ body {
 /* Signal universe and edge-fade removed — category cards now */
 
 /* ============================
-   ADVISE HEADER + NEW/SAVED TOGGLE
+   HERO CARD — featured story, top third
    ============================ */
-.advise-header {
-  padding: 12px 20px 0;
-  text-align: center;
+.hero-card {
   flex-shrink: 0;
-}
-.advise-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--purple-dark);
-}
-.advise-toggle {
-  display: flex;
-  margin-top: 10px;
-  position: relative;
-  padding: 0 20px;
-}
-.advise-toggle-btn {
-  flex: 1;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--gray-text);
-  cursor: pointer;
-  padding: 10px 0 12px;
-  background: none;
-  border: none;
-  transition: color 0.3s ease;
-  position: relative;
-  text-align: center;
-}
-.advise-toggle-btn.active {
-  color: var(--purple-dark);
-  font-weight: 600;
-}
-/* Underline indicator — slides between New and Saved */
-.advise-toggle-underline {
-  position: absolute;
-  bottom: 0;
-  height: 2px;
-  background: var(--purple-dark);
-  border-radius: 1px;
-  transition: left 0.3s ease, width 0.3s ease;
-}
-
-/* ============================
-   FILTER CHIPS — horizontal scrolling row
-   ============================ */
-.filter-bar {
-  display: flex;
-  gap: 8px;
-  padding: 6px 16px 2px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  flex-shrink: 0;
-}
-.filter-bar::-webkit-scrollbar { display: none; }
-.filter-bar { scrollbar-width: none; }
-.filter-chip {
-  flex-shrink: 0;
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--gray-text);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-}
-.filter-chip.active {
-  background: var(--purple);
-  color: #fff;
-  border-color: var(--purple);
-  font-weight: 600;
-}
-
-/* ============================
-   NEW FEED — flat card list
-   ============================ */
-.new-feed {
-  padding: 10px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  flex: 1;
-  min-height: 0;
-}
-.new-feed-card {
+  margin: 12px 16px 0;
+  padding: 20px 22px;
   background: var(--glass);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-card);
-  padding: 16px 18px;
   box-shadow: var(--shadow-card);
   cursor: pointer;
   transition: transform 0.2s ease;
   position: relative;
   border-left: 3px solid var(--purple);
 }
-.new-feed-card:active {
-  transform: scale(0.98);
+.hero-card:active { transform: scale(0.98); }
+.hero-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--gray-text);
+  margin-bottom: 8px;
 }
-.new-feed-card-type {
+.hero-type {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -269,34 +186,110 @@ body {
   color: var(--purple);
   margin-bottom: 6px;
 }
-.new-feed-card-headline {
-  font-size: 0.9375rem;
-  font-weight: 700;
+.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: var(--purple-dark);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.hero-context {
+  font-size: 0.8125rem;
+  font-weight: 300;
+  color: var(--gray-text);
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.new-feed-card-meta {
+.hero-meta {
   font-size: 0.75rem;
   color: var(--gray-text);
-  opacity: 0.75;
-  margin-top: 6px;
+  opacity: 0.65;
+  margin-top: 10px;
   letter-spacing: 0.2px;
 }
 
-/* Saved feed when inside advise view */
-.advise-saved-feed {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 16px 16px;
+/* ============================
+   CATEGORY ROWS — intelligence area list
+   ============================ */
+.category-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--gray-text);
+  padding: 16px 20px 6px;
+  flex-shrink: 0;
+}
+.category-list {
+  padding: 0 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
   min-height: 0;
+}
+.category-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 16px;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 2px 12px rgba(108, 92, 231, 0.06), 0 1px 3px rgba(0,0,0,0.03);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.category-row:active {
+  background: rgba(108, 92, 231, 0.04);
+  transform: scale(0.98);
+}
+.category-row-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  color: var(--purple);
+}
+.category-row-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.category-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.category-row-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--purple-dark);
+}
+.category-row-meta {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--gray-text);
+}
+.category-row-meta .new-count {
+  color: var(--purple-core);
+  font-weight: 500;
+}
+.category-row-arrow {
+  color: var(--purple-light);
+  flex-shrink: 0;
 }
 
 /* ============================
@@ -1128,41 +1121,48 @@ body {
     <!-- ADVISE VIEW -->
     <div class="advise-view" id="advise-view">
 
-      <!-- Advise header with New/Saved toggle -->
-      <div class="advise-header">
-        <div class="advise-title">Advise</div>
-        <div class="advise-toggle">
-          <button class="advise-toggle-btn active" id="toggle-new" onclick="toggleAdviseMode('new')">New</button>
-          <button class="advise-toggle-btn" id="toggle-saved" onclick="toggleAdviseMode('saved')">Saved</button>
-          <div class="advise-toggle-underline" id="advise-toggle-underline"></div>
-        </div>
+      <!-- Hero card — featured trending story -->
+      <div class="hero-card" id="hero-card" onclick="openBubble('market', this)">
+        <div class="hero-label">Trending across your team</div>
+        <div class="hero-type">Opportunity</div>
+        <div class="hero-headline">Top competitor raised prices 18% with no new features to justify it.</div>
+        <div class="hero-context">Price stability becomes a differentiator when a competitor raises prices without added value. Renewal-season outreach could generate inbound interest.</div>
+        <div class="hero-meta">Market</div>
       </div>
 
-      <!-- Filter chips + New feed -->
-      <div class="filter-bar" id="filter-bar">
-        <button class="filter-chip active" onclick="filterNewFeed('all')">All</button>
-        <button class="filter-chip" onclick="filterNewFeed('pipeline')">Pipeline</button>
-        <button class="filter-chip" onclick="filterNewFeed('revenue')">Revenue</button>
-        <button class="filter-chip" onclick="filterNewFeed('customers')">Customers</button>
-        <button class="filter-chip" onclick="filterNewFeed('operations')">Operations</button>
-        <button class="filter-chip" onclick="filterNewFeed('talent')">Talent</button>
-        <button class="filter-chip" onclick="filterNewFeed('market')">Market</button>
-      </div>
-      <div class="new-feed" id="new-feed"></div>
-
-      <!-- Saved feed (Saved mode) — hidden by default -->
-      <div class="save-feed advise-saved-feed" id="save-feed" style="display:none;"></div>
-
-      <!-- Save detail — opens when a saved card is tapped -->
-      <div class="save-detail" id="save-detail">
-        <div class="save-detail-header">
-          <button class="save-detail-back" onclick="closeSavedCard()" aria-label="Back to saved feed"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
-          <div class="save-detail-title" id="save-detail-title">Saved insight</div>
-        </div>
-        <div class="save-detail-subtitle" id="save-detail-subtitle"></div>
-        <div class="save-detail-body">
-          <div class="save-detail-card" id="save-detail-card"></div>
-        </div>
+      <!-- Intelligence areas -->
+      <div class="category-section-label">Intelligence Areas</div>
+      <div class="category-list" id="category-list">
+        <button class="category-row" onclick="openBubble('pipeline', this)">
+          <div class="category-row-icon"><svg viewBox="0 0 36 36"><path d="M6 28 L6 14 L12 14 L12 28"/><path d="M15 28 L15 10 L21 10 L21 28"/><path d="M24 28 L24 6 L30 6 L30 28"/><line x1="4" y1="28" x2="32" y2="28"/></svg></div>
+          <div class="category-row-text"><span class="category-row-name">Pipeline</span><span class="category-row-meta">5 insights · <span class="new-count">3 new</span></span></div>
+          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="category-row" onclick="openBubble('revenue', this)">
+          <div class="category-row-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="12"/><path d="M18 10 v16"/><path d="M14 14 C14 12, 22 12, 22 14 C22 17, 13 17, 13 20 C13 23, 22 23, 22 21"/></svg></div>
+          <div class="category-row-text"><span class="category-row-name">Revenue</span><span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span></div>
+          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="category-row" onclick="openBubble('customers', this)">
+          <div class="category-row-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="12" r="5"/><path d="M8 30 C8 23 12 20 18 20 C24 20 28 23 28 30"/><circle cx="28" cy="14" r="3.5"/><path d="M28 19 C32 19 34 21 34 26"/></svg></div>
+          <div class="category-row-text"><span class="category-row-name">Customers</span><span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span></div>
+          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="category-row" onclick="openBubble('operations', this)">
+          <div class="category-row-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="6"/><circle cx="18" cy="18" r="2"/><path d="M18 4 v4"/><path d="M18 28 v4"/><path d="M4 18 h4"/><path d="M28 18 h4"/><path d="M8.1 8.1 l2.8 2.8"/><path d="M25.1 25.1 l2.8 2.8"/><path d="M8.1 27.9 l2.8-2.8"/><path d="M25.1 10.9 l2.8-2.8"/></svg></div>
+          <div class="category-row-text"><span class="category-row-name">Operations</span><span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span></div>
+          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="category-row" onclick="openBubble('talent', this)">
+          <div class="category-row-icon"><svg viewBox="0 0 36 36"><circle cx="12" cy="12" r="4.5"/><path d="M4 28 C4 22 7 19 12 19 C17 19 20 22 20 28"/><circle cx="25" cy="12" r="4.5"/><path d="M17 28 C17 22 20 19 25 19 C30 19 33 22 33 28"/></svg></div>
+          <div class="category-row-text"><span class="category-row-name">Talent</span><span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span></div>
+          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="category-row" onclick="openBubble('market', this)">
+          <div class="category-row-icon"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="13"/><ellipse cx="18" cy="18" rx="5" ry="13"/><path d="M5 18 h26"/><path d="M6.5 11 h23"/><path d="M6.5 25 h23"/></svg></div>
+          <div class="category-row-text"><span class="category-row-name">Market</span><span class="category-row-meta">3 insights · <span class="new-count">3 new</span></span></div>
+          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
 
       <!-- Detail view -->
@@ -1198,7 +1198,24 @@ body {
       </div>
     </div>
 
-    <!-- Save view removed — now lives inside advise-view -->
+    <!-- SAVE VIEW -->
+    <div class="save-view hidden" id="save-view">
+      <div class="save-header">
+        <div class="save-title">Saved</div>
+        <div class="save-count" id="save-count"></div>
+      </div>
+      <div class="save-feed" id="save-feed"></div>
+      <div class="save-detail" id="save-detail">
+        <div class="save-detail-header">
+          <button class="save-detail-back" onclick="closeSavedCard()" aria-label="Back to saved feed"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+          <div class="save-detail-title" id="save-detail-title">Saved insight</div>
+        </div>
+        <div class="save-detail-subtitle" id="save-detail-subtitle"></div>
+        <div class="save-detail-body">
+          <div class="save-detail-card" id="save-detail-card"></div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
@@ -1211,13 +1228,18 @@ body {
         <circle cx="17.5" cy="15" r="2.2"/>
       </svg>
     </button>
-    <button class="bottom-tab" id="tab-ask" onclick="switchTab('ask')" aria-label="Ask">
-      <!-- Ask: conversation bubble -->
+    <button class="bottom-tab" id="tab-ask" onclick="switchTab('ask')" aria-label="Chat">
+      <!-- Chat: conversation bubble -->
       <svg viewBox="0 0 24 24">
         <path d="M4 5.5 A2.5 2.5 0 0 1 6.5 3 H17.5 A2.5 2.5 0 0 1 20 5.5 V14 A2.5 2.5 0 0 1 17.5 16.5 H11 L7 20.5 V16.5 H6.5 A2.5 2.5 0 0 1 4 14 Z" stroke-linejoin="round"/>
       </svg>
     </button>
-    <!-- Save tab removed — Saved is now a toggle within Advise -->
+    <button class="bottom-tab" id="tab-save" onclick="switchTab('save')" aria-label="Saved">
+      <!-- Saved: bookmark -->
+      <svg viewBox="0 0 24 24">
+        <path d="M5 3 H19 V21 L12 16 L5 21 Z"/>
+      </svg>
+    </button>
   </div>
 </div>
 
@@ -1408,10 +1430,10 @@ const insightData = {
         means: 'Without the audit on the calendar, this deal sits in limbo. Crestline has budget approval through Q2 only. The compliance gap could push this into a fiscal year where their budget resets.'
       },
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Vanguard Logistics went silent 10 days ago. Deal may be stalling.',
-        context: 'Vanguard is a $175K mid-market deal that was in active evaluation. The primary contact hasn\'t replied to three follow-ups. LinkedIn shows a title change two weeks ago.',
-        means: 'Losing a champion mid-deal often stalls the process by 4\u20136 weeks while a new sponsor is found. The AE may need to re-engage at a higher level before momentum fades completely.'
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
+        headline: 'Vanguard Logistics has a new VP Ops. Window to re-engage at a higher level.',
+        context: 'Vanguard is a $175K mid-market deal that paused during a leadership transition. The new VP Ops comes from a company that used Atlas. LinkedIn shows they started two weeks ago.',
+        means: 'New executives often revisit vendor decisions in their first 30 days. The existing evaluation work and the new contact\'s familiarity with Atlas create a strong opening for a warm re-engagement.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
@@ -1444,10 +1466,10 @@ const insightData = {
         means: 'The deceleration is gradual but consistent. Reaching the $18M year-end target requires $1.05M net new per quarter. Q1 fell short of that pace by $410K.'
       },
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Net revenue retention fell to 109%. Below the 115% investor threshold.',
-        context: 'NRR declined for the third straight quarter. Expansion revenue is healthy but churn is offsetting it. Two of the three churned accounts cited the same missing integration.',
-        means: 'NRR below 115% weakens the growth narrative for fundraising. The pattern in churn reasons suggests a specific product gap rather than a broad satisfaction issue, which makes it addressable.'
+        type: 'trend', typeLabel: 'Trend', isNew: true,
+        headline: 'Churn is clustering around one missing integration. Pattern is now clear.',
+        context: 'Two of the three churned accounts cited the same API gap. Expansion revenue remains healthy at 125% of plan. NRR is 109%, below the 115% target, but the cause is specific and scoped.',
+        means: 'A single integration gap driving most churn is the best possible diagnosis — it\'s fixable. Addressing this one issue could recover 4\u20136 points of NRR and strengthen the fundraising narrative.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
@@ -1468,16 +1490,16 @@ const insightData = {
     subtitle: '4 insights <span class="separator">&middot;</span> <span class="new-count">3 new</span>',
     cards: [
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Northstar Labs usage dropped 35%. Their champion left last month.',
-        context: 'Northstar is $145K ARR renewing in 30 days. The VP Ops who drove adoption departed in March. No replacement has been named. Weekly active users fell from 82 to 53.',
-        means: 'Declining usage plus no internal advocate is the most common pre-churn pattern. The renewal conversation needs a new executive sponsor before the auto-renewal window closes.'
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
+        headline: 'Northstar Labs renews in 30 days. Early outreach could lock in a multi-year.',
+        context: 'Northstar is $145K ARR with strong usage among power users. Their VP Ops departed but their team leads remain engaged. A renewal conversation now could include an expansion to two new departments that expressed interest last quarter.',
+        means: 'Proactive renewal outreach before the auto-window builds trust. Offering a multi-year with the department expansion could increase the contract 40% and eliminate renewal uncertainty for two years.'
       },
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Redwood Financial onboarding is at week 11. Target was 5 weeks.',
-        context: 'Redwood is $240K ARR. Only 38% of licensed seats are active. Their team is filing 4x the support tickets of any other account, mostly around data migration issues.',
-        means: 'Extended onboarding erodes the customer\'s confidence in time-to-value. The support burden is also affecting response times for other accounts. A dedicated onboarding sprint could address both.'
+        type: 'trend', typeLabel: 'Trend', isNew: true,
+        headline: 'Redwood Financial\'s data migration pattern could become a repeatable playbook.',
+        context: 'Redwood ($240K ARR) hit migration complexity others will face too. The support team documented 12 migration edge cases that apply to upcoming enterprise prospects. Onboarding is now at 85% seat activation.',
+        means: 'Turning Redwood\'s migration learnings into a standard playbook reduces future onboarding from weeks to days. This is the kind of operational IP that makes enterprise sales more predictable.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
@@ -1504,10 +1526,10 @@ const insightData = {
         means: 'Faster deploys without more rollbacks suggests the change is working. Six weeks of data is enough to call this a pattern, not an anomaly. The next test is whether it holds during the Q2 feature push.'
       },
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Support response time hit 4.8 hours. SLA target is 2 hours.',
-        context: 'Three agents are handling 32% more tickets than last quarter. CSAT dropped to 79% against a 90% target. One account alone generates 25% of total ticket volume.',
-        means: 'The bottleneck is capacity, not competence. Adding one agent would bring response times back to target. The concentrated ticket source also suggests an upstream product issue worth investigating.'
+        type: 'trend', typeLabel: 'Trend', isNew: true,
+        headline: 'One account generates 25% of all support tickets. Solving it frees the whole queue.',
+        context: 'Support response times stretched to 4.8 hours against a 2-hour SLA. But the root cause is concentrated: one account\'s migration issues drive a quarter of ticket volume. The team\'s capacity is fine once that clears.',
+        means: 'This isn\'t a scaling problem — it\'s a single-source bottleneck. Resolving that account\'s migration (already underway) should restore response times without adding headcount.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
@@ -1528,16 +1550,16 @@ const insightData = {
     subtitle: '4 insights <span class="separator">&middot;</span> <span class="new-count">3 new</span>',
     cards: [
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Head of Product role open for five weeks. No shortlist yet.',
-        context: 'The role has been posted but the recruiting team is waiting on a finalized job spec. Two internal candidates have expressed interest informally. The product team is operating without a single decision-maker.',
-        means: 'Five weeks without a shortlist means the process hasn\'t truly started. The longer the gap, the more product decisions get deferred or made by committee, which slows roadmap execution.'
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
+        headline: 'Two internal candidates want the Head of Product role. Both are strong.',
+        context: 'The role has been open five weeks but two internal candidates expressed interest early on. Both led major product launches and have cross-functional credibility. An internal hire could start immediately.',
+        means: 'Promoting from within fills the role faster, preserves institutional knowledge, and signals career growth to the rest of the team. Either candidate could hit the ground running on the Q3 roadmap.'
       },
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'A senior backend engineer is interviewing elsewhere. They lead the rewrite.',
-        context: 'This engineer owns the most complex modules in the platform rewrite. Their manager is aware but hasn\'t discussed retention options. The engineer cited growth concerns in their last 1:1.',
-        means: 'Losing this person would directly impact the June beta timeline. The stated concern is growth, not compensation, which suggests a path forward if addressed promptly.'
+        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
+        headline: 'Senior engineer wants a technical lead path. Conversation is ready to happen.',
+        context: 'The engineer leading the platform rewrite mentioned growth goals in their last 1:1. Their manager hasn\'t yet discussed the new tech lead track that was approved last month. The engineer is highly engaged on the rewrite.',
+        means: 'The new tech lead career path was designed for exactly this profile. One conversation could align their growth goals with the company\'s needs and deepen their investment in the rewrite\'s success.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
@@ -1585,99 +1607,19 @@ function switchTab(tab) {
   currentView = tab;
   document.getElementById('tab-advise').classList.toggle('active', tab === 'advise');
   document.getElementById('tab-ask').classList.toggle('active', tab === 'ask');
+  document.getElementById('tab-save').classList.toggle('active', tab === 'save');
   document.getElementById('advise-view').classList.toggle('hidden', tab !== 'advise');
   document.getElementById('ask-view').classList.toggle('hidden', tab !== 'ask');
-  // Tapping the Advise tab always returns to the category list — if a bubble
-  // is currently open in detail view, close it.
+  document.getElementById('save-view').classList.toggle('hidden', tab !== 'save');
   if (tab === 'advise' && document.getElementById('detail-view').classList.contains('active')) {
     closeBubble();
   }
-  // Also close any open saved card detail when switching to advise
-  if (tab === 'advise') {
+  if (tab === 'save') {
+    renderSaveFeed();
     closeSavedCard();
   }
   closeAllSpheres();
 }
-
-// Toggle between New and Saved within the Advise tab
-let adviseMode = 'new';
-function toggleAdviseMode(mode) {
-  if (mode === adviseMode) return;
-  adviseMode = mode;
-  document.getElementById('toggle-new').classList.toggle('active', mode === 'new');
-  document.getElementById('toggle-saved').classList.toggle('active', mode === 'saved');
-  document.getElementById('filter-bar').style.display = mode === 'new' ? '' : 'none';
-  document.getElementById('new-feed').style.display = mode === 'new' ? '' : 'none';
-  const feed = document.getElementById('save-feed');
-  feed.style.display = mode === 'saved' ? '' : 'none';
-  if (mode === 'new') renderNewFeed();
-  if (mode === 'saved') renderSaveFeed();
-  // Close any open detail views when toggling
-  closeSavedCard();
-  if (document.getElementById('detail-view').classList.contains('active')) closeBubble();
-  updateToggleUnderline();
-}
-
-function updateToggleUnderline() {
-  const activeBtn = document.getElementById(adviseMode === 'new' ? 'toggle-new' : 'toggle-saved');
-  const underline = document.getElementById('advise-toggle-underline');
-  if (!activeBtn || !underline) return;
-  underline.style.left = activeBtn.offsetLeft + 'px';
-  underline.style.width = activeBtn.offsetWidth + 'px';
-}
-// Position underline on load
-setTimeout(updateToggleUnderline, 50);
-
-// ============================
-// NEW FEED — flat card list from all categories, sorted by recency
-// ============================
-let activeFilter = 'all';
-const categoryOrder = ['pipeline', 'revenue', 'customers', 'operations', 'talent', 'market'];
-
-function buildNewFeedItems() {
-  const items = [];
-  for (const key of categoryOrder) {
-    const data = insightData[key];
-    if (!data) continue;
-    const removed = removedFromAdvise[key] || new Set();
-    data.cards.forEach((card, i) => {
-      if (removed.has(i)) return; // saved cards don't appear in New
-      items.push({ category: key, categoryTitle: data.title, index: i, card, isNew: card.isNew });
-    });
-  }
-  // New (unread) first, then read — within each group, keep category order
-  items.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-  return items;
-}
-
-function renderNewFeed(filter) {
-  if (filter !== undefined) activeFilter = filter;
-  const feed = document.getElementById('new-feed');
-  const items = buildNewFeedItems();
-  const filtered = activeFilter === 'all' ? items : items.filter(i => i.category === activeFilter);
-  if (!filtered.length) {
-    feed.innerHTML = '<div style="text-align:center;color:var(--gray-text);padding:40px 20px;font-size:0.875rem;">No new insights in this area.</div>';
-    return;
-  }
-  feed.innerHTML = filtered.map(item => `
-    <div class="new-feed-card" onclick="openBubble('${item.category}', this)">
-      <div class="new-feed-card-type">${item.card.typeLabel}</div>
-      <div class="new-feed-card-headline">${item.card.headline}</div>
-      <div class="new-feed-card-meta">${item.categoryTitle}${item.isNew ? ' · <span style="color:var(--purple);font-weight:500;">New</span>' : ''}</div>
-    </div>
-  `).join('');
-}
-
-function filterNewFeed(category) {
-  activeFilter = category;
-  // Update chip active states
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.classList.toggle('active', chip.textContent.toLowerCase() === category || (category === 'all' && chip.textContent === 'All'));
-  });
-  renderNewFeed();
-}
-
-// renderNewFeed is called after insightData + removedFromAdvise are initialized below
 
 // ============================
 // SAVE FEED — category + title pointers only, backed by references into
@@ -1708,8 +1650,7 @@ savedCards.forEach(entry => {
   if (!removedFromAdvise[entry.sourceBubble]) removedFromAdvise[entry.sourceBubble] = new Set();
   removedFromAdvise[entry.sourceBubble].add(entry.sourceIndex);
 });
-// Now that data is ready, render the new feed
-renderNewFeed();
+// Data is ready — save feed renders on tab switch
 
 function getSavedCardData(entry) {
   const data = insightData[entry.sourceBubble];
@@ -1760,7 +1701,7 @@ function openSavedCard(i) {
     </div>
   `;
   // Hide header/feed so detail view is visible
-  document.querySelector('.advise-header').style.display = 'none';
+  document.querySelector('.save-header').style.display = 'none';
   document.getElementById('save-feed').style.display = 'none';
   document.getElementById('save-detail').classList.add('active');
 }
@@ -1768,10 +1709,9 @@ function openSavedCard(i) {
 function closeSavedCard() {
   document.getElementById('save-detail').classList.remove('active');
   // Restore header and feed
-  document.querySelector('.advise-header').style.display = '';
-  if (adviseMode === 'saved') {
-    document.getElementById('save-feed').style.display = '';
-  }
+  const saveHeader = document.querySelector('.save-header');
+  if (saveHeader) saveHeader.style.display = '';
+  document.getElementById('save-feed').style.display = '';
   closeAllSpheres();
   currentSavedCardIndex = null;
 }
@@ -1894,11 +1834,10 @@ function openBubble(name, bubbleEl) {
   currentBubble = name;
   carouselIndex = 0;
   renderAdviseCarousel();
-  // Hide feed / header so detail view is visible
-  document.querySelector('.advise-header').style.display = 'none';
-  document.getElementById('filter-bar').style.display = 'none';
-  document.getElementById('new-feed').style.display = 'none';
-  document.getElementById('save-feed').style.display = 'none';
+  // Hide hero + category list so detail view is visible
+  document.getElementById('hero-card').style.display = 'none';
+  document.querySelector('.category-section-label').style.display = 'none';
+  document.getElementById('category-list').style.display = 'none';
   document.getElementById('detail-view').classList.add('active');
   updateCarousel();
 }
@@ -1992,14 +1931,10 @@ function getVisibleAdviseCount(bubble) {
 
 function closeBubble() {
   document.getElementById('detail-view').classList.remove('active');
-  // Restore the feed / header
-  document.querySelector('.advise-header').style.display = '';
-  if (adviseMode === 'new') {
-    document.getElementById('filter-bar').style.display = '';
-    document.getElementById('new-feed').style.display = '';
-  } else {
-    document.getElementById('save-feed').style.display = '';
-  }
+  // Restore hero + category list
+  document.getElementById('hero-card').style.display = '';
+  document.querySelector('.category-section-label').style.display = '';
+  document.getElementById('category-list').style.display = '';
   currentBubble = null;
 }
 
@@ -2148,7 +2083,7 @@ if (carouselEl) {
 
 // Prevent page bounce/scroll on iOS (keeps everything locked in frame)
 document.body.addEventListener('touchmove', function(e) {
-  if (!e.target.closest('.chat-messages, .carousel-container, .save-feed, .save-detail-body, .insight-card-body, .new-feed, .filter-bar')) {
+  if (!e.target.closest('.chat-messages, .carousel-container, .save-feed, .save-detail-body, .insight-card-body, .category-list')) {
     e.preventDefault();
   }
 }, { passive: false });
