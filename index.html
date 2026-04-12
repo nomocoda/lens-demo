@@ -335,14 +335,11 @@ body {
 @keyframes bubbleSurface {
   0% {
     opacity: 0;
-    transform: translateY(80px) scale(0.7);
+    transform: translateY(18px) scale(0.97);
   }
-  60% {
+  70% {
     opacity: 1;
-    transform: translateY(-6px) scale(1.03);
-  }
-  80% {
-    transform: translateY(3px) scale(0.99);
+    transform: translateY(-2px) scale(1.01);
   }
   100% {
     opacity: 1;
@@ -351,16 +348,16 @@ body {
 }
 .bubble.surfacing {
   animation-name: bubbleSurface !important;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   animation-fill-mode: backwards;
-  animation-duration: 0.6s;
+  animation-duration: 0.7s;
 }
-.bubble-pipeline.surfacing  { animation-delay: 0.04s !important; }
-.bubble-revenue.surfacing   { animation-delay: 0.14s !important; }
-.bubble-customers.surfacing { animation-delay: 0.09s !important; }
-.bubble-operations.surfacing { animation-delay: 0.22s !important; }
-.bubble-talent.surfacing    { animation-delay: 0.17s !important; }
-.bubble-market.surfacing    { animation-delay: 0.28s !important; }
+.bubble-pipeline.surfacing  { animation-delay: 0.03s !important; }
+.bubble-revenue.surfacing   { animation-delay: 0.12s !important; }
+.bubble-customers.surfacing { animation-delay: 0.07s !important; }
+.bubble-operations.surfacing { animation-delay: 0.19s !important; }
+.bubble-talent.surfacing    { animation-delay: 0.15s !important; }
+.bubble-market.surfacing    { animation-delay: 0.24s !important; }
 
 /* Each bubble gets its own unique sway — different direction, speed, amplitude.
    Pipeline bubble used to prefix translateX(-50%) here for centering, but that
@@ -1752,10 +1749,10 @@ function switchTab(tab) {
   // is currently open in detail view, close it so the tab press feels like
   // "go back to Advise" rather than a no-op.
   if (tab === 'advise' && document.getElementById('detail-view').classList.contains('active')) {
-    closeBubble();
+    closeBubble(); // closeBubble already calls surfaceBubbles after zoom-back
+  } else if (tab === 'advise') {
+    surfaceBubbles();
   }
-  // Every time the advise bubble screen appears, replay the surfacing animation.
-  if (tab === 'advise') surfaceBubbles();
   // Tapping the Save tab always returns to the feed — if a saved card detail
   // view is open, close it. Same "go back to Save" semantics as Advise.
   if (tab === 'save') {
