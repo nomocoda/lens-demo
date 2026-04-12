@@ -928,12 +928,15 @@ body {
 .save-feed {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 8px 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-height: 0;
 }
 .save-feed::-webkit-scrollbar { width: 0; }
+.save-feed { scrollbar-width: none; }
 
 /* Saved card — feed-row form. Deliberately NOT the same shape as the full Advise card:
    this reinforces that a saved item is a pointer (category + title only), not the full payload. */
@@ -969,21 +972,24 @@ body {
 }
 
 .saved-card-type {
-  font-size: 9px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.3px;
   color: var(--purple);
 }
 .saved-card-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 700;
   color: var(--purple-dark);
-  line-height: 1.35;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .saved-card-meta {
-  font-size: 10px;
+  font-size: 0.75rem;
   color: var(--gray-text);
   opacity: 0.75;
   letter-spacing: 0.2px;
@@ -1050,14 +1056,15 @@ body {
 .save-detail-back:hover { transform: scale(1.1); }
 .save-detail-title {
   font-family: 'Playfair Display', serif;
-  font-size: 20px;
+  font-size: 1.375rem;
   font-weight: 600;
   color: var(--purple-dark);
 }
 .save-detail-subtitle {
-  font-size: 11px;
+  font-size: 0.75rem;
   color: var(--gray-text);
-  padding: 0 20px 12px 68px;
+  padding: 4px 20px 12px;
+  text-align: center;
   letter-spacing: 0.2px;
 }
 .save-detail-body {
@@ -1780,11 +1787,13 @@ function openSavedCard(i) {
   const footerNode = detailCard.querySelector('.insight-card-footer');
   detailCard.className = `save-detail-card signal-${card.type}`;
   detailCard.innerHTML = `
-    <div class="insight-type">${card.typeLabel}</div>
-    <div class="insight-headline">${card.headline}</div>
-    <div class="insight-context"><div class="insight-context-label">Context</div><div class="insight-context-text">${card.context}</div></div>
-    <div class="insight-means-label">Why it matters</div>
-    <div class="insight-means">${card.means}</div>
+    <div class="insight-card-body">
+      <div class="insight-type">${card.typeLabel}</div>
+      <div class="insight-headline">${card.headline}</div>
+      <div class="insight-context"><div class="insight-context-label">Context</div><div class="insight-context-text">${card.context}</div></div>
+      <div class="insight-means-label">Why it matters</div>
+      <div class="insight-means">${card.means}</div>
+    </div>
   `;
   detailCard.appendChild(footerNode);
   document.getElementById('save-detail').classList.add('active');
