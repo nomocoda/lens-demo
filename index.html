@@ -291,37 +291,37 @@ body {
   display: none;
 }
 
-/* Individual bubble positions — uniform 129px, pulled inward.
-   Customers is center, Pipeline top-right, swapped Talent/Operations.
-   All bubbles kept well clear of screen edges. */
+/* Individual bubble positions — uniform 129px, organic arrangement.
+   Customers anchors center. Others shifted slightly off-grid so the
+   cluster feels natural, not designed on a spreadsheet. */
 .bubble-pipeline {
   width: 129px; height: 129px;
-  top: 6%; right: 12%;
+  top: 4%; right: 14%;
   animation: sway1 7s ease-in-out infinite;
 }
 .bubble-revenue {
   width: 129px; height: 129px;
-  top: 6%; left: 12%;
+  top: 8%; left: 10%;
   animation: sway2 9s ease-in-out infinite;
 }
 .bubble-customers {
   width: 129px; height: 129px;
-  top: 28%; left: calc(50% - 65px);
+  top: 27%; left: calc(50% - 58px);
   animation: sway3 8s ease-in-out infinite;
 }
 .bubble-operations {
   width: 129px; height: 129px;
-  top: 48%; right: 10%;
+  top: 50%; right: 8%;
   animation: sway4 11s ease-in-out infinite;
 }
 .bubble-talent {
   width: 129px; height: 129px;
-  top: 48%; left: 10%;
+  top: 46%; left: 12%;
   animation: sway5 10s ease-in-out infinite;
 }
 .bubble-market {
   width: 129px; height: 129px;
-  top: 68%; left: calc(50% - 65px);
+  top: 66%; left: calc(50% - 52px);
   animation: sway6 8.5s ease-in-out infinite;
 }
 
@@ -454,14 +454,22 @@ body {
 }
 .insight-card::before { display: none; }
 
-/* Unread card — purple left accent bar */
+/* Unread card — straight purple accent line, no corner curve */
 .insight-card.unread {
-  border-left: 3px solid var(--purple);
+  position: relative;
+}
+.insight-card.unread::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 3px;
+  background: var(--purple);
+  border-radius: 2px;
 }
 /* Read card — no accent */
-.insight-card.read {
-  border-left: 1px solid var(--glass-border);
-}
+.insight-card.read {}
 
 .insight-type {
   font-size: 10px;
@@ -688,6 +696,17 @@ body {
 }
 .ask-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
+.chat-header {
+  padding: 12px 20px 8px;
+  text-align: center;
+}
+.chat-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--purple-dark);
+}
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -857,10 +876,8 @@ body {
 .save-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
 .save-header {
-  padding: 14px 20px 6px;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
+  padding: 12px 20px 0;
+  text-align: center;
 }
 .save-title {
   font-family: 'Playfair Display', serif;
@@ -869,9 +886,10 @@ body {
   color: var(--purple-dark);
 }
 .save-count {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--gray-text);
   letter-spacing: 0.3px;
+  padding: 4px 0 8px;
 }
 
 .save-feed {
@@ -903,9 +921,19 @@ body {
 }
 /* All saved cards use purple on the side regardless of signal type — Lens is
    purple, user accent is orange, and saved cards are all from Lens. */
-.saved-card.signal-opportunity { border-left: 3px solid var(--purple); }
-.saved-card.signal-trend { border-left: 3px solid var(--purple); }
-.saved-card.signal-risk { border-left: 3px solid var(--purple); }
+.saved-card.signal-opportunity,
+.saved-card.signal-trend,
+.saved-card.signal-risk { position: relative; }
+.saved-card.signal-opportunity::after,
+.saved-card.signal-trend::after,
+.saved-card.signal-risk::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 12px; bottom: 12px;
+  width: 3px;
+  background: var(--purple);
+  border-radius: 2px;
+}
 
 .saved-card-type {
   font-size: 9px;
@@ -1020,9 +1048,19 @@ body {
 }
 /* Same rule as .saved-card: everything on the Save tab is Lens content,
    which means purple on the side always, never orange. */
-.save-detail-card.signal-opportunity { border-left: 3px solid var(--purple); }
-.save-detail-card.signal-trend { border-left: 3px solid var(--purple); }
-.save-detail-card.signal-risk { border-left: 3px solid var(--purple); }
+.save-detail-card.signal-opportunity,
+.save-detail-card.signal-trend,
+.save-detail-card.signal-risk { position: relative; }
+.save-detail-card.signal-opportunity::after,
+.save-detail-card.signal-trend::after,
+.save-detail-card.signal-risk::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 18px; bottom: 18px;
+  width: 3px;
+  background: var(--purple);
+  border-radius: 2px;
+}
 
 /* Breathing animation — very subtle lavender shift */
 @keyframes breathe {
@@ -1149,9 +1187,9 @@ body {
 
     <!-- ASK VIEW -->
     <div class="ask-view hidden" id="ask-view">
-      <!-- Empty on first arrival. The user hasn't chatted yet — fresh screen.
-           bridgeToChat() from an insight card or a saved card will populate
-           this div on demand. -->
+      <div class="chat-header">
+        <div class="chat-title">Chat</div>
+      </div>
       <div class="chat-messages" id="chat-messages"></div>
       <div class="chat-input-bar">
         <div class="chat-input-wrap">
@@ -1938,6 +1976,22 @@ function closeBubble() {
     currentBubble = null;
   }, 300);
 }
+
+// Swipe right on detail view to close (go back to bubbles)
+(function() {
+  const detail = document.getElementById('detail-view');
+  let startX = 0, startY = 0;
+  detail.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  detail.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = Math.abs(e.changedTouches[0].clientY - startY);
+    // Swipe right: at least 80px horizontal, more horizontal than vertical
+    if (dx > 80 && dx > dy * 1.5) closeBubble();
+  }, { passive: true });
+})();
 
 function goToCard(i) { carouselIndex = i; updateCarousel(); }
 
