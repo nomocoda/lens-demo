@@ -475,11 +475,11 @@ body {
 /* Read card — no accent */
 .insight-card.read {}
 
-/* Two font sizes within cards:
-   Labels (type, context label, means label) — smaller
-   Body text (headline, context, means) — slightly larger */
+/* Card text uses rem for accessibility scaling.
+   Two tiers: labels (smaller, uppercase) and body text (larger).
+   Weight alone creates hierarchy: headline bold, context light, means regular. */
 .insight-type {
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -488,7 +488,7 @@ body {
 }
 
 .insight-context {
-  font-size: 13px;
+  font-size: 0.9375rem;
   font-weight: 300;
   color: var(--gray-text);
   line-height: 1.5;
@@ -497,7 +497,7 @@ body {
 }
 .insight-context-label,
 .insight-means-label {
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.2px;
@@ -505,13 +505,13 @@ body {
   margin-bottom: 4px;
 }
 .insight-means {
-  font-size: 13px;
+  font-size: 0.9375rem;
   color: var(--purple-dark);
   line-height: 1.5;
   font-weight: 400;
 }
 .insight-headline {
-  font-size: 13px;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--purple-dark);
   line-height: 1.5;
@@ -1116,11 +1116,11 @@ body {
   .detail-title { font-size: 24px; }
   .detail-subtitle { font-size: 13px; }
   .insight-type-label { font-size: 11px; }
-  .insight-headline { font-size: 13px; }
-  .insight-section-label { font-size: 11px; }
-  .insight-context { font-size: 13px; }
-  .insight-means-label { font-size: 11px; }
-  .insight-means { font-size: 13px; }
+  .insight-headline { font-size: 0.9375rem; }
+  .insight-section-label { font-size: 0.75rem; }
+  .insight-context { font-size: 0.9375rem; }
+  .insight-means-label { font-size: 0.75rem; }
+  .insight-means { font-size: 0.9375rem; }
   .message-text { font-size: 15px; }
   .chat-input { font-size: 16px; }
 }
