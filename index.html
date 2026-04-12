@@ -292,8 +292,12 @@ body {
 }
 
 /* Individual bubble positions — uniform 129px, organic arrangement.
-   Customers anchors center. Others shifted slightly off-grid so the
-   cluster feels natural, not designed on a spreadsheet. */
+   ARRANGEMENT RULES:
+   1. No two bubbles share the same top %. Each must differ by ≥ 3%.
+   2. No two bubbles share the same horizontal center. Offset by ≥ 4%.
+   3. The cluster should feel like stones scattered on a table —
+      recognizably grouped, but never grid-aligned or symmetric.
+   4. Maintain ≥ 12px visual gap between any two bubble edges. */
 .bubble-pipeline {
   width: 129px; height: 129px;
   top: 4%; right: 14%;
@@ -311,17 +315,17 @@ body {
 }
 .bubble-operations {
   width: 129px; height: 129px;
-  top: 50%; right: 8%;
+  top: 45%; right: 8%;
   animation: sway4 11s ease-in-out infinite;
 }
 .bubble-talent {
   width: 129px; height: 129px;
-  top: 46%; left: 12%;
+  top: 50%; left: 12%;
   animation: sway5 10s ease-in-out infinite;
 }
 .bubble-market {
   width: 129px; height: 129px;
-  top: 66%; left: calc(50% - 52px);
+  top: 71%; left: calc(50% - 46px);
   animation: sway6 8.5s ease-in-out infinite;
 }
 
@@ -452,6 +456,16 @@ body {
   flex-direction: column;
   justify-content: flex-start;
 }
+/* Scrollable body so the footer+sphere never get clipped */
+.insight-card-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+/* Hide scrollbar but keep scrolling */
+.insight-card-body::-webkit-scrollbar { display: none; }
+.insight-card-body { scrollbar-width: none; }
 .insight-card::before { display: none; }
 
 /* Unread card — purple accent line that follows the card's curved edges */
@@ -1893,11 +1907,13 @@ function renderAdviseCarousel() {
     const readState = card.isNew ? 'unread' : 'read';
     el.className = `insight-card signal-${card.type} ${readState}`;
     el.innerHTML = `
-      <div class="insight-type">${card.typeLabel}</div>
-      <div class="insight-headline">${card.headline}</div>
-      <div class="insight-context"><div class="insight-context-label">Context</div>${card.context}</div>
-      <div class="insight-means-label">Why it matters</div>
-      <div class="insight-means">${card.means}</div>
+      <div class="insight-card-body">
+        <div class="insight-type">${card.typeLabel}</div>
+        <div class="insight-headline">${card.headline}</div>
+        <div class="insight-context"><div class="insight-context-label">Context</div>${card.context}</div>
+        <div class="insight-means-label">Why it matters</div>
+        <div class="insight-means">${card.means}</div>
+      </div>
       <div class="insight-card-footer">
         <div class="insight-sphere-wrap" data-card-index="${origIdx}">
           <div class="sphere-tray" id="sphere-tray-${origIdx}">
