@@ -199,9 +199,43 @@ body {
 }
 
 /* ============================
-   CATEGORY ROWS — full-width list items
+   FILTER CHIPS — horizontal scrolling row
    ============================ */
-.category-list {
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  padding: 6px 16px 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  flex-shrink: 0;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-bar { scrollbar-width: none; }
+.filter-chip {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--gray-text);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.filter-chip.active {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+  font-weight: 600;
+}
+
+/* ============================
+   NEW FEED — flat card list
+   ============================ */
+.new-feed {
   padding: 10px 16px 16px;
   display: flex;
   flex-direction: column;
@@ -211,47 +245,46 @@ body {
   flex: 1;
   min-height: 0;
 }
-.category-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 22px;
+.new-feed-card {
   background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-card);
+  padding: 16px 18px;
   box-shadow: var(--shadow-card);
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: transform 0.2s ease;
+  position: relative;
   border-left: 3px solid var(--purple);
 }
-.category-row:active {
-  background: rgba(108, 92, 231, 0.04);
+.new-feed-card:active {
   transform: scale(0.98);
 }
-.category-row-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.new-feed-card-type {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  color: var(--purple);
+  margin-bottom: 6px;
 }
-.category-row-name {
+.new-feed-card-headline {
   font-size: 0.9375rem;
   font-weight: 700;
   color: var(--purple-dark);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.category-row-meta {
+.new-feed-card-meta {
   font-size: 0.75rem;
-  font-weight: 400;
   color: var(--gray-text);
-}
-.category-row-meta .new-count {
-  color: var(--purple-core);
-  font-weight: 500;
-}
-.category-row-arrow {
-  color: var(--purple-light);
-  flex-shrink: 0;
+  opacity: 0.75;
+  margin-top: 6px;
+  letter-spacing: 0.2px;
 }
 
 /* Saved feed when inside advise view */
@@ -1105,51 +1138,17 @@ body {
         </div>
       </div>
 
-      <!-- Category rows (New mode) -->
-      <div class="category-list" id="category-list">
-        <button class="category-row" onclick="openBubble('pipeline', this)">
-          <div class="category-row-text">
-            <span class="category-row-name">Pipeline</span>
-            <span class="category-row-meta">5 insights · <span class="new-count">3 new</span></span>
-          </div>
-          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="category-row" onclick="openBubble('revenue', this)">
-          <div class="category-row-text">
-            <span class="category-row-name">Revenue</span>
-            <span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span>
-          </div>
-          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="category-row" onclick="openBubble('customers', this)">
-          <div class="category-row-text">
-            <span class="category-row-name">Customers</span>
-            <span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span>
-          </div>
-          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="category-row" onclick="openBubble('operations', this)">
-          <div class="category-row-text">
-            <span class="category-row-name">Operations</span>
-            <span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span>
-          </div>
-          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="category-row" onclick="openBubble('talent', this)">
-          <div class="category-row-text">
-            <span class="category-row-name">Talent</span>
-            <span class="category-row-meta">4 insights · <span class="new-count">3 new</span></span>
-          </div>
-          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-        <button class="category-row" onclick="openBubble('market', this)">
-          <div class="category-row-text">
-            <span class="category-row-name">Market</span>
-            <span class="category-row-meta">3 insights · <span class="new-count">3 new</span></span>
-          </div>
-          <svg class="category-row-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
+      <!-- Filter chips + New feed -->
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-chip active" onclick="filterNewFeed('all')">All</button>
+        <button class="filter-chip" onclick="filterNewFeed('pipeline')">Pipeline</button>
+        <button class="filter-chip" onclick="filterNewFeed('revenue')">Revenue</button>
+        <button class="filter-chip" onclick="filterNewFeed('customers')">Customers</button>
+        <button class="filter-chip" onclick="filterNewFeed('operations')">Operations</button>
+        <button class="filter-chip" onclick="filterNewFeed('talent')">Talent</button>
+        <button class="filter-chip" onclick="filterNewFeed('market')">Market</button>
       </div>
+      <div class="new-feed" id="new-feed"></div>
 
       <!-- Saved feed (Saved mode) — hidden by default -->
       <div class="save-feed advise-saved-feed" id="save-feed" style="display:none;"></div>
@@ -1607,9 +1606,11 @@ function toggleAdviseMode(mode) {
   adviseMode = mode;
   document.getElementById('toggle-new').classList.toggle('active', mode === 'new');
   document.getElementById('toggle-saved').classList.toggle('active', mode === 'saved');
-  document.getElementById('category-list').style.display = mode === 'new' ? '' : 'none';
+  document.getElementById('filter-bar').style.display = mode === 'new' ? '' : 'none';
+  document.getElementById('new-feed').style.display = mode === 'new' ? '' : 'none';
   const feed = document.getElementById('save-feed');
   feed.style.display = mode === 'saved' ? '' : 'none';
+  if (mode === 'new') renderNewFeed();
   if (mode === 'saved') renderSaveFeed();
   // Close any open detail views when toggling
   closeSavedCard();
@@ -1626,6 +1627,57 @@ function updateToggleUnderline() {
 }
 // Position underline on load
 setTimeout(updateToggleUnderline, 50);
+
+// ============================
+// NEW FEED — flat card list from all categories, sorted by recency
+// ============================
+let activeFilter = 'all';
+const categoryOrder = ['pipeline', 'revenue', 'customers', 'operations', 'talent', 'market'];
+
+function buildNewFeedItems() {
+  const items = [];
+  for (const key of categoryOrder) {
+    const data = insightData[key];
+    if (!data) continue;
+    const removed = removedFromAdvise[key] || new Set();
+    data.cards.forEach((card, i) => {
+      if (removed.has(i)) return; // saved cards don't appear in New
+      items.push({ category: key, categoryTitle: data.title, index: i, card, isNew: card.isNew });
+    });
+  }
+  // New (unread) first, then read — within each group, keep category order
+  items.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+  return items;
+}
+
+function renderNewFeed(filter) {
+  if (filter !== undefined) activeFilter = filter;
+  const feed = document.getElementById('new-feed');
+  const items = buildNewFeedItems();
+  const filtered = activeFilter === 'all' ? items : items.filter(i => i.category === activeFilter);
+  if (!filtered.length) {
+    feed.innerHTML = '<div style="text-align:center;color:var(--gray-text);padding:40px 20px;font-size:0.875rem;">No new insights in this area.</div>';
+    return;
+  }
+  feed.innerHTML = filtered.map(item => `
+    <div class="new-feed-card" onclick="openBubble('${item.category}', this)">
+      <div class="new-feed-card-type">${item.card.typeLabel}</div>
+      <div class="new-feed-card-headline">${item.card.headline}</div>
+      <div class="new-feed-card-meta">${item.categoryTitle}${item.isNew ? ' · <span style="color:var(--purple);font-weight:500;">New</span>' : ''}</div>
+    </div>
+  `).join('');
+}
+
+function filterNewFeed(category) {
+  activeFilter = category;
+  // Update chip active states
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.textContent.toLowerCase() === category || (category === 'all' && chip.textContent === 'All'));
+  });
+  renderNewFeed();
+}
+
+// renderNewFeed is called after insightData + removedFromAdvise are initialized below
 
 // ============================
 // SAVE FEED — category + title pointers only, backed by references into
@@ -1656,6 +1708,8 @@ savedCards.forEach(entry => {
   if (!removedFromAdvise[entry.sourceBubble]) removedFromAdvise[entry.sourceBubble] = new Set();
   removedFromAdvise[entry.sourceBubble].add(entry.sourceIndex);
 });
+// Now that data is ready, render the new feed
+renderNewFeed();
 
 function getSavedCardData(entry) {
   const data = insightData[entry.sourceBubble];
@@ -1840,9 +1894,10 @@ function openBubble(name, bubbleEl) {
   currentBubble = name;
   carouselIndex = 0;
   renderAdviseCarousel();
-  // Hide the category list / header so detail view is visible
+  // Hide feed / header so detail view is visible
   document.querySelector('.advise-header').style.display = 'none';
-  document.getElementById('category-list').style.display = 'none';
+  document.getElementById('filter-bar').style.display = 'none';
+  document.getElementById('new-feed').style.display = 'none';
   document.getElementById('save-feed').style.display = 'none';
   document.getElementById('detail-view').classList.add('active');
   updateCarousel();
@@ -1937,10 +1992,11 @@ function getVisibleAdviseCount(bubble) {
 
 function closeBubble() {
   document.getElementById('detail-view').classList.remove('active');
-  // Restore the category list / header
+  // Restore the feed / header
   document.querySelector('.advise-header').style.display = '';
   if (adviseMode === 'new') {
-    document.getElementById('category-list').style.display = '';
+    document.getElementById('filter-bar').style.display = '';
+    document.getElementById('new-feed').style.display = '';
   } else {
     document.getElementById('save-feed').style.display = '';
   }
@@ -2092,7 +2148,7 @@ if (carouselEl) {
 
 // Prevent page bounce/scroll on iOS (keeps everything locked in frame)
 document.body.addEventListener('touchmove', function(e) {
-  if (!e.target.closest('.chat-messages, .carousel-container, .save-feed, .save-detail-body, .insight-card-body, .category-list')) {
+  if (!e.target.closest('.chat-messages, .carousel-container, .save-feed, .save-detail-body, .insight-card-body, .new-feed, .filter-bar')) {
     e.preventDefault();
   }
 }, { passive: false });
