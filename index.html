@@ -2166,7 +2166,7 @@ if (carouselEl) {
 
 // Prevent page bounce/scroll on iOS (keeps everything locked in frame)
 document.body.addEventListener('touchmove', function(e) {
-  if (!e.target.closest('.chat-messages, .carousel-container')) {
+  if (!e.target.closest('.chat-messages, .carousel-container, .save-feed, .save-detail-body, .insight-card-body')) {
     e.preventDefault();
   }
 }, { passive: false });
