@@ -329,6 +329,39 @@ body {
   animation: sway6 8.5s ease-in-out infinite;
 }
 
+/* Bubble surfacing — bubbles rise from below like they're floating up through
+   water to the surface. Each bubble gets a unique delay so they arrive at
+   slightly different moments, just like real bubbles. */
+@keyframes bubbleSurface {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.03);
+  }
+  80% {
+    transform: translateY(3px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.bubble.surfacing {
+  animation-name: bubbleSurface !important;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: backwards;
+  animation-duration: 0.6s;
+}
+.bubble-pipeline.surfacing  { animation-delay: 0.04s !important; }
+.bubble-revenue.surfacing   { animation-delay: 0.14s !important; }
+.bubble-customers.surfacing { animation-delay: 0.09s !important; }
+.bubble-operations.surfacing { animation-delay: 0.22s !important; }
+.bubble-talent.surfacing    { animation-delay: 0.17s !important; }
+.bubble-market.surfacing    { animation-delay: 0.28s !important; }
+
 /* Each bubble gets its own unique sway — different direction, speed, amplitude.
    Pipeline bubble used to prefix translateX(-50%) here for centering, but that
    conflicted with the .bubble:hover { transform: scale(1.08) } rule (the hover
@@ -1691,6 +1724,22 @@ const insightData = {
   }
 };
 
+// Replay the bubble-surfacing animation. Removes the class first (forcing
+// a reflow) so the animation restarts every time the bubble screen appears.
+function surfaceBubbles() {
+  const bubbles = document.querySelectorAll('.bubble');
+  bubbles.forEach(b => b.classList.remove('surfacing'));
+  // Force reflow so the browser sees the removal before re-adding.
+  void document.body.offsetHeight;
+  bubbles.forEach(b => b.classList.add('surfacing'));
+  // After the longest animation completes (0.28s delay + 0.6s duration),
+  // remove the class so the idle sway animations can resume cleanly.
+  clearTimeout(surfaceBubbles._timer);
+  surfaceBubbles._timer = setTimeout(() => {
+    bubbles.forEach(b => b.classList.remove('surfacing'));
+  }, 950);
+}
+
 function switchTab(tab) {
   currentView = tab;
   document.getElementById('tab-advise').classList.toggle('active', tab === 'advise');
@@ -1705,6 +1754,8 @@ function switchTab(tab) {
   if (tab === 'advise' && document.getElementById('detail-view').classList.contains('active')) {
     closeBubble();
   }
+  // Every time the advise bubble screen appears, replay the surfacing animation.
+  if (tab === 'advise') surfaceBubbles();
   // Tapping the Save tab always returns to the feed — if a saved card detail
   // view is open, close it. Same "go back to Save" semantics as Advise.
   if (tab === 'save') {
@@ -2018,6 +2069,7 @@ function closeBubble() {
     document.getElementById('bubble-cluster').classList.remove('zooming');
     document.getElementById('bubble-cluster').classList.add('zoomed-out');
     currentBubble = null;
+    surfaceBubbles();
   }, 300);
 }
 
@@ -2335,6 +2387,9 @@ function stopRecording() {
   isRecording = false;
   document.getElementById('mic-btn').classList.remove('recording');
 }
+
+// Initial page load — surface the bubbles.
+surfaceBubbles();
 </script>
 
 </body>
