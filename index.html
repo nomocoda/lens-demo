@@ -475,9 +475,21 @@ body {
 /* Read card — no accent */
 .insight-card.read {}
 
-/* Card text uses rem for accessibility scaling.
-   Two tiers: labels (smaller, uppercase) and body text (larger).
-   Weight alone creates hierarchy: headline bold, context light, means regular. */
+/* CARD TEXT CONTENT CONTRACT
+   ──────────────────────────────
+   Headline:        2 lines max (~12-15 words). Bold. The signal.
+   Context:         6 lines max (~50-60 words). Light. The evidence.
+   Why it matters:  6 lines max (~50-60 words). Regular. The implication.
+
+   These limits are enforced visually via line-clamp AND must be
+   respected at the content-creation layer (Lens persona / intelligence
+   generation). If the headline is concise, context and why-it-matters
+   have room to explain. The headline's brevity sets the budget.
+
+   Font hierarchy: same family (Inter), same size (0.9375rem / 15px),
+   differentiated only by weight: headline 700, context 300, means 400.
+   Labels (RISK, CONTEXT, WHY IT MATTERS) are 0.75rem / 12px / 600.
+   ────────────────────────────── */
 .insight-type {
   font-size: 0.75rem;
   font-weight: 600;
@@ -504,11 +516,21 @@ body {
   color: var(--purple-medium);
   margin-bottom: 4px;
 }
+.insight-context-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .insight-means {
   font-size: 0.9375rem;
   color: var(--purple-dark);
   line-height: 1.5;
   font-weight: 400;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .insight-headline {
   font-size: 0.9375rem;
@@ -516,6 +538,10 @@ body {
   color: var(--purple-dark);
   line-height: 1.5;
   margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .insight-card-footer {
@@ -1482,33 +1508,33 @@ const insightData = {
     cards: [
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Ridgeline Health decision expected by end of April. Data residency is the open blocker.',
-        context: 'Ridgeline is $380K ARR and could be the first enterprise logo. Their CISO wants an on-prem data residency option. The GovCloud deployment shipping in May is positioned as the answer, but the timing is tight.',
-        means: 'This deal carries weight beyond its ARR. Landing it would give the Series C roadshow an enterprise proof point. The gap between what Ridgeline needs and what ships in May could be the difference.'
+        headline: 'Crestline Mutual needs SOC 2 Type II before signing. Audit isn\'t scheduled.',
+        context: 'Crestline is a $290K ARR opportunity in final procurement review. Their compliance team flagged the SOC 2 gap last week. The audit process typically takes 8\u201312 weeks once engaged.',
+        means: 'Without the audit on the calendar, this deal sits in limbo. Crestline has budget approval through Q2 only. The compliance gap could push this into a fiscal year where their budget resets.'
       },
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Meridian Corp went quiet two weeks ago. $220K ARR deal potentially stalling.',
-        context: 'Meridian was moving fast through mid-market discovery and then stopped responding. Competitive pressure from Workato or Tray.io is the suspected cause. No contact from the account in 14 days.',
-        means: 'Two weeks of silence in a deal that was previously active is a pattern worth watching. The sales team might have context on whether this is a timing issue or a competitive loss in progress.'
+        headline: 'Vanguard Logistics went silent 10 days ago. Deal may be stalling.',
+        context: 'Vanguard is a $175K mid-market deal that was in active evaluation. The primary contact hasn\'t replied to three follow-ups. LinkedIn shows a title change two weeks ago.',
+        means: 'Losing a champion mid-deal often stalls the process by 4\u20136 weeks while a new sponsor is found. The AE may need to re-engage at a higher level before momentum fades completely.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Q2 pipeline coverage is sitting at 2.1x against a $1.4M target.',
-        context: '$2.94M in weighted pipeline against the $1.4M Q2 new ARR target. Industry benchmark for this stage is 3-4x coverage. $420K is already in contract stage. The remaining $980K gap includes Ridgeline ($380K) as the marquee deal.',
-        means: 'Coverage is below the typical comfort zone for a quarter this early. That said, $420K already committed means the gap is $980K with five months of pipeline-building runway. The concentration in two large deals (Ridgeline and Meridian) adds variance.'
+        headline: 'Q2 pipeline sits at 2.3x coverage. Benchmark is 3x at this point.',
+        context: '$3.2M weighted pipeline against a $1.4M target. Two deals over $250K make up 40% of the total. Three new mid-market opportunities entered discovery this week.',
+        means: 'Coverage is thin but improving. The concentration in two large deals adds variance. The new mid-market entries could diversify the pipeline if they convert to proposals within the next three weeks.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: false,
-        headline: 'Apex Partners is in discovery stage. Strong ICP fit at $160K ARR.',
-        context: 'Mid-market consulting firm, $160K potential ARR. Early in the sales cycle but the use case aligns well with the core workflow automation value prop. No known blockers yet.',
-        means: 'Apex fits the mid-market sweet spot where Atlas closes fastest. If the discovery call confirms the fit, this could be a cleaner path to Q2 pipeline coverage than the two enterprise deals carrying most of the weight right now.'
+        headline: 'Helios Group entered discovery. Strong ICP fit at $140K ARR.',
+        context: 'Helios is a 200-person consulting firm using three separate tools for the workflows Atlas consolidates. Their ops lead attended last month\'s webinar and requested a demo.',
+        means: 'Inbound from content tends to close 30% faster than outbound in this segment. The multi-tool pain point aligns with Atlas\'s core value prop and simplifies the business case.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'Mid-market deal cycles are lengthening. This quarter is no exception.',
-        context: 'The mid-market segment represents 54% of ARR and has been the growth engine. But average deal cycle has extended over the past two quarters. The two largest mid-market deals in the current pipeline are both stalling.',
-        means: 'Longer cycles in the core segment could affect the pace of net new ARR for the rest of the year. The $20M exit-rate target the board expects by December depends on mid-market continuing to convert at pace.'
+        headline: 'Average deal cycle extended to 68 days. Up from 52 days two quarters ago.',
+        context: 'Mid-market cycles are stretching across the board. Procurement teams are adding review steps and requesting more references. Three active deals have been in legal review for over two weeks.',
+        means: 'Longer cycles compress the time available to hit quarterly targets. Deals entering the pipeline today are less likely to close within the same quarter, which affects forecasting accuracy.'
       }
     ]
   },
@@ -1518,27 +1544,27 @@ const insightData = {
     cards: [
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'ARR hit $14.2M exiting Q1. Growth is 45% YoY, down from 62% last year.',
-        context: 'Q1 closed with $980K in new ARR against a $1.1M target, landing at 89% of plan. Churned ARR was $340K, including Beacon Logistics at $72K. Net new for the quarter: $640K.',
-        means: 'The growth rate is healthy in absolute terms but the deceleration is visible. Getting from $14.2M to the $20M exit-rate target means adding $1.45M per quarter for the rest of the year. Atlas has never added more than $1.1M in a single quarter.'
+        headline: 'ARR reached $13.8M. Growth is 42% YoY, down from 58%.',
+        context: 'Q1 added $920K in new ARR against a $1.1M plan, landing at 84%. Churn was $280K, including one mid-market account that cited feature gaps. Net new for Q1: $640K.',
+        means: 'The deceleration is gradual but consistent. Reaching the $18M year-end target requires $1.05M net new per quarter. Q1 fell short of that pace by $410K.'
       },
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Net revenue retention dropped to 112%. Down from 118% two quarters ago.',
-        context: 'NRR has been declining steadily. The $340K in Q1 churn included Beacon Logistics, which cited missing enterprise features (custom RBAC, audit log export, API rate-limit controls). Those features are all on the platform rewrite roadmap.',
-        means: 'The Series C process needs NRR above 115% to tell a clean growth story to investors. The features driving churn are the same ones the rewrite is building. The timeline overlap between the rewrite (June beta) and the fundraising roadshow could be the critical dependency.'
+        headline: 'Net revenue retention fell to 109%. Below the 115% investor threshold.',
+        context: 'NRR declined for the third straight quarter. Expansion revenue is healthy but churn is offsetting it. Two of the three churned accounts cited the same missing integration.',
+        means: 'NRR below 115% weakens the growth narrative for fundraising. The pattern in churn reasons suggests a specific product gap rather than a broad satisfaction issue, which makes it addressable.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Professional services revenue is dragging gross margin below the 80% target.',
-        context: 'Gross margin came in at 77.8% for Q1. The target is 80%. Professional services generated $1.1M TTM at 22% margins, pulling the blended number down. Subscription margins alone are healthy.',
-        means: 'This is a mix issue, not a core business issue. The question is whether professional services revenue scales down as the product matures or whether enterprise deals (like Ridgeline) will bring more of it.'
+        headline: 'Gross margin is 76.4%. Services revenue is pulling the blend down.',
+        context: 'Subscription margins are 88%. Professional services margins are 19%. Services grew 40% last quarter as enterprise deals brought implementation work. The blended target is 80%.',
+        means: 'This is a mix problem, not a margin problem. As the product matures and requires less hands-on setup, the services share should shrink. Enterprise growth could slow that transition.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: false,
-        headline: 'LTV:CAC ratio is 3.4x. Still healthy, but trending from 4.2x a year ago.',
-        context: 'CAC rose to $18,200 from $14,800. LTV held steady at $62,000. Payback period extended to 14 months from 11. The marketing team attributes the CAC increase to rising paid channel costs.',
-        means: 'The ratio is within the healthy range but the direction matters more than the snapshot. A shift from paid to content and community, as the marketing team is proposing, could stabilize CAC without sacrificing pipeline volume.'
+        headline: 'Payback period shortened to 11 months. Best in four quarters.',
+        context: 'CAC dropped to $16,400 as content-led inbound grew to 35% of pipeline. LTV held at $58,000. The marketing team\'s channel shift is showing early results.',
+        means: 'Improving unit economics during a growth slowdown is a strong signal. If inbound continues to scale, the company can grow pipeline without proportionally increasing spend.'
       }
     ]
   },
@@ -1548,27 +1574,27 @@ const insightData = {
     cards: [
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Prism Analytics usage dropped 30% and their champion left. Renewal is in 34 days.',
-        context: 'Prism is $165K ARR. Their VP Ops, who was the internal champion, departed in March. No new champion identified. Usage has declined steadily since. Renewal date is May 16.',
-        means: 'A $165K renewal with declining usage and no internal champion is a familiar pattern. The customer success team might have context from recent conversations that could clarify whether this is recoverable or whether the account is already in quiet churn.'
+        headline: 'Northstar Labs usage dropped 35%. Their champion left last month.',
+        context: 'Northstar is $145K ARR renewing in 30 days. The VP Ops who drove adoption departed in March. No replacement has been named. Weekly active users fell from 82 to 53.',
+        means: 'Declining usage plus no internal advocate is the most common pre-churn pattern. The renewal conversation needs a new executive sponsor before the auto-renewal window closes.'
       },
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Tidewater Insurance onboarding took 14 weeks. Seat activation is at 40%.',
-        context: 'Tidewater is a $310K enterprise account that signed 6 months ago. Target onboarding was 6 weeks. They are generating 3x the support ticket volume of any other account, mostly onboarding-related issues.',
-        means: 'The gap between the ticket the account is supposed to be at and where it actually is could affect both the retention story and the support team\'s capacity. A rescue plan is in flight, and its outcome could set the template for future enterprise onboarding.'
+        headline: 'Redwood Financial onboarding is at week 11. Target was 5 weeks.',
+        context: 'Redwood is $240K ARR. Only 38% of licensed seats are active. Their team is filing 4x the support tickets of any other account, mostly around data migration issues.',
+        means: 'Extended onboarding erodes the customer\'s confidence in time-to-value. The support burden is also affecting response times for other accounts. A dedicated onboarding sprint could address both.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Ironclad Construction uses Atlas for procurement only. HR team has expressed interest.',
-        context: 'Ironclad is $115K ARR on procurement workflows alone. Their HR team reached out about Atlas for employee onboarding and time-off workflows. No formal expansion conversation has started.',
-        means: 'Organic expansion interest from a different department is one of the strongest signals of product fit. If the HR use case lands, Ironclad could move from a single-department account to a multi-department one without a traditional sales cycle.'
+        headline: 'Granite Partners wants to add Atlas to their finance team.',
+        context: 'Granite is $95K ARR on HR workflows. Their CFO reached out about expense approval and vendor management. No formal expansion deal is open yet.',
+        means: 'Unprompted cross-department interest is a strong product-fit signal. Expansion within existing accounts typically closes in half the time of new logos and carries near-zero acquisition cost.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'NPS dropped from 46 to 38 over six months. Enterprise segment is the weakest at 28.',
-        context: 'SMB NPS is 42, mid-market is 36, enterprise is 28. The overall decline lines up with the support capacity constraints and the Tidewater onboarding issues. Trial-to-paid conversion also slipped from 9.7% to 8.2%.',
-        means: 'The NPS decline is broad enough to suggest a systemic issue rather than a single-account problem. The segment breakdown could point to where the product experience is diverging from expectations, especially as Atlas moves upmarket.'
+        headline: 'NPS fell from 44 to 36. Enterprise accounts scored lowest at 26.',
+        context: 'Mid-market NPS is 38, SMB is 41. The decline tracks with longer support response times and recent onboarding delays. Trial-to-paid conversion also dipped from 9.2% to 7.8%.',
+        means: 'The drop is broad enough to suggest a systemic experience gap rather than isolated incidents. The enterprise segment may be feeling the most friction as the product scales upmarket.'
       }
     ]
   },
@@ -1578,27 +1604,27 @@ const insightData = {
     cards: [
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Engineering velocity up 22% since switching to weekly sprints. Defect rate dropped too.',
-        context: 'Six weeks into the new weekly sprint cadence, story points per developer rose from 14 to 17. Bug count per sprint also moved in the right direction. Most teams that change cadence trade speed for quality or vice versa.',
-        means: 'Pulling both metrics forward at the same time is rare, and not accidental. Six weeks of data is enough to suggest this could be a real pattern, not just an adjustment period. The next few sprints could confirm whether this pace holds at the current team size.'
+        headline: 'Deploy frequency doubled after switching to trunk-based development.',
+        context: 'The team moved from feature branches to trunk-based flow six weeks ago. Daily deploys went from 1.8 to 3.6. Rollback rate stayed flat at 4%. Cycle time from merge to production dropped 40%.',
+        means: 'Faster deploys without more rollbacks suggests the change is working. Six weeks of data is enough to call this a pattern, not an anomaly. The next test is whether it holds during the Q2 feature push.'
       },
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Support CSAT dropped to 82%. Target is 90%. Ticket volume is up 28% with no new hires.',
-        context: 'Three support agents are handling 28% more tickets quarter-over-quarter. Median first-response time is 4.2 hours against a 2-hour target. Tidewater Insurance alone is generating 3x the ticket volume of any other account.',
-        means: 'The CSAT decline has a clear capacity driver. The question is whether adding headcount solves it or whether the Tidewater root cause needs to be addressed first. Both could be true simultaneously.'
+        headline: 'Support response time hit 4.8 hours. SLA target is 2 hours.',
+        context: 'Three agents are handling 32% more tickets than last quarter. CSAT dropped to 79% against a 90% target. One account alone generates 25% of total ticket volume.',
+        means: 'The bottleneck is capacity, not competence. Adding one agent would bring response times back to target. The concentrated ticket source also suggests an upstream product issue worth investigating.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Platform rewrite is 62% complete. June 15 beta target is tight but on track.',
-        context: 'The remaining heavy lifts are the auth module, billing integration, and migration tooling. The rewrite is the prerequisite for most enterprise features that drove Beacon\'s churn and that Ridgeline needs. CI pipeline has slowed to 38 minutes from 22.',
-        means: 'This timeline connects to multiple other threads: the enterprise feature gap, the Series C story, and the Atlas Assist demo on May 1. The auth module has zero test coverage, which the backend team flagged in the last retro.'
+        headline: 'Platform rewrite passed 65%. On track for June beta.',
+        context: 'Auth module and billing integration remain. Both are complex but well-scoped. CI pipeline slowed to 34 minutes, up from 20. The rewrite unlocks the enterprise features driving churn.',
+        means: 'The timeline connects to the enterprise feature gap, the retention trend, and the fundraising narrative. CI slowdown is a drag on velocity but not yet a blocker.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'AWS spend is $47K per month, up 18% quarter-over-quarter.',
-        context: 'The increase comes from running the old monolith and the new microservices architecture in parallel during the rewrite. The rewrite should reduce costs long-term, but short-term spend is elevated.',
-        means: 'This is expected infrastructure cost during a migration. The trend reverses once the old system is retired post-beta. Worth tracking against the $620K monthly burn rate, where infrastructure is a growing component.'
+        headline: 'Cloud spend is $52K/month. Up 22% from running two architectures.',
+        context: 'The old monolith and new services run in parallel during migration. Post-migration savings are estimated at 30%. Current spend is 8.4% of the monthly burn rate.',
+        means: 'This is expected during a migration and reverses once the legacy system retires. Worth monitoring but not yet cause for action.'
       }
     ]
   },
@@ -1608,27 +1634,27 @@ const insightData = {
     cards: [
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'VP Engineering role is open with no search started. The interim structure is showing strain.',
-        context: 'Three weeks since the departure. Two interim leads are covering: one on backend (4 reports), one on frontend (3 reports). Both are strong ICs promoted into management for the first time. Neither has said they want the role permanently. The people ops team is waiting on direction.',
-        means: 'The ambiguity itself is the risk. The longer the decision takes, the more the interim leads carry a load they didn\'t sign up for. The engineering pulse survey already showed a drop in "confidence in leadership" scores.'
+        headline: 'Head of Product role open for five weeks. No shortlist yet.',
+        context: 'The role has been posted but the recruiting team is waiting on a finalized job spec. Two internal candidates have expressed interest informally. The product team is operating without a single decision-maker.',
+        means: 'Five weeks without a shortlist means the process hasn\'t truly started. The longer the gap, the more product decisions get deferred or made by committee, which slows roadmap execution.'
       },
       {
         type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'A key staff-level engineer is being actively recruited by a competitor.',
-        context: 'The highest-IC engineer on the team is taking calls from a well-known tech company. This person is critical to the platform rewrite. The engineering leadership is aware but hasn\'t escalated the situation yet.',
-        means: 'The rewrite timeline depends on a small number of people. Losing one of the most critical contributors during the most critical stretch could cascade in ways that affect the June beta, the enterprise feature gap, and the Series C story.'
+        headline: 'A senior backend engineer is interviewing elsewhere. They lead the rewrite.',
+        context: 'This engineer owns the most complex modules in the platform rewrite. Their manager is aware but hasn\'t discussed retention options. The engineer cited growth concerns in their last 1:1.',
+        means: 'Losing this person would directly impact the June beta timeline. The stated concern is growth, not compensation, which suggests a path forward if addressed promptly.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Three senior engineers at a top competitor just signaled availability on LinkedIn.',
-        context: 'The profiles updated within the same week, suggesting something may have shifted at that company. Atlas has a VP Engineering opening and a senior engineer requisition. The recruiting window for passive candidates is typically narrow.',
-        means: 'The timing is interesting. Atlas is hiring for exactly the roles these profiles match, and competitor talent availability doesn\'t stay open long. The people ops and engineering teams could have context on whether any of these candidates were previously in the pipeline.'
+        headline: 'Two strong engineers became available after a competitor layoff.',
+        context: 'A Series B competitor laid off 15% of staff last week. Two of the affected engineers have relevant domain experience and are actively interviewing. The recruiting window is typically 2\u20133 weeks.',
+        means: 'The timing aligns with open requisitions. Competitor layoffs create brief windows where high-quality candidates are reachable. Speed matters more than process perfection here.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'Three engineers opted into the interview panel this month. That\'s an unusual engagement signal.',
-        context: 'Voluntary interview panel signups averaged 0.5 per month over the past six months. Three in a single month is a significant jump. Two cited mentorship and curiosity about the hiring process as motivations.',
-        means: 'This kind of voluntary participation tends to correlate with team health and investment in the company\'s future. It\'s a small data point, but a positive one during a period where other engagement signals have been mixed.'
+        headline: 'Four engineers volunteered for interviews this month. That\'s unusual.',
+        context: 'The average has been one volunteer per month over the past year. Two cited mentorship as their motivation. One is a recent hire who wants to help shape the team.',
+        means: 'Voluntary participation in hiring correlates with team investment and morale. It\'s a small signal but a positive one during a stretch where other engagement indicators are flat.'
       }
     ]
   },
@@ -1638,21 +1664,21 @@ const insightData = {
     cards: [
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'FlowStack shipped their AI copilot feature three weeks ago. It\'s getting press.',
-        context: 'FlowStack Copilot launched to notable coverage. Atlas Assist (the internal AI copilot) demos internally on May 1. The SaaStr panel on "Workflow Automation in the AI Era" is June 10, where the topic will be front and center.',
-        means: 'The window to be first is closed. The window to be best is still open for roughly six months. The May 1 demo and the June panel are two moments where the Atlas Assist positioning could take shape publicly.'
+        headline: 'Rival launched an AI workflow feature. Early reviews are mixed.',
+        context: 'The feature went live two weeks ago with significant press coverage. User feedback highlights speed but flags accuracy issues. Atlas\'s equivalent feature demos internally May 1.',
+        means: 'Being second to market removes the pressure to ship fast and adds pressure to ship well. The accuracy complaints create a positioning opportunity around reliability.'
       },
       {
         type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Mid-market SaaS buyers cut their tool count by 12% in the past year.',
-        context: 'The consolidation trend is accelerating across the mid-market. Buyers are reducing vendors and scrutinizing new purchases more carefully. Atlas benefits from this (it replaces multiple tools) and faces headwinds from it (procurement cycles are longer).',
-        means: 'This is a dual-edged pattern. The consolidation narrative strengthens Atlas\'s positioning as a replacement for fragmented workflows. But it also explains why mid-market deal cycles are lengthening, which shows up in the pipeline data.'
+        headline: 'Mid-market buyers cut tool count 14% this year. Consolidation is rising.',
+        context: 'Procurement teams are reducing vendors and extending evaluation cycles. Atlas benefits as a consolidation play but faces longer sales cycles as a result.',
+        means: 'The consolidation narrative is a positioning advantage. It also explains the lengthening deal cycles showing up in pipeline data. Messaging should lean into the replacement angle.'
       },
       {
         type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'FlowStack is pricing 20% above Atlas at mid-tier and discounting aggressively to win deals.',
-        context: 'FlowStack\'s list pricing is higher but they\'re offering significant discounts in competitive situations. This suggests they\'re prioritizing market share over margin in the near term. Atlas\'s pricing has been stable.',
-        means: 'Price stability is a positioning advantage when a competitor is discounting erratically. Customers who sign at a steep discount often face a price correction at renewal, which creates an opening for Atlas in those accounts 12-18 months from now.'
+        headline: 'Top competitor raised prices 18% with no new features to justify it.',
+        context: 'The price increase applies to new customers and renewals starting next quarter. Early signals suggest customer frustration. Atlas pricing has been stable for 12 months.',
+        means: 'Price stability becomes a differentiator when a competitor raises prices without added value. Renewal-season outreach to their customers could generate inbound interest over the next two quarters.'
       }
     ]
   }
@@ -1756,7 +1782,7 @@ function openSavedCard(i) {
   detailCard.innerHTML = `
     <div class="insight-type">${card.typeLabel}</div>
     <div class="insight-headline">${card.headline}</div>
-    <div class="insight-context"><div class="insight-context-label">Context</div>${card.context}</div>
+    <div class="insight-context"><div class="insight-context-label">Context</div><div class="insight-context-text">${card.context}</div></div>
     <div class="insight-means-label">Why it matters</div>
     <div class="insight-means">${card.means}</div>
   `;
@@ -1911,7 +1937,7 @@ function renderAdviseCarousel() {
       <div class="insight-card-body">
         <div class="insight-type">${card.typeLabel}</div>
         <div class="insight-headline">${card.headline}</div>
-        <div class="insight-context"><div class="insight-context-label">Context</div>${card.context}</div>
+        <div class="insight-context"><div class="insight-context-label">Context</div><div class="insight-context-text">${card.context}</div></div>
         <div class="insight-means-label">Why it matters</div>
         <div class="insight-means">${card.means}</div>
       </div>
