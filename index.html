@@ -454,9 +454,7 @@ body {
 }
 .insight-card::before { display: none; }
 
-/* Unread card — purple accent line on the outside left edge, straight only.
-   Uses a wrapper approach: the line is inside the card's padding zone at left:0
-   but visually reads as an exterior accent since the card has 24px padding. */
+/* Unread card — straight purple accent line, no corner curve */
 .insight-card.unread {
   position: relative;
 }
@@ -464,8 +462,8 @@ body {
   content: '';
   position: absolute;
   left: 0;
-  top: 20px;
-  bottom: 20px;
+  top: 18px;
+  bottom: 18px;
   width: 3px;
   background: var(--purple);
   border-radius: 2px;
@@ -1973,35 +1971,9 @@ function closeBubble() {
   document.getElementById('signal-universe').style.display = '';
   document.querySelector('.edge-fade').style.display = '';
   setTimeout(() => {
-    const cluster = document.getElementById('bubble-cluster');
-    // Reset transform-origin so bubbles return to exact CSS positions
-    cluster.style.transformOrigin = '50% 50%';
-    cluster.classList.remove('zooming');
-    cluster.classList.add('zoomed-out');
+    document.getElementById('bubble-cluster').classList.remove('zooming');
+    document.getElementById('bubble-cluster').classList.add('zoomed-out');
     currentBubble = null;
-
-    // Surfacing animation — bubbles rise up like they're breaking the water surface
-    const bubbles = cluster.querySelectorAll('.bubble');
-    bubbles.forEach((b, i) => {
-      b.style.transition = 'none';
-      b.style.opacity = '0';
-      b.style.transform = 'translateY(40px) scale(0.7)';
-    });
-    // Stagger each bubble surfacing — quick bloop bloop bloop
-    bubbles.forEach((b, i) => {
-      setTimeout(() => {
-        b.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease-out';
-        b.style.opacity = '1';
-        b.style.transform = 'translate(0, 0)';
-        // After the surface animation completes, clear inline styles
-        // so the CSS sway animations take back over cleanly
-        setTimeout(() => {
-          b.style.transition = '';
-          b.style.opacity = '';
-          b.style.transform = '';
-        }, 450);
-      }, 80 * i);
-    });
   }, 300);
 }
 
