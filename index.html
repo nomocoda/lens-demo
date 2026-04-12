@@ -163,21 +163,22 @@ body {
 }
 .advise-toggle {
   display: flex;
-  justify-content: center;
-  gap: 28px;
   margin-top: 10px;
   position: relative;
+  padding: 0 20px;
 }
 .advise-toggle-btn {
-  font-size: 0.875rem;
+  flex: 1;
+  font-size: 0.9375rem;
   font-weight: 500;
   color: var(--gray-text);
   cursor: pointer;
-  padding: 4px 0 8px;
+  padding: 10px 0 12px;
   background: none;
   border: none;
   transition: color 0.3s ease;
   position: relative;
+  text-align: center;
 }
 .advise-toggle-btn.active {
   color: var(--purple-dark);
@@ -197,29 +198,38 @@ body {
    CATEGORY ROWS — full-width list items
    ============================ */
 .category-list {
-  padding: 8px 16px 16px;
+  padding: 10px 16px 16px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 10px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-height: 0;
 }
 .category-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 16px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(108, 92, 231, 0.1);
-  border-radius: 14px;
+  padding: 20px 22px;
+  background: var(--glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
+  border-left: 3px solid var(--purple);
 }
 .category-row:active {
   background: rgba(108, 92, 231, 0.04);
+  transform: scale(0.98);
 }
 .category-row-text {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 .category-row-name {
   font-size: 0.9375rem;
@@ -2191,7 +2201,10 @@ function toggleMic() {
 async function startRecording() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
+                   : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4'
+                   : '';
+    mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
     audioChunks = [];
 
     mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
@@ -2208,7 +2221,8 @@ async function startRecording() {
 
       try {
         const form = new FormData();
-        form.append('audio', blob, 'voice.webm');
+        const ext = blob.type.includes('mp4') ? 'mp4' : blob.type.includes('webm') ? 'webm' : 'wav';
+        form.append('audio', blob, `voice.${ext}`);
 
         const res = await fetch(WORKER_URL + '/transcribe', { method: 'POST', body: form });
 
