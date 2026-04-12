@@ -376,6 +376,7 @@ body {
   transition: opacity 0.5s ease;
   display: flex;
   flex-direction: column;
+  background: var(--purple-wash);
 }
 .detail-view.active { opacity: 1; pointer-events: auto; }
 
@@ -1824,6 +1825,8 @@ function openBubble(name, bubbleEl) {
   renderAdviseCarousel();
   cluster.classList.remove('zoomed-out');
   cluster.classList.add('zooming');
+  document.getElementById('signal-universe').style.display = 'none';
+  document.querySelector('.edge-fade').style.display = 'none';
   setTimeout(() => document.getElementById('detail-view').classList.add('active'), 400);
   updateCarousel();
 }
@@ -1915,6 +1918,8 @@ function getVisibleAdviseCount(bubble) {
 
 function closeBubble() {
   document.getElementById('detail-view').classList.remove('active');
+  document.getElementById('signal-universe').style.display = '';
+  document.querySelector('.edge-fade').style.display = '';
   setTimeout(() => {
     document.getElementById('bubble-cluster').classList.remove('zooming');
     document.getElementById('bubble-cluster').classList.add('zoomed-out');
