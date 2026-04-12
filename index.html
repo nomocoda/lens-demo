@@ -255,7 +255,7 @@ body {
     0 8px 32px rgba(108, 92, 231, 0.06);
 }
 .bubble-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--purple-core);
   letter-spacing: 0.3px;
@@ -291,37 +291,37 @@ body {
   display: none;
 }
 
-/* Individual bubble positions — tight cluster, all visible in one glance.
-   Largest bubble (most insights) gets center gravity. Sizes reflect
-   card count: Pipeline (5) largest, then Customers/Talent (4), then rest (3). */
+/* Individual bubble positions — uniform size, tight cluster.
+   All bubbles are the same diameter for visual consistency.
+   Two rows of two flanking a center bubble, one anchoring bottom. */
 .bubble-pipeline {
-  width: 88px; height: 88px;
-  top: 32%; left: calc(50% - 44px);
+  width: 86px; height: 86px;
+  top: 30%; left: calc(50% - 43px);
   animation: sway1 7s ease-in-out infinite;
 }
 .bubble-revenue {
-  width: 72px; height: 72px;
-  top: 16%; left: 24%;
+  width: 86px; height: 86px;
+  top: 12%; left: 18%;
   animation: sway2 9s ease-in-out infinite;
 }
 .bubble-customers {
-  width: 78px; height: 78px;
-  top: 16%; right: 20%;
+  width: 86px; height: 86px;
+  top: 12%; right: 18%;
   animation: sway3 8s ease-in-out infinite;
 }
 .bubble-operations {
-  width: 68px; height: 68px;
-  top: 52%; left: 20%;
+  width: 86px; height: 86px;
+  top: 50%; left: 16%;
   animation: sway4 11s ease-in-out infinite;
 }
 .bubble-talent {
-  width: 76px; height: 76px;
-  top: 54%; right: 18%;
+  width: 86px; height: 86px;
+  top: 50%; right: 16%;
   animation: sway5 10s ease-in-out infinite;
 }
 .bubble-market {
-  width: 66px; height: 66px;
-  top: 70%; left: calc(50% - 33px);
+  width: 86px; height: 86px;
+  top: 68%; left: calc(50% - 43px);
   animation: sway6 8.5s ease-in-out infinite;
 }
 
@@ -1040,15 +1040,16 @@ body {
     background: #FCFCFD;
     padding: 0;
     margin: 0;
-    height: 100vh;
-    height: 100dvh;
+    height: 100%;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
   }
+  html { height: -webkit-fill-available; }
   .phone-frame {
     width: 100%;
     height: 100vh;
     height: 100dvh;
+    height: -webkit-fill-available;
     border-radius: 0;
     box-shadow: none;
     display: flex;
@@ -1062,13 +1063,24 @@ body {
     flex: 1 1 0 !important;
     height: auto !important;
     min-height: 0;
-    padding-top: env(safe-area-inset-top, 0px);
   }
-  /* Bottom tab bar — pinned at bottom, respect the home indicator */
+  /* Bottom tab bar — always visible, above the home indicator */
   .bottom-tab-bar {
     flex-shrink: 0;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 20px);
   }
+  /* Larger text on mobile for readability */
+  .bubble-label { font-size: 13px; }
+  .detail-title { font-size: 24px; }
+  .detail-subtitle { font-size: 13px; }
+  .insight-type-label { font-size: 11px; }
+  .insight-headline { font-size: 20px; }
+  .insight-section-label { font-size: 11px; }
+  .insight-context { font-size: 15px; }
+  .insight-means-label { font-size: 11px; }
+  .insight-means { font-size: 15px; }
+  .message-text { font-size: 15px; }
+  .chat-input { font-size: 16px; }
 }
 
 /* Touch interactivity — make all clickable things work on mobile */
