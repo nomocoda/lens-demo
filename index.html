@@ -451,7 +451,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .insight-card::before { display: none; }
 
@@ -477,6 +477,8 @@ body {
   line-height: 1.5;
   margin-bottom: 14px;
   padding: 10px 0;
+  flex-shrink: 1;
+  overflow: hidden;
 }
 .insight-context-label,
 .insight-means-label {
@@ -492,6 +494,8 @@ body {
   color: var(--purple-dark);
   line-height: 1.5;
   font-weight: 500;
+  flex-shrink: 1;
+  overflow: hidden;
 }
 .insight-headline {
   font-family: 'Playfair Display', serif;
@@ -508,6 +512,7 @@ body {
   margin-top: auto;
   padding-top: 12px;
   position: relative; /* anchor for absolutely-positioned sphere tray */
+  flex-shrink: 0;
 }
 
 /* ============================
