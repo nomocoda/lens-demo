@@ -454,16 +454,16 @@ body {
 }
 .insight-card::before { display: none; }
 
-/* Unread card — purple accent line outside the card, straight only.
-   Sits on the exterior left edge, stops where the border-radius curve begins. */
+/* Unread card — purple accent line on the outside left edge, straight only.
+   Uses a wrapper approach: the line is inside the card's padding zone at left:0
+   but visually reads as an exterior accent since the card has 24px padding. */
 .insight-card.unread {
   position: relative;
-  overflow: visible;
 }
 .insight-card.unread::after {
   content: '';
   position: absolute;
-  left: -3px;
+  left: 0;
   top: 20px;
   bottom: 20px;
   width: 3px;
