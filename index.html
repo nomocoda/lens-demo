@@ -355,6 +355,12 @@ body {
   padding: 0 20px 20px;
 }
 .card-overlay-body::-webkit-scrollbar { width: 0; }
+.card-overlay-body .insight-context-text,
+.card-overlay-body .insight-means {
+  -webkit-line-clamp: unset;
+  display: block;
+  overflow: visible;
+}
 .card-overlay-card {
   background: var(--glass);
   backdrop-filter: blur(16px);
