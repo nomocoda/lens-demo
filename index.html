@@ -241,27 +241,12 @@ body {
   gap: 8px;
   margin-bottom: 6px;
 }
-.feed-card-signal {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--purple);
-}
-.feed-card-dot {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--gray-text);
-  opacity: 0.4;
-}
 .feed-card-category {
   font-size: 0.6875rem;
-  font-weight: 500;
-  color: var(--gray-text);
-  opacity: 0.7;
+  font-weight: 600;
+  color: var(--purple);
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
 }
 .feed-card-headline {
   font-size: 0.9375rem;
@@ -355,12 +340,6 @@ body {
   padding: 0 20px 20px;
 }
 .card-overlay-body::-webkit-scrollbar { width: 0; }
-.card-overlay-body .insight-context-text,
-.card-overlay-body .insight-means {
-  -webkit-line-clamp: unset;
-  display: block;
-  overflow: visible;
-}
 .card-overlay-card {
   background: var(--glass);
   backdrop-filter: blur(16px);
@@ -378,47 +357,13 @@ body {
   border-left: 3px solid var(--purple);
 }
 
-/* CARD TEXT CONTENT — same contract as before */
-.insight-type {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-  color: var(--purple);
-}
-.insight-context {
+/* CARD TEXT CONTENT */
+.insight-body {
   font-size: 0.9375rem;
   font-weight: 300;
   color: var(--gray-text);
-  line-height: 1.5;
-  margin-bottom: 14px;
-  padding: 10px 0;
-}
-.insight-context-label,
-.insight-means-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--purple-medium);
-  margin-bottom: 4px;
-}
-.insight-context-text {
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.insight-means {
-  font-size: 0.9375rem;
-  color: var(--purple-dark);
-  line-height: 1.5;
-  font-weight: 400;
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.6;
+  padding: 6px 0;
 }
 .insight-headline {
   font-size: 0.9375rem;
@@ -693,10 +638,8 @@ body {
   overflow: hidden;
   transition: max-height 0.4s ease;
 }
-/* Collapsed: hide everything after headline */
-.chat-card:not(.expanded) .chat-card-content .insight-context,
-.chat-card:not(.expanded) .chat-card-content .insight-means-label,
-.chat-card:not(.expanded) .chat-card-content .insight-means {
+/* Collapsed: hide body after headline */
+.chat-card:not(.expanded) .chat-card-content .insight-body {
   display: none;
 }
 /* Ellipsis line shown when collapsed */
@@ -1011,8 +954,7 @@ body {
     padding-bottom: env(safe-area-inset-bottom, 20px);
   }
   .insight-headline { font-size: 0.9375rem; }
-  .insight-context { font-size: 0.9375rem; }
-  .insight-means { font-size: 0.9375rem; }
+  .insight-body { font-size: 0.9375rem; }
   .message-text { font-size: 15px; }
   .chat-input { font-size: 16px; }
 }
@@ -1150,34 +1092,24 @@ const insightData = {
     title: 'Pipeline',
     cards: [
       {
-        type: 'risk', typeLabel: 'Risk', isNew: true,
-        headline: 'Crestline Mutual is blocked on SOC 2 Type II. Budget approval expires end of Q2.',
-        context: 'Crestline is a $290K ARR opportunity in final procurement review. Their compliance team flagged the SOC 2 gap last week. The audit process typically takes 8 to 12 weeks once engaged. Budget approval runs through Q2.',
-        means: 'The audit timeline and the budget window are on different clocks. At 8 to 12 weeks for a typical audit, the math is tight against the Q2 budget expiration.'
+        isNew: true,
+        headline: 'Pipeline is thin for Q2. Two deals carry most of the weight.',
+        body: '$3.2M total against a $1.4M target, but two large deals make up 40% of it. Three new opportunities entered discovery this week.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Vanguard Logistics has a new VP Ops who used Atlas at a previous company.',
-        context: 'Vanguard is a $175K mid-market deal that paused during a leadership transition. The new VP Ops started two weeks ago and comes from a company that ran Atlas. The prior evaluation work is still in the system.',
-        means: 'The deal paused for a leadership transition, not a product objection. The new contact has firsthand experience with the platform. Prior evaluation work is still fresh in the CRM.'
+        isNew: true,
+        headline: 'Inbound doubled its share of pipeline in two quarters.',
+        body: 'Content-led inbound went from 18% to 35% of pipeline. Inbound deals in this segment close faster and cost less to acquire.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Q2 pipeline coverage is at 2.3x. Mid-market benchmark is 3x.',
-        context: '$3.2M weighted pipeline against a $1.4M target. Two deals over $250K represent 40% of the weighted total. Three new mid-market opportunities entered discovery this week.',
-        means: 'Coverage is below the 3x mid-market benchmark. 40% of the weighted total is concentrated in two deals. Three new mid-market entries came in this week but are early-stage.'
+        isNew: true,
+        headline: 'Deals are closing slower. The whole market is seeing it.',
+        body: 'Average deal cycle went from 52 days to 68 days. Procurement teams across the industry are adding review steps. Three active deals have sat in legal for over two weeks.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: false,
-        headline: 'Helios Group entered discovery. Inbound from content, $140K ARR.',
-        context: 'Helios is a 200-person consulting firm using three separate tools for the workflows Atlas consolidates. Their ops lead attended last month\'s webinar and requested a demo. Inbound from content historically closes 30% faster than outbound in this segment.',
-        means: 'This is an inbound lead from the content channel, which has a shorter average cycle in this segment. Helios is currently running three tools where Atlas consolidates into one.'
-      },
-      {
-        type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'Average deal cycle is now 68 days. It was 52 days two quarters ago.',
-        context: 'Mid-market procurement teams are adding review steps and requesting more references across the industry. Three active Atlas deals have been in legal review for over two weeks. The trend is not Atlas-specific.',
-        means: 'Longer cycles mean deals entering the pipeline today are less likely to close within the same quarter. Three active deals have sat in legal for over two weeks. This pattern is showing up industry-wide.'
+        isNew: false,
+        headline: 'Two large deals carry 40% of the pipeline.',
+        body: 'Both are in late-stage negotiation with no objections raised recently. The remaining 60% is spread across twelve mid-market opportunities.'
       }
     ]
   },
@@ -1185,28 +1117,24 @@ const insightData = {
     title: 'Revenue',
     cards: [
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Q1 net new ARR landed at $640K. Plan was $1.1M.',
-        context: 'Q1 added $920K in new ARR but churn was $280K, including one mid-market account that cited feature gaps. ARR is now $13.8M. YoY growth is 42%, down from 58% last year. The $18M year-end target requires $1.05M net new per remaining quarter.',
-        means: 'Q1 landed $410K below the quarterly pace needed for the year-end target. Churn accounted for $280K of the gap, with one mid-market account citing a specific feature gap.'
+        isNew: true,
+        headline: 'Existing customers are expanding faster than planned.',
+        body: 'Expansion revenue came in at 125% of plan. The retention gap traces to one account that left over a specific integration, not broad dissatisfaction.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Two of three churned accounts cited the same API integration gap.',
-        context: 'Expansion revenue remains healthy at 125% of plan. NRR is 109%, below the 115% target. The gap traces primarily to one missing integration rather than broad dissatisfaction. GRR is holding at 91%.',
-        means: 'NRR is 6 points below the 115% target. Two-thirds of the churn traces to one integration. Expansion is healthy at 125% of plan, which means the growth engine is working but the retention gap is pulling the net number down.'
+        isNew: true,
+        headline: 'Customer acquisition is the cheapest it\'s been in a year.',
+        body: 'Acquisition cost dropped as more deals came through inbound. The company is earning back each new customer\'s cost in 11 months, down from 14.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Gross margin is 76.4%. Blended target is 80%.',
-        context: 'Subscription margins are 88%. Professional services margins are 19%. Services revenue grew 40% last quarter as enterprise deals brought implementation work. Services now represent a larger share of the revenue mix.',
-        means: 'Subscription margins are healthy at 88%. The blended number is being pulled down by services revenue, which grew 40% with enterprise deals. This is a mix shift, not a margin compression on the core product.'
+        isNew: true,
+        headline: 'Margins dipped. It\'s from services growth, not product.',
+        body: 'Core product margins are healthy at 88%. Services revenue grew 40% with enterprise implementations, which pulled the blended number down.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: false,
-        headline: 'CAC payback shortened to 11 months. Best result in four quarters.',
-        context: 'CAC dropped to $16,400 as content-led inbound grew to 35% of pipeline. LTV held at $58,000. The LTV:CAC ratio is now 3.5:1. The marketing team shifted channel mix toward content six months ago.',
-        means: 'CAC dropped while LTV held steady. Content-led inbound is now 35% of pipeline. The 11-month payback is the best in four quarters and below the 12-month benchmark for this stage.'
+        isNew: false,
+        headline: 'Q1 came in short. Most of the miss traces to one account.',
+        body: 'New revenue was $920K gross, but churn offset $280K. One mid-market account cited a specific feature gap. The year-end target needs about $1M net per remaining quarter.'
       }
     ]
   },
@@ -1214,28 +1142,24 @@ const insightData = {
     title: 'Customers',
     cards: [
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Northstar Labs ($145K ARR) renews in 30 days. Two departments expressed interest last quarter.',
-        context: 'Power-user engagement remains strong. The VP Ops departed but team leads are still active. Two new departments reached out about adding Atlas last quarter. No formal expansion conversation has started yet. The renewal window opens in 30 days.',
-        means: 'The renewal and the expansion interest are landing on the same timeline. The account is $145K ARR with active team leads despite the VP Ops departure.'
+        isNew: true,
+        headline: 'The onboarding redesign is working. Completion jumped to 72%.',
+        body: 'Up from 58% before the Q1 changes. Time to first value shortened from 22 days to 13. The most recent cohort hit 85% seat activation.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Redwood Financial\'s migration surfaced 12 edge cases. They apply to upcoming prospects.',
-        context: 'Redwood ($240K ARR) hit data migration complexity that other enterprise accounts will encounter. The support team documented 12 specific edge cases during the process. Onboarding landed at 85% seat activation.',
-        means: 'The 12 documented edge cases came from a real enterprise migration and map to the same complexity upcoming prospects will face. Seat activation reached 85%, which is above the 70% benchmark for mid-market onboarding.'
+        isNew: true,
+        headline: 'Customer satisfaction bounced back this quarter.',
+        body: 'NPS recovered from 36 to 44. Last quarter\'s drop correlated with slower support and onboarding delays. Both have since improved. Mid-market led the rebound.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Granite Partners ($95K ARR) asked about adding Atlas to finance workflows.',
-        context: 'Granite is on HR workflows today. Their CFO reached out directly about expense approval and vendor management. No formal expansion deal is open. The interest came unprompted through the CFO, not through the existing account team.',
-        means: 'Cross-department interest from within an existing account is one of the stronger product-fit signals. The CFO reached out directly. Granite is currently at $95K ARR on HR workflows alone.'
+        isNew: true,
+        headline: '$360K in renewals are coming up. All three accounts are growing.',
+        body: 'Northstar, Granite, and Ridgeline all renew in the next 45 days. All three added users in new departments last quarter without being asked.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'NPS dropped from 44 to 36 this quarter. Enterprise segment scored 26.',
-        context: 'Mid-market NPS is 38, SMB is 41. The decline correlates with longer support response times (4.8 hours against a 2-hour SLA) and recent onboarding delays. Trial-to-paid conversion also dipped from 9.2% to 7.8%.',
-        means: 'The drop is broad enough to suggest a systemic experience issue, not isolated accounts. Enterprise scored lowest at 26. Support response times and onboarding delays are both moving in the same direction during the same period.'
+        isNew: false,
+        headline: 'Fewer support tickets, but the ones coming in are harder.',
+        body: 'Ticket volume dropped 12%. Resolution time went up. The mix is shifting from how-to questions to deeper integration and configuration issues.'
       }
     ]
   },
@@ -1243,28 +1167,29 @@ const insightData = {
     title: 'Operations',
     cards: [
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Deploy frequency doubled after the trunk-based switch. Rollback rate stayed flat.',
-        context: 'The engineering team moved from feature branches to trunk-based flow six weeks ago. Daily deploys went from 1.8 to 3.6. Rollback rate held at 4%. Cycle time from merge to production dropped 40%.',
-        means: 'Six weeks of data with higher deploy frequency and no increase in rollbacks. Cycle time from merge to production dropped 40%. The rollback rate staying flat at 4% is the key signal here.'
+        isNew: true,
+        headline: 'Engineering is shipping twice as fast with no new errors.',
+        body: 'After changing the development workflow six weeks ago, releases nearly doubled. The error rate stayed flat and turnaround time dropped significantly.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Support SLA is at 4.8 hours against a 2-hour target. One account is driving 25% of volume.',
-        context: 'One account\'s migration issues are generating a quarter of all support tickets. The support team\'s capacity is healthy outside of this concentration. The migration is already underway.',
-        means: 'This is a concentration problem, not a capacity problem. One account is responsible for 25% of ticket volume. The rest of the support queue is running within normal range. The migration causing the spike is in progress.'
+        isNew: true,
+        headline: 'The build process is slower. It\'s a trade-off from the rewrite.',
+        body: 'Build time went from 20 minutes to 34 minutes as the rewrite added more automated testing. Releases are not being blocked.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Platform rewrite is at 65%. Auth and billing modules remain.',
-        context: 'Auth module and billing integration are the remaining pieces. Both are complex but well-scoped. CI pipeline has slowed to 34 minutes, up from 20 minutes before the rewrite began. The rewrite delivers the enterprise features that churned accounts cited as missing.',
-        means: 'Two modules remain, both well-scoped. The CI slowdown (34 min, up from 20) is a drag on cycle time but not blocking deploys. The features this rewrite delivers are the same ones cited by churned accounts.'
+        isNew: true,
+        headline: 'Support response times are back near target.',
+        body: 'Improved from 4.8 hours to 2.4 hours. Last month\'s spike was caused by one account\'s migration. That migration completed and the queue cleared on its own.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'Cloud spend is $52K/month. Running two architectures in parallel adds 22%.',
-        context: 'The old monolith and new microservices run side by side during migration. Current spend is 8.4% of the monthly burn rate. Post-migration estimates put savings at 30% once the legacy system retires.',
-        means: 'The 22% increase is a direct result of running parallel architectures during migration. At 8.4% of monthly burn, it is within the 8-15% benchmark range for this stage. The increase reverses once the legacy system retires.'
+        isNew: true,
+        headline: 'The platform rewrite is at 72% and ahead of schedule.',
+        body: 'Auth module entered review this week, ahead of estimate. Billing integration is next and scoped for three weeks. These are the final two modules.'
+      },
+      {
+        isNew: false,
+        headline: 'Cloud costs are up during migration. It\'s temporary.',
+        body: 'Running two systems in parallel at $52K per month, a 22% increase. The cost normalizes when the old system retires.'
       }
     ]
   },
@@ -1272,28 +1197,19 @@ const insightData = {
     title: 'Talent',
     cards: [
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Two internal candidates for the Head of Product role. Both have cross-functional credibility.',
-        context: 'The role has been open five weeks. Two internal candidates expressed interest early. Both led major product launches. An internal hire could start immediately versus the typical 85-day external timeline for leadership roles.',
-        means: 'The role has been open five weeks with two qualified internal candidates. Both have launched major products and have credibility across teams. Internal hires at this level typically start immediately and retain institutional knowledge.'
+        isNew: true,
+        headline: 'Engineers are volunteering to help hire. That\'s new.',
+        body: 'Four volunteered for candidate interviews this month. The 12-month average was one. Two cited mentorship as their reason.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'The lead engineer on the platform rewrite mentioned growth goals. A new tech lead track exists.',
-        context: 'This engineer mentioned growth goals in their last 1:1. The engineering team approved a tech lead career track last month but hasn\'t discussed it broadly yet. The engineer is highly engaged on the rewrite, which is at 65% completion.',
-        means: 'The tech lead track was approved last month. This engineer\'s stated goals and the track\'s requirements are a close match. The engineer is currently leading the most critical active project.'
+        isNew: true,
+        headline: 'Two key engineers\' goals match the new career track.',
+        body: 'A tech lead track was approved last month. Two engineers on the platform rewrite mentioned growth goals that map directly to it.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'Two engineers with relevant domain experience became available this week.',
-        context: 'A Series B competitor laid off 15% of staff last week. Two of the affected engineers have domain experience that maps to the platform rewrite\'s remaining modules. Both are actively interviewing. The typical window after a layoff is 2 to 3 weeks.',
-        means: 'Both engineers\' backgrounds align with the auth and billing modules still in progress on the rewrite. Open requisitions exist for these skill sets. The recruiting window is typically 2 to 3 weeks post-layoff.'
-      },
-      {
-        type: 'trend', typeLabel: 'Trend', isNew: false,
-        headline: 'Four engineers volunteered for candidate interviews this month. Average is one.',
-        context: 'The monthly average has been one volunteer over the past year. Two cited mentorship as their motivation. One is a recent hire who wants to help shape the team. Engagement survey scores in engineering have been flat.',
-        means: 'Voluntary interview participation is a signal of team investment. Four in one month against a baseline of one is a notable change, especially while other engagement indicators have been flat.'
+        isNew: false,
+        headline: 'Two internal candidates want the Head of Product role.',
+        body: 'The role has been open five weeks. Both candidates led major product launches and have credibility across teams. An internal hire could start immediately.'
       }
     ]
   },
@@ -1301,22 +1217,19 @@ const insightData = {
     title: 'Market',
     cards: [
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'A competitor launched an AI workflow feature two weeks ago. Early reviews flag accuracy issues.',
-        context: 'The launch had significant press coverage. User feedback highlights speed but flags accuracy problems. Atlas\'s equivalent feature is scheduled for internal demo on May 1.',
-        means: 'Atlas is second to market on this feature. The competitor shipped first but early user feedback is raising accuracy concerns. Atlas\'s internal demo is scheduled for May 1.'
+        isNew: true,
+        headline: 'Buyers are cutting vendors. Atlas fits the pattern.',
+        body: 'Mid-market buyers reduced their tool count by 14% this year. Atlas replaces multiple point solutions, which positions it within this consolidation trend.'
       },
       {
-        type: 'trend', typeLabel: 'Trend', isNew: true,
-        headline: 'Mid-market buyers reduced their tool count by 14% this year.',
-        context: 'Procurement teams are consolidating vendors and extending evaluation cycles across the mid-market segment. Atlas replaces multiple point solutions, which aligns with this trend. Deal cycles are lengthening as a result of more thorough evaluations.',
-        means: 'Atlas fits the consolidation pattern as a multi-tool replacement. The same trend is contributing to the longer deal cycles showing up in pipeline data. Fewer vendors per company, but longer evaluations to get there.'
+        isNew: true,
+        headline: 'A competitor raised prices 18%.',
+        body: 'The increase applies to new customers and renewals starting next quarter. Early signals from review sites suggest frustration. Atlas pricing has been stable for 12 months.'
       },
       {
-        type: 'opportunity', typeLabel: 'Opportunity', isNew: true,
-        headline: 'A top competitor raised prices 18% with no new features added.',
-        context: 'The increase applies to new customers and renewals starting next quarter. Early signals from review sites and community forums suggest customer frustration. Atlas pricing has been stable for 12 months.',
-        means: 'Atlas has held pricing stable for 12 months. The competitor\'s increase starts hitting renewals next quarter. Early community signals show frustration on their side.'
+        isNew: false,
+        headline: 'A competitor\'s new AI feature launched. Early reviews are mixed.',
+        body: 'User reviews highlight speed but flag accuracy concerns. Atlas\'s equivalent feature is in development with a demo scheduled for early May.'
       }
     ]
   }
@@ -1378,12 +1291,10 @@ function renderCardFeed() {
     return `
       <div class="feed-card ${readState}" data-bubble="${bubble}" data-index="${origIdx}" onclick="openCardOverlay('${bubble}', ${origIdx})" ${hidden}>
         <div class="feed-card-header">
-          <span class="feed-card-signal">${card.typeLabel}</span>
-          <span class="feed-card-dot"></span>
           <span class="feed-card-category">${catTitle}</span>
         </div>
         <div class="feed-card-headline">${card.headline}</div>
-        <div class="feed-card-preview">${card.context}</div>
+        <div class="feed-card-preview">${card.body}</div>
       </div>`;
   }).join('');
 }
@@ -1423,11 +1334,8 @@ function openCardOverlay(bubble, origIdx) {
   overlayCard.className = `card-overlay-card ${readState}`;
   overlayCard.innerHTML = `
     <div class="insight-card-body">
-      <div class="insight-type">${card.typeLabel}</div>
       <div class="insight-headline">${card.headline}</div>
-      <div class="insight-context"><div class="insight-context-label">Context</div><div class="insight-context-text">${card.context}</div></div>
-      <div class="insight-means-label">Why it matters</div>
-      <div class="insight-means">${card.means}</div>
+      <div class="insight-body">${card.body}</div>
     </div>
     <div class="insight-card-footer">
       <div class="insight-sphere-wrap">
@@ -1520,12 +1428,10 @@ function renderSaveFeed() {
     return `
       <div class="saved-card" onclick="openSavedCard(${i})">
         <div class="feed-card-header">
-          <span class="feed-card-signal">${card.typeLabel}</span>
-          <span class="feed-card-dot"></span>
           <span class="feed-card-category">${catTitle}</span>
         </div>
         <div class="feed-card-headline">${card.headline}</div>
-        <div class="feed-card-preview">${card.context}</div>
+        <div class="feed-card-preview">${card.body}</div>
         <div class="saved-card-meta">Created ${entry.createdAt}</div>
       </div>
     `;
@@ -1544,11 +1450,8 @@ function openSavedCard(i) {
   detailCard.className = 'save-detail-card';
   detailCard.innerHTML = `
     <div class="insight-card-body">
-      <div class="insight-type">${card.typeLabel}</div>
       <div class="insight-headline">${card.headline}</div>
-      <div class="insight-context"><div class="insight-context-label">Context</div><div class="insight-context-text">${card.context}</div></div>
-      <div class="insight-means-label">Why it matters</div>
-      <div class="insight-means">${card.means}</div>
+      <div class="insight-body">${card.body}</div>
     </div>
     <div class="insight-card-footer">
       <div class="insight-sphere-wrap">
@@ -1784,18 +1687,11 @@ function renderChatCard(card, catTitle) {
     <div class="chat-card" id="chat-card-box">
       <div class="chat-card-content">
         <div class="feed-card-header">
-          <span class="feed-card-signal">${card.typeLabel}</span>
-          <span class="feed-card-dot"></span>
           <span class="feed-card-category">${catTitle}</span>
         </div>
         <div class="insight-headline">${card.headline}</div>
         <div class="chat-card-ellipsis">...</div>
-        <div class="insight-context">
-          <div class="insight-context-label">Context</div>
-          <div class="insight-context-text" style="-webkit-line-clamp:unset;">${card.context}</div>
-        </div>
-        <div class="insight-means-label">Why it matters</div>
-        <div class="insight-means" style="-webkit-line-clamp:unset;">${card.means}</div>
+        <div class="insight-body" style="-webkit-line-clamp:unset;">${card.body}</div>
       </div>
       <div class="chat-card-toggle" onclick="toggleChatCard()" role="button" aria-expanded="false">more</div>
     </div>`;
