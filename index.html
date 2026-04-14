@@ -1584,6 +1584,11 @@ function bridgeToChatFromSave() {
   if (!card) return;
   const catTitle = insightData[entry.sourceBubble]?.title || entry.sourceBubble;
   document.getElementById('chat-messages').innerHTML = renderChatCard(card, catTitle);
+  // Seed chatHistory so the model knows which card the user is looking at
+  chatHistory = [
+    { role: 'user', content: `[Bridged card — ${catTitle}]\nHeadline: ${card.headline}\nBody: ${card.body}` },
+    { role: 'assistant', content: `This is the ${catTitle.toLowerCase()} card you opened. What would you like to explore?` }
+  ];
   switchTab('ask');
   closeAllSpheres();
   document.getElementById('save-detail').classList.remove('active');
