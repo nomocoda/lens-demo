@@ -1716,6 +1716,11 @@ function bridgeToChat() {
   const card = insightData[overlayBubble].cards[overlayIndex];
   const catTitle = insightData[overlayBubble]?.title || overlayBubble;
   document.getElementById('chat-messages').innerHTML = renderChatCard(card, catTitle);
+  // Seed chatHistory so the model knows which card the user is looking at
+  chatHistory = [
+    { role: 'user', content: `[Bridged card — ${catTitle}]\nHeadline: ${card.headline}\nBody: ${card.body}` },
+    { role: 'assistant', content: `This is the ${catTitle.toLowerCase()} card you opened. What would you like to explore?` }
+  ];
   closeCardOverlay();
   switchTab('ask');
 }
