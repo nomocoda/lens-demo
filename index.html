@@ -977,6 +977,110 @@ body {
   .chat-input { font-size: 16px; }
 }
 
+/* ============================
+   SOURCE CITATIONS
+   ============================ */
+.insight-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 0 0;
+  font-size: 0.6875rem;
+  color: var(--gray-text);
+  letter-spacing: 0.1px;
+}
+.insight-sources::before {
+  content: 'Sources';
+  font-weight: 600;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gray-text);
+  opacity: 0.6;
+  margin-right: 4px;
+}
+.source-link {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--purple);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.source-link:hover { opacity: 0.7; }
+.source-dot {
+  font-size: 0.5rem;
+  color: var(--gray-text);
+  opacity: 0.4;
+}
+/* Chat message sources */
+.message-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(108, 92, 231, 0.06);
+  font-size: 0.6875rem;
+  color: var(--gray-text);
+}
+.message-sources::before {
+  content: 'Sources';
+  font-weight: 600;
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gray-text);
+  opacity: 0.6;
+  margin-right: 4px;
+}
+
+/* Demo source tooltip */
+.source-tooltip {
+  position: fixed;
+  z-index: 200;
+  max-width: 240px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(108, 92, 231, 0.15), 0 2px 8px rgba(0,0,0,0.06);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--dark-text);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+.source-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.source-tooltip strong {
+  color: var(--purple);
+  font-weight: 600;
+}
+/* Caret pointing up at the source link */
+.source-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: var(--caret-left, 50%);
+  transform: translateX(-50%);
+  width: 12px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.97);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  border: none;
+}
+
 /* Touch interactivity */
 .bottom-tab, .insight-sphere, .tray-icon,
 .suggestion-chip, .send-btn, .feed-card, .filter-chip,
@@ -1066,6 +1170,9 @@ body {
 
   </div>
 
+  <!-- Demo source tooltip -->
+  <div class="source-tooltip" id="source-tooltip"></div>
+
   <div class="bottom-tab-bar">
     <button class="bottom-tab active" id="tab-advise" onclick="switchTab('advise')" aria-label="Advise">
       <svg viewBox="0 0 24 24">
@@ -1105,22 +1212,26 @@ const insightData = {
       {
         isNew: true,
         headline: 'Two deals account for 40% of Q2 pipeline.',
-        body: 'Total pipeline sits at $3.2M against a $1.4M target, but the top two opportunities carry the bulk. Three new deals entered discovery this week — still early to know if they change the concentration picture.'
+        body: 'Total pipeline sits at $3.2M against a $1.4M target, but the top two opportunities carry the bulk. Three new deals entered discovery this week — still early to know if they change the concentration picture.',
+        sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Active Deals' }]
       },
       {
         isNew: true,
         headline: 'Inbound doubled its share of pipeline since Q4.',
-        body: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals entering through that channel are closing faster and costing less to acquire — though the sample is still one full cycle.'
+        body: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals entering through that channel are closing faster and costing less to acquire — though the sample is still one full cycle.',
+        sources: [{ system: 'HubSpot', record: 'Marketing Attribution' }, { system: 'Salesforce', record: 'Lead Source Report' }]
       },
       {
         isNew: true,
         headline: 'Average deal cycle stretched from 52 to 68 days this quarter.',
-        body: 'Procurement teams across the category are adding review steps, and three active deals have sat in legal for over two weeks. Whether this is a temporary adjustment or a new baseline isn\'t clear yet.'
+        body: 'Procurement teams across the category are adding review steps, and three active deals have sat in legal for over two weeks. Whether this is a temporary adjustment or a new baseline isn\'t clear yet.',
+        sources: [{ system: 'Salesforce', record: 'Deal Velocity Report' }, { system: 'HubSpot', record: 'Deal Stage History' }]
       },
       {
         isNew: false,
         headline: 'Both late-stage deals have been quiet since entering negotiation.',
-        body: 'No objections raised on either. The remaining 60% of pipeline is spread across twelve mid-market opportunities, most of which entered in the last six weeks. A different composition than last quarter.'
+        body: 'No objections raised on either. The remaining 60% of pipeline is spread across twelve mid-market opportunities, most of which entered in the last six weeks. A different composition than last quarter.',
+        sources: [{ system: 'Salesforce', record: 'Negotiation Stage Deals' }, { system: 'Slack', record: '#deal-room' }]
       }
     ]
   },
@@ -1130,22 +1241,26 @@ const insightData = {
       {
         isNew: true,
         headline: 'Expansion revenue came in at 125% of plan this quarter.',
-        body: 'The outperformance is concentrated in existing accounts adding seats and modules. The one account that left cited a specific integration gap — not broad dissatisfaction, though it\'s one data point.'
+        body: 'The outperformance is concentrated in existing accounts adding seats and modules. The one account that left cited a specific integration gap — not broad dissatisfaction, though it\'s one data point.',
+        sources: [{ system: 'QuickBooks', record: 'Q1 Revenue Summary' }, { system: 'Salesforce', record: 'Expansion Deals' }]
       },
       {
         isNew: true,
         headline: 'Customer acquisition cost hit a twelve-month low.',
-        body: 'More deals came through inbound this quarter, which pulled acquisition cost down. The company is earning back each new customer\'s cost in 11 months, down from 14. The trend tracks with the inbound pipeline shift.'
+        body: 'More deals came through inbound this quarter, which pulled acquisition cost down. The company is earning back each new customer\'s cost in 11 months, down from 14. The trend tracks with the inbound pipeline shift.',
+        sources: [{ system: 'QuickBooks', record: 'CAC Analysis' }, { system: 'HubSpot', record: 'Marketing Spend' }]
       },
       {
         isNew: true,
         headline: 'Blended margins dipped. Product margins didn\'t.',
-        body: 'Core product margins held at 88%. Services revenue grew 40% with enterprise implementations, which pulled the blended number down. The services mix is new enough that it\'s worth watching whether it holds.'
+        body: 'Core product margins held at 88%. Services revenue grew 40% with enterprise implementations, which pulled the blended number down. The services mix is new enough that it\'s worth watching whether it holds.',
+        sources: [{ system: 'QuickBooks', record: 'Margin Report' }, { system: 'Salesforce', record: 'Services Revenue' }]
       },
       {
         isNew: false,
         headline: 'Q1 came in short. Most of the miss traces to one account.',
-        body: 'New revenue was $920K gross, but churn offset $280K. The churned account cited a feature gap that\'s now on the roadmap. Hitting the year-end target needs roughly $1M net per remaining quarter.'
+        body: 'New revenue was $920K gross, but churn offset $280K. The churned account cited a feature gap that\'s now on the roadmap. Hitting the year-end target needs roughly $1M net per remaining quarter.',
+        sources: [{ system: 'QuickBooks', record: 'Q1 P&L' }, { system: 'HubSpot', record: 'Churned Accounts' }, { system: 'Salesforce', record: 'Annual Forecast' }]
       }
     ]
   },
@@ -1155,22 +1270,26 @@ const insightData = {
       {
         isNew: true,
         headline: 'Onboarding completion moved from 58% to 72% since Q1.',
-        body: 'Time to first value shortened from 22 days to 13 over the same window. The most recent cohort came in at 85% seat activation — the highest in twelve months, though it\'s one cohort.'
+        body: 'Time to first value shortened from 22 days to 13 over the same window. The most recent cohort came in at 85% seat activation — the highest in twelve months, though it\'s one cohort.',
+        sources: [{ system: 'HubSpot', record: 'Onboarding Tracker' }, { system: 'Salesforce', record: 'Activation Metrics' }]
       },
       {
         isNew: true,
         headline: 'NPS recovered from 36 to 44 this quarter.',
-        body: 'Last quarter\'s drop correlated with slower support and onboarding delays — both have since improved. Mid-market led the rebound, which is where most of the onboarding changes landed.'
+        body: 'Last quarter\'s drop correlated with slower support and onboarding delays — both have since improved. Mid-market led the rebound, which is where most of the onboarding changes landed.',
+        sources: [{ system: 'Zendesk', record: 'NPS Survey Results' }, { system: 'HubSpot', record: 'Customer Health Scores' }]
       },
       {
         isNew: true,
         headline: 'Three renewals totaling $360K are up in the next 45 days.',
-        body: 'Northstar, Granite, and Ridgeline all renew before the end of May. All three added users in new departments last quarter without prompting — a pattern that usually tracks with straightforward renewals, though each conversation is its own.'
+        body: 'Northstar, Granite, and Ridgeline all renew before the end of May. All three added users in new departments last quarter without prompting — a pattern that usually tracks with straightforward renewals, though each conversation is its own.',
+        sources: [{ system: 'Salesforce', record: 'Renewal Pipeline' }, { system: 'HubSpot', record: 'Account Activity: Northstar, Granite, Ridgeline' }]
       },
       {
         isNew: false,
         headline: 'Fewer support tickets, but the ones coming in are harder.',
-        body: 'Volume dropped 12% over the past month. Resolution time went up. The mix is shifting from how-to questions toward integration and configuration issues — a different kind of workload for the team.'
+        body: 'Volume dropped 12% over the past month. Resolution time went up. The mix is shifting from how-to questions toward integration and configuration issues — a different kind of workload for the team.',
+        sources: [{ system: 'Zendesk', record: 'Ticket Volume & Resolution' }, { system: 'Slack', record: '#support-escalations' }]
       }
     ]
   },
@@ -1180,27 +1299,32 @@ const insightData = {
       {
         isNew: true,
         headline: 'Deploys nearly doubled since the workflow change six weeks ago.',
-        body: 'Error rates held flat through the increase, and turnaround time shortened. Whether the pace holds through the next rewrite phase is the thing to watch.'
+        body: 'Error rates held flat through the increase, and turnaround time shortened. Whether the pace holds through the next rewrite phase is the thing to watch.',
+        sources: [{ system: 'Jira', record: 'Deployment Dashboard' }, { system: 'GitHub', record: 'Release History' }]
       },
       {
         isNew: true,
         headline: 'Build times stretched from 20 to 34 minutes with the rewrite.',
-        body: 'The additional test coverage is catching issues earlier in the cycle. Releases aren\'t being blocked — the slowdown is in the build pipeline, not in shipping.'
+        body: 'The additional test coverage is catching issues earlier in the cycle. Releases aren\'t being blocked — the slowdown is in the build pipeline, not in shipping.',
+        sources: [{ system: 'GitHub', record: 'CI/CD Pipeline Metrics' }, { system: 'Jira', record: 'Sprint Velocity' }]
       },
       {
         isNew: true,
         headline: 'Support response time halved over the past month.',
-        body: 'Down from 4.8 hours to 2.4. Last month\'s spike traced to one account\'s migration, which completed on its own. The queue cleared without staffing changes — back near the two-hour target.'
+        body: 'Down from 4.8 hours to 2.4. Last month\'s spike traced to one account\'s migration, which completed on its own. The queue cleared without staffing changes — back near the two-hour target.',
+        sources: [{ system: 'Zendesk', record: 'Response Time Report' }, { system: 'Slack', record: '#support-ops' }]
       },
       {
         isNew: true,
         headline: 'The platform rewrite reached 72% this week.',
-        body: 'Auth module entered review ahead of estimate. Billing integration is next, scoped for three weeks. These are the final two modules. The timeline has held through the last three milestones.'
+        body: 'Auth module entered review ahead of estimate. Billing integration is next, scoped for three weeks. These are the final two modules. The timeline has held through the last three milestones.',
+        sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Asana', record: 'Engineering Milestones' }]
       },
       {
         isNew: false,
         headline: 'Cloud spend is up 22% during the parallel-systems window.',
-        body: 'Running old and new systems side by side at $52K per month. The cost normalizes when the legacy system retires — the retirement date depends on the billing module timeline.'
+        body: 'Running old and new systems side by side at $52K per month. The cost normalizes when the legacy system retires — the retirement date depends on the billing module timeline.',
+        sources: [{ system: 'QuickBooks', record: 'Cloud Infrastructure Costs' }, { system: 'Jira', record: 'Migration Timeline' }]
       }
     ]
   },
@@ -1210,17 +1334,20 @@ const insightData = {
       {
         isNew: true,
         headline: 'Four engineers volunteered for interviews this month.',
-        body: 'The twelve-month average was one. Two cited mentorship as their reason, which is a new pattern. Interview participation has historically needed nudging — this is the first month that changed.'
+        body: 'The twelve-month average was one. Two cited mentorship as their reason, which is a new pattern. Interview participation has historically needed nudging — this is the first month that changed.',
+        sources: [{ system: 'Slack', record: '#hiring-volunteers' }, { system: 'Asana', record: 'Interview Schedule' }]
       },
       {
         isNew: true,
         headline: 'Two engineers\' growth goals align with the new tech lead track.',
-        body: 'The track was approved last month. Both are on the platform rewrite and mentioned career development in recent reviews. Whether the track accelerates retention is early to say.'
+        body: 'The track was approved last month. Both are on the platform rewrite and mentioned career development in recent reviews. Whether the track accelerates retention is early to say.',
+        sources: [{ system: 'Asana', record: 'Career Development Plans' }, { system: 'Jira', record: 'Platform Rewrite Contributors' }]
       },
       {
         isNew: false,
         headline: 'Two internal candidates expressed interest in the Head of Product role.',
-        body: 'The role has been open five weeks. Both led major product launches and have credibility across teams. An internal hire could start immediately — external search is still active.'
+        body: 'The role has been open five weeks. Both led major product launches and have credibility across teams. An internal hire could start immediately — external search is still active.',
+        sources: [{ system: 'Slack', record: '#leadership-hiring' }, { system: 'Google Drive', record: 'Candidate Profiles' }]
       }
     ]
   },
@@ -1230,17 +1357,20 @@ const insightData = {
       {
         isNew: true,
         headline: 'Mid-market buyers cut their tool count by 14% this year.',
-        body: 'The consolidation pattern favors platforms that replace multiple point solutions. Atlas fits that profile, though buyer behavior in this segment can shift quarter to quarter.'
+        body: 'The consolidation pattern favors platforms that replace multiple point solutions. Atlas fits that profile, though buyer behavior in this segment can shift quarter to quarter.',
+        sources: [{ system: 'Google Drive', record: 'Gartner Market Report 2026' }, { system: 'SharePoint', record: 'Competitive Landscape Analysis' }]
       },
       {
         isNew: true,
         headline: 'A competitor raised prices 18%, effective next quarter.',
-        body: 'The increase covers new customers and renewals. Early signals on review sites suggest frustration from their existing base. Atlas pricing has been stable for twelve months.'
+        body: 'The increase covers new customers and renewals. Early signals on review sites suggest frustration from their existing base. Atlas pricing has been stable for twelve months.',
+        sources: [{ system: 'Slack', record: '#competitive-intel' }, { system: 'Google Drive', record: 'Competitor Pricing Tracker' }]
       },
       {
         isNew: false,
         headline: 'A competitor launched a new AI feature. Early reviews are mixed.',
-        body: 'Users on review sites highlight speed but flag accuracy issues. Atlas\'s equivalent feature is in development, with a demo scheduled for early May.'
+        body: 'Users on review sites highlight speed but flag accuracy issues. Atlas\'s equivalent feature is in development, with a demo scheduled for early May.',
+        sources: [{ system: 'Google Drive', record: 'Competitor Feature Comparison' }, { system: 'Slack', record: '#product-intel' }]
       }
     ]
   }
@@ -1357,10 +1487,17 @@ function openCardOverlay(bubble, origIdx, opts) {
         </svg>
       </button>`;
 
+  // Build sources HTML
+  const sourcesHtml = (card.sources || []).map((s, i) => {
+    const dot = i < card.sources.length - 1 ? ' <span class="source-dot">&bull;</span> ' : '';
+    return `<span class="source-link" onclick="event.stopPropagation(); showSourceTooltip(event, '${s.system}', '${s.record.replace(/'/g, "\\'")}')">${s.system}</span>${dot}`;
+  }).join('');
+
   overlayCard.innerHTML = `
     <div class="insight-card-body">
       <div class="insight-headline">${card.headline}</div>
       <div class="insight-body">${card.body}</div>
+      <div class="insight-sources">${sourcesHtml}</div>
     </div>
     <div class="insight-card-footer">
       <div class="insight-sphere-wrap">
@@ -1544,6 +1681,56 @@ function showSphereToast(id, msg) {
   toast._hideT = setTimeout(() => toast.classList.remove('visible'), 1800);
 }
 
+// Demo source tooltip — shows a message acknowledging the destination system
+function showSourceTooltip(e, system, record) {
+  e.stopPropagation();
+  _sourceTooltipSkipDismiss = true;
+  const tooltip = document.getElementById('source-tooltip');
+  if (!tooltip) return;
+
+  tooltip.innerHTML = `In Lens, this would take you directly to <strong>${record}</strong> in <strong>${system}</strong>.`;
+
+  // Anchor below the tapped link element
+  const link = e.target.closest('.source-link') || e.target;
+  const linkRect = link.getBoundingClientRect();
+  const frame = document.querySelector('.phone-frame');
+  const frameRect = frame.getBoundingClientRect();
+
+  const tooltipWidth = 240;
+  // Center tooltip under the link, clamp to phone frame edges
+  let left = linkRect.left + linkRect.width / 2 - tooltipWidth / 2;
+  left = Math.max(frameRect.left + 12, Math.min(left, frameRect.right - tooltipWidth - 12));
+
+  // Position just below the link with a small gap for the caret
+  const top = linkRect.bottom + 8;
+
+  // Point the caret at the center of the link
+  const caretLeft = linkRect.left + linkRect.width / 2 - left;
+
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+  tooltip.style.maxWidth = tooltipWidth + 'px';
+  tooltip.style.setProperty('--caret-left', caretLeft + 'px');
+
+  tooltip.classList.add('visible');
+  tooltip._fresh = true;
+  setTimeout(() => { tooltip._fresh = false; }, 300);
+  clearTimeout(tooltip._hideT);
+  tooltip._hideT = setTimeout(() => tooltip.classList.remove('visible'), 4000);
+}
+
+// Dismiss tooltip on tap anywhere (ignores the tap that opened it)
+document.addEventListener('click', () => {
+  const tooltip = document.getElementById('source-tooltip');
+  if (tooltip && !tooltip._fresh) tooltip.classList.remove('visible');
+});
+
+// Dismiss tooltip on scroll
+document.addEventListener('scroll', () => {
+  const tooltip = document.getElementById('source-tooltip');
+  if (tooltip) tooltip.classList.remove('visible');
+}, true);
+
 function copyCardLink() {
   if (overlayBubble == null || overlayIndex == null) return;
   const card = insightData[overlayBubble].cards[overlayIndex];
@@ -1573,7 +1760,18 @@ function shareToSlack() {
 }
 
 // Bridge overlay card to chat
+let activeChatSources = []; // sources from the bridged card, used in Lens responses
+
+function renderSourceLinks(sources) {
+  if (!sources || !sources.length) return '';
+  return sources.map((s, i) => {
+    const dot = i < sources.length - 1 ? ' <span class="source-dot">&bull;</span> ' : '';
+    return `<span class="source-link" onclick="event.stopPropagation(); showSourceTooltip(event, '${s.system}', '${s.record.replace(/'/g, "\\'")}')">${s.system}</span>${dot}`;
+  }).join('');
+}
+
 function renderChatCard(card, catTitle) {
+  const srcHtml = renderSourceLinks(card.sources);
   return `
     <div class="chat-card" id="chat-card-box">
       <div class="chat-card-content">
@@ -1583,6 +1781,7 @@ function renderChatCard(card, catTitle) {
         <div class="insight-headline">${card.headline}</div>
         <div class="chat-card-ellipsis">...</div>
         <div class="insight-body" style="-webkit-line-clamp:unset;">${card.body}</div>
+        ${srcHtml ? `<div class="insight-sources">${srcHtml}</div>` : ''}
       </div>
       <div class="chat-card-toggle" onclick="toggleChatCard()" role="button" aria-expanded="false">more</div>
     </div>`;
@@ -1606,6 +1805,7 @@ function bridgeToChat() {
   if (overlayBubble == null || overlayIndex == null) return;
   const card = insightData[overlayBubble].cards[overlayIndex];
   const catTitle = insightData[overlayBubble]?.title || overlayBubble;
+  activeChatSources = card.sources || [];
   document.getElementById('chat-messages').innerHTML = renderChatCard(card, catTitle);
   // Seed chatHistory so the model knows which card the user is looking at
   chatHistory = [
@@ -1667,7 +1867,12 @@ let chatHistory = [];
 function appendMessage(role, html) {
   const chat = document.getElementById('chat-messages');
   const isUser = role === 'user';
-  chat.innerHTML += `<div class="message message-${isUser ? 'user' : 'lens'}"><div class="message-sender">${isUser ? 'You' : 'Lens'}</div><div class="message-text">${html}</div><div class="message-time">Just now</div></div>`;
+  // Append source citations to Lens responses when a card is in context
+  let sourcesBlock = '';
+  if (!isUser && activeChatSources.length) {
+    sourcesBlock = `<div class="message-sources">${renderSourceLinks(activeChatSources)}</div>`;
+  }
+  chat.innerHTML += `<div class="message message-${isUser ? 'user' : 'lens'}"><div class="message-sender">${isUser ? 'You' : 'Lens'}</div><div class="message-text">${html}${sourcesBlock}</div><div class="message-time">Just now</div></div>`;
   chat.scrollTop = chat.scrollHeight;
 }
 
