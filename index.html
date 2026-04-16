@@ -703,6 +703,11 @@ body {
   color: var(--dark-text);
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  resize: none;
+  overflow: hidden;
+  min-height: 44px;
+  max-height: 120px;
+  line-height: 1.4;
 }
 .chat-input::placeholder { color: var(--gray-text); opacity: 0.6; }
 .chat-input:focus {
@@ -1269,7 +1274,7 @@ body {
       <div class="chat-messages" id="chat-messages"></div>
       <div class="chat-input-bar">
         <div class="chat-input-wrap">
-          <input class="chat-input" id="chat-input" type="text" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter')sendMessage()" />
+          <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}" oninput="autoGrowInput(this)"></textarea>
           <button class="mic-btn" id="mic-btn" onclick="toggleMic()" aria-label="Voice input">
             <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
           </button>
@@ -2132,11 +2137,19 @@ async function sendToLens(userText) {
   }
 }
 
+function autoGrowInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  el.style.overflow = el.scrollHeight > 120 ? 'auto' : 'hidden';
+}
+
 function sendMessage() {
   const input = document.getElementById('chat-input');
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
+  input.style.height = '';
+  input.style.overflow = 'hidden';
   sendToLens(text);
 }
 
