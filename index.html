@@ -1688,6 +1688,9 @@ function closeCardOverlay() {
   document.getElementById('card-overlay-backdrop').classList.remove('active');
   document.getElementById('card-overlay').classList.remove('active');
   closeAllSpheres();
+  // Dismiss source tooltip if visible
+  const tooltip = document.getElementById('source-tooltip');
+  if (tooltip) { tooltip.classList.remove('visible'); clearTimeout(tooltip._hideT); }
   // If closed from saved context, re-render saved feed
   if (overlayFromSaved) {
     renderSaveFeed();
