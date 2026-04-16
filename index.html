@@ -313,9 +313,11 @@ body {
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
+  pointer-events: none;
 }
 .card-overlay.active {
   transform: translateY(0);
+  pointer-events: auto;
 }
 .card-overlay-header {
   flex-shrink: 0;
@@ -1086,141 +1088,6 @@ body {
   border: none;
 }
 
-/* ============================
-   SLACK SHARE SHEET
-   ============================ */
-.slack-sheet-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(26, 21, 64, 0.35);
-  z-index: 50;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.slack-sheet-backdrop.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.slack-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 55%;
-  z-index: 51;
-  background: var(--purple-wash);
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
-  display: flex;
-  flex-direction: column;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
-}
-.slack-sheet.active {
-  transform: translateY(0);
-}
-.slack-sheet-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 20px 8px;
-  position: relative;
-  flex-shrink: 0;
-}
-.slack-sheet-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--purple-dark);
-}
-.slack-sheet-close {
-  position: absolute;
-  right: 16px;
-  top: 14px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--gray-text);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.slack-sheet-close:hover { transform: scale(1.1); }
-.slack-sheet-search {
-  margin: 4px 16px 8px;
-  padding: 10px 14px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  font-size: 16px;
-  font-family: 'Inter', sans-serif;
-  color: var(--dark-text);
-  outline: none;
-  flex-shrink: 0;
-}
-.slack-sheet-search::placeholder { color: var(--gray-text); opacity: 0.5; }
-.slack-sheet-search:focus {
-  border-color: var(--purple-light);
-  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
-}
-.slack-sheet-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--gray-text);
-  opacity: 0.6;
-  padding: 8px 20px 4px;
-}
-.slack-sheet-list {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 0;
-}
-.slack-sheet-list::-webkit-scrollbar { width: 0; }
-.slack-dest {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-.slack-dest:active {
-  background: rgba(108, 92, 231, 0.05);
-}
-.slack-dest-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: rgba(108, 92, 231, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--purple);
-  flex-shrink: 0;
-}
-.slack-dest-icon.person {
-  border-radius: 50%;
-  background: rgba(232, 148, 74, 0.12);
-  color: var(--accent);
-}
-.slack-dest-name {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--dark-text);
-}
-
 /* Touch interactivity */
 .bottom-tab, .insight-sphere, .tray-icon,
 .suggestion-chip, .send-btn, .feed-card, .filter-chip,
@@ -1310,18 +1177,6 @@ body {
 
   </div>
 
-    <!-- Slack share sheet -->
-    <div class="slack-sheet-backdrop" id="slack-sheet-backdrop" onclick="closeSlackSheet()"></div>
-    <div class="slack-sheet" id="slack-sheet">
-      <div class="slack-sheet-header">
-        <div class="slack-sheet-title">Share to Slack</div>
-        <button class="slack-sheet-close" onclick="closeSlackSheet()">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <input class="slack-sheet-search" type="text" placeholder="Search channels or people..." oninput="filterSlackDests(this.value)" />
-      <div class="slack-sheet-list" id="slack-sheet-list"></div>
-    </div>
 
   <!-- Demo source tooltip -->
   <div class="source-tooltip" id="source-tooltip"></div>
@@ -1661,18 +1516,6 @@ function openCardOverlay(bubble, origIdx, opts) {
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
             </svg>
           </button>
-          <button class="tray-icon tray-slack" onclick="event.stopPropagation(); openSlackSheet()" aria-label="Share to Slack">
-            <svg viewBox="0 0 24 24">
-              <rect x="9.6" y="2" width="4.8" height="6.8" rx="2.4" fill="#2EB67D"/>
-              <circle cx="12" cy="8.8" r="2.4" fill="#2EB67D"/>
-              <rect x="15.2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#36C5F0"/>
-              <circle cx="15.2" cy="12" r="2.4" fill="#36C5F0"/>
-              <rect x="9.6" y="15.2" width="4.8" height="6.8" rx="2.4" fill="#E01E5A"/>
-              <circle cx="12" cy="15.2" r="2.4" fill="#E01E5A"/>
-              <rect x="2" y="9.6" width="6.8" height="4.8" rx="2.4" fill="#ECB22E"/>
-              <circle cx="8.8" cy="12" r="2.4" fill="#ECB22E"/>
-            </svg>
-          </button>
           <button class="tray-icon tray-chat" onclick="event.stopPropagation(); bridgeToChat()" aria-label="Submit to chat">
             <svg viewBox="0 0 24 24">
               <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H8z"/>
@@ -1910,76 +1753,6 @@ function copyCardLink() {
   }
 }
 
-// ============================
-// SLACK SHARE SHEET
-// ============================
-const slackDests = [
-  { type: 'channel', name: '#strategy' },
-  { type: 'channel', name: '#sales-team' },
-  { type: 'channel', name: '#leadership' },
-  { type: 'channel', name: '#product' },
-  { type: 'channel', name: '#general' },
-  { type: 'person', name: 'Sarah Chen', initials: 'SC' },
-  { type: 'person', name: 'Marcus Johnson', initials: 'MJ' },
-  { type: 'person', name: 'Dana Park', initials: 'DP' }
-];
-
-function renderSlackDests(filter) {
-  const q = (filter || '').toLowerCase();
-  const filtered = slackDests.filter(d => d.name.toLowerCase().includes(q));
-  const channels = filtered.filter(d => d.type === 'channel');
-  const people = filtered.filter(d => d.type === 'person');
-  let html = '';
-  if (channels.length) {
-    html += `<div class="slack-sheet-label">Channels</div>`;
-    html += channels.map(d =>
-      `<div class="slack-dest" onclick="shareToSlackDest('${d.name}')">
-        <div class="slack-dest-icon">#</div>
-        <div class="slack-dest-name">${d.name}</div>
-      </div>`
-    ).join('');
-  }
-  if (people.length) {
-    html += `<div class="slack-sheet-label">People</div>`;
-    html += people.map(d =>
-      `<div class="slack-dest" onclick="shareToSlackDest('${d.name}')">
-        <div class="slack-dest-icon person">${d.initials}</div>
-        <div class="slack-dest-name">${d.name}</div>
-      </div>`
-    ).join('');
-  }
-  if (!html) {
-    html = `<div style="padding:24px;text-align:center;color:var(--gray-text);font-size:14px;">No results</div>`;
-  }
-  document.getElementById('slack-sheet-list').innerHTML = html;
-}
-
-function openSlackSheet() {
-  closeAllSpheres();
-  renderSlackDests();
-  document.getElementById('slack-sheet-backdrop').classList.add('active');
-  document.getElementById('slack-sheet').classList.add('active');
-  const search = document.querySelector('.slack-sheet-search');
-  if (search) { search.value = ''; }
-}
-
-function closeSlackSheet() {
-  document.getElementById('slack-sheet-backdrop').classList.remove('active');
-  document.getElementById('slack-sheet').classList.remove('active');
-  // Reset iOS zoom/scroll caused by input focus
-  window.scrollTo(0, 0);
-  document.querySelector('.slack-sheet-search')?.blur();
-}
-
-function shareToSlackDest(name) {
-  closeSlackSheet();
-  showSphereToast('overlay', `Shared to ${name}`);
-}
-
-function filterSlackDests(query) {
-  renderSlackDests(query);
-}
-
 // Bridge overlay card to chat
 let activeChatSources = []; // sources from the bridged card, used in Lens responses
 
@@ -2039,7 +1812,7 @@ function bridgeToChat() {
 
 // Prevent page bounce on iOS
 document.body.addEventListener('touchmove', function(e) {
-  if (!e.target.closest('.chat-messages, .card-feed, .save-feed, .filter-chips, .insight-card-body, .card-overlay-body, .slack-sheet-list, .slack-sheet-search')) {
+  if (!e.target.closest('.chat-messages, .card-feed, .save-feed, .filter-chips, .insight-card-body, .card-overlay-body')) {
     e.preventDefault();
   }
 }, { passive: false });
@@ -2062,10 +1835,11 @@ document.body.addEventListener('touchmove', function(e) {
     if (!dragging) return;
     const dy = e.touches[0].clientY - startY;
     if (dy > 0) {
+      e.preventDefault(); // Prevent native scroll while dragging overlay
       overlay.style.transform = `translateY(${dy}px)`;
       overlay.style.transition = 'none';
     }
-  }, { passive: true });
+  }, { passive: false }); // non-passive so preventDefault works
 
   overlay.addEventListener('touchend', e => {
     if (!dragging) return;
@@ -2074,9 +1848,10 @@ document.body.addEventListener('touchmove', function(e) {
     overlay.style.transition = '';
     overlay.style.transform = '';
     if (dy > 80) {
+      e.preventDefault(); // Prevent iOS ghost click on elements below
       closeCardOverlay();
     }
-  }, { passive: true });
+  }, { passive: false }); // non-passive so preventDefault works
 })();
 
 // ---------------------------------------------------------------------------
