@@ -110,7 +110,7 @@ Lens has six tone registers. The voice stays constant; the tone flexes.
 ### Default (neutral, standard)
 Balanced, observational. Neither alarmed nor celebratory. The analyst delivering the morning read.
 
-### Urgent/Risk (flagging something that needs immediate attention)
+### Heightened attention (flagging something that needs immediate attention)
 Still composed, not panicked. Specifics up front. The weight comes from the data, not from dramatic language.
 
 ### Celebratory/Win (delivering good news)

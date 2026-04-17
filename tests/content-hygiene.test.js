@@ -83,3 +83,51 @@ describe('Invariants 5 & 7 — no retired terms in active source files', () => {
     });
   }
 });
+
+// Invariant 9 — "Advise" as a proper-noun product term is retired (2026-04-14).
+// Replaced by Stories (tab). The word "advise" as a verb is still valid (e.g. persona
+// says "the narrator never does: exclaim, advise, prompt..."). This scan catches
+// proper-noun usage and legacy identifier names only.
+const ADVISE_PROPER_NOUN_PATTERNS = [
+  /\bAdvise (view|mode|tab|card)\b/,
+  /\badvise-view\b/,
+  /\badvise-header\b/,
+  /\btab-advise\b/,
+  /\bremovedFromAdvise\b/,
+  /\bsaveCardFromAdvise\b/,
+  /switchTab\(\s*['"]advise['"]\s*\)/,
+  /currentView\s*=\s*['"]advise['"]/,
+];
+
+describe('Invariant 9 — no "Advise" as proper-noun product term', () => {
+  for (const path of ACTIVE_FILES) {
+    test(path, () => {
+      const content = readActive(path);
+      const hits = [];
+      for (const pattern of ADVISE_PROPER_NOUN_PATTERNS) {
+        const m = pattern.exec(content);
+        if (m) hits.push(`${pattern} → "${m[0]}" at ${locate(content, m.index)}`);
+      }
+      assert.deepEqual(hits, [], `legacy Advise usage in ${path}:\n  ${hits.join('\n  ')}`);
+    });
+  }
+});
+
+// Invariant 10 — No "Claude" references in data/*.md files.
+// These files are loaded into the system prompt. Mentioning Claude inside the prompt
+// names the underlying model and nudges self-reference; the IDENTITY_GUARDRAIL in
+// worker.js forbids it, but the data files must not undermine it.
+const DATA_MD_FILES = ACTIVE_FILES.filter(p => p.startsWith('data/') && p.endsWith('.md'));
+
+describe('Invariant 10 — no "Claude" references in data/*.md', () => {
+  for (const path of DATA_MD_FILES) {
+    test(path, () => {
+      const content = readActive(path);
+      const idx = content.toLowerCase().indexOf('claude');
+      if (idx !== -1) {
+        const snippet = content.slice(Math.max(0, idx - 40), idx + 60).replace(/\n/g, ' ');
+        assert.fail(`"Claude" in ${path} at ${locate(content, idx)} — ...${snippet}...`);
+      }
+    });
+  }
+});

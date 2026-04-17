@@ -84,3 +84,35 @@ describe('Invariant 3 — card prompt forbids the five composition constraints',
     });
   }
 });
+
+// Invariant 11 — The chat and card system prompts must carry an identity guardrail
+// that prevents Lens from self-identifying as Claude, Anthropic, or any model.
+describe('Invariant 11 — identity guardrail present in both system prompts', () => {
+  const guardrailMatch = /const\s+IDENTITY_GUARDRAIL\s*=\s*`([\s\S]*?)`;/.exec(workerSrc);
+
+  test('worker.js defines IDENTITY_GUARDRAIL constant', () => {
+    assert.ok(guardrailMatch, 'IDENTITY_GUARDRAIL constant not found in worker.js');
+  });
+
+  test('IDENTITY_GUARDRAIL names Lens and forbids model/provider disclosure', () => {
+    const text = (guardrailMatch?.[1] || '').toLowerCase();
+    assert.ok(text.includes('lens'), 'guardrail must name Lens');
+    assert.ok(text.includes('claude'), 'guardrail must explicitly forbid "Claude"');
+    assert.ok(
+      /\bnot\b/.test(text) || /\bnever\b/.test(text),
+      'guardrail must use negative language (not/never) to forbid disclosure'
+    );
+    assert.ok(
+      text.includes('language model') || text.includes('underlying model') || text.includes('model'),
+      'guardrail must address the underlying model'
+    );
+  });
+
+  test('buildChatSystemPrompt interpolates ${IDENTITY_GUARDRAIL}', () => {
+    assert.match(chatPrompt, /\$\{IDENTITY_GUARDRAIL\}/, 'chat prompt missing IDENTITY_GUARDRAIL');
+  });
+
+  test('buildCardSystemPrompt interpolates ${IDENTITY_GUARDRAIL}', () => {
+    assert.match(cardPrompt, /\$\{IDENTITY_GUARDRAIL\}/, 'card prompt missing IDENTITY_GUARDRAIL');
+  });
+});

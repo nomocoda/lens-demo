@@ -2,7 +2,7 @@
 
 **Purpose:** This is the synthetic data source the Lens Demo uses to generate dynamic Data Stories and ground chat conversations. It is **not** the persona document (that lives in `nomocoda/lens-voice`). It is the *fictional company state*, the "data" Lens is reading from in the demo, in lieu of real client systems.
 
-**How it gets used:** The Cloudflare Worker reads this document and includes it in every Claude API call that generates Data Stories or seeds a chat. The persona prompt tells Claude *who Lens is*. This document tells Claude *what Lens currently sees about Atlas SaaS*.
+**How it gets used:** The Cloudflare Worker reads this document and includes it in every inference call that generates Data Stories or seeds a chat. The persona brief tells Lens *who Lens is*. This document tells Lens *what it currently sees about Atlas SaaS*.
 
 **How to update:** Edit this file to evolve the demo's fictional company state. Cards regenerate automatically on the next visitor session (or after the localStorage cache expires). Stay internally consistent; contradictions in the brief produce contradictions in the cards.
 
@@ -63,7 +63,7 @@ The demo persona is **the CEO of Atlas SaaS**. No name, no headshot. Just the ro
 
 ---
 
-## 4. Financial state (Pipeline / Revenue bubble material)
+## 4. Financial state (Revenue domain material)
 
 ### Q1 actuals (closed 7 days ago)
 - **New ARR added:** $980K (target was $1.1M, 89% of plan)
@@ -100,7 +100,7 @@ The demo persona is **the CEO of Atlas SaaS**. No name, no headshot. Just the ro
 
 ---
 
-## 5. Customers (Customers bubble material)
+## 5. Customers (Customers domain material)
 
 ### Top 10 accounts by ARR
 
@@ -139,14 +139,14 @@ The demo persona is **the CEO of Atlas SaaS**. No name, no headshot. Just the ro
 
 ---
 
-## 6. Operations (Operations bubble material)
+## 6. Ops (Ops domain material)
 
 ### Engineering
 
 - **Platform rewrite ("Atlas 2.0"):** The monolithic Rails app is being rebuilt as a React + Go microservices architecture. Daniel (CTO) is leading it personally. **Beta target: June 15.** 62% complete as of last sprint. The rewrite is the prerequisite for most enterprise features (custom RBAC, audit logs, API controls, the exact things Beacon cited when they churned).
 - **Velocity:** Story points per engineer are up 22% since switching to weekly sprints 6 weeks ago. Bug count per sprint is down.
 - **Interim eng leadership:** Clara Mendes (backend, 4 direct reports) and Amir Haddad (frontend, 3 direct reports) are covering for the VP Eng vacancy. Both are strong ICs promoted into management for the first time. Neither has said they want the VP role permanently.
-- **Atlas Assist (AI copilot feature):** Jess Wilder is spec'ing it. Uses Claude API to suggest workflow automations from natural language. **Alpha internal demo: May 1.** The board sees this as the enterprise wedge.
+- **Atlas Assist (AI copilot feature):** Jess Wilder is spec'ing it. Uses a third-party LLM API to suggest workflow automations from natural language. **Alpha internal demo: May 1.** The board sees this as the enterprise wedge.
 - **Tech debt:** CI pipeline takes 38 minutes (was 22 minutes a year ago). Daniel wants to fix it but won't prioritize it over the rewrite.
 
 ### Infrastructure
@@ -169,7 +169,7 @@ The demo persona is **the CEO of Atlas SaaS**. No name, no headshot. Just the ro
 
 ---
 
-## 7. Talent (Talent bubble material)
+## 7. Team (Team domain material)
 
 ### Key roles open
 - **VP Engineering:** Rachel Navarro left 3 weeks ago. Cited burnout and a competing offer from Datadog. **No search started.** Alex Tan (People Ops) is waiting on whether the CEO wants to promote Clara or Amir, or run an external search. The interim structure is holding but both Clara and Amir are showing strain.
@@ -194,7 +194,7 @@ The demo persona is **the CEO of Atlas SaaS**. No name, no headshot. Just the ro
 
 ---
 
-## 8. Market (Market bubble material)
+## 8. Market (Market domain material)
 
 ### Competitors
 - **FlowStack:** Series C ($65M raised), 200 employees. Direct competitor in mid-market workflow automation. Just launched an AI feature (FlowStack Copilot) that's getting press coverage. Their pricing is 20% higher than Atlas at mid-tier but they're aggressively discounting to win deals.
@@ -251,7 +251,7 @@ The demo persona is **the CEO of Atlas SaaS**. No name, no headshot. Just the ro
 
 ## 10. The cross-domain connections (the "interesting" cards)
 
-These are not pre-written cards. They're examples of the kinds of cross-domain insights Claude should be looking for when generating cards from this brief. Listed here as a guide for the card-generation prompt to find similar patterns.
+These are not pre-written cards. They're examples of the kinds of cross-domain connections worth surfacing when generating cards from this brief. Listed here as a guide to the patterns to look for.
 
 - **Platform rewrite ↔ Beacon churn ↔ Ridgeline deal ↔ Series C:** Beacon churned citing missing enterprise features. Those features live in the rewrite. Ridgeline needs some of them (RBAC, audit logs). The rewrite beta is June 15. The Series C roadshow needs enterprise logos. One engineering timeline is the linchpin for revenue, fundraising, and retention.
 
@@ -271,15 +271,15 @@ These are not pre-written cards. They're examples of the kinds of cross-domain i
 
 ---
 
-## 11. Notes for Claude when generating cards from this brief
+## 11. Card generation guidance
 
-- **Vary the angle.** The same data point can be a risk, an opportunity, or a trend depending on framing. A Prism renewal can be "Prism is at risk" or "Prism is an opportunity to test your exec-to-exec rescue playbook" or "Prism's usage decline is part of a broader mid-market engagement pattern." Don't always pick the same framing.
+- **Stay neutral.** Signals are not classified as risks, opportunities, or trends. The card surfaces what's happening. The reader applies their own judgment. Never frame a card as a warning or a win.
 - **Vary the time horizon.** Some cards are urgent (this week). Some are 30-day. Some are quarter-out. Mix them so the card feed feels like real continuous monitoring, not a daily alert dump.
 - **Lead with what only the CEO can act on.** Engineering sprint details belong in a standup, not the CEO's card feed. If a card could be solved by a director without CEO involvement, it's probably the wrong card to surface to the CEO.
-- **Use specific numbers and names.** Generic insights ("review your customer concentration") are useless. Specific insights ("Prism Analytics usage dropped 30% and their champion left; it's $165K ARR at risk 34 days before renewal") are the value.
-- **Surface, don't decide.** The card should make the situation legible. The decision is the CEO's to make. The card never recommends, prescribes, or directs action.
+- **Use specific numbers and names.** Generic observations ("review your customer concentration") are useless. Specific observations ("Prism Analytics usage dropped 30% and their champion left; $165K ARR, 34 days to renewal") are the value.
+- **Surface, don't decide.** The card makes the situation legible. The decision is the CEO's to make. The card never recommends, prescribes, or directs action.
 - **Cross-domain connections are the highest-value cards.** Single-domain cards are good. Multi-domain cards are better, because they show Lens doing what no individual department head can do: connecting dots across silos.
-- **Stay grounded in this document.** Don't invent new people, new accounts, new vendors. The fictional company is bounded by what's in this brief. If something isn't here, Claude should not pretend it is. (Future updates to this document add new material; Claude reads what's here.)
+- **Stay grounded in this document.** Do not invent new people, new accounts, or new vendors. The fictional company is bounded by what's in this brief. If something isn't here, don't pretend it is. Future updates to this document add new material; only what's written here is visible.
 
 ---
 
