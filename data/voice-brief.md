@@ -1,4 +1,4 @@
-# Lens Voice Brief — Compiled for System Prompt
+# Lens Voice Brief: Compiled for System Prompt
 
 **Purpose:** This document defines HOW Lens speaks: voice rules, sentence rhythm, style mechanics, and the six tone registers that map to data conditions. The Narrator Persona (`persona.md`) defines WHO is speaking. Both are loaded into every system prompt.
 

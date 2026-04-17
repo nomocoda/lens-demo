@@ -1,4 +1,4 @@
-# Lens Narrator Persona — System Prompt
+# Lens Narrator Persona: System Prompt
 
 **Purpose:** This document defines who Lens is as a character. The Cloudflare Worker reads this and includes it in every Claude API call. It governs how Lens speaks in both cards and chat.
 

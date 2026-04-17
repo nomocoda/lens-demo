@@ -12,7 +12,7 @@
 button { border: none; background: none; font: inherit; color: inherit; outline: none; -webkit-appearance: none; appearance: none; }
 
 :root {
-  /* Refined purple palette — deeper, more navy-rich */
+  /* Refined purple palette: deeper, more navy-rich */
   --purple-deep: #1A1540;
   --purple-dark: #2D2660;
   --purple-core: #4A3F8F;
@@ -23,7 +23,7 @@ button { border: none; background: none; font: inherit; color: inherit; outline:
   --purple-faint: #FAFAFD;
   --purple-bg: #FCFCFD;
 
-  /* Refined orange — warmer, richer, more amber-gold character */
+  /* Refined orange: warmer, richer, more amber-gold character */
   --accent: #E8944A;
   --accent-warm: #D4863F;
   --accent-glow: #F2A85E;
@@ -149,7 +149,7 @@ body {
 .advise-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
 
 /* ============================
-   ADVISE HEADER — branded top area
+   ADVISE HEADER: branded top area
    ============================ */
 .advise-header {
   flex-shrink: 0;
@@ -177,7 +177,7 @@ body {
 }
 
 /* ============================
-   FILTER CHIPS — horizontal scrollable row
+   FILTER CHIPS: horizontal scrollable row
    ============================ */
 .filter-chips {
   flex-shrink: 0;
@@ -214,7 +214,7 @@ body {
 }
 
 /* ============================
-   CARD FEED — vertical scrollable list
+   CARD FEED: vertical scrollable list
    ============================ */
 .card-feed {
   flex: 1;
@@ -230,7 +230,7 @@ body {
 .card-feed::-webkit-scrollbar { width: 0; }
 .card-feed { scrollbar-width: none; }
 
-/* Feed card — flat white, line-separated (Medium style) */
+/* Feed card: flat white, line-separated (Medium style) */
 .feed-card {
   background: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -245,7 +245,7 @@ body {
 .feed-card:last-child {
   border-bottom: none;
 }
-/* Unread — no visual accent, clean edge */
+/* Unread: no visual accent, clean edge */
 .feed-card.unread {}
 .feed-card-header {
   display: flex;
@@ -283,7 +283,7 @@ body {
 }
 
 /* ============================
-   CARD OVERLAY — expands over feed on tap
+   CARD OVERLAY: expands over feed on tap
    ============================ */
 .card-overlay-backdrop {
   position: absolute;
@@ -408,7 +408,7 @@ body {
 }
 
 /* ============================
-   SPHERE — universal action affordance
+   SPHERE: universal action affordance
    ============================ */
 .insight-sphere-wrap {
   position: relative;
@@ -437,7 +437,7 @@ body {
   box-shadow: 0 4px 18px rgba(108, 92, 231, 0.42), 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* Sphere tray — vertical stack of action icons that blooms upward */
+/* Sphere tray: vertical stack of action icons that blooms upward */
 .sphere-tray {
   position: absolute;
   bottom: 56px;
@@ -635,7 +635,7 @@ body {
   opacity: 0.7;
 }
 
-/* Bridged card in chat — mirrors feed card structure, truncated from bottom */
+/* Bridged card in chat: mirrors feed card structure, truncated from bottom */
 .chat-card {
   max-width: 92%;
   background: #fff;
@@ -671,7 +671,7 @@ body {
   gap: 8px;
   margin-bottom: 6px;
 }
-/* "more/less" toggle — inside card, below the content */
+/* "more/less" toggle: inside card, below the content */
 .chat-card-toggle {
   padding: 8px 18px 12px;
   font-size: 0.8125rem;
@@ -827,7 +827,7 @@ body {
 .save-feed::-webkit-scrollbar { width: 0; }
 .save-feed { scrollbar-width: none; }
 
-/* Saved cards — same flat style as feed cards */
+/* Saved cards: same flat style as feed cards */
 .saved-card {
   background: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -938,7 +938,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-/* No side accent on saved detail cards — clean edge */
+/* No side accent on saved detail cards: clean edge */
 
 /* Breathing animation */
 @keyframes breathe {
@@ -1160,7 +1160,7 @@ body {
       <div class="save-feed" id="save-feed"></div>
     </div>
 
-    <!-- Shared card overlay — used by Stories and Saved -->
+    <!-- Shared card overlay: used by Stories and Saved -->
     <div class="card-overlay-backdrop" id="card-overlay-backdrop" onclick="closeCardOverlay()"></div>
     <div class="card-overlay" id="card-overlay">
       <div class="card-overlay-header">
@@ -1220,13 +1220,13 @@ const insightData = {
       {
         isNew: true,
         headline: 'Two deals account for 40% of Q2 pipeline.',
-        body: 'Total pipeline sits at $3.2M against a $1.4M target, but the top two opportunities carry the bulk. Three new deals entered discovery this week — still early to know if they change the concentration picture.',
+        body: 'Total pipeline sits at $3.2M against a $1.4M target, but the top two opportunities carry the bulk. Three new deals entered discovery this week; still early to know if they change the concentration picture.',
         sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Active Deals' }]
       },
       {
         isNew: true,
         headline: 'Inbound doubled its share of pipeline since Q4.',
-        body: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals entering through that channel are closing faster and costing less to acquire — though the sample is still one full cycle.',
+        body: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals entering through that channel are closing faster and costing less to acquire, though the sample is still one full cycle.',
         sources: [{ system: 'HubSpot', record: 'Marketing Attribution' }, { system: 'Salesforce', record: 'Lead Source Report' }]
       },
       {
@@ -1249,7 +1249,7 @@ const insightData = {
       {
         isNew: true,
         headline: 'Expansion revenue came in at 125% of plan this quarter.',
-        body: 'The outperformance is concentrated in existing accounts adding seats and modules. The one account that left cited a specific integration gap — not broad dissatisfaction, though it\'s one data point.',
+        body: 'The outperformance is concentrated in existing accounts adding seats and modules. The one account that left cited a specific integration gap, not broad dissatisfaction, though it\'s one data point.',
         sources: [{ system: 'QuickBooks', record: 'Q1 Revenue Summary' }, { system: 'Salesforce', record: 'Expansion Deals' }]
       },
       {
@@ -1278,25 +1278,25 @@ const insightData = {
       {
         isNew: true,
         headline: 'Onboarding completion moved from 58% to 72% since Q1.',
-        body: 'Time to first value shortened from 22 days to 13 over the same window. The most recent cohort came in at 85% seat activation — the highest in twelve months, though it\'s one cohort.',
+        body: 'Time to first value shortened from 22 days to 13 over the same window. The most recent cohort came in at 85% seat activation, the highest in twelve months, though it\'s one cohort.',
         sources: [{ system: 'HubSpot', record: 'Onboarding Tracker' }, { system: 'Salesforce', record: 'Activation Metrics' }]
       },
       {
         isNew: true,
         headline: 'NPS recovered from 36 to 44 this quarter.',
-        body: 'Last quarter\'s drop correlated with slower support and onboarding delays — both have since improved. Mid-market led the rebound, which is where most of the onboarding changes landed.',
+        body: 'Last quarter\'s drop correlated with slower support and onboarding delays; both have since improved. Mid-market led the rebound, which is where most of the onboarding changes landed.',
         sources: [{ system: 'Zendesk', record: 'NPS Survey Results' }, { system: 'HubSpot', record: 'Customer Health Scores' }]
       },
       {
         isNew: true,
         headline: 'Three renewals totaling $360K are up in the next 45 days.',
-        body: 'Northstar, Granite, and Ridgeline all renew before the end of May. All three added users in new departments last quarter without prompting — a pattern that usually tracks with straightforward renewals, though each conversation is its own.',
+        body: 'Northstar, Granite, and Ridgeline all renew before the end of May. All three added users in new departments last quarter without prompting, a pattern that usually tracks with straightforward renewals, though each conversation is its own.',
         sources: [{ system: 'Salesforce', record: 'Renewal Pipeline' }, { system: 'HubSpot', record: 'Account Activity: Northstar, Granite, Ridgeline' }]
       },
       {
         isNew: false,
         headline: 'Fewer support tickets, but the ones coming in are harder.',
-        body: 'Volume dropped 12% over the past month. Resolution time went up. The mix is shifting from how-to questions toward integration and configuration issues — a different kind of workload for the team.',
+        body: 'Volume dropped 12% over the past month. Resolution time went up. The mix is shifting from how-to questions toward integration and configuration issues, a different kind of workload for the team.',
         sources: [{ system: 'Zendesk', record: 'Ticket Volume & Resolution' }, { system: 'Slack', record: '#support-escalations' }]
       }
     ]
@@ -1313,13 +1313,13 @@ const insightData = {
       {
         isNew: true,
         headline: 'Build times stretched from 20 to 34 minutes with the rewrite.',
-        body: 'The additional test coverage is catching issues earlier in the cycle. Releases aren\'t being blocked — the slowdown is in the build pipeline, not in shipping.',
+        body: 'The additional test coverage is catching issues earlier in the cycle. Releases aren\'t being blocked; the slowdown is in the build pipeline, not in shipping.',
         sources: [{ system: 'GitHub', record: 'CI/CD Pipeline Metrics' }, { system: 'Jira', record: 'Sprint Velocity' }]
       },
       {
         isNew: true,
         headline: 'Support response time halved over the past month.',
-        body: 'Down from 4.8 hours to 2.4. Last month\'s spike traced to one account\'s migration, which completed on its own. The queue cleared without staffing changes — back near the two-hour target.',
+        body: 'Down from 4.8 hours to 2.4. Last month\'s spike traced to one account\'s migration, which completed on its own. The queue cleared without staffing changes; back near the two-hour target.',
         sources: [{ system: 'Zendesk', record: 'Response Time Report' }, { system: 'Slack', record: '#support-ops' }]
       },
       {
@@ -1331,7 +1331,7 @@ const insightData = {
       {
         isNew: false,
         headline: 'Cloud spend is up 22% during the parallel-systems window.',
-        body: 'Running old and new systems side by side at $52K per month. The cost normalizes when the legacy system retires — the retirement date depends on the billing module timeline.',
+        body: 'Running old and new systems side by side at $52K per month. The cost normalizes when the legacy system retires; the retirement date depends on the billing module timeline.',
         sources: [{ system: 'QuickBooks', record: 'Cloud Infrastructure Costs' }, { system: 'Jira', record: 'Migration Timeline' }]
       }
     ]
@@ -1342,7 +1342,7 @@ const insightData = {
       {
         isNew: true,
         headline: 'Four engineers volunteered for interviews this month.',
-        body: 'The twelve-month average was one. Two cited mentorship as their reason, which is a new pattern. Interview participation has historically needed nudging — this is the first month that changed.',
+        body: 'The twelve-month average was one. Two cited mentorship as their reason, which is a new pattern. Interview participation has historically needed nudging; this is the first month that changed.',
         sources: [{ system: 'Slack', record: '#hiring-volunteers' }, { system: 'Asana', record: 'Interview Schedule' }]
       },
       {
@@ -1354,7 +1354,7 @@ const insightData = {
       {
         isNew: false,
         headline: 'Two internal candidates expressed interest in the Head of Product role.',
-        body: 'The role has been open five weeks. Both led major product launches and have credibility across teams. An internal hire could start immediately — external search is still active.',
+        body: 'The role has been open five weeks. Both led major product launches and have credibility across teams. An internal hire could start immediately; external search is still active.',
         sources: [{ system: 'Slack', record: '#leadership-hiring' }, { system: 'Google Drive', record: 'Candidate Profiles' }]
       }
     ]
@@ -1403,7 +1403,7 @@ function switchTab(tab) {
 }
 
 // ============================
-// CARD FEED — flattened list of all intelligence cards
+// CARD FEED: flattened list of all Data Stories
 // ============================
 function buildFeedData() {
   // Flatten all categories into a single array, new cards first (relevance proxy)
@@ -1465,7 +1465,7 @@ function filterFeed(category) {
 }
 
 // ============================
-// CARD OVERLAY — full card view layered on top of feed
+// CARD OVERLAY: full card view layered on top of feed
 // ============================
 function openCardOverlay(bubble, origIdx, opts) {
   const data = insightData[bubble];
@@ -1647,7 +1647,7 @@ function unsaveFromOverlay() {
 }
 
 // ============================
-// SPHERE — universal action affordance
+// SPHERE: universal action affordance
 // ============================
 function toggleSphere() {
   const tray = document.getElementById('sphere-tray-overlay');
@@ -1680,7 +1680,7 @@ function showSphereToast(id, msg) {
   toast._hideT = setTimeout(() => toast.classList.remove('visible'), 1800);
 }
 
-// Demo source tooltip — shows a message acknowledging the destination system
+// Demo source tooltip: shows a message acknowledging the destination system
 function showSourceTooltip(e, system, record) {
   e.stopPropagation();
   _sourceTooltipSkipDismiss = true;
@@ -1803,7 +1803,7 @@ function bridgeToChat() {
   document.getElementById('chat-messages').innerHTML = renderChatCard(card, catTitle);
   // Seed chatHistory so the model knows which card the user is looking at
   chatHistory = [
-    { role: 'user', content: `[Bridged card — ${catTitle}]\nHeadline: ${card.headline}\nBody: ${card.body}` },
+    { role: 'user', content: `[Bridged card: ${catTitle}]\nHeadline: ${card.headline}\nBody: ${card.body}` },
     { role: 'assistant', content: `This is the ${catTitle.toLowerCase()} card you opened. What would you like to explore?` }
   ];
   closeCardOverlay();
@@ -1855,7 +1855,7 @@ document.body.addEventListener('touchmove', function(e) {
 })();
 
 // ---------------------------------------------------------------------------
-// Chat — connected to Worker (/chat endpoint)
+// Chat: connected to Worker (/chat endpoint)
 // ---------------------------------------------------------------------------
 const WORKER_URL = 'https://lens-api-proxy.nomocoda.workers.dev';
 let chatHistory = [];
@@ -1936,7 +1936,7 @@ function sendChip(el) {
 }
 
 // ---------------------------------------------------------------------------
-// Voice input — Web Speech API (browser-native, no external API needed)
+// Voice input: Web Speech API (browser-native, no external API needed)
 // ---------------------------------------------------------------------------
 let isRecording = false;
 let recognition = null;

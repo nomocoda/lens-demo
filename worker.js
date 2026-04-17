@@ -1,9 +1,9 @@
 /**
- * Cloudflare Worker — Lens API (server-side intelligence layer)
+ * Cloudflare Worker: Lens API (server-side intelligence layer)
  *
  * Routes:
  *   POST /chat         → Lens chat (Claude with persona + company data)
- *   POST /cards        → Generate insight cards (Claude with persona + company data)
+ *   POST /cards        → Generate Data Stories (Claude with persona + company data)
  *   POST /transcribe   → Speech-to-text (OpenAI Whisper)
  *
  * The browser sends only user messages. The system prompt, persona brief,
@@ -15,7 +15,7 @@
  */
 
 // ---------------------------------------------------------------------------
-// Persona + company data — bundled at deploy time, invisible to the browser
+// Persona + company data: bundled at deploy time, invisible to the browser
 // ---------------------------------------------------------------------------
 
 import PERSONA from './data/persona.md';
@@ -49,7 +49,7 @@ Follow the persona brief above exactly. You are the narrator it describes.
 
 ## Context tracking
 
-When a card appears in the conversation history (an intelligence card the user bridged into chat), treat it as the active topic. Follow-up questions ("what contributed to this?", "tell me more", "what else?") refer to that card's subject. Do not ask for clarification when the context is present in the thread. A peer who just showed you a card and asked a question does not need you to ask "which piece caught your attention?"
+When a card appears in the conversation history (a Data Story the user bridged into chat), treat it as the active topic. Follow-up questions ("what contributed to this?", "tell me more", "what else?") refer to that card's subject. Do not ask for clarification when the context is present in the thread. A peer who just showed you a card and asked a question does not need you to ask "which piece caught your attention?"
 
 ## Place of yes in chat
 
@@ -87,7 +87,7 @@ ${COMPANY_DATA}
 
 # Card Generation Instructions
 
-You are Lens, generating insight cards for the "${bubble}" category of the Advise view. The reader is the VP of Operations at Atlas SaaS, someone who monitors cross-functional operational health and cares about how the business machine runs.
+You are Lens, generating Data Stories for the "${bubble}" category of the Advise view. The reader is the VP of Operations at Atlas SaaS, someone who monitors cross-functional operational health and cares about how the business machine runs.
 
 ## Card structure: Headline + Body
 
@@ -163,7 +163,7 @@ function jsonError(message, status, origin) {
 }
 
 // ---------------------------------------------------------------------------
-// /chat — Lens chat (browser sends user message, Worker adds system prompt)
+// /chat: Lens chat (browser sends user message, Worker adds system prompt)
 // ---------------------------------------------------------------------------
 
 async function handleChat(request, env, origin) {
@@ -211,7 +211,7 @@ async function handleChat(request, env, origin) {
 }
 
 // ---------------------------------------------------------------------------
-// /cards — Generate insight cards for a bubble category
+// /cards: Generate Data Stories for a bubble category
 // ---------------------------------------------------------------------------
 
 async function handleCards(request, env, origin) {
@@ -233,7 +233,7 @@ async function handleCards(request, env, origin) {
         messages: [
           {
             role: 'user',
-            content: `Generate insight cards for the "${bubble}" category. Focus on what's most relevant to a VP of Operations right now based on the company data.`,
+            content: `Generate Data Stories for the "${bubble}" category. Focus on what's most relevant to a VP of Operations right now based on the company data.`,
           },
         ],
       }),
@@ -250,7 +250,7 @@ async function handleCards(request, env, origin) {
 }
 
 // ---------------------------------------------------------------------------
-// /transcribe — Speech-to-text via OpenAI Whisper
+// /transcribe: Speech-to-text via OpenAI Whisper
 // ---------------------------------------------------------------------------
 
 async function handleTranscribe(request, env, origin) {
