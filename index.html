@@ -917,9 +917,9 @@ body {
     display: flex;
     align-items: center;
     gap: 14px;
-    background: #F3F1FA;
+    background: var(--lens);
     padding: 10px 16px;
-    border-bottom: 1px solid var(--sep);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
     position: relative;
   }
   .browser-dots { display: flex; gap: 6px; flex-shrink: 0; }
@@ -930,10 +930,16 @@ body {
     max-width: 420px;
     margin: 0 auto;
     background: #fff;
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255,255,255,0.5);
   }
-  .browser-chrome .d-search:focus-within { border-color: rgba(108,92,231,0.28); }
-  .browser-chrome .d-filter-btn { flex-shrink: 0; }
+  .browser-chrome .d-search:focus-within { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.18); }
+  .browser-chrome .d-filter-btn {
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .browser-chrome .d-filter-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+  .browser-chrome .d-filter-btn.has-filter { color: #fff; }
+  .browser-chrome .d-filter-btn.has-filter::after { background: #fff; border-color: var(--lens); }
   /* Sidebar rail (persistent left nav) */
   .app-body {
     flex: 1;
