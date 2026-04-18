@@ -22,9 +22,9 @@ button { border: none; background: none; font: inherit; color: inherit; outline:
   --lens-tint-bd:  #CFC8DF;
   --active-bg:     #E2DBEF;
   --active-border: #7C5FA0;
-  --screen:        #F3F1FA;
-  --row-lens:      #F3F1FA;
-  --row-user:      #F3F1FA;
+  --screen:        #F9F7FD;
+  --row-lens:      #F9F7FD;
+  --row-user:      #F9F7FD;
   --border:        #E2E2E7;
   --sep:           rgba(55,37,73,0.10);
   --sep-defined:   rgba(55,37,73,0.18);
@@ -129,7 +129,6 @@ body {
   background: var(--screen);
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.ask-view { background: #F9F7FD; }
 .stories-view.hidden, .ask-view.hidden, .save-view.hidden {
   opacity: 0; pointer-events: none; transform: scale(0.97);
 }
@@ -659,13 +658,16 @@ body {
 }
 .overlay-handle { display: none; }
 .overlay-category {
-  flex: 1;
+  display: inline-flex;
+  align-items: center;
   font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--lens);
-  text-align: center;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: transparent;
+  color: var(--active-border);
+  border: 1px solid var(--active-border);
 }
 .overlay-close {
   width: 32px; height: 32px;
@@ -1496,7 +1498,7 @@ body {
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <div class="overlay-category" id="overlay-category"></div>
-        <div style="width:32px;flex-shrink:0;"></div>
+        <div style="width:32px;flex-shrink:0;margin-left:auto;"></div>
       </div>
       <div class="overlay-body" id="overlay-body"></div>
       <div class="m-card-chat-input-bar">
