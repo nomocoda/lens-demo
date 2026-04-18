@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <title>Lens</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 button { border: none; background: none; font: inherit; color: inherit; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
@@ -22,9 +22,9 @@ button { border: none; background: none; font: inherit; color: inherit; outline:
   --lens-tint-bd:  #CFC8DF;
   --active-bg:     #E2DBEF;
   --active-border: #7C5FA0;
-  --screen:        #F9F7FD;
-  --row-lens:      #F9F7FD;
-  --row-user:      #F9F7FD;
+  --screen:        #FFFFFF;
+  --row-lens:      #FFFFFF;
+  --row-user:      #FFFFFF;
   --border:        #E2E2E7;
   --sep:           rgba(55,37,73,0.10);
   --sep-defined:   rgba(55,37,73,0.18);
@@ -36,6 +36,10 @@ button { border: none; background: none; font: inherit; color: inherit; outline:
   --person-bg:     #F4E3E6;
   --glass:         rgba(255,255,255,0.85);
   --glass-border:  rgba(55,37,73,0.12);
+  --gray-50:       #F3F3F3;
+  --gray-100:      #E8E8E8;
+  --gray-200:      #D4D4D4;
+  --gray-border:   #DDDDDD;
 }
 
 html, body { height: 100%; height: 100dvh; }
@@ -75,6 +79,7 @@ body {
   position: relative;
   z-index: 100;
   flex-shrink: 0;
+  background: #fff;
 }
 .status-time { font-size: 15px; font-weight: 600; color: var(--text-body); }
 .status-icons { font-size: 12px; color: var(--text-body); letter-spacing: 3px; }
@@ -96,14 +101,23 @@ body {
   flex-shrink: 0;
   padding: 8px 20px 12px;
   text-align: center;
+  background: #fff;
 }
 .screen-title {
   display: block;
   font-size: 26px;
   font-weight: 800;
-  color: var(--text-body);
+  color: var(--lens);
   letter-spacing: -0.8px;
   line-height: 1.1;
+}
+.brand-lens {
+  font-family: 'Lora', Georgia, serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: -0.2px;
+  color: var(--lens);
 }
 .squiggle {
   display: block;
@@ -204,12 +218,12 @@ body {
 .row-badge {
   display: inline-flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.2px;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 20px;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
   background: transparent;
   color: var(--active-border);
   border: 1px solid var(--active-border);
@@ -220,20 +234,20 @@ body {
 }
 
 .row-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-body);
   line-height: 1.4;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 }
 .feed-row.is-read .row-title { font-weight: 500; color: #666; }
 
 .row-preview {
-  font-size: 12.5px;
+  font-size: 14.5px;
   font-weight: 400;
   color: #555;
   line-height: 1.55;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -242,7 +256,7 @@ body {
 .feed-row.is-read .row-preview { color: #999; }
 
 .row-meta {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-meta);
   font-weight: 500;
 }
@@ -273,6 +287,15 @@ body {
 .chat-list::-webkit-scrollbar { width: 0; }
 .chat-list { scrollbar-width: none; }
 
+.chat-date-divider {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-meta);
+  letter-spacing: 0.4px;
+  padding: 18px 20px 8px;
+  text-transform: uppercase;
+}
 .chat-row {
   width: 100%;
   padding: 12px 20px;
@@ -295,7 +318,7 @@ body {
   background: #fff;
 }
 .chat-card-ref .d-card-title {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--text-head);
   letter-spacing: -0.3px;
@@ -303,13 +326,13 @@ body {
   margin: 6px 0 10px;
 }
 .chat-card-ref .d-card-body {
-  font-size: 14px;
+  font-size: 16px;
   color: #444;
   line-height: 1.6;
   margin-bottom: 12px;
 }
 .chat-card-ref .d-card-meta {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-meta);
   font-weight: 500;
   margin-top: 10px;
@@ -330,13 +353,12 @@ body {
   justify-content: center;
   overflow: hidden;
 }
-.avatar.lens-av { background: var(--lens-tint); border: 1px solid var(--lens-tint-bd); color: var(--active-border); }
+.avatar.lens-av { background: var(--active-border); }
 .avatar.user-av { background: var(--ruby); }
 .user-initial { font-size: 11px; font-weight: 700; line-height: 1; color: #fff; }
-.avatar.lens-av svg { display: block; width: 17px; height: 17px; }
 
 .chat-sender {
-  font-size: 10px;
+  font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.3px;
 }
@@ -344,7 +366,7 @@ body {
 .chat-sender.s-user { color: var(--person); }
 
 .chat-text {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-body);
   line-height: 1.6;
   font-weight: 400;
@@ -519,27 +541,29 @@ body {
 }
 .m-chat-history-item:active { filter: brightness(0.97); }
 .m-chat-history-item-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-body);
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .m-chat-history-item-preview {
-  font-size: 12.5px;
-  color: var(--text-meta);
-  line-height: 1.5;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: #555;
+  line-height: 1.55;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 .m-chat-history-item-ts {
-  font-size: 11px;
-  color: #A8A3BD;
-  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-meta);
+  margin-top: 7px;
+  font-weight: 500;
 }
 .m-chat-history-empty {
   text-align: center;
@@ -548,23 +572,140 @@ body {
   padding: 40px 20px;
   line-height: 1.5;
 }
-.m-new-chat-btn, .m-back-btn {
+.m-new-chat-btn, .m-back-btn, .m-search-btn, .m-filter-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 34px; height: 34px;
-  border-radius: 50%;
-  background: rgba(55,37,73,0.08);
-  border: 1px solid rgba(55,37,73,0.18);
-  color: var(--lens);
+  background: transparent;
+  border: none;
+  color: var(--lens-deep);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 32;
 }
 .m-new-chat-btn { right: 14px; }
 .m-back-btn { left: 14px; }
-.m-new-chat-btn svg, .m-back-btn svg { width: 16px; height: 16px; }
-.m-new-chat-btn:active, .m-back-btn:active { background: rgba(55,37,73,0.14); }
+.m-search-btn { right: 52px; }
+.m-filter-btn { right: 14px; }
+.ask-view .m-search-btn { right: 52px; }
+.m-filter-btn.has-filter::after {
+  content: '';
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--active-border);
+  border: 1.5px solid #fff;
+}
+.m-new-chat-btn svg, .m-back-btn svg, .m-search-btn svg, .m-filter-btn svg { width: 18px; height: 18px; }
+.m-new-chat-btn:active, .m-back-btn:active, .m-search-btn:active, .m-filter-btn:active { opacity: 0.6; }
+
+.m-search-panel {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  background: #fff;
+  border-bottom: 1px solid var(--sep);
+}
+.m-search-panel.hidden { display: none; }
+.m-search-panel input {
+  flex: 1;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(55,37,73,0.14);
+  background: #fff;
+  color: var(--text-body);
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+}
+.m-search-panel input::placeholder { color: var(--text-meta); }
+.m-search-panel button {
+  color: var(--lens);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 8px;
+}
+
+/* Mobile filter popover (right-anchored dropdown) */
+.m-filter-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: transparent;
+}
+.m-filter-backdrop.hidden { display: none; }
+.m-filter-panel {
+  position: absolute;
+  top: 56px;
+  right: 12px;
+  z-index: 31;
+  width: 220px;
+  background: #fff;
+  border: 1px solid var(--gray-border);
+  border-radius: 14px;
+  padding: 6px 0;
+  box-shadow: 0 12px 32px rgba(55,37,73,0.14), 0 2px 6px rgba(0,0,0,0.06);
+  transform-origin: top right;
+  animation: filterPopIn 0.16s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes filterPopIn {
+  from { opacity: 0; transform: scale(0.94) translateY(-4px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.m-filter-panel.hidden { display: none; }
+.m-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.m-filter-row:active { background: var(--gray-50); }
+.m-filter-check {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 1.5px solid var(--gray-200);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+}
+.m-filter-check svg { width: 12px; height: 12px; stroke: #fff; display: none; }
+.m-filter-row.checked .m-filter-check {
+  background: var(--active-border);
+  border-color: var(--active-border);
+}
+.m-filter-row.checked .m-filter-check svg { display: block; }
+.m-filter-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-body);
+}
+.m-filter-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px 4px;
+  margin-top: 4px;
+  border-top: 1px solid var(--sep);
+}
+.m-filter-actions button {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--lens);
+  padding: 6px 4px;
+}
+.m-filter-actions button:disabled { opacity: 0.4; }
 
 /* Mobile chat-input-bar pill send (matches desktop card chat) */
 .ask-view .chat-input-bar, .m-card-chat-input-bar { background: transparent; border-top: none; }
@@ -589,7 +730,7 @@ body {
   flex-shrink: 0;
   display: flex;
   height: 60px;
-  background: var(--screen);
+  background: #fff;
   border-top: 1px solid var(--sep);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -611,16 +752,15 @@ body {
   fill: none;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+.bottom-tab-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
 .bottom-tab.active { color: var(--lens); }
 .bottom-tab.active svg { transform: scale(1.05); }
-.bottom-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 9px;
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--lens);
-}
+.bottom-tab.active .bottom-tab-label { font-weight: 600; }
+.bottom-tab.active::after { display: none; }
 
 /* =========================================================================
    CARD OVERLAY (mobile) — modal that rises from bottom
@@ -640,7 +780,7 @@ body {
   position: absolute;
   inset: 0;
   z-index: 41;
-  background: #F9F7FD;
+  background: #FFFFFF;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -660,26 +800,26 @@ body {
 .overlay-category {
   display: inline-flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.2px;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 20px;
   background: transparent;
   color: var(--active-border);
   border: 1px solid var(--active-border);
 }
 .overlay-close {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(55,37,73,0.08);
+  width: 34px; height: 34px;
+  background: transparent;
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--lens);
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: var(--lens-deep);
+  transition: opacity 0.2s;
 }
-.overlay-close:hover { transform: scale(1.1); }
+.overlay-close:active { opacity: 0.6; }
 .overlay-body {
   flex: 1;
   overflow-y: auto;
@@ -693,32 +833,32 @@ body {
   scrollbar-width: none;
 }
 .overlay-headline {
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 700;
   color: var(--text-body);
-  line-height: 1.35;
-  letter-spacing: -0.2px;
-  margin-bottom: 12px;
+  line-height: 1.32;
+  letter-spacing: -0.3px;
+  margin-bottom: 14px;
 }
 .overlay-text {
-  font-size: 14.5px;
+  font-size: 16px;
   font-weight: 400;
   color: #444;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 .overlay-sources {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
-  padding: 16px 0 0;
-  font-size: 11px;
+  padding: 18px 0 0;
+  font-size: 13px;
   color: var(--text-meta);
 }
 .overlay-sources::before {
   content: 'Sources';
   font-weight: 700;
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: var(--text-meta);
@@ -726,7 +866,7 @@ body {
   margin-right: 4px;
 }
 .source-link {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--emerald);
   cursor: pointer;
@@ -735,9 +875,9 @@ body {
 .source-link:hover { opacity: 0.7; }
 .source-dot { font-size: 8px; color: var(--text-meta); opacity: 0.4; }
 .overlay-meta {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-meta);
-  margin-top: 12px;
+  margin-top: 14px;
   font-weight: 500;
 }
 
@@ -787,14 +927,14 @@ body {
   width: 42px; height: 42px;
   border-radius: 50%;
   background: #fff;
-  border: 1.5px solid var(--lens);
+  border: 1px solid var(--glass-border);
   color: var(--lens);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 2;
-  box-shadow: 0 2px 6px rgba(55,37,73,0.08);
+  box-shadow: 0 4px 14px rgba(55,37,73,0.18), 0 1px 3px rgba(0,0,0,0.06);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
 }
 .action-sphere svg {
@@ -808,17 +948,17 @@ body {
 
 .sphere-tray {
   position: absolute;
-  bottom: 50px;
+  bottom: 0;
   left: 50%;
+  width: 42px;
+  height: 42px;
   transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
   pointer-events: none;
-  z-index: 3;
+  z-index: 1;
 }
 .tray-icon {
+  position: absolute;
+  top: 0; left: 0;
   width: 42px; height: 42px;
   border-radius: 50%;
   background: #fff;
@@ -828,8 +968,8 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: translateY(12px) scale(0.6);
-  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translate(0, 0) scale(0.5);
+  transition: opacity 0.28s ease, transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
 }
 .tray-icon svg { width: 22px; height: 22px; display: block; }
@@ -839,12 +979,16 @@ body {
 .sphere-tray.open { pointer-events: auto; }
 .sphere-tray.open .tray-icon {
   opacity: 1;
-  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
-.sphere-tray.open .tray-icon:nth-last-child(1) { transition-delay: 0s; }
-.sphere-tray.open .tray-icon:nth-last-child(2) { transition-delay: 0.06s; }
-.sphere-tray.open .tray-icon:nth-last-child(3) { transition-delay: 0.12s; }
+.sphere-tray.open .tray-icon:nth-child(1) {
+  transform: translate(0, -52px) scale(1);
+  transition-delay: 0.02s;
+}
+.sphere-tray.open .tray-icon:nth-child(2) {
+  transform: translate(0, -104px) scale(1);
+  transition-delay: 0.10s;
+}
 
 .sphere-toast {
   position: absolute;
@@ -1441,11 +1585,22 @@ body {
     <!-- STORIES -->
     <div class="stories-view" id="stories-view">
       <div class="screen-header">
-        <span class="screen-title">Stories</span>
-        <svg class="squiggle" width="74" height="10" viewBox="0 0 74 10">
-          <path d="M2,7 C20,10 45,4 72,7" stroke="#372549" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+        <span class="screen-title brand-lens">Lens</span>
+        <svg class="squiggle" width="48" height="10" viewBox="0 0 48 10">
+          <path d="M2,7 C14,10 30,4 46,7" stroke="#CFC8DF" stroke-width="1.8" fill="none" stroke-linecap="round"/>
         </svg>
+        <button class="m-search-btn" onclick="toggleMobileSearch()" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="m-filter-btn" onclick="toggleMobileFilter()" aria-label="Filter by domain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+        </button>
       </div>
+      <div class="m-search-panel hidden">
+        <input type="text" placeholder="Search stories" oninput="onMobileSearchInput(this.value)" />
+        <button onclick="toggleMobileSearch(false)">Cancel</button>
+      </div>
+      <div class="m-filter-panel hidden"></div>
       <div class="row-list" id="stories-list"></div>
     </div>
 
@@ -1453,15 +1608,22 @@ body {
     <div class="ask-view hidden" id="ask-view">
       <div class="screen-header" style="position:relative;">
         <button class="m-back-btn" id="m-back-btn" onclick="mobileBackToHistory()" aria-label="Back to chats" style="display:none;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         </button>
-        <span class="screen-title">Chat</span>
+        <span class="screen-title brand-lens">Lens</span>
         <svg class="squiggle" width="48" height="10" viewBox="0 0 48 10">
-          <path d="M2,7 C14,10 30,4 46,7" stroke="#372549" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <path d="M2,7 C14,10 30,4 46,7" stroke="#CFC8DF" stroke-width="1.8" fill="none" stroke-linecap="round"/>
         </svg>
+        <button class="m-search-btn" id="m-ask-search-btn" onclick="toggleMobileSearch()" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
         <button class="m-new-chat-btn" id="m-new-chat-btn" onclick="mobileNewChat()" aria-label="New chat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
+      </div>
+      <div class="m-search-panel hidden">
+        <input type="text" placeholder="Search chats" oninput="onMobileSearchInput(this.value)" />
+        <button onclick="toggleMobileSearch(false)">Cancel</button>
       </div>
       <div class="m-chat-history-list" id="m-chat-history-list"></div>
       <div class="chat-list hidden" id="chat-messages"></div>
@@ -1481,12 +1643,23 @@ body {
     <!-- SAVED -->
     <div class="save-view hidden" id="save-view">
       <div class="screen-header" style="position: relative;">
-        <span class="screen-title">Saved</span>
-        <svg class="squiggle" width="50" height="10" viewBox="0 0 50 10">
-          <path d="M2,7 C15,10 32,4 48,7" stroke="#372549" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+        <span class="screen-title brand-lens">Lens</span>
+        <svg class="squiggle" width="48" height="10" viewBox="0 0 48 10">
+          <path d="M2,7 C14,10 30,4 46,7" stroke="#CFC8DF" stroke-width="1.8" fill="none" stroke-linecap="round"/>
         </svg>
-        <div class="screen-count" id="saved-count"></div>
+        <button class="m-search-btn" onclick="toggleMobileSearch()" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+        <button class="m-filter-btn" onclick="toggleMobileFilter()" aria-label="Filter by domain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M6 12h12M10 19h4"/></svg>
+        </button>
+        <div class="screen-count" id="saved-count" style="display:none;"></div>
       </div>
+      <div class="m-search-panel hidden">
+        <input type="text" placeholder="Search saved" oninput="onMobileSearchInput(this.value)" />
+        <button onclick="toggleMobileSearch(false)">Cancel</button>
+      </div>
+      <div class="m-filter-panel hidden"></div>
       <div class="row-list" id="save-feed"></div>
     </div>
 
@@ -1495,7 +1668,7 @@ body {
     <div class="card-overlay" id="card-overlay">
       <div class="overlay-header">
         <button class="overlay-close" onclick="closeCardOverlay()" aria-label="Back" style="margin-right:auto;">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
         </button>
         <div class="overlay-category" id="overlay-category"></div>
         <div style="width:32px;flex-shrink:0;margin-left:auto;"></div>
@@ -1518,13 +1691,16 @@ body {
 
   <div class="bottom-tab-bar">
     <button class="bottom-tab active" id="tab-stories" onclick="switchTab('stories')" aria-label="Stories">
-      <svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="7.5"/><circle cx="11" cy="11" r="3"/><line x1="11" y1="1" x2="11" y2="3.5"/><line x1="11" y1="18.5" x2="11" y2="21"/><line x1="1" y1="11" x2="3.5" y2="11"/><line x1="18.5" y1="11" x2="21" y2="11"/></svg>
+      <svg viewBox="0 0 22 22"><rect x="3.5" y="3" width="15" height="16" rx="1.4"/><line x1="6.5" y1="7.5" x2="15.5" y2="7.5"/><line x1="6.5" y1="11.5" x2="15.5" y2="11.5"/><line x1="6.5" y1="15" x2="12" y2="15"/></svg>
+      <span class="bottom-tab-label">Stories</span>
     </button>
     <button class="bottom-tab" id="tab-ask" onclick="switchTab('ask')" aria-label="Chat">
       <svg viewBox="0 0 22 22"><path d="M3 4h16a1 1 0 011 1v9a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg>
+      <span class="bottom-tab-label">Chat</span>
     </button>
     <button class="bottom-tab" id="tab-save" onclick="switchTab('save')" aria-label="Saved">
       <svg viewBox="0 0 22 22"><path d="M5 3h12v16l-6-4.5L5 19V3z"/></svg>
+      <span class="bottom-tab-label">Saved</span>
     </button>
   </div>
 </div>
@@ -1766,6 +1942,9 @@ function switchTab(tab) {
   document.getElementById('dscr-save').classList.toggle('d-active', tab === 'save');
 
   closeCardOverlay();
+  document.querySelectorAll('.m-search-panel').forEach(p => p.classList.add('hidden'));
+  closeAllMobileFilterPanels();
+  filterActiveMobileList('');
   if (tab === 'save') renderSaveFeed();
   if (tab === 'ask') {
     if (currentChatThreadId) showMobileThreadView();
@@ -1888,6 +2067,142 @@ function applyStoryFilters() {
 }
 
 function searchStories(v) { applyStoryFilters(); }
+
+function getActiveMobileView() {
+  const views = ['stories-view', 'ask-view', 'save-view'];
+  for (const id of views) {
+    const el = document.getElementById(id);
+    if (el && !el.classList.contains('hidden')) return el;
+  }
+  return null;
+}
+
+function toggleMobileSearch(forceState) {
+  const view = getActiveMobileView();
+  if (!view) return;
+  const panel = view.querySelector('.m-search-panel');
+  if (!panel) return;
+  const willOpen = typeof forceState === 'boolean' ? forceState : panel.classList.contains('hidden');
+  document.querySelectorAll('.m-search-panel').forEach(p => p.classList.add('hidden'));
+  closeAllMobileFilterPanels();
+  if (willOpen) {
+    panel.classList.remove('hidden');
+    const input = panel.querySelector('input');
+    if (input) { input.value = ''; setTimeout(() => input.focus(), 50); }
+    filterActiveMobileList('');
+  } else {
+    filterActiveMobileList('');
+  }
+}
+
+function onMobileSearchInput(q) { filterActiveMobileList(q); }
+
+let mobileActiveFilters = new Set();
+const MOBILE_FILTER_DOMAINS = [
+  { key: 'revenue',   label: 'Revenue' },
+  { key: 'customers', label: 'Customers' },
+  { key: 'ops',       label: 'Ops' },
+  { key: 'team',      label: 'Team' },
+  { key: 'market',    label: 'Market' }
+];
+
+function renderMobileFilterPanel(panel) {
+  const rowsHtml = MOBILE_FILTER_DOMAINS.map(d => `
+    <div class="m-filter-row${mobileActiveFilters.has(d.key) ? ' checked' : ''}" data-key="${d.key}" onclick="toggleMobileFilterDomain('${d.key}')">
+      <div class="m-filter-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="m-filter-label">${d.label}</div>
+    </div>
+  `).join('');
+  panel.innerHTML = rowsHtml + `
+    <div class="m-filter-actions">
+      <button onclick="clearMobileFilters()"${mobileActiveFilters.size === 0 ? ' disabled' : ''}>Clear</button>
+      <button onclick="toggleMobileFilter(false)">Done</button>
+    </div>
+  `;
+}
+
+function toggleMobileFilter(forceState) {
+  const view = getActiveMobileView();
+  if (!view) return;
+  const panel = view.querySelector('.m-filter-panel');
+  if (!panel) return;
+  const willOpen = typeof forceState === 'boolean' ? forceState : panel.classList.contains('hidden');
+  closeAllMobileFilterPanels();
+  document.querySelectorAll('.m-search-panel').forEach(p => p.classList.add('hidden'));
+  if (willOpen) {
+    renderMobileFilterPanel(panel);
+    panel.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      if (panel.classList.contains('hidden')) return;
+      const backdrop = document.createElement('div');
+      backdrop.className = 'm-filter-backdrop';
+      backdrop.onclick = () => closeAllMobileFilterPanels();
+      panel.parentElement.insertBefore(backdrop, panel);
+    });
+  }
+}
+
+function closeAllMobileFilterPanels() {
+  document.querySelectorAll('.m-filter-panel').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.m-filter-backdrop').forEach(b => b.remove());
+}
+
+function toggleMobileFilterDomain(key) {
+  if (mobileActiveFilters.has(key)) mobileActiveFilters.delete(key);
+  else mobileActiveFilters.add(key);
+  const view = getActiveMobileView();
+  if (view) {
+    const panel = view.querySelector('.m-filter-panel');
+    if (panel && !panel.classList.contains('hidden')) renderMobileFilterPanel(panel);
+  }
+  updateMobileFilterIndicator();
+  filterActiveMobileList('');
+}
+
+function clearMobileFilters() {
+  mobileActiveFilters.clear();
+  const view = getActiveMobileView();
+  if (view) {
+    const panel = view.querySelector('.m-filter-panel');
+    if (panel) renderMobileFilterPanel(panel);
+  }
+  updateMobileFilterIndicator();
+  filterActiveMobileList('');
+}
+
+function updateMobileFilterIndicator() {
+  const hasFilter = mobileActiveFilters.size > 0;
+  document.querySelectorAll('.m-filter-btn').forEach(btn => {
+    btn.classList.toggle('has-filter', hasFilter);
+  });
+}
+
+function filterActiveMobileList(q) {
+  q = (q || '').trim().toLowerCase();
+  const view = getActiveMobileView();
+  if (!view) return;
+  const hasDomainFilter = mobileActiveFilters.size > 0;
+  if (view.id === 'stories-view') {
+    document.querySelectorAll('#stories-list .feed-row').forEach(row => {
+      const matchesCat = !hasDomainFilter || mobileActiveFilters.has(row.dataset.bubble);
+      const matchesQuery = !q || (row.textContent || '').toLowerCase().includes(q);
+      row.style.display = (matchesCat && matchesQuery) ? '' : 'none';
+    });
+  } else if (view.id === 'save-view') {
+    document.querySelectorAll('#save-feed .feed-row').forEach(row => {
+      const matchesCat = !hasDomainFilter || mobileActiveFilters.has(row.dataset.bubble);
+      const matchesQuery = !q || (row.textContent || '').toLowerCase().includes(q);
+      row.style.display = (matchesCat && matchesQuery) ? '' : 'none';
+    });
+  } else if (view.id === 'ask-view') {
+    document.querySelectorAll('#m-chat-history-list .m-chat-history-item').forEach(item => {
+      const matchesQuery = !q || (item.textContent || '').toLowerCase().includes(q);
+      item.style.display = matchesQuery ? '' : 'none';
+    });
+  }
+}
 
 function toggleFilterPop(forceState) {
   const pop = document.getElementById('d-filter-pop');
@@ -2254,7 +2569,7 @@ function appendMessage(role, text) {
   const rowClass = isUser ? 'user-row' : 'lens-row';
   const avatar = isUser
     ? `<div class="avatar user-av"><span class="user-initial">T</span></div>`
-    : `<div class="avatar lens-av">${LENS_SVG}</div>`;
+    : `<div class="avatar lens-av"><span class="user-initial">L</span></div>`;
   let sourcesBlock = '';
   if (!isUser && activeChatSources.length) {
     sourcesBlock = `<div class="overlay-sources" style="padding-top:10px;">${renderSourceLinks(activeChatSources)}</div>`;
@@ -2277,7 +2592,7 @@ function showTyping() {
   const html = `
     <div class="chat-row lens-row" id="typing-msg">
       <div class="chat-sender-row">
-        <div class="avatar lens-av">${LENS_SVG}</div>
+        <div class="avatar lens-av"><span class="user-initial">L</span></div>
         <span class="chat-sender s-lens">Lens</span>
       </div>
       <div class="chat-text"><span class="typing-indicator"><span></span><span></span><span></span></span></div>
@@ -2396,7 +2711,7 @@ function appendCardMsg(screen, role, text) {
   const rowClass = isUser ? 'user-row' : 'lens-row';
   const avatar = isUser
     ? `<div class="avatar user-av"><span class="user-initial">T</span></div>`
-    : `<div class="avatar lens-av">${LENS_SVG}</div>`;
+    : `<div class="avatar lens-av"><span class="user-initial">L</span></div>`;
   const html = `
     <div class="chat-row ${rowClass}">
       <div class="chat-sender-row">
@@ -2416,7 +2731,7 @@ function showCardTyping(screen) {
   const html = `
     <div class="chat-row lens-row" id="card-typing-${screen}">
       <div class="chat-sender-row">
-        <div class="avatar lens-av">${LENS_SVG}</div>
+        <div class="avatar lens-av"><span class="user-initial">L</span></div>
         <span class="chat-sender s-lens">Lens</span>
       </div>
       <div class="chat-text"><span class="typing-indicator"><span></span><span></span><span></span></span></div>
@@ -2533,18 +2848,24 @@ function showMobileHistoryView() {
   const list = document.getElementById('m-chat-history-list');
   const msgs = document.getElementById('chat-messages');
   const back = document.getElementById('m-back-btn');
+  const search = document.getElementById('m-ask-search-btn');
   if (list) list.classList.remove('hidden');
   if (msgs) msgs.classList.add('hidden');
   if (back) back.style.display = 'none';
+  if (search) search.style.display = 'flex';
 }
 
 function showMobileThreadView() {
   const list = document.getElementById('m-chat-history-list');
   const msgs = document.getElementById('chat-messages');
   const back = document.getElementById('m-back-btn');
+  const search = document.getElementById('m-ask-search-btn');
   if (list) list.classList.add('hidden');
   if (msgs) msgs.classList.remove('hidden');
   if (back) back.style.display = 'flex';
+  if (search) search.style.display = 'none';
+  const panel = document.querySelector('#ask-view .m-search-panel');
+  if (panel) panel.classList.add('hidden');
 }
 
 function mobileBackToHistory() {
@@ -2571,6 +2892,11 @@ function loadChatThread(id) {
     const cardHtml = renderChatCardRef(thread.cardRef);
     if (desktop) desktop.innerHTML = cardHtml;
     if (mobile) mobile.innerHTML = cardHtml;
+  }
+  if (thread.ts) {
+    const dateHtml = `<div class="chat-date-divider">${thread.ts}</div>`;
+    if (desktop) desktop.innerHTML += dateHtml;
+    if (mobile) mobile.innerHTML += dateHtml;
   }
   thread.messages.forEach(m => {
     chatHistory.push(m);
