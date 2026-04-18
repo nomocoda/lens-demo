@@ -933,13 +933,6 @@ body {
     border: 1px solid rgba(255,255,255,0.5);
   }
   .browser-chrome .d-search:focus-within { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.18); }
-  .browser-chrome .d-filter-btn {
-    flex-shrink: 0;
-    color: #fff;
-  }
-  .browser-chrome .d-filter-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
-  .browser-chrome .d-filter-btn.has-filter { color: #fff; }
-  .browser-chrome .d-filter-btn.has-filter::after { background: #fff; border-color: var(--lens); }
   /* Sidebar rail (persistent left nav) */
   .app-body {
     flex: 1;
@@ -958,28 +951,25 @@ body {
     background: #fff;
     border-right: 1px solid rgba(0,0,0,0.06);
   }
-  .app-logo-mark {
+  .app-company-mark {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 2px 8px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 10px 0;
     flex-shrink: 0;
   }
-  .app-logo-circle {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--row-lens);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .app-logo-circle svg { width: 18px; height: 18px; display: block; }
-  .app-brand {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--lens);
+  .app-company-name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A1730;
     letter-spacing: -0.3px;
+    line-height: 1;
+  }
+  .app-company-squiggle {
+    display: block;
+    margin-top: 6px;
+    margin-bottom: 2px;
   }
   .app-nav-group {
     display: flex;
@@ -1496,25 +1486,14 @@ body {
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input type="text" id="d-search-input" placeholder="Search stories" oninput="searchStories(this.value)" />
       </label>
-      <button class="d-filter-btn" id="d-filter-btn" onclick="event.stopPropagation(); toggleFilterPop()" aria-label="Filter stories">
-        <svg viewBox="0 0 24 24"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
-      </button>
-      <div class="d-filter-pop" id="d-filter-pop">
-        <button class="d-filter-opt active" data-filter="all" onclick="filterFeed('all'); toggleFilterPop(false)"><span class="check-dot"></span>All</button>
-        <button class="d-filter-opt" data-filter="customers" onclick="filterFeed('customers'); toggleFilterPop(false)"><span class="check-dot"></span>Customers</button>
-        <button class="d-filter-opt" data-filter="revenue" onclick="filterFeed('revenue'); toggleFilterPop(false)"><span class="check-dot"></span>Revenue</button>
-        <button class="d-filter-opt" data-filter="team" onclick="filterFeed('team'); toggleFilterPop(false)"><span class="check-dot"></span>Team</button>
-        <button class="d-filter-opt" data-filter="ops" onclick="filterFeed('ops'); toggleFilterPop(false)"><span class="check-dot"></span>Ops</button>
-        <button class="d-filter-opt" data-filter="market" onclick="filterFeed('market'); toggleFilterPop(false)"><span class="check-dot"></span>Market</button>
-      </div>
     </div>
     <div class="app-body">
       <aside class="app-sidebar">
-        <div class="app-logo-mark">
-          <div class="app-logo-circle">
-            <svg viewBox="65 0 510 524" xmlns="http://www.w3.org/2000/svg"><path fill="#6C5CE7" fill-rule="evenodd" d="M122.8,237.2c-3.9-8.4-.4-18.4,8-22.3,8.4-3.9,18.4-.4,22.3,8,8.8,18.8,43.1,93.4,91.8,195.7,4,8.3.4,18.4-7.9,22.3-8.3,4-18.4.4-22.3-7.9-48.8-102.3-83-177-91.9-195.8h0ZM129,167.1c3.8,8.4,0,18.4-8.3,22.2s-18.4,0-22.2-8.3l-15.9-35.1c-3.8-8.4,0-18.4,8.3-22.2,8.4-3.8,18.4,0,22.2,8.3l15.9,35.1ZM384,178c36.3,25,47.9,69.5,46.4,98.6-4.7,90-60.8,122.1-78.3,138.4-6.8,6.3-17.4,6-23.7-.8-6.3-6.8-6-17.4.8-23.7,14.7-13.8,63.8-39.9,67.7-115.7.9-17.1-4.3-42.1-21.2-60-12.4,28.7-38.6,51.8-78.4,55.6-24.1,2.3-37.7-6-44.4-16.2-6.9-10.6-7.5-25.8-.3-41.5,13.1-28.3,52.6-59.1,97.4-49.8-2.5-15.2-10.3-29.4-23.5-38.5-19.1-13.1-48.5-14.5-88.4,2.4-8.5,3.6-18.4-.4-22-8.9-3.6-8.5.4-18.4,8.9-22,44.8-19,79.9-18.2,105.2-7.5,27.4,11.5,44.4,34.6,50.9,60.9,2.3,9.2,3.2,18.9,2.9,28.5h0ZM346.9,197c-29.2-8-55.3,11.6-63.8,29.9-1.2,2.6-2,5-2.1,7.3,0,.6-.5,1.3,0,1.6,2.5,2.1,6.9,1.9,13.1,1.3,27.7-2.7,45.4-19.6,52.8-40.1h0ZM527.5,106.2c2.7-8.8,12-13.9,20.9-11.2,8.8,2.7,13.9,12,11.2,20.9-59.2,196.1-58.9,195.6-70.5,232.2-2.8,8.8-12.2,13.7-21,10.9-8.8-2.8-13.7-12.2-10.9-21,11.5-36.6,11.2-36.1,70.4-231.9h0Z"/></svg>
-          </div>
-          <span class="app-brand">Lens</span>
+        <div class="app-company-mark">
+          <span class="app-company-name">Atlas SaaS</span>
+          <svg class="squiggle app-company-squiggle" width="74" height="10" viewBox="0 0 74 10">
+            <path d="M2,7 C20,10 45,4 72,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+          </svg>
         </div>
         <nav class="app-nav-group">
           <button class="app-navtab active" id="dtab-stories" onclick="switchTab('stories')">
