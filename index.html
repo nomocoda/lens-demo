@@ -2040,7 +2040,7 @@ function renderCardDock(pane) {
           <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink()" aria-label="Copy link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
           <button class="tray-icon tray-save" id="tray-save-${pane}" onclick="event.stopPropagation(); saveOrUnsaveFromOverlay()" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/></svg></button>
         </div>
-        <button class="action-sphere" onclick="event.stopPropagation(); toggleSphere('${pane}')" aria-label="Actions">${LENS_SVG}</button>
+        <button class="action-sphere" onclick="event.stopPropagation(); toggleSphere('${pane}')" aria-label="Actions"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
         <div class="sphere-toast" id="sphere-toast-${pane}"></div>
       </div>
     </div>`;
