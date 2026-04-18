@@ -6,62 +6,56 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
 <title>Lens</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-button { border: none; background: none; font: inherit; color: inherit; outline: none; -webkit-appearance: none; appearance: none; }
+button { border: none; background: none; font: inherit; color: inherit; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
 
 :root {
-  /* Refined purple palette: deeper, more navy-rich */
-  --purple-deep: #1A1540;
-  --purple-dark: #2D2660;
-  --purple-core: #4A3F8F;
-  --purple: #6C5CE7;
-  --purple-medium: #8B7CF0;
-  --purple-light: #C8C0F0;
-  --purple-wash: #FCFCFD;
-  --purple-faint: #FAFAFD;
-  --purple-bg: #FCFCFD;
-
-  /* Refined orange: warmer, richer, more amber-gold character */
-  --accent: #E8944A;
-  --accent-warm: #D4863F;
-  --accent-glow: #F2A85E;
-  --accent-deep: #C47435;
-  --accent-light: rgba(232, 148, 74, 0.15);
-
-  --white: #FFFFFF;
-  --gray-text: #6B6B80;
-  --dark-text: #1A1A2E;
-  --glass: rgba(255, 255, 255, 0.75);
+  --lens: #6C5CE7;
+  --lens-deep: #4A3F8F;
+  --lens-dark: #2D2660;
+  --screen: #F3F1FA;
+  --row-lens: #F3F1FA;
+  --row-user: #F3F1FA;
+  --sep: rgba(108,92,231,0.1);
+  --sep-defined: rgba(108,92,231,0.18);
+  --text-body: #1A1A1A;
+  --text-meta: #9990C8;
+  --text-muted: #888;
+  --person: #8C5038;
+  --person-bg: #F2E2DC;
+  --glass: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(108, 92, 231, 0.12);
-  --shadow-card: 0 4px 24px rgba(108, 92, 231, 0.1), 0 1px 4px rgba(0,0,0,0.04);
-  --radius-card: 18px;
-  --radius-button: 24px;
-  --radius-input: 16px;
 }
 
+html, body { height: 100%; }
 body {
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background: #F0F0F2;
+  color: var(--text-body);
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
+  overflow: hidden;
 }
 
+/* =========================================================================
+   MOBILE: phone frame (visible <768px)
+   ========================================================================= */
 .phone-frame {
   width: 390px;
   height: 844px;
-  background: var(--purple-wash);
+  background: var(--screen);
   border-radius: 44px;
   overflow: hidden;
   position: relative;
   box-shadow: 0 24px 80px rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Status Bar */
 .status-bar {
   height: 54px;
   padding: 14px 28px 0;
@@ -70,120 +64,75 @@ body {
   align-items: center;
   position: relative;
   z-index: 100;
+  flex-shrink: 0;
 }
-.status-time { font-size: 15px; font-weight: 600; color: var(--purple-dark); }
-.status-icons { font-size: 12px; color: var(--purple-dark); letter-spacing: 3px; }
+.status-time { font-size: 15px; font-weight: 600; color: var(--text-body); }
+.status-icons { font-size: 12px; color: var(--text-body); letter-spacing: 3px; }
 .dynamic-island {
   width: 120px; height: 34px;
   background: #000; border-radius: 20px;
   position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
 }
 
-/* Bottom Tab Bar */
-.bottom-tab-bar {
-  display: flex;
-  gap: 0;
-  height: 52px;
-  position: relative;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--glass-border);
-}
-.bottom-tab {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gray-text);
-  cursor: pointer;
-  transition: color 0.3s ease, background 0.3s ease;
-  position: relative;
-}
-.bottom-tab svg {
-  width: 22px;
-  height: 22px;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  fill: none;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.3s ease, fill 0.3s ease;
-}
-.bottom-tab.active {
-  color: var(--purple);
-}
-.bottom-tab.active svg {
-  transform: scale(1.08);
-}
-/* Tiny active dot under the icon */
-.bottom-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--purple);
-}
-
-/* Main Content Area */
 .content-area {
   position: relative;
-  height: calc(100% - 54px - 52px);
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
-/* ============================
-   STORIES VIEW
-   ============================ */
-.stories-view {
+/* Screen header: centered title + squiggle */
+.screen-header {
+  flex-shrink: 0;
+  padding: 8px 20px 12px;
+  text-align: center;
+}
+.screen-title {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-body);
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+}
+.squiggle {
+  display: block;
+  margin: 3px auto 0;
+}
+.screen-count {
+  position: absolute;
+  right: 20px;
+  top: 14px;
+  font-size: 11px;
+  color: var(--text-meta);
+  font-weight: 500;
+}
+
+/* =========================================================================
+   VIEWS
+   ========================================================================= */
+.stories-view, .ask-view, .save-view {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: var(--screen);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.stories-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
-
-/* ============================
-   STORIES HEADER: branded top area
-   ============================ */
-.stories-header {
-  flex-shrink: 0;
-  padding: 12px 20px 8px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-.stories-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 15%;
-  width: 70%;
-  height: 1px;
-  background: rgba(108, 92, 231, 0.06);
-  box-shadow: 0 1px 4px rgba(108, 92, 231, 0.08),
-              0 2px 8px rgba(108, 92, 231, 0.04);
-}
-.stories-header-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--purple-dark);
+.ask-view { background: #F9F7FD; }
+.stories-view.hidden, .ask-view.hidden, .save-view.hidden {
+  opacity: 0; pointer-events: none; transform: scale(0.97);
 }
 
-/* ============================
-   FILTER CHIPS: horizontal scrollable row
-   ============================ */
+/* Stories header wrapper holds both title and filter chips */
+.stories-view .screen-header { position: relative; }
+
+/* Filter chips row */
 .filter-chips {
   flex-shrink: 0;
   display: flex;
-  gap: 8px;
-  padding: 12px 16px 4px;
+  gap: 6px;
+  padding: 4px 16px 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -191,501 +140,244 @@ body {
 .filter-chips::-webkit-scrollbar { display: none; }
 .filter-chip {
   flex-shrink: 0;
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: 20px;
-  font-size: 0.8125rem;
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  border: 1px solid var(--glass-border);
-  background: var(--glass);
-  color: var(--gray-text);
+  letter-spacing: 0.1px;
+  color: var(--lens);
+  background: rgba(108,92,231,0.07);
+  border: 1px solid rgba(108,92,231,0.16);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
 .filter-chip.active {
-  background: var(--purple);
+  background: var(--lens);
   color: #fff;
-  border-color: var(--purple);
-  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.3);
-}
-.filter-chip:not(.active):active {
-  background: rgba(108, 92, 231, 0.06);
+  border-color: var(--lens);
 }
 
-/* ============================
-   CARD FEED: vertical scrollable list
-   ============================ */
-.card-feed {
+/* =========================================================================
+   ROW LANGUAGE — shared between Stories, Saved, Chat
+   ========================================================================= */
+.row-list {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0;
+  min-height: 0;
+}
+.row-list::-webkit-scrollbar { width: 0; }
+.row-list { scrollbar-width: none; }
+
+.feed-row {
+  width: 100%;
+  padding: 14px 20px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 0;
-  min-height: 0;
-  background: #fff;
-}
-.card-feed::-webkit-scrollbar { width: 0; }
-.card-feed { scrollbar-width: none; }
-
-/* Feed card: flat white, line-separated (Medium style) */
-.feed-card {
-  background: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 16px 20px;
+  position: relative;
+  background: var(--row-lens);
   cursor: pointer;
-  transition: background 0.15s ease;
-  position: relative;
-}
-.feed-card:active {
-  background: rgba(0, 0, 0, 0.02);
-}
-.feed-card:last-child {
-  border-bottom: none;
-}
-/* Unread: no visual accent, clean edge */
-.feed-card.unread {}
-.feed-card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-.feed-card-category {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--purple);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.feed-card-headline {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--purple-dark);
-  line-height: 1.45;
-  margin-bottom: 4px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.feed-card-preview {
-  font-size: 0.8125rem;
-  font-weight: 300;
-  color: var(--gray-text);
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ============================
-   CARD OVERLAY: expands over feed on tap
-   ============================ */
-.card-overlay-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(26, 21, 64, 0.35);
-  z-index: 40;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.card-overlay-backdrop.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.card-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 90%;
-  z-index: 41;
-  background: var(--purple-wash);
-  border-radius: 24px 24px 0 0;
-  box-shadow: 0 -8px 40px rgba(0,0,0,0.15);
-  display: flex;
-  flex-direction: column;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
-  pointer-events: none;
-}
-.card-overlay.active {
-  transform: translateY(0);
-  pointer-events: auto;
-}
-.card-overlay-header {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  padding: 16px 20px 8px;
-}
-.card-overlay-category {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--purple);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.card-overlay-close {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--gray-text);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.card-overlay-close:hover { transform: scale(1.1); }
-.card-overlay-body {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 0 20px 20px;
-}
-.card-overlay-body::-webkit-scrollbar { width: 0; }
-.card-overlay-card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-card);
-  padding: 24px;
-  box-shadow: var(--shadow-card);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-.card-overlay-card.unread {
-  border-left: 3px solid var(--purple);
-}
-
-/* CARD TEXT CONTENT */
-.insight-body {
-  font-size: 0.9375rem;
-  font-weight: 300;
-  color: var(--gray-text);
-  line-height: 1.6;
-  padding: 6px 0;
-}
-.insight-headline {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: var(--purple-dark);
-  line-height: 1.5;
-  margin-bottom: 10px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-/* Scrollable body so the footer+sphere never get clipped */
-.insight-card-body {
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-  -webkit-overflow-scrolling: touch;
-}
-.insight-card-body::-webkit-scrollbar { display: none; }
-.insight-card-body { scrollbar-width: none; }
-
-.insight-card-footer {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: auto;
-  padding-top: 12px;
-  position: relative;
-}
-
-/* ============================
-   SPHERE: universal action affordance
-   ============================ */
-.insight-sphere-wrap {
-  position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-.insight-sphere {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: var(--purple) url('nomocoda-mark.png') center/cover no-repeat;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  position: relative;
-  z-index: 2;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 4px 14px rgba(108, 92, 231, 0.28), 0 2px 6px rgba(0,0,0,0.08);
-}
-.insight-sphere:hover {
-  transform: scale(1.06);
-  filter: brightness(0.9);
-}
-.insight-sphere.open {
-  filter: brightness(0.82) saturate(1.1);
-  box-shadow: 0 4px 18px rgba(108, 92, 231, 0.42), 0 2px 6px rgba(0,0,0,0.08);
-}
-
-/* Sphere tray: vertical stack of action icons that blooms upward */
-.sphere-tray {
-  position: absolute;
-  bottom: 56px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  pointer-events: none;
-  z-index: 3;
-}
-.sphere-tray .tray-icon {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 14px rgba(108, 92, 231, 0.18), 0 1px 3px rgba(0,0,0,0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(12px) scale(0.6);
-  transition:
-    opacity 0.3s ease,
-    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.2s ease;
-  pointer-events: none;
-}
-.sphere-tray .tray-icon:hover {
-  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.26), 0 1px 3px rgba(0,0,0,0.08);
-}
-.sphere-tray .tray-icon svg {
-  width: 22px;
-  height: 22px;
-  display: block;
-}
-/* Per-icon brand colors */
-.tray-icon.tray-save svg { fill: #E8944A; }
-.tray-icon.tray-chat svg { fill: #6C5CE7; }
-.tray-icon.tray-copy svg { fill: none; stroke: #3B82F6; }
-
-.sphere-tray.open { pointer-events: auto; }
-.sphere-tray.open .tray-icon {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-/* Bottom-to-top stagger */
-.sphere-tray.open .tray-icon:nth-last-child(1) { transition-delay: 0s; }
-.sphere-tray.open .tray-icon:nth-last-child(2) { transition-delay: 0.06s; }
-.sphere-tray.open .tray-icon:nth-last-child(3) { transition-delay: 0.12s; }
-.sphere-tray.open .tray-icon:nth-last-child(4) { transition-delay: 0.18s; }
-
-/* Small toast */
-.sphere-toast {
-  position: absolute;
-  bottom: 58px;
-  right: 0;
-  padding: 8px 14px;
-  background: rgba(26, 26, 46, 0.92);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-  border-radius: 18px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-  opacity: 0;
-  transform: translateY(6px);
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 4;
-  white-space: nowrap;
-}
-.sphere-toast.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.suggestion-chip {
-  display: inline-block;
-  padding: 8px 14px;
-  background: var(--purple-faint);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--purple);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  line-height: 1.3;
-}
-.suggestion-chip:hover {
-  background: var(--purple-light);
-  border-color: var(--purple-medium);
-}
-
-/* ============================
-   ASK VIEW
-   ============================ */
-.ask-view {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.ask-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
-
-.chat-header {
-  padding: 12px 20px 8px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-.chat-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 15%;
-  width: 70%;
-  height: 1px;
-  background: rgba(108, 92, 231, 0.06);
-  box-shadow: 0 1px 4px rgba(108, 92, 231, 0.08),
-              0 2px 8px rgba(108, 92, 231, 0.04);
-}
-.chat-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--purple-dark);
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 16px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.chat-messages::-webkit-scrollbar { width: 0; }
-
-.message {
-  max-width: 88%;
-  padding: 14px 16px;
-  border-radius: 16px;
-  position: relative;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  animation: messageIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-@keyframes messageIn {
-  from { opacity: 0; transform: translateY(12px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.message-user {
-  align-self: flex-end;
-  background: rgba(255, 255, 255, 0.8);
-}
-.message-lens {
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.85);
-}
-
-.message-sender {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 6px;
-}
-.message-user .message-sender { color: var(--accent); text-align: right; }
-.message-lens .message-sender { color: var(--purple); }
-
-.message-text {
-  font-size: 14px;
-  color: var(--dark-text);
-  line-height: 1.55;
-}
-.message-lens .message-highlight {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  color: var(--purple-dark);
-  font-size: 15px;
-}
-.message-time {
-  font-size: 10px;
-  color: var(--gray-text);
-  margin-top: 6px;
-  opacity: 0.7;
-}
-
-/* Bridged card in chat: mirrors feed card structure, truncated from bottom */
-.chat-card {
-  max-width: 92%;
-  background: #fff;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-card);
-  box-shadow: 0 2px 12px rgba(108, 92, 231, 0.08);
-  overflow: hidden;
-  animation: messageIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  flex-shrink: 0;
-}
-.chat-card-content {
-  padding: 18px 18px 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-}
-/* Collapsed: hide body after headline */
-.chat-card:not(.expanded) .chat-card-content .insight-body {
-  display: none;
-}
-/* Ellipsis line shown when collapsed */
-.chat-card-ellipsis {
-  padding: 2px 0 0;
-  font-size: 1rem;
-  color: var(--gray-text);
-  letter-spacing: 2px;
-}
-.chat-card.expanded .chat-card-ellipsis {
-  display: none;
-}
-.chat-card .feed-card-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-/* "more/less" toggle: inside card, below the content */
-.chat-card-toggle {
-  padding: 8px 18px 12px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--purple);
-  cursor: pointer;
+  transition: filter 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
+.feed-row:active { filter: brightness(0.97); }
+.feed-row::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--sep);
+}
 
-.chat-input-bar {
-  padding: 8px 16px 12px;
+.row-body { flex: 1; min-width: 0; }
+
+.row-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+  background: rgba(108,92,231,0.08);
+  color: var(--lens);
+  border: 1px solid rgba(108,92,231,0.18);
+}
+.feed-row.is-read .row-badge {
+  background: transparent;
+  color: #B0AAD8;
+  border-color: rgba(108,92,231,0.15);
+}
+
+.row-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-body);
+  line-height: 1.4;
+  margin-bottom: 5px;
+}
+.feed-row.is-read .row-title { font-weight: 500; color: #666; }
+
+.row-preview {
+  font-size: 12.5px;
+  font-weight: 400;
+  color: #555;
+  line-height: 1.55;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.feed-row.is-read .row-preview { color: #999; }
+
+.row-meta {
+  font-size: 11px;
+  color: var(--text-meta);
+  font-weight: 500;
+}
+
+/* Sphere icon (bookmark) on saved rows */
+.sphere {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--lens);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  margin-left: 12px;
+  box-shadow: 0 2px 6px rgba(108,92,231,0.28);
+}
+
+/* =========================================================================
+   CHAT ROWS
+   ========================================================================= */
+.chat-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  padding-bottom: 4px;
+}
+.chat-list::-webkit-scrollbar { width: 0; }
+.chat-list { scrollbar-width: none; }
+
+.chat-row {
+  width: 100%;
+  padding: 12px 20px;
+  position: relative;
+  background: var(--row-lens);
+}
+.chat-row.user-row { background: var(--row-user); }
+.chat-row::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--sep);
+}
+
+.chat-sender-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 5px;
+}
+.avatar {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.avatar.lens-av { background: var(--row-lens); box-shadow: inset 0 0 0 1px rgba(108,92,231,0.15); }
+.avatar.user-av { background: var(--person-bg); }
+.user-initial { font-size: 11px; font-weight: 700; line-height: 1; color: var(--person); }
+.avatar.lens-av svg { display: block; width: 17px; height: 17px; }
+
+.chat-sender {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.chat-sender.s-lens { color: var(--lens); }
+.chat-sender.s-user { color: var(--person); }
+
+.chat-text {
+  font-size: 13px;
+  color: var(--text-body);
+  line-height: 1.6;
+  font-weight: 400;
+}
+.chat-text .typing-indicator {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px 0;
+  align-items: center;
+}
+.chat-text .typing-indicator span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(108,92,231,0.45);
+  animation: typingBounce 1.4s ease-in-out infinite;
+}
+.chat-text .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.chat-text .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Bridged card inside chat — same row language, with expand/collapse */
+.chat-card-row {
+  padding: 14px 20px;
+  background: var(--row-lens);
+  position: relative;
+  border-top: 1px solid rgba(108,92,231,0.18);
+  border-bottom: 1px solid rgba(108,92,231,0.18);
+}
+.chat-card-row .row-badge { background: rgba(108,92,231,0.14); border: none; color: var(--lens); }
+.chat-card-row .row-title { margin-bottom: 6px; }
+.chat-card-row .chat-card-body {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.6;
+  display: none;
+  margin-top: 2px;
+}
+.chat-card-row.expanded .chat-card-body { display: block; }
+.chat-card-row .chat-card-ellipsis {
+  font-size: 15px;
+  color: var(--text-meta);
+  letter-spacing: 2px;
+  line-height: 1;
+  padding: 2px 0 0;
+}
+.chat-card-row.expanded .chat-card-ellipsis { display: none; }
+.chat-card-row .chat-card-toggle {
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--lens);
+  cursor: pointer;
+}
+
+/* =========================================================================
+   CHAT INPUT BAR
+   ========================================================================= */
+.chat-input-bar {
+  flex-shrink: 0;
+  padding: 10px 14px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--screen);
+  border-top: 1px solid var(--sep);
 }
 .chat-input-wrap {
   flex: 1;
@@ -695,404 +387,987 @@ body {
 }
 .chat-input {
   width: 100%;
-  background: var(--glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-input);
-  padding: 12px 46px 12px 16px;
+  background: #fff;
+  border: 1px solid rgba(108,92,231,0.16);
+  border-radius: 16px;
+  padding: 11px 44px 11px 16px;
   font-size: 14px;
   font-family: 'Inter', sans-serif;
-  color: var(--dark-text);
+  color: var(--text-body);
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   resize: none;
   overflow: hidden;
-  min-height: 44px;
+  min-height: 42px;
   max-height: 120px;
   line-height: 1.4;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-.chat-input::placeholder { color: var(--gray-text); opacity: 0.6; }
+.chat-input::placeholder { color: #BBB; }
 .chat-input:focus {
-  border-color: var(--purple-light);
-  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
+  border-color: var(--lens);
+  box-shadow: 0 0 0 3px rgba(108,92,231,0.08);
 }
-.send-btn, .mic-btn {
-  width: 42px; height: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
-}
-.send-btn {
-  background: var(--purple);
-}
-.send-btn:hover {
-  transform: scale(1.08);
-  background: var(--purple-dark);
-}
-.send-btn svg { width: 18px; height: 18px; fill: white; }
 .mic-btn {
   position: absolute;
   right: 6px;
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
   background: transparent;
-  border: none;
-  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.mic-btn:hover {
-  transform: scale(1.08);
-  background: rgba(108, 92, 231, 0.06);
-}
-.mic-btn svg { width: 18px; height: 18px; stroke: var(--purple-core); stroke-width: 1.8; fill: none; }
-.mic-btn.recording {
-  background: rgba(232, 74, 74, 0.12);
-  border-color: rgba(232, 74, 74, 0.3);
-  animation: micPulse 1.5s ease-in-out infinite;
-}
+.mic-btn svg { width: 17px; height: 17px; stroke: var(--lens-deep); stroke-width: 1.8; fill: none; }
+.mic-btn:hover { background: rgba(108,92,231,0.08); }
+.mic-btn.recording { background: rgba(232, 74, 74, 0.12); animation: micPulse 1.5s ease-in-out infinite; }
 .mic-btn.recording svg { stroke: #E84A4A; }
 @keyframes micPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(232, 74, 74, 0.2); }
   50% { box-shadow: 0 0 0 8px rgba(232, 74, 74, 0); }
 }
-/* Typing indicator */
-.typing-indicator {
-  display: flex;
-  gap: 4px;
-  padding: 4px 0;
-}
-.typing-indicator span {
-  width: 6px; height: 6px;
+.send-btn {
+  width: 42px; height: 42px;
   border-radius: 50%;
-  background: var(--purple-light);
-  animation: typingBounce 1.4s ease-in-out infinite;
-}
-.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes typingBounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-  30% { transform: translateY(-6px); opacity: 1; }
-}
-
-/* ============================
-   SAVE VIEW
-   ============================ */
-.save-view {
-  position: absolute;
-  inset: 0;
+  background: var(--lens);
   display: flex;
-  flex-direction: column;
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(108,92,231,0.25);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+  flex-shrink: 0;
 }
-.save-view.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
+.send-btn:hover { background: var(--lens-dark); transform: scale(1.06); }
+.send-btn svg { width: 16px; height: 16px; fill: #fff; }
 
-.save-header {
-  padding: 12px 20px 8px;
-  text-align: center;
-  position: relative;
-  z-index: 2;
-}
-.save-header::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 15%;
-  width: 70%;
-  height: 1px;
-  background: rgba(108, 92, 231, 0.06);
-  box-shadow: 0 1px 4px rgba(108, 92, 231, 0.08),
-              0 2px 8px rgba(108, 92, 231, 0.04);
-}
-.save-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--purple-dark);
-}
-
-.save-feed {
-  flex: 1;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  min-height: 0;
-  background: #fff;
-}
-.save-feed::-webkit-scrollbar { width: 0; }
-.save-feed { scrollbar-width: none; }
-
-/* Saved cards: same flat style as feed cards */
-.saved-card {
-  background: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 16px 20px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-  position: relative;
-}
-.saved-card:active {
-  background: rgba(0, 0, 0, 0.02);
-}
-.saved-card:last-child {
-  border-bottom: none;
-}
-
-.saved-card-meta {
-  font-size: 0.75rem;
-  color: var(--gray-text);
-  opacity: 0.75;
-  letter-spacing: 0.2px;
-  margin-top: 10px;
-}
-
-.save-empty {
+/* Empty states */
+.empty-state {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px 32px;
   text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 15px;
+  font-size: 14px;
+  color: var(--text-meta);
   line-height: 1.5;
-  color: var(--gray-text);
+  gap: 8px;
 }
+.empty-state svg { opacity: 0.5; }
 
-.save-detail {
-  position: absolute;
-  inset: 0;
-  background: var(--purple-wash);
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(12px);
-  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Mobile chat history list (inside .ask-view) */
+.m-chat-history-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  padding: 0;
 }
-.save-detail.active {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
-}
-.save-detail-header {
-  padding: 12px 20px 0;
+.m-chat-history-list::-webkit-scrollbar { width: 0; }
+.m-chat-history-list { scrollbar-width: none; }
+.m-chat-history-list.hidden { display: none; }
+.ask-view .chat-list.hidden { display: none; }
+.m-chat-history-item {
+  padding: 14px 20px;
   position: relative;
-  text-align: center;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
-.save-detail-back {
+.m-chat-history-item::after {
+  content: '';
   position: absolute;
-  top: 14px;
-  left: 20px;
-  width: 36px; height: 36px;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--sep);
+}
+.m-chat-history-item:active { filter: brightness(0.97); }
+.m-chat-history-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-body);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.m-chat-history-item-preview {
+  font-size: 12.5px;
+  color: var(--text-meta);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.m-chat-history-item-ts {
+  font-size: 11px;
+  color: #A8A3BD;
+  margin-top: 6px;
+}
+.m-chat-history-empty {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-meta);
+  padding: 40px 20px;
+  line-height: 1.5;
+}
+.m-new-chat-btn, .m-back-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px; height: 34px;
   border-radius: 50%;
-  background: var(--glass);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--glass-border);
+  background: rgba(108,92,231,0.08);
+  border: 1px solid rgba(108,92,231,0.18);
+  color: var(--lens);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  color: var(--purple);
-  z-index: 5;
+}
+.m-new-chat-btn { right: 14px; }
+.m-back-btn { left: 14px; }
+.m-new-chat-btn svg, .m-back-btn svg { width: 16px; height: 16px; }
+.m-new-chat-btn:active, .m-back-btn:active { background: rgba(108,92,231,0.14); }
+
+/* Mobile chat-input-bar pill send (matches desktop card chat) */
+.ask-view .chat-input-bar, .m-card-chat-input-bar { background: transparent; border-top: none; }
+.ask-view .chat-input-bar .send-btn {
+  background: rgba(108,92,231,0.08);
+  border: 1px solid rgba(108,92,231,0.18);
+  box-shadow: none;
+}
+.ask-view .chat-input-bar .send-btn svg { fill: var(--lens); }
+.ask-view .chat-list .chat-row, .m-card-chat-msgs .chat-row { background: transparent !important; }
+.ask-view .chat-list .chat-row::after,
+.m-card-chat-msgs .chat-row::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0; left: 20px; right: 20px;
+  height: 1px;
+  background: var(--sep);
+}
+.m-card-chat-msgs .chat-row::after { left: 0; right: 0; }
+.ask-view .chat-list .chat-row:last-child::after,
+.m-card-chat-msgs .chat-row:last-child::after { display: none; }
+
+/* =========================================================================
+   BOTTOM TAB BAR (mobile)
+   ========================================================================= */
+.bottom-tab-bar {
+  flex-shrink: 0;
+  display: flex;
+  height: 60px;
+  background: var(--screen);
+  border-top: 1px solid var(--sep);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.bottom-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: #C0BBE5;
+  transition: color 0.2s;
+  position: relative;
+}
+.bottom-tab svg {
+  width: 22px; height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  fill: none;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.save-detail-back:hover { transform: scale(1.1); }
-.save-detail-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.375rem;
-  font-weight: 600;
-  color: var(--purple-dark);
+.bottom-tab.active { color: var(--lens); }
+.bottom-tab.active svg { transform: scale(1.05); }
+.bottom-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 9px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--lens);
 }
-.save-detail-subtitle {
-  font-size: 0.75rem;
-  color: var(--gray-text);
-  padding: 4px 20px 12px;
-  text-align: center;
-  letter-spacing: 0.2px;
+
+/* =========================================================================
+   CARD OVERLAY (mobile) — modal that rises from bottom
+   ========================================================================= */
+.card-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 21, 64, 0.3);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
-.save-detail-body {
+.card-overlay-backdrop.active { opacity: 1; pointer-events: auto; }
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 41;
+  background: #F9F7FD;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+  pointer-events: none;
+}
+.card-overlay.active { transform: translateX(0); pointer-events: auto; }
+
+.overlay-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 14px 18px 10px;
+}
+.overlay-handle { display: none; }
+.overlay-category {
   flex: 1;
-  padding: 0 20px 20px;
-  overflow-y: auto;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--lens);
+  text-align: center;
 }
-.save-detail-body::-webkit-scrollbar { width: 0; }
-.save-detail-card {
-  background: var(--glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-card);
-  padding: 24px;
-  box-shadow: var(--shadow-card);
-  position: relative;
-  min-height: 100%;
+.overlay-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(108,92,231,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lens);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.overlay-close:hover { transform: scale(1.1); }
+.overlay-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 24px 24px;
   display: flex;
   flex-direction: column;
 }
-/* No side accent on saved detail cards: clean edge */
-
-/* Breathing animation */
-@keyframes breathe {
-  0%, 100% { background-color: #FCFCFD; }
-  50% { background-color: #FEFEFE; }
+.overlay-body::-webkit-scrollbar { width: 0; }
+.overlay-body {
+  scrollbar-width: none;
 }
-.phone-frame { animation: breathe 6s ease-in-out infinite; }
-
-/* ============================
-   MOBILE: Full-screen real-app mode
-   ============================ */
-@media (max-width: 430px) {
-  html, body {
-    background: #FCFCFD;
-    padding: 0;
-    margin: 0;
-    overflow: hidden;
-  }
-  .phone-frame {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    box-shadow: none;
-    display: flex;
-    flex-direction: column;
-  }
-  .status-bar { display: none; }
-  .dynamic-island { display: none; }
-  .content-area {
-    flex: 1 1 0 !important;
-    height: auto !important;
-    min-height: 0;
-  }
-  .bottom-tab-bar {
-    flex-shrink: 0;
-    padding-bottom: env(safe-area-inset-bottom, 20px);
-  }
-  .insight-headline { font-size: 0.9375rem; }
-  .insight-body { font-size: 0.9375rem; }
-  .message-text { font-size: 15px; }
-  .chat-input { font-size: 16px; }
+.overlay-headline {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-body);
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+  margin-bottom: 12px;
 }
-
-/* ============================
-   SOURCE CITATIONS
-   ============================ */
-.insight-sources {
+.overlay-text {
+  font-size: 14.5px;
+  font-weight: 400;
+  color: #444;
+  line-height: 1.65;
+}
+.overlay-sources {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
-  padding: 10px 0 0;
-  font-size: 0.6875rem;
-  color: var(--gray-text);
-  letter-spacing: 0.1px;
+  padding: 16px 0 0;
+  font-size: 11px;
+  color: var(--text-meta);
 }
-.insight-sources::before {
+.overlay-sources::before {
   content: 'Sources';
-  font-weight: 600;
-  font-size: 0.625rem;
+  font-weight: 700;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  color: var(--gray-text);
+  color: var(--text-meta);
   opacity: 0.6;
   margin-right: 4px;
 }
 .source-link {
-  font-size: 0.6875rem;
+  font-size: 11px;
   font-weight: 500;
-  color: var(--purple);
+  color: var(--lens);
   cursor: pointer;
-  transition: opacity 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .source-link:hover { opacity: 0.7; }
-.source-dot {
-  font-size: 0.5rem;
-  color: var(--gray-text);
-  opacity: 0.4;
-}
-/* Chat message sources */
-.message-sources {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(108, 92, 231, 0.06);
-  font-size: 0.6875rem;
-  color: var(--gray-text);
-}
-.message-sources::before {
-  content: 'Sources';
-  font-weight: 600;
-  font-size: 0.625rem;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--gray-text);
-  opacity: 0.6;
-  margin-right: 4px;
+.source-dot { font-size: 8px; color: var(--text-meta); opacity: 0.4; }
+.overlay-meta {
+  font-size: 11px;
+  color: var(--text-meta);
+  margin-top: 12px;
+  font-weight: 500;
 }
 
-/* Demo source tooltip */
+.overlay-footer { display: none; }
+
+/* Mobile card-overlay: inline sphere + divider + card chat */
+.m-card-info-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+}
+.m-card-info-bottom .overlay-meta { margin-top: 0; }
+.m-card-info-bottom .sphere-wrap { position: relative; flex-shrink: 0; }
+.m-card-divider {
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,0.08);
+  margin: 24px 0 4px;
+}
+.m-card-chat-msgs { display: flex; flex-direction: column; padding-bottom: 8px; }
+.m-card-chat-msgs .chat-row { padding: 14px 0; background: transparent !important; }
+.m-card-chat-msgs .chat-row::after { display: none; }
+.m-card-chat-input-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px 14px;
+  background: transparent;
+  border-top: none;
+}
+.m-card-chat-input-bar .chat-input-wrap { flex: 1; position: relative; display: flex; align-items: center; }
+.m-card-chat-input-bar .send-btn {
+  width: 42px; height: 42px;
+  background: rgba(108,92,231,0.08);
+  border: 1px solid rgba(108,92,231,0.18);
+  box-shadow: none;
+}
+.m-card-chat-input-bar .send-btn svg { fill: var(--lens); }
+.m-card-chat-input-bar .send-btn:hover { background: rgba(108,92,231,0.16); transform: scale(1.04); }
+
+/* =========================================================================
+   SPHERE action affordance (used in mobile overlay + desktop detail)
+   ========================================================================= */
+.sphere-wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+.action-sphere {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--lens) url('nomocoda-mark.png') center/cover no-repeat;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 14px rgba(108,92,231,0.28), 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
+}
+.action-sphere:hover { transform: scale(1.06); filter: brightness(0.92); }
+.action-sphere.open { filter: brightness(0.82) saturate(1.1); }
+
+.sphere-tray {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 3;
+}
+.tray-icon {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 14px rgba(108,92,231,0.18), 0 1px 3px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(12px) scale(0.6);
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+.tray-icon svg { width: 22px; height: 22px; display: block; }
+.tray-icon.tray-save svg { fill: #E8944A; }
+.tray-icon.tray-chat svg { fill: var(--lens); }
+.tray-icon.tray-copy svg { fill: none; stroke: #3B82F6; }
+.sphere-tray.open { pointer-events: auto; }
+.sphere-tray.open .tray-icon {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.sphere-tray.open .tray-icon:nth-last-child(1) { transition-delay: 0s; }
+.sphere-tray.open .tray-icon:nth-last-child(2) { transition-delay: 0.06s; }
+.sphere-tray.open .tray-icon:nth-last-child(3) { transition-delay: 0.12s; }
+
+.sphere-toast {
+  position: absolute;
+  bottom: 58px;
+  right: 0;
+  padding: 8px 14px;
+  background: rgba(26,26,46,0.92);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 4;
+  white-space: nowrap;
+}
+.sphere-toast.visible { opacity: 1; transform: translateY(0); }
+
+/* Source tooltip */
 .source-tooltip {
   position: fixed;
   z-index: 200;
   max-width: 240px;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.97);
+  background: rgba(255,255,255,0.97);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(108, 92, 231, 0.15), 0 2px 8px rgba(0,0,0,0.06);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8125rem;
+  box-shadow: 0 8px 32px rgba(108,92,231,0.15), 0 2px 8px rgba(0,0,0,0.06);
+  font-size: 13px;
   line-height: 1.5;
-  color: var(--dark-text);
+  color: var(--text-body);
   opacity: 0;
   transform: translateY(-4px);
-  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity 0.25s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
 }
-.source-tooltip.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-.source-tooltip strong {
-  color: var(--purple);
-  font-weight: 600;
-}
-/* Caret pointing up at the source link */
+.source-tooltip.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.source-tooltip strong { color: var(--lens); font-weight: 600; }
 .source-tooltip::before {
   content: '';
   position: absolute;
   top: -6px;
   left: var(--caret-left, 50%);
   transform: translateX(-50%);
-  width: 12px;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.97);
+  width: 12px; height: 6px;
+  background: rgba(255,255,255,0.97);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  border: none;
 }
 
-/* Touch interactivity */
-.bottom-tab, .insight-sphere, .tray-icon,
-.suggestion-chip, .send-btn, .feed-card, .filter-chip,
-.card-overlay-close {
-  cursor: pointer;
+/* =========================================================================
+   DESKTOP FRAME (visible ≥768px)
+   ========================================================================= */
+.desktop-frame { display: none; }
+
+/* =========================================================================
+   MEDIA — FULL-SCREEN mobile (≤430px)
+   ========================================================================= */
+@media (max-width: 430px) {
+  html, body { background: var(--screen); overflow: hidden; }
+  body { padding: 0; align-items: stretch; justify-content: stretch; }
+  .phone-frame {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .status-bar { display: none; }
+  .dynamic-island { display: none; }
+  .chat-input { font-size: 16px; }
+}
+
+/* =========================================================================
+   MEDIA — DESKTOP (≥768px)
+   ========================================================================= */
+@media (min-width: 768px) {
+  body { overflow: auto; padding: 40px 24px; align-items: flex-start; }
+  .phone-frame { display: none; }
+  .desktop-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    gap: 10px;
+  }
+  .browser-frame {
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 50px rgba(108,92,231,0.15), 0 2px 8px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    min-height: 720px;
+  }
+  .browser-chrome {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #F3F1FA;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--sep);
+    position: relative;
+  }
+  .browser-dots { display: flex; gap: 6px; flex-shrink: 0; }
+  .bd { width: 11px; height: 11px; border-radius: 50%; }
+  .bd.red { background: #FF5F57; } .bd.yellow { background: #FEBC2E; } .bd.green { background: #28C840; }
+  .browser-chrome .d-search {
+    flex: 1;
+    max-width: 420px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--glass-border);
+  }
+  .browser-chrome .d-search:focus-within { border-color: rgba(108,92,231,0.28); }
+  .browser-chrome .d-filter-btn { flex-shrink: 0; }
+  /* Sidebar rail (persistent left nav) */
+  .app-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+  }
+  .app-sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 12px 16px;
+    gap: 20px;
+    background: #fff;
+    border-right: 1px solid rgba(0,0,0,0.06);
+  }
+  .app-logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 8px 0;
+    flex-shrink: 0;
+  }
+  .app-logo-circle {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--row-lens);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .app-logo-circle svg { width: 18px; height: 18px; display: block; }
+  .app-brand {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--lens);
+    letter-spacing: -0.3px;
+  }
+  .app-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .app-navtab {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #6E6B82;
+    padding: 8px 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s, color 0.15s;
+  }
+  .app-navtab .navtab-icon {
+    width: 17px; height: 17px;
+    flex-shrink: 0;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .app-navtab:hover { background: rgba(108,92,231,0.06); color: var(--lens); }
+  .app-navtab.active { background: rgba(108,92,231,0.10); color: var(--lens); font-weight: 700; }
+  .app-user-chip {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .app-user-chip .avatar { width: 28px; height: 28px; }
+  .app-user-chip .user-initial { font-size: 12px; }
+  .app-user-chip .chat-sender { font-size: 13px; font-weight: 700; letter-spacing: 0.1px; }
+
+  .app-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    background: #fff;
+    display: flex;
+    overflow: hidden;
+  }
+  .dscr { display: none; flex: 1; min-height: 0; }
+  .dscr.d-active { display: flex; }
+
+  /* Stories + Saved: master-detail */
+  .dscr.master-detail { flex-direction: row; }
+  .d-list-col {
+    width: 340px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background: #F3F1FA;
+  }
+  .d-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    background: #F3F1FA;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .d-search:focus-within { border-color: rgba(108,92,231,0.28); background: #fff; }
+  .d-search svg { width: 14px; height: 14px; stroke: #9A94B0; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .d-search input {
+    flex: 1; min-width: 0;
+    border: none; outline: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-body);
+  }
+  .d-search input::placeholder { color: #A8A3BD; }
+  .d-filter-btn {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6E6B82;
+    position: relative;
+    transition: background 0.15s, color 0.15s;
+  }
+  .d-filter-btn:hover { background: rgba(108,92,231,0.06); color: var(--lens); }
+  .d-filter-btn.has-filter { color: var(--lens); }
+  .d-filter-btn.has-filter::after {
+    content: '';
+    position: absolute;
+    top: 5px; right: 5px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--lens);
+    border: 1.5px solid #fff;
+  }
+  .d-filter-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .d-filter-pop {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 10px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04);
+    padding: 6px;
+    min-width: 170px;
+    z-index: 30;
+    display: none;
+  }
+  .d-filter-pop.open { display: block; }
+  .d-filter-opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-body);
+    width: 100%;
+    text-align: left;
+    transition: background 0.12s;
+  }
+  .d-filter-opt:hover { background: rgba(108,92,231,0.06); }
+  .d-filter-opt.active { color: var(--lens); font-weight: 700; }
+  .d-filter-opt .check-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 1.5px solid #D6D1E8;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+  .d-filter-opt.active .check-dot {
+    border-color: var(--lens);
+    background: var(--lens);
+    box-shadow: inset 0 0 0 2px #fff;
+  }
+  .d-list-col .row-list { overflow-y: visible; }
+  .d-list-col .feed-row.d-selected {
+    box-shadow: inset 3px 0 0 var(--lens);
+    filter: brightness(0.98);
+  }
+
+  .d-detail-col {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    background: #F9F7FD;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .d-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #C0BBD8;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .d-card {
+    display: none;
+    padding: 16px 40px 32px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    position: relative;
+  }
+  .d-card.d-visible { display: block; }
+  .d-card .row-badge { margin-bottom: 14px; }
+  .d-card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-body);
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .d-card-body {
+    font-size: 14.5px;
+    color: #444;
+    line-height: 1.75;
+    margin-bottom: 20px;
+  }
+  .d-card-sources { margin-top: 18px; }
+  .d-card-meta {
+    font-size: 12px;
+    color: var(--text-meta);
+    margin-top: 12px;
+    font-weight: 500;
+  }
+
+  /* Action sphere in detail pane — sits inline at bottom-right of card info */
+  .d-card-info-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .d-card-info-bottom .d-card-meta { margin-top: 0; }
+  .d-card-info-bottom .d-action-dock {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  /* Chat (desktop) */
+  .d-chat-wrap {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: #F9F7FD;
+  }
+  .d-chat-wrap .chat-list { padding: 8px 0 8px; }
+  .d-chat-wrap .chat-row { background: transparent !important; padding: 14px 40px; }
+  .d-chat-wrap .chat-row::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0; left: 40px; right: 40px;
+    height: 1px;
+    background: var(--sep);
+  }
+  .d-chat-wrap .chat-row:last-child::after { display: none; }
+  .d-chat-wrap .chat-text { max-width: 720px; }
+  .d-chat-wrap .chat-input-bar {
+    border-top: none;
+    background: transparent;
+    padding: 14px 40px 18px;
+    gap: 8px;
+  }
+  .d-chat-wrap .send-btn {
+    width: 42px; height: 42px;
+    background: rgba(108,92,231,0.08);
+    border: 1px solid rgba(108,92,231,0.18);
+    box-shadow: none;
+  }
+  .d-chat-wrap .send-btn svg { fill: var(--lens); }
+  .d-chat-wrap .send-btn:hover {
+    background: rgba(108,92,231,0.16);
+    transform: scale(1.04);
+  }
+
+  /* Chat history column (middle col in Chat tab) */
+  .d-chat-history-col {
+    width: 260px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    background: #F3F1FA;
+  }
+  .d-chat-history-header {
+    padding: 12px 12px 8px;
+    flex-shrink: 0;
+  }
+  .d-new-chat-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(108,92,231,0.08);
+    border: 1px solid rgba(108,92,231,0.18);
+    color: var(--lens);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    transition: background 0.15s;
+  }
+  .d-new-chat-btn svg { width: 14px; height: 14px; }
+  .d-new-chat-btn:hover { background: rgba(108,92,231,0.14); }
+  .d-chat-history-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 8px 12px;
+  }
+  .d-chat-history-item {
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    transition: background 0.12s;
+    cursor: pointer;
+  }
+  .d-chat-history-item:hover { background: rgba(108,92,231,0.05); }
+  .d-chat-history-item.active { background: rgba(108,92,231,0.10); }
+  .d-chat-history-item-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-body);
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .d-chat-history-item-preview {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--text-meta);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .d-chat-history-item-ts {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #A8A3BD;
+    margin-top: 4px;
+  }
+
+  /* Inline card chat (Stories + Saved detail pane) */
+  .d-card-divider {
+    border: none;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 28px 0 4px;
+  }
+  .d-card-chat-msgs {
+    display: flex;
+    flex-direction: column;
+  }
+  .d-detail-col .d-card-chat-msgs .chat-row { padding: 14px 0; background: transparent !important; }
+  .d-detail-col .d-card-chat-msgs .chat-row::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--sep);
+  }
+  .d-detail-col .d-card-chat-msgs .chat-row:last-child::after { display: none; }
+  .d-card-chat-input-bar {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding: 14px 40px 18px;
+    background: transparent;
+    border-top: none;
+  }
+  .d-card-chat-input-bar.d-visible { display: flex; }
+  .d-card-chat-input-bar .send-btn {
+    width: 42px; height: 42px;
+    background: rgba(108,92,231,0.08);
+    border: 1px solid rgba(108,92,231,0.18);
+    box-shadow: none;
+  }
+  .d-card-chat-input-bar .send-btn svg { fill: var(--lens); }
+  .d-card-chat-input-bar .send-btn:hover {
+    background: rgba(108,92,231,0.16);
+    transform: scale(1.04);
+  }
+
+  /* Screen count float for Saved */
+  .dscr .screen-count { top: 14px; right: 18px; }
+
+  /* Hide mobile-only screen header in lists when inside a master-detail (Stories/Saved). Keep for Chat? No, top nav serves as header. */
+  .dscr .screen-header { display: none; }
+
+  /* Desktop row tweaks */
+  .dscr .feed-row { padding: 16px 22px; }
+  .dscr .chat-row { padding: 14px 28px; }
+
+  /* Make rows in desktop list column clickable with hover */
+  .d-list-col .feed-row:hover { filter: brightness(0.97); }
+}
+
+/* Breathe animation on screen (subtle) */
+@keyframes breathe {
+  0%, 100% { background-color: #F3F1FA; }
+  50% { background-color: #F4F2FB; }
+}
+.phone-frame { animation: breathe 8s ease-in-out infinite; }
+
+/* Touch */
+.bottom-tab, .action-sphere, .tray-icon, .send-btn, .feed-row, .filter-chip, .overlay-close, .app-navtab {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -1100,6 +1375,9 @@ body {
 </head>
 <body>
 
+<!-- =========================================================================
+     MOBILE: phone frame
+     ========================================================================= -->
 <div class="phone-frame">
   <div class="status-bar">
     <span class="status-time">9:41</span>
@@ -1107,37 +1385,35 @@ body {
     <span class="status-icons">&#9679;&#9679;&#9679;&#9679; &#9681;</span>
   </div>
 
-  <div class="content-area" style="height: calc(100% - 54px - 52px);">
+  <div class="content-area">
 
-    <!-- STORIES VIEW -->
+    <!-- STORIES -->
     <div class="stories-view" id="stories-view">
-
-      <!-- Stories header -->
-      <div class="stories-header">
-        <div class="stories-header-title">Stories</div>
+      <div class="screen-header">
+        <span class="screen-title">Stories</span>
+        <svg class="squiggle" width="74" height="10" viewBox="0 0 74 10">
+          <path d="M2,7 C20,10 45,4 72,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+        </svg>
       </div>
-
-      <!-- Filter chips -->
-      <div class="filter-chips" id="filter-chips">
-        <button class="filter-chip active" data-filter="all" onclick="filterFeed('all')">All</button>
-        <button class="filter-chip" data-filter="customers" onclick="filterFeed('customers')">Customers</button>
-        <button class="filter-chip" data-filter="revenue" onclick="filterFeed('revenue')">Revenue</button>
-        <button class="filter-chip" data-filter="team" onclick="filterFeed('team')">Team</button>
-        <button class="filter-chip" data-filter="ops" onclick="filterFeed('ops')">Ops</button>
-        <button class="filter-chip" data-filter="market" onclick="filterFeed('market')">Market</button>
-      </div>
-
-      <!-- Card feed -->
-      <div class="card-feed" id="card-feed"></div>
-
+      <div class="row-list" id="stories-list"></div>
     </div>
 
-    <!-- ASK VIEW -->
+    <!-- CHAT -->
     <div class="ask-view hidden" id="ask-view">
-      <div class="chat-header">
-        <div class="chat-title">Chat</div>
+      <div class="screen-header" style="position:relative;">
+        <button class="m-back-btn" id="m-back-btn" onclick="mobileBackToHistory()" aria-label="Back to chats" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <span class="screen-title">Chat</span>
+        <svg class="squiggle" width="48" height="10" viewBox="0 0 48 10">
+          <path d="M2,7 C14,10 30,4 46,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+        <button class="m-new-chat-btn" id="m-new-chat-btn" onclick="mobileNewChat()" aria-label="New chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
       </div>
-      <div class="chat-messages" id="chat-messages"></div>
+      <div class="m-chat-history-list" id="m-chat-history-list"></div>
+      <div class="chat-list hidden" id="chat-messages"></div>
       <div class="chat-input-bar">
         <div class="chat-input-wrap">
           <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}" oninput="autoGrowInput(this)"></textarea>
@@ -1145,407 +1421,268 @@ body {
             <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
           </button>
         </div>
-        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+        <button class="send-btn" onclick="sendMessage()" aria-label="Send">
           <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
         </button>
       </div>
     </div>
 
-    <!-- SAVE VIEW -->
+    <!-- SAVED -->
     <div class="save-view hidden" id="save-view">
-      <div class="save-header">
-        <div class="save-title">Saved</div>
+      <div class="screen-header" style="position: relative;">
+        <span class="screen-title">Saved</span>
+        <svg class="squiggle" width="50" height="10" viewBox="0 0 50 10">
+          <path d="M2,7 C15,10 32,4 48,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+        <div class="screen-count" id="saved-count"></div>
       </div>
-      <div class="save-feed" id="save-feed"></div>
+      <div class="row-list" id="save-feed"></div>
     </div>
 
-    <!-- Shared card overlay: used by Stories and Saved -->
+    <!-- Card overlay (shared, mobile only) -->
     <div class="card-overlay-backdrop" id="card-overlay-backdrop" onclick="closeCardOverlay()"></div>
     <div class="card-overlay" id="card-overlay">
-      <div class="card-overlay-header">
-        <div style="width:32px;flex-shrink:0;"></div>
-        <div class="card-overlay-category" id="overlay-category" style="flex:1;text-align:center;"></div>
-        <button class="card-overlay-close" onclick="closeCardOverlay()">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div class="overlay-header">
+        <button class="overlay-close" onclick="closeCardOverlay()" aria-label="Back" style="margin-right:auto;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
+        <div class="overlay-category" id="overlay-category"></div>
+        <div style="width:32px;flex-shrink:0;"></div>
       </div>
-      <div class="card-overlay-body">
-        <div class="card-overlay-card" id="overlay-card"></div>
+      <div class="overlay-body" id="overlay-body"></div>
+      <div class="m-card-chat-input-bar">
+        <div class="chat-input-wrap">
+          <textarea class="chat-input" id="m-card-chat-input" rows="1" placeholder="Ask about this story..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCardMessage('overlay')}" oninput="autoGrowInput(this)"></textarea>
+          <button class="mic-btn" id="m-card-mic-btn" onclick="toggleMic('m-card-mic-btn','m-card-chat-input')" aria-label="Voice input">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </button>
+        </div>
+        <button class="send-btn" onclick="sendCardMessage('overlay')" aria-label="Send">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
       </div>
     </div>
 
   </div>
 
-
-  <!-- Demo source tooltip -->
-  <div class="source-tooltip" id="source-tooltip"></div>
-
   <div class="bottom-tab-bar">
     <button class="bottom-tab active" id="tab-stories" onclick="switchTab('stories')" aria-label="Stories">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="8" r="3"/>
-        <circle cx="6.5" cy="15" r="2.2"/>
-        <circle cx="17.5" cy="15" r="2.2"/>
-      </svg>
+      <svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="7.5"/><circle cx="11" cy="11" r="3"/><line x1="11" y1="1" x2="11" y2="3.5"/><line x1="11" y1="18.5" x2="11" y2="21"/><line x1="1" y1="11" x2="3.5" y2="11"/><line x1="18.5" y1="11" x2="21" y2="11"/></svg>
     </button>
     <button class="bottom-tab" id="tab-ask" onclick="switchTab('ask')" aria-label="Chat">
-      <svg viewBox="0 0 24 24">
-        <path d="M4 5.5 A2.5 2.5 0 0 1 6.5 3 H17.5 A2.5 2.5 0 0 1 20 5.5 V14 A2.5 2.5 0 0 1 17.5 16.5 H11 L7 20.5 V16.5 H6.5 A2.5 2.5 0 0 1 4 14 Z" stroke-linejoin="round"/>
-      </svg>
+      <svg viewBox="0 0 22 22"><path d="M3 4h16a1 1 0 011 1v9a1 1 0 01-1 1H7l-4 3V5a1 1 0 011-1z"/></svg>
     </button>
     <button class="bottom-tab" id="tab-save" onclick="switchTab('save')" aria-label="Saved">
-      <svg viewBox="0 0 24 24">
-        <path d="M5 3 H19 V21 L12 16 L5 21 Z"/>
-      </svg>
+      <svg viewBox="0 0 22 22"><path d="M5 3h12v16l-6-4.5L5 19V3z"/></svg>
     </button>
   </div>
 </div>
 
-<script>
-// ============================
-// STATE
-// ============================
-let currentView = 'stories';
-let currentFilter = 'all';
-let overlayBubble = null;   // which category the open overlay card belongs to
-let overlayIndex = null;    // original index within insightData[bubble].cards
-let overlayFromSaved = false;
-let overlaySavedIndex = null;
+<!-- =========================================================================
+     DESKTOP: browser frame
+     ========================================================================= -->
+<div class="desktop-frame">
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots"><span class="bd red"></span><span class="bd yellow"></span><span class="bd green"></span></div>
+      <label class="d-search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input type="text" id="d-search-input" placeholder="Search stories" oninput="searchStories(this.value)" />
+      </label>
+      <button class="d-filter-btn" id="d-filter-btn" onclick="event.stopPropagation(); toggleFilterPop()" aria-label="Filter stories">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16M7 12h10M10 19h4"/></svg>
+      </button>
+      <div class="d-filter-pop" id="d-filter-pop">
+        <button class="d-filter-opt active" data-filter="all" onclick="filterFeed('all'); toggleFilterPop(false)"><span class="check-dot"></span>All</button>
+        <button class="d-filter-opt" data-filter="customers" onclick="filterFeed('customers'); toggleFilterPop(false)"><span class="check-dot"></span>Customers</button>
+        <button class="d-filter-opt" data-filter="revenue" onclick="filterFeed('revenue'); toggleFilterPop(false)"><span class="check-dot"></span>Revenue</button>
+        <button class="d-filter-opt" data-filter="team" onclick="filterFeed('team'); toggleFilterPop(false)"><span class="check-dot"></span>Team</button>
+        <button class="d-filter-opt" data-filter="ops" onclick="filterFeed('ops'); toggleFilterPop(false)"><span class="check-dot"></span>Ops</button>
+        <button class="d-filter-opt" data-filter="market" onclick="filterFeed('market'); toggleFilterPop(false)"><span class="check-dot"></span>Market</button>
+      </div>
+    </div>
+    <div class="app-body">
+      <aside class="app-sidebar">
+        <div class="app-logo-mark">
+          <div class="app-logo-circle">
+            <svg viewBox="65 0 510 524" xmlns="http://www.w3.org/2000/svg"><path fill="#6C5CE7" fill-rule="evenodd" d="M122.8,237.2c-3.9-8.4-.4-18.4,8-22.3,8.4-3.9,18.4-.4,22.3,8,8.8,18.8,43.1,93.4,91.8,195.7,4,8.3.4,18.4-7.9,22.3-8.3,4-18.4.4-22.3-7.9-48.8-102.3-83-177-91.9-195.8h0ZM129,167.1c3.8,8.4,0,18.4-8.3,22.2s-18.4,0-22.2-8.3l-15.9-35.1c-3.8-8.4,0-18.4,8.3-22.2,8.4-3.8,18.4,0,22.2,8.3l15.9,35.1ZM384,178c36.3,25,47.9,69.5,46.4,98.6-4.7,90-60.8,122.1-78.3,138.4-6.8,6.3-17.4,6-23.7-.8-6.3-6.8-6-17.4.8-23.7,14.7-13.8,63.8-39.9,67.7-115.7.9-17.1-4.3-42.1-21.2-60-12.4,28.7-38.6,51.8-78.4,55.6-24.1,2.3-37.7-6-44.4-16.2-6.9-10.6-7.5-25.8-.3-41.5,13.1-28.3,52.6-59.1,97.4-49.8-2.5-15.2-10.3-29.4-23.5-38.5-19.1-13.1-48.5-14.5-88.4,2.4-8.5,3.6-18.4-.4-22-8.9-3.6-8.5.4-18.4,8.9-22,44.8-19,79.9-18.2,105.2-7.5,27.4,11.5,44.4,34.6,50.9,60.9,2.3,9.2,3.2,18.9,2.9,28.5h0ZM346.9,197c-29.2-8-55.3,11.6-63.8,29.9-1.2,2.6-2,5-2.1,7.3,0,.6-.5,1.3,0,1.6,2.5,2.1,6.9,1.9,13.1,1.3,27.7-2.7,45.4-19.6,52.8-40.1h0ZM527.5,106.2c2.7-8.8,12-13.9,20.9-11.2,8.8,2.7,13.9,12,11.2,20.9-59.2,196.1-58.9,195.6-70.5,232.2-2.8,8.8-12.2,13.7-21,10.9-8.8-2.8-13.7-12.2-10.9-21,11.5-36.6,11.2-36.1,70.4-231.9h0Z"/></svg>
+          </div>
+          <span class="app-brand">Lens</span>
+        </div>
+        <nav class="app-nav-group">
+          <button class="app-navtab active" id="dtab-stories" onclick="switchTab('stories')">
+            <svg class="navtab-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            <span>Stories</span>
+          </button>
+          <button class="app-navtab" id="dtab-ask" onclick="switchTab('ask')">
+            <svg class="navtab-icon" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8 8 8 0 0 1-4-1l-5 1 1-5a8 8 0 0 1-1-3 8 8 0 0 1 8-8 8 8 0 0 1 8 8z"/></svg>
+            <span>Chat</span>
+          </button>
+          <button class="app-navtab" id="dtab-save" onclick="switchTab('save')">
+            <svg class="navtab-icon" viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+            <span>Saved</span>
+          </button>
+        </nav>
+        <div class="app-user-chip">
+          <div class="avatar user-av"><span class="user-initial">T</span></div>
+          <span class="chat-sender s-user">Travis</span>
+        </div>
+      </aside>
 
+      <div class="app-content">
+
+      <!-- STORIES: master-detail -->
+      <div class="dscr master-detail d-active" id="dscr-stories">
+        <div class="d-list-col">
+          <div class="row-list" id="d-stories-list"></div>
+        </div>
+        <div class="d-detail-col" id="d-detail-stories">
+          <div class="d-empty" id="d-empty-stories">
+            <svg width="30" height="30" viewBox="0 0 22 22" fill="none" stroke="#C0BBD8" stroke-width="1.5"><circle cx="11" cy="11" r="7.5"/><circle cx="11" cy="11" r="3"/><line x1="11" y1="1" x2="11" y2="3.5"/><line x1="11" y1="18.5" x2="11" y2="21"/><line x1="1" y1="11" x2="3.5" y2="11"/><line x1="18.5" y1="11" x2="21" y2="11"/></svg>
+            <div>Select a story to read</div>
+          </div>
+          <div class="d-card" id="d-card-stories"></div>
+          <div class="d-card-chat-input-bar" id="d-card-chat-input-bar-stories">
+            <div class="chat-input-wrap">
+              <textarea class="chat-input" id="d-card-chat-input-stories" rows="1" placeholder="Ask about this story..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCardMessage('stories')}" oninput="autoGrowInput(this)"></textarea>
+              <button class="mic-btn" id="d-card-mic-btn-stories" onclick="toggleMic('d-card-mic-btn-stories','d-card-chat-input-stories')" aria-label="Voice input">
+                <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </button>
+            </div>
+            <button class="send-btn" onclick="sendCardMessage('stories')" aria-label="Send">
+              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAT: history + thread -->
+      <div class="dscr master-detail" id="dscr-chat">
+        <div class="d-chat-history-col">
+          <div class="d-chat-history-header">
+            <button class="d-new-chat-btn" onclick="newChatSession()" aria-label="New chat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+          <div class="d-chat-history-list" id="d-chat-history-list"></div>
+        </div>
+        <div class="d-chat-wrap">
+          <div class="chat-list" id="d-chat-messages"></div>
+          <div class="chat-input-bar">
+            <div class="chat-input-wrap">
+              <textarea class="chat-input" id="d-chat-input" rows="1" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage(true)}" oninput="autoGrowInput(this)"></textarea>
+              <button class="mic-btn" id="d-mic-btn" onclick="toggleMic('d-mic-btn','d-chat-input')" aria-label="Voice input">
+                <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </button>
+            </div>
+            <button class="send-btn" onclick="sendMessage(true)" aria-label="Send">
+              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVED: master-detail -->
+      <div class="dscr master-detail" id="dscr-save">
+        <div class="d-list-col">
+          <div class="row-list" id="d-save-feed"></div>
+        </div>
+        <div class="d-detail-col" id="d-detail-save">
+          <div class="d-empty" id="d-empty-save">
+            <svg width="30" height="30" viewBox="0 0 22 22" fill="none" stroke="#C0BBD8" stroke-width="1.5"><path d="M5 3h12v16l-6-4.5L5 19V3z"/></svg>
+            <div>Select an item to open</div>
+          </div>
+          <div class="d-card" id="d-card-save"></div>
+          <div class="d-card-chat-input-bar" id="d-card-chat-input-bar-save">
+            <div class="chat-input-wrap">
+              <textarea class="chat-input" id="d-card-chat-input-save" rows="1" placeholder="Ask about this story..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCardMessage('save')}" oninput="autoGrowInput(this)"></textarea>
+              <button class="mic-btn" id="d-card-mic-btn-save" onclick="toggleMic('d-card-mic-btn-save','d-card-chat-input-save')" aria-label="Voice input">
+                <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </button>
+            </div>
+            <button class="send-btn" onclick="sendCardMessage('save')" aria-label="Send">
+              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="source-tooltip" id="source-tooltip"></div>
+
+<script>
+// =========================================================================
+// DATA
+// =========================================================================
 const insightData = {
   revenue: {
     title: 'Revenue',
     cards: [
-      {
-        isNew: true,
-        headline: 'Expansion revenue came in at 125% of plan this quarter.',
-        body: 'The outperformance is concentrated in existing accounts adding seats and modules. The one account that left cited a specific integration gap, not broad dissatisfaction, though it\'s one data point.',
-        sources: [{ system: 'QuickBooks', record: 'Q1 Revenue Summary' }, { system: 'Salesforce', record: 'Expansion Deals' }]
-      },
-      {
-        isNew: true,
-        headline: 'Customer acquisition cost hit a twelve-month low.',
-        body: 'More deals came through inbound this quarter, which pulled acquisition cost down. The company is earning back each new customer\'s cost in 11 months, down from 14. The pattern tracks with the inbound pipeline shift.',
-        sources: [{ system: 'QuickBooks', record: 'CAC Analysis' }, { system: 'HubSpot', record: 'Marketing Spend' }]
-      },
-      {
-        isNew: true,
-        headline: 'Blended margins dipped. Product margins didn\'t.',
-        body: 'Core product margins held at 88%. Services revenue grew 40% with enterprise implementations, which pulled the blended number down. The services mix is new enough that it\'s worth watching whether it holds.',
-        sources: [{ system: 'QuickBooks', record: 'Margin Report' }, { system: 'Salesforce', record: 'Services Revenue' }]
-      },
-      {
-        isNew: false,
-        headline: 'Q1 came in short. Most of the miss traces to one account.',
-        body: 'New revenue was $920K gross, but churn offset $280K. The churned account cited a feature gap that\'s now on the roadmap. Hitting the year-end target needs roughly $1M net per remaining quarter.',
-        sources: [{ system: 'QuickBooks', record: 'Q1 P&L' }, { system: 'HubSpot', record: 'Churned Accounts' }, { system: 'Salesforce', record: 'Annual Forecast' }]
-      },
-      {
-        isNew: true,
-        headline: 'Two deals account for 40% of Q2 pipeline.',
-        body: 'Total pipeline sits at $3.2M against a $1.4M target, but the top two opportunities carry the bulk. Three new deals entered discovery this week; still early to know if they change the concentration picture.',
-        sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Active Deals' }]
-      },
-      {
-        isNew: true,
-        headline: 'Inbound doubled its share of pipeline since Q4.',
-        body: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals entering through that channel are closing faster and costing less to acquire, though the sample is still one full cycle.',
-        sources: [{ system: 'HubSpot', record: 'Marketing Attribution' }, { system: 'Salesforce', record: 'Lead Source Report' }]
-      },
-      {
-        isNew: true,
-        headline: 'Average deal cycle stretched from 52 to 68 days this quarter.',
-        body: 'Procurement teams across the category are adding review steps, and three active deals have sat in legal for over two weeks. Whether this is a temporary adjustment or a new baseline isn\'t clear yet.',
-        sources: [{ system: 'Salesforce', record: 'Deal Velocity Report' }, { system: 'HubSpot', record: 'Deal Stage History' }]
-      },
-      {
-        isNew: false,
-        headline: 'Both late-stage deals have been quiet since entering negotiation.',
-        body: 'No objections raised on either. The remaining 60% of pipeline is spread across twelve mid-market opportunities, most of which entered in the last six weeks. A different composition than last quarter.',
-        sources: [{ system: 'Salesforce', record: 'Negotiation Stage Deals' }, { system: 'Slack', record: '#deal-room' }]
-      }
+      { isNew: true, createdAt: 'April 17, 2026', headline: 'Expansion revenue came in at 125% of plan this quarter.', body: 'The outperformance is concentrated in existing accounts adding seats and modules. The one account that left cited a specific integration gap, not broad dissatisfaction, though it\'s one data point.', sources: [{ system: 'QuickBooks', record: 'Q1 Revenue Summary' }, { system: 'Salesforce', record: 'Expansion Deals' }] },
+      { isNew: true, createdAt: 'April 16, 2026', headline: 'Customer acquisition cost hit a twelve-month low.', body: 'More deals came through inbound this quarter, which pulled acquisition cost down. The company is earning back each new customer\'s cost in 11 months, down from 14. The pattern tracks with the inbound pipeline shift.', sources: [{ system: 'QuickBooks', record: 'CAC Analysis' }, { system: 'HubSpot', record: 'Marketing Spend' }] },
+      { isNew: true, createdAt: 'April 15, 2026', headline: 'Blended margins dipped. Product margins didn\'t.', body: 'Core product margins held at 88%. Services revenue grew 40% with enterprise implementations, which pulled the blended number down. The services mix is new enough that it\'s worth watching whether it holds.', sources: [{ system: 'QuickBooks', record: 'Margin Report' }, { system: 'Salesforce', record: 'Services Revenue' }] },
+      { isNew: false, createdAt: 'April 7, 2026', headline: 'Q1 came in short. Most of the miss traces to one account.', body: 'New revenue was $920K gross, but churn offset $280K. The churned account cited a feature gap that\'s now on the roadmap. Hitting the year-end target needs roughly $1M net per remaining quarter.', sources: [{ system: 'QuickBooks', record: 'Q1 P&L' }, { system: 'HubSpot', record: 'Churned Accounts' }, { system: 'Salesforce', record: 'Annual Forecast' }] },
+      { isNew: true, createdAt: 'April 16, 2026', headline: 'Two deals account for 40% of Q2 pipeline.', body: 'Total pipeline sits at $3.2M against a $1.4M target, but the top two opportunities carry the bulk. Three new deals entered discovery this week; still early to know if they change the concentration picture.', sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Active Deals' }] },
+      { isNew: true, createdAt: 'April 14, 2026', headline: 'Inbound doubled its share of pipeline since Q4.', body: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals entering through that channel are closing faster and costing less to acquire, though the sample is still one full cycle.', sources: [{ system: 'HubSpot', record: 'Marketing Attribution' }, { system: 'Salesforce', record: 'Lead Source Report' }] },
+      { isNew: true, createdAt: 'April 13, 2026', headline: 'Average deal cycle stretched from 52 to 68 days this quarter.', body: 'Procurement teams across the category are adding review steps, and three active deals have sat in legal for over two weeks. Whether this is a temporary adjustment or a new baseline isn\'t clear yet.', sources: [{ system: 'Salesforce', record: 'Deal Velocity Report' }, { system: 'HubSpot', record: 'Deal Stage History' }] },
+      { isNew: false, createdAt: 'April 5, 2026', headline: 'Both late-stage deals have been quiet since entering negotiation.', body: 'No objections raised on either. The remaining 60% of pipeline is spread across twelve mid-market opportunities, most of which entered in the last six weeks. A different composition than last quarter.', sources: [{ system: 'Salesforce', record: 'Negotiation Stage Deals' }, { system: 'Slack', record: '#deal-room' }] }
     ]
   },
   customers: {
     title: 'Customers',
     cards: [
-      {
-        isNew: true,
-        headline: 'Onboarding completion moved from 58% to 72% since Q1.',
-        body: 'Time to first value shortened from 22 days to 13 over the same window. The most recent cohort came in at 85% seat activation, the highest in twelve months, though it\'s one cohort.',
-        sources: [{ system: 'HubSpot', record: 'Onboarding Tracker' }, { system: 'Salesforce', record: 'Activation Metrics' }]
-      },
-      {
-        isNew: true,
-        headline: 'NPS recovered from 36 to 44 this quarter.',
-        body: 'Last quarter\'s drop correlated with slower support and onboarding delays; both have since improved. Mid-market led the rebound, which is where most of the onboarding changes landed.',
-        sources: [{ system: 'Zendesk', record: 'NPS Survey Results' }, { system: 'HubSpot', record: 'Customer Health Scores' }]
-      },
-      {
-        isNew: true,
-        headline: 'Three renewals totaling $360K are up in the next 45 days.',
-        body: 'Northstar, Granite, and Ridgeline all renew before the end of May. All three added users in new departments last quarter without prompting, a pattern that usually tracks with straightforward renewals, though each conversation is its own.',
-        sources: [{ system: 'Salesforce', record: 'Renewal Pipeline' }, { system: 'HubSpot', record: 'Account Activity: Northstar, Granite, Ridgeline' }]
-      },
-      {
-        isNew: false,
-        headline: 'Fewer support tickets, but the ones coming in are harder.',
-        body: 'Volume dropped 12% over the past month. Resolution time went up. The mix is shifting from how-to questions toward integration and configuration issues, a different kind of workload for the team.',
-        sources: [{ system: 'Zendesk', record: 'Ticket Volume & Resolution' }, { system: 'Slack', record: '#support-escalations' }]
-      }
+      { isNew: true, createdAt: 'April 17, 2026', headline: 'Onboarding completion moved from 58% to 72% since Q1.', body: 'Time to first value shortened from 22 days to 13 over the same window. The most recent cohort came in at 85% seat activation, the highest in twelve months, though it\'s one cohort.', sources: [{ system: 'HubSpot', record: 'Onboarding Tracker' }, { system: 'Salesforce', record: 'Activation Metrics' }] },
+      { isNew: true, createdAt: 'April 15, 2026', headline: 'NPS recovered from 36 to 44 this quarter.', body: 'Last quarter\'s drop correlated with slower support and onboarding delays; both have since improved. Mid-market led the rebound, which is where most of the onboarding changes landed.', sources: [{ system: 'Zendesk', record: 'NPS Survey Results' }, { system: 'HubSpot', record: 'Customer Health Scores' }] },
+      { isNew: true, createdAt: 'April 14, 2026', headline: 'Three renewals totaling $360K are up in the next 45 days.', body: 'Northstar, Granite, and Ridgeline all renew before the end of May. All three added users in new departments last quarter without prompting, a pattern that usually tracks with straightforward renewals, though each conversation is its own.', sources: [{ system: 'Salesforce', record: 'Renewal Pipeline' }, { system: 'HubSpot', record: 'Account Activity: Northstar, Granite, Ridgeline' }] },
+      { isNew: false, createdAt: 'April 6, 2026', headline: 'Fewer support tickets, but the ones coming in are harder.', body: 'Volume dropped 12% over the past month. Resolution time went up. The mix is shifting from how-to questions toward integration and configuration issues, a different kind of workload for the team.', sources: [{ system: 'Zendesk', record: 'Ticket Volume & Resolution' }, { system: 'Slack', record: '#support-escalations' }] }
     ]
   },
   ops: {
     title: 'Ops',
     cards: [
-      {
-        isNew: true,
-        headline: 'Deploys nearly doubled since the workflow change six weeks ago.',
-        body: 'Error rates held flat through the increase, and turnaround time shortened. Whether the pace holds through the next rewrite phase is the thing to watch.',
-        sources: [{ system: 'Jira', record: 'Deployment Dashboard' }, { system: 'GitHub', record: 'Release History' }]
-      },
-      {
-        isNew: true,
-        headline: 'Build times stretched from 20 to 34 minutes with the rewrite.',
-        body: 'The additional test coverage is catching issues earlier in the cycle. Releases aren\'t being blocked; the slowdown is in the build pipeline, not in shipping.',
-        sources: [{ system: 'GitHub', record: 'CI/CD Pipeline Metrics' }, { system: 'Jira', record: 'Sprint Velocity' }]
-      },
-      {
-        isNew: true,
-        headline: 'Support response time halved over the past month.',
-        body: 'Down from 4.8 hours to 2.4. Last month\'s spike traced to one account\'s migration, which completed on its own. The queue cleared without staffing changes; back near the two-hour target.',
-        sources: [{ system: 'Zendesk', record: 'Response Time Report' }, { system: 'Slack', record: '#support-ops' }]
-      },
-      {
-        isNew: true,
-        headline: 'The platform rewrite reached 72% this week.',
-        body: 'Auth module entered review ahead of estimate. Billing integration is next, scoped for three weeks. These are the final two modules. The timeline has held through the last three milestones.',
-        sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Asana', record: 'Engineering Milestones' }]
-      },
-      {
-        isNew: false,
-        headline: 'Cloud spend is up 22% during the parallel-systems window.',
-        body: 'Running old and new systems side by side at $52K per month. The cost normalizes when the legacy system retires; the retirement date depends on the billing module timeline.',
-        sources: [{ system: 'QuickBooks', record: 'Cloud Infrastructure Costs' }, { system: 'Jira', record: 'Migration Timeline' }]
-      }
+      { isNew: true, createdAt: 'April 16, 2026', headline: 'Deploys nearly doubled since the workflow change six weeks ago.', body: 'Error rates held flat through the increase, and turnaround time shortened. Whether the pace holds through the next rewrite phase is the thing to watch.', sources: [{ system: 'Jira', record: 'Deployment Dashboard' }, { system: 'GitHub', record: 'Release History' }] },
+      { isNew: true, createdAt: 'April 15, 2026', headline: 'Build times stretched from 20 to 34 minutes with the rewrite.', body: 'The additional test coverage is catching issues earlier in the cycle. Releases aren\'t being blocked; the slowdown is in the build pipeline, not in shipping.', sources: [{ system: 'GitHub', record: 'CI/CD Pipeline Metrics' }, { system: 'Jira', record: 'Sprint Velocity' }] },
+      { isNew: true, createdAt: 'April 14, 2026', headline: 'Support response time halved over the past month.', body: 'Down from 4.8 hours to 2.4. Last month\'s spike traced to one account\'s migration, which completed on its own. The queue cleared without staffing changes; back near the two-hour target.', sources: [{ system: 'Zendesk', record: 'Response Time Report' }, { system: 'Slack', record: '#support-ops' }] },
+      { isNew: true, createdAt: 'April 13, 2026', headline: 'The platform rewrite reached 72% this week.', body: 'Auth module entered review ahead of estimate. Billing integration is next, scoped for three weeks. These are the final two modules. The timeline has held through the last three milestones.', sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Asana', record: 'Engineering Milestones' }] },
+      { isNew: false, createdAt: 'April 4, 2026', headline: 'Cloud spend is up 22% during the parallel-systems window.', body: 'Running old and new systems side by side at $52K per month. The cost normalizes when the legacy system retires; the retirement date depends on the billing module timeline.', sources: [{ system: 'QuickBooks', record: 'Cloud Infrastructure Costs' }, { system: 'Jira', record: 'Migration Timeline' }] }
     ]
   },
   team: {
     title: 'Team',
     cards: [
-      {
-        isNew: true,
-        headline: 'Four engineers volunteered for interviews this month.',
-        body: 'The twelve-month average was one. Two cited mentorship as their reason, which is a new pattern. Interview participation has historically needed nudging; this is the first month that changed.',
-        sources: [{ system: 'Slack', record: '#hiring-volunteers' }, { system: 'Asana', record: 'Interview Schedule' }]
-      },
-      {
-        isNew: true,
-        headline: 'Two engineers\' growth goals align with the new tech lead track.',
-        body: 'The track was approved last month. Both are on the platform rewrite and mentioned career development in recent reviews. Whether the track accelerates retention is early to say.',
-        sources: [{ system: 'Asana', record: 'Career Development Plans' }, { system: 'Jira', record: 'Platform Rewrite Contributors' }]
-      },
-      {
-        isNew: false,
-        headline: 'Two internal candidates expressed interest in the Head of Product role.',
-        body: 'The role has been open five weeks. Both led major product launches and have credibility across teams. An internal hire could start immediately; external search is still active.',
-        sources: [{ system: 'Slack', record: '#leadership-hiring' }, { system: 'Google Drive', record: 'Candidate Profiles' }]
-      }
+      { isNew: true, createdAt: 'April 16, 2026', headline: 'Four engineers volunteered for interviews this month.', body: 'The twelve-month average was one. Two cited mentorship as their reason, which is a new pattern. Interview participation has historically needed nudging; this is the first month that changed.', sources: [{ system: 'Slack', record: '#hiring-volunteers' }, { system: 'Asana', record: 'Interview Schedule' }] },
+      { isNew: true, createdAt: 'April 14, 2026', headline: 'Two engineers\' growth goals align with the new tech lead track.', body: 'The track was approved last month. Both are on the platform rewrite and mentioned career development in recent reviews. Whether the track accelerates retention is early to say.', sources: [{ system: 'Asana', record: 'Career Development Plans' }, { system: 'Jira', record: 'Platform Rewrite Contributors' }] },
+      { isNew: false, createdAt: 'April 3, 2026', headline: 'Two internal candidates expressed interest in the Head of Product role.', body: 'The role has been open five weeks. Both led major product launches and have credibility across teams. An internal hire could start immediately; external search is still active.', sources: [{ system: 'Slack', record: '#leadership-hiring' }, { system: 'Google Drive', record: 'Candidate Profiles' }] }
     ]
   },
   market: {
     title: 'Market',
     cards: [
-      {
-        isNew: true,
-        headline: 'Mid-market buyers cut their tool count by 14% this year.',
-        body: 'The consolidation pattern favors platforms that replace multiple point solutions. Atlas fits that profile, though buyer behavior in this segment can shift quarter to quarter.',
-        sources: [{ system: 'Google Drive', record: 'Gartner Market Report 2026' }, { system: 'SharePoint', record: 'Competitive Landscape Analysis' }]
-      },
-      {
-        isNew: true,
-        headline: 'A competitor raised prices 18%, effective next quarter.',
-        body: 'The increase covers new customers and renewals. Early signals on review sites suggest frustration from their existing base. Atlas pricing has been stable for twelve months.',
-        sources: [{ system: 'Slack', record: '#competitive-intel' }, { system: 'Google Drive', record: 'Competitor Pricing Tracker' }]
-      },
-      {
-        isNew: false,
-        headline: 'A competitor launched a new AI feature. Early reviews are mixed.',
-        body: 'Users on review sites highlight speed but flag accuracy issues. Atlas\'s equivalent feature is in development, with a demo scheduled for early May.',
-        sources: [{ system: 'Google Drive', record: 'Competitor Feature Comparison' }, { system: 'Slack', record: '#product-intel' }]
-      }
+      { isNew: true, createdAt: 'April 16, 2026', headline: 'Mid-market buyers cut their tool count by 14% this year.', body: 'The consolidation pattern favors platforms that replace multiple point solutions. Atlas fits that profile, though buyer behavior in this segment can shift quarter to quarter.', sources: [{ system: 'Google Drive', record: 'Gartner Market Report 2026' }, { system: 'SharePoint', record: 'Competitive Landscape Analysis' }] },
+      { isNew: true, createdAt: 'April 15, 2026', headline: 'A competitor raised prices 18%, effective next quarter.', body: 'The increase covers new customers and renewals. Early signals on review sites suggest frustration from their existing base. Atlas pricing has been stable for twelve months.', sources: [{ system: 'Slack', record: '#competitive-intel' }, { system: 'Google Drive', record: 'Competitor Pricing Tracker' }] },
+      { isNew: false, createdAt: 'April 2, 2026', headline: 'A competitor launched a new AI feature. Early reviews are mixed.', body: 'Users on review sites highlight speed but flag accuracy issues. Atlas\'s equivalent feature is in development, with a demo scheduled for early May.', sources: [{ system: 'Google Drive', record: 'Competitor Feature Comparison' }, { system: 'Slack', record: '#product-intel' }] }
     ]
   }
 };
 
-// ============================
-// TAB SWITCHING
-// ============================
-function switchTab(tab) {
-  currentView = tab;
-  document.getElementById('tab-stories').classList.toggle('active', tab === 'stories');
-  document.getElementById('tab-ask').classList.toggle('active', tab === 'ask');
-  document.getElementById('tab-save').classList.toggle('active', tab === 'save');
-  document.getElementById('stories-view').classList.toggle('hidden', tab !== 'stories');
-  document.getElementById('ask-view').classList.toggle('hidden', tab !== 'ask');
-  document.getElementById('save-view').classList.toggle('hidden', tab !== 'save');
-  closeCardOverlay();
-  if (tab === 'save') {
-    renderSaveFeed();
-  }
-  closeAllSpheres();
-}
+// Inline Lens logomark SVG
+const LENS_SVG = '<svg viewBox="65 0 510 524" xmlns="http://www.w3.org/2000/svg"><path fill="#6C5CE7" fill-rule="evenodd" d="M122.8,237.2c-3.9-8.4-.4-18.4,8-22.3,8.4-3.9,18.4-.4,22.3,8,8.8,18.8,43.1,93.4,91.8,195.7,4,8.3.4,18.4-7.9,22.3-8.3,4-18.4.4-22.3-7.9-48.8-102.3-83-177-91.9-195.8h0ZM129,167.1c3.8,8.4,0,18.4-8.3,22.2s-18.4,0-22.2-8.3l-15.9-35.1c-3.8-8.4,0-18.4,8.3-22.2,8.4-3.8,18.4,0,22.2,8.3l15.9,35.1ZM384,178c36.3,25,47.9,69.5,46.4,98.6-4.7,90-60.8,122.1-78.3,138.4-6.8,6.3-17.4,6-23.7-.8-6.3-6.8-6-17.4.8-23.7,14.7-13.8,63.8-39.9,67.7-115.7.9-17.1-4.3-42.1-21.2-60-12.4,28.7-38.6,51.8-78.4,55.6-24.1,2.3-37.7-6-44.4-16.2-6.9-10.6-7.5-25.8-.3-41.5,13.1-28.3,52.6-59.1,97.4-49.8-2.5-15.2-10.3-29.4-23.5-38.5-19.1-13.1-48.5-14.5-88.4,2.4-8.5,3.6-18.4-.4-22-8.9-3.6-8.5.4-18.4,8.9-22,44.8-19,79.9-18.2,105.2-7.5,27.4,11.5,44.4,34.6,50.9,60.9,2.3,9.2,3.2,18.9,2.9,28.5h0ZM346.9,197c-29.2-8-55.3,11.6-63.8,29.9-1.2,2.6-2,5-2.1,7.3,0,.6-.5,1.3,0,1.6,2.5,2.1,6.9,1.9,13.1,1.3,27.7-2.7,45.4-19.6,52.8-40.1h0ZM527.5,106.2c2.7-8.8,12-13.9,20.9-11.2,8.8,2.7,13.9,12,11.2,20.9-59.2,196.1-58.9,195.6-70.5,232.2-2.8,8.8-12.2,13.7-21,10.9-8.8-2.8-13.7-12.2-10.9-21,11.5-36.6,11.2-36.1,70.4-231.9h0Z"/></svg>';
 
-// ============================
-// CARD FEED: flattened list of all Data Stories
-// ============================
-function buildFeedData() {
-  // Flatten all categories into a single array, new cards first (relevance proxy)
-  const items = [];
-  const categoryOrder = ['market', 'revenue', 'customers', 'ops', 'team'];
-  categoryOrder.forEach(bubble => {
-    const data = insightData[bubble];
-    if (!data) return;
-    const removed = removedFromStories[bubble] || new Set();
-    data.cards.forEach((card, origIdx) => {
-      if (removed.has(origIdx)) return;
-      items.push({ bubble, origIdx, card });
-    });
-  });
-  // Sort: new cards first, then by category order
-  items.sort((a, b) => {
-    if (a.card.isNew && !b.card.isNew) return -1;
-    if (!a.card.isNew && b.card.isNew) return 1;
-    return 0;
-  });
-  return items;
-}
+// =========================================================================
+// STATE
+// =========================================================================
+let currentView = 'stories';
+let currentFilter = 'all';
+let overlayBubble = null;
+let overlayIndex = null;
+let overlayFromSaved = false;
+let overlaySavedIndex = null;
+let activeDetailPane = null; // 'overlay' | 'd-stories' | 'd-save'
 
-function renderCardFeed() {
-  const feed = document.getElementById('card-feed');
-  const items = buildFeedData();
-  feed.innerHTML = items.map(({ bubble, origIdx, card }) => {
-    const readState = card.isNew ? 'unread' : '';
-    const catTitle = insightData[bubble]?.title || bubble;
-    const hidden = (currentFilter !== 'all' && currentFilter !== bubble) ? 'style="display:none;"' : '';
-    return `
-      <div class="feed-card ${readState}" data-bubble="${bubble}" data-index="${origIdx}" onclick="openCardOverlay('${bubble}', ${origIdx})" ${hidden}>
-        <div class="feed-card-header">
-          <span class="feed-card-category">${catTitle}</span>
-        </div>
-        <div class="feed-card-headline">${card.headline}</div>
-        <div class="feed-card-preview">${card.body}</div>
-      </div>`;
-  }).join('');
-}
-
-// ============================
-// FILTER CHIPS
-// ============================
-function filterFeed(category) {
-  currentFilter = category;
-  // Update chip active states
-  document.querySelectorAll('.filter-chip').forEach(chip => {
-    chip.classList.toggle('active', chip.dataset.filter === category);
-  });
-  // Show/hide feed cards
-  document.querySelectorAll('.feed-card').forEach(card => {
-    if (category === 'all' || card.dataset.bubble === category) {
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-    }
-  });
-}
-
-// ============================
-// CARD OVERLAY: full card view layered on top of feed
-// ============================
-function openCardOverlay(bubble, origIdx, opts) {
-  const data = insightData[bubble];
-  if (!data || !data.cards[origIdx]) return;
-  const card = data.cards[origIdx];
-  overlayBubble = bubble;
-  overlayIndex = origIdx;
-  overlayFromSaved = !!(opts && opts.fromSaved);
-  overlaySavedIndex = (opts && opts.savedIndex != null) ? opts.savedIndex : null;
-
-  document.getElementById('overlay-category').textContent = data.title;
-  const readState = card.isNew ? 'unread' : '';
-  const overlayCard = document.getElementById('overlay-card');
-  overlayCard.className = `card-overlay-card ${readState}`;
-
-  // Save/unsave button changes based on context
-  const saveBtn = overlayFromSaved
-    ? `<button class="tray-icon tray-save" onclick="event.stopPropagation(); unsaveFromOverlay()" aria-label="Remove from saved">
-        <svg viewBox="0 0 24 24">
-          <path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/>
-          <line x1="9" y1="11" x2="15" y2="11" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>`
-    : `<button class="tray-icon tray-save" onclick="event.stopPropagation(); saveCardFromStories()" aria-label="Save">
-        <svg viewBox="0 0 24 24">
-          <path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/>
-        </svg>
-      </button>`;
-
-  // Build sources HTML
-  const sourcesHtml = (card.sources || []).map((s, i) => {
-    const dot = i < card.sources.length - 1 ? ' <span class="source-dot">&bull;</span> ' : '';
-    return `<span class="source-link" onclick="event.stopPropagation(); showSourceTooltip(event, '${s.system}', '${s.record.replace(/'/g, "\\'")}')">${s.system}</span>${dot}`;
-  }).join('');
-
-  overlayCard.innerHTML = `
-    <div class="insight-card-body">
-      <div class="insight-headline">${card.headline}</div>
-      <div class="insight-body">${card.body}</div>
-      <div class="insight-sources">${sourcesHtml}</div>
-    </div>
-    <div class="insight-card-footer">
-      <div class="insight-sphere-wrap">
-        <div class="sphere-tray" id="sphere-tray-overlay">
-          <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink()" aria-label="Copy link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-            </svg>
-          </button>
-          <button class="tray-icon tray-chat" onclick="event.stopPropagation(); bridgeToChat()" aria-label="Submit to chat">
-            <svg viewBox="0 0 24 24">
-              <path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm3 5a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8zm0 4a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H8z"/>
-            </svg>
-          </button>
-          ${saveBtn}
-        </div>
-        <button class="insight-sphere" id="sphere-overlay" onclick="event.stopPropagation(); toggleSphere()" aria-label="Actions"></button>
-        <div class="sphere-toast" id="sphere-toast-overlay"></div>
-      </div>
-    </div>`;
-
-  document.getElementById('card-overlay-backdrop').classList.add('active');
-  document.getElementById('card-overlay').classList.add('active');
-}
-
-function closeCardOverlay() {
-  document.getElementById('card-overlay-backdrop').classList.remove('active');
-  document.getElementById('card-overlay').classList.remove('active');
-  closeAllSpheres();
-  // Dismiss source tooltip if visible
-  const tooltip = document.getElementById('source-tooltip');
-  if (tooltip) { tooltip.classList.remove('visible'); clearTimeout(tooltip._hideT); }
-  // If closed from saved context, re-render saved feed
-  if (overlayFromSaved) {
-    renderSaveFeed();
-  }
-  overlayBubble = null;
-  overlayIndex = null;
-  overlayFromSaved = false;
-  overlaySavedIndex = null;
-}
-
-// ============================
-// SAVE SYSTEM
-// ============================
 const savedCards = [
   { sourceBubble: 'revenue',   sourceIndex: 7, createdAt: 'April 12, 2026' },
   { sourceBubble: 'market',    sourceIndex: 2, createdAt: 'April 11, 2026' },
@@ -1566,107 +1703,394 @@ function getSavedCardData(entry) {
   return data.cards[entry.sourceIndex];
 }
 
+// =========================================================================
+// TAB SWITCHING
+// =========================================================================
+function switchTab(tab) {
+  currentView = tab;
+
+  // Mobile tabs
+  document.getElementById('tab-stories').classList.toggle('active', tab === 'stories');
+  document.getElementById('tab-ask').classList.toggle('active', tab === 'ask');
+  document.getElementById('tab-save').classList.toggle('active', tab === 'save');
+  document.getElementById('stories-view').classList.toggle('hidden', tab !== 'stories');
+  document.getElementById('ask-view').classList.toggle('hidden', tab !== 'ask');
+  document.getElementById('save-view').classList.toggle('hidden', tab !== 'save');
+
+  // Desktop tabs
+  document.getElementById('dtab-stories').classList.toggle('active', tab === 'stories');
+  document.getElementById('dtab-ask').classList.toggle('active', tab === 'ask');
+  document.getElementById('dtab-save').classList.toggle('active', tab === 'save');
+  document.getElementById('dscr-stories').classList.toggle('d-active', tab === 'stories');
+  document.getElementById('dscr-chat').classList.toggle('d-active', tab === 'ask');
+  document.getElementById('dscr-save').classList.toggle('d-active', tab === 'save');
+
+  closeCardOverlay();
+  if (tab === 'save') renderSaveFeed();
+  if (tab === 'ask') {
+    if (currentChatThreadId) showMobileThreadView();
+    else showMobileHistoryView();
+    renderMobileChatHistory();
+  }
+  closeAllSpheres();
+}
+
+// =========================================================================
+// FEED RENDERING
+// =========================================================================
+function buildFeedData() {
+  const items = [];
+  const categoryOrder = ['market', 'revenue', 'customers', 'ops', 'team'];
+  categoryOrder.forEach(bubble => {
+    const data = insightData[bubble];
+    if (!data) return;
+    const removed = removedFromStories[bubble] || new Set();
+    data.cards.forEach((card, origIdx) => {
+      if (removed.has(origIdx)) return;
+      items.push({ bubble, origIdx, card });
+    });
+  });
+  items.sort((a, b) => {
+    if (a.card.isNew && !b.card.isNew) return -1;
+    if (!a.card.isNew && b.card.isNew) return 1;
+    return 0;
+  });
+  return items;
+}
+
+function renderRow(bubble, origIdx, card, opts = {}) {
+  const readClass = card.isNew ? '' : 'is-read';
+  const catTitle = insightData[bubble]?.title || bubble;
+  const hidden = (opts.filter && opts.filter !== 'all' && opts.filter !== bubble) ? 'style="display:none;"' : '';
+  const onclick = opts.onclick || `openCardOverlay('${bubble}', ${origIdx})`;
+  return `
+    <div class="feed-row ${readClass}" data-bubble="${bubble}" data-index="${origIdx}" onclick="${onclick}" ${hidden}>
+      <div class="row-body">
+        <div class="row-badge">${catTitle}</div>
+        <div class="row-title">${card.headline}</div>
+        <div class="row-preview">${card.body}</div>
+        <div class="row-meta">Created &middot; ${card.createdAt || '—'}</div>
+      </div>
+    </div>`;
+}
+
+function renderCardFeed() {
+  const items = buildFeedData();
+  const html = items.map(({ bubble, origIdx, card }) => renderRow(bubble, origIdx, card, { filter: currentFilter })).join('');
+  const mobile = document.getElementById('stories-list');
+  const desktop = document.getElementById('d-stories-list');
+  if (mobile) mobile.innerHTML = html;
+  if (desktop) {
+    desktop.innerHTML = items.map(({ bubble, origIdx, card }) =>
+      renderRow(bubble, origIdx, card, { filter: currentFilter, onclick: `openDetail('stories','${bubble}',${origIdx})` })
+    ).join('');
+  }
+}
+
 function renderSaveFeed() {
-  const feed = document.getElementById('save-feed');
+  const countEl = document.getElementById('saved-count');
+  if (countEl) countEl.textContent = savedCards.length ? `${savedCards.length} ${savedCards.length === 1 ? 'item' : 'items'}` : '';
+
+  const emptyMsg = `<div class="empty-state">Nothing saved yet.<br>Open a story and save it to bookmark it here.</div>`;
+
   if (!savedCards.length) {
-    feed.innerHTML = `<div class="save-empty">Nothing saved yet.<br>Tap the sphere on any card to bookmark it here.</div>`;
+    const m = document.getElementById('save-feed');
+    const d = document.getElementById('d-save-feed');
+    if (m) m.innerHTML = emptyMsg;
+    if (d) d.innerHTML = emptyMsg;
     return;
   }
-  feed.innerHTML = savedCards.map((entry, i) => {
+
+  const buildHtml = (getClickFn) => savedCards.map((entry, i) => {
     const card = getSavedCardData(entry);
     if (!card) return '';
     const catTitle = insightData[entry.sourceBubble]?.title || entry.sourceBubble;
     return `
-      <div class="saved-card" onclick="openSavedCard(${i})">
-        <div class="feed-card-header">
-          <span class="feed-card-category">${catTitle}</span>
+      <div class="feed-row" onclick="${getClickFn(i)}">
+        <div class="row-body">
+          <div class="row-badge">${catTitle}</div>
+          <div class="row-title">${card.headline}</div>
+          <div class="row-preview">${card.body}</div>
+          <div class="row-meta">Created &middot; ${entry.createdAt}</div>
         </div>
-        <div class="feed-card-headline">${card.headline}</div>
-        <div class="feed-card-preview">${card.body}</div>
-        <div class="saved-card-meta">Created ${entry.createdAt}</div>
-      </div>
-    `;
+      </div>`;
   }).join('');
+
+  const m = document.getElementById('save-feed');
+  const d = document.getElementById('d-save-feed');
+  if (m) m.innerHTML = buildHtml(i => `openSavedCard(${i})`);
+  if (d) d.innerHTML = buildHtml(i => `openDetail('save',null,null,${i})`);
+}
+
+// =========================================================================
+// FILTER
+// =========================================================================
+function filterFeed(category) {
+  currentFilter = category;
+  document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.filter === category);
+  });
+  document.querySelectorAll('.d-filter-opt').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.filter === category);
+  });
+  const fbtn = document.getElementById('d-filter-btn');
+  if (fbtn) fbtn.classList.toggle('has-filter', category !== 'all');
+  applyStoryFilters();
+}
+
+function applyStoryFilters() {
+  const q = (document.getElementById('d-search-input')?.value || '').trim().toLowerCase();
+  document.querySelectorAll('#stories-list .feed-row, #d-stories-list .feed-row').forEach(row => {
+    const matchesCat = (currentFilter === 'all' || row.dataset.bubble === currentFilter);
+    const matchesQuery = !q || (row.textContent || '').toLowerCase().includes(q);
+    row.style.display = (matchesCat && matchesQuery) ? '' : 'none';
+  });
+}
+
+function searchStories(v) { applyStoryFilters(); }
+
+function toggleFilterPop(forceState) {
+  const pop = document.getElementById('d-filter-pop');
+  if (!pop) return;
+  const shouldOpen = typeof forceState === 'boolean' ? forceState : !pop.classList.contains('open');
+  pop.classList.toggle('open', shouldOpen);
+}
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#d-filter-pop, #d-filter-btn')) toggleFilterPop(false);
+});
+
+// =========================================================================
+// SOURCES
+// =========================================================================
+function renderSourceLinks(sources) {
+  if (!sources || !sources.length) return '';
+  return sources.map((s, i) => {
+    const dot = i < sources.length - 1 ? ' <span class="source-dot">&bull;</span> ' : '';
+    return `<span class="source-link" onclick="event.stopPropagation(); showSourceTooltip(event, '${s.system}', '${s.record.replace(/'/g, "\\'")}')">${s.system}</span>${dot}`;
+  }).join('');
+}
+
+// =========================================================================
+// MOBILE OVERLAY
+// =========================================================================
+function openCardOverlay(bubble, origIdx, opts) {
+  const data = insightData[bubble];
+  if (!data || !data.cards[origIdx]) return;
+  const card = data.cards[origIdx];
+  overlayBubble = bubble;
+  overlayIndex = origIdx;
+  overlayFromSaved = !!(opts && opts.fromSaved);
+  overlaySavedIndex = (opts && opts.savedIndex != null) ? opts.savedIndex : null;
+  activeDetailPane = 'overlay';
+
+  document.getElementById('overlay-category').textContent = data.title;
+  const srcHtml = renderSourceLinks(card.sources);
+  document.getElementById('overlay-body').innerHTML = `
+    <div class="overlay-headline">${card.headline}</div>
+    <div class="overlay-text">${card.body}</div>
+    ${srcHtml ? `<div class="overlay-sources">${srcHtml}</div>` : ''}
+    <div class="m-card-info-bottom">
+      <div class="overlay-meta">Created &middot; ${card.createdAt || '—'}</div>
+      ${renderCardDock('overlay')}
+    </div>
+    <hr class="m-card-divider" />
+    <div class="m-card-chat-msgs" id="d-card-chat-msgs-overlay"></div>`;
+  cardChatHistory['overlay'] = [];
+  cardChatContext['overlay'] = { card, catTitle: data.title };
+  cardThreadIds['overlay'] = null;
+  const mInput = document.getElementById('m-card-chat-input');
+  if (mInput) { mInput.value = ''; mInput.style.height = ''; }
+
+  updateSaveToggleIcon('overlay');
+  document.getElementById('card-overlay-backdrop').classList.add('active');
+  document.getElementById('card-overlay').classList.add('active');
+}
+
+function closeCardOverlay() {
+  document.getElementById('card-overlay-backdrop').classList.remove('active');
+  document.getElementById('card-overlay').classList.remove('active');
+  closeAllSpheres();
+  const tooltip = document.getElementById('source-tooltip');
+  if (tooltip) { tooltip.classList.remove('visible'); clearTimeout(tooltip._hideT); }
+  if (overlayFromSaved) renderSaveFeed();
+  if (activeDetailPane === 'overlay') {
+    overlayBubble = null; overlayIndex = null; overlayFromSaved = false; overlaySavedIndex = null;
+    activeDetailPane = null;
+  }
 }
 
 function openSavedCard(i) {
   const entry = savedCards[i];
   if (!entry) return;
-  const card = getSavedCardData(entry);
-  if (!card) return;
   openCardOverlay(entry.sourceBubble, entry.sourceIndex, { fromSaved: true, savedIndex: i });
 }
 
-// Save from overlay
-function saveCardFromStories() {
-  if (overlayBubble == null || overlayIndex == null) return;
-  const bubble = overlayBubble;
-  const origIdx = overlayIndex;
-  const alreadySaved = savedCards.some(c => c.sourceBubble === bubble && c.sourceIndex === origIdx);
-  if (alreadySaved) {
-    showSphereToast('overlay', 'Already saved');
-    closeAllSpheres();
-    return;
+// =========================================================================
+// DESKTOP DETAIL PANE
+// =========================================================================
+function openDetail(screen, bubble, origIdx, savedIdx) {
+  let card, catTitle, createdAt, fromSaved = false;
+  if (screen === 'save') {
+    const entry = savedCards[savedIdx];
+    if (!entry) return;
+    card = getSavedCardData(entry);
+    if (!card) return;
+    catTitle = insightData[entry.sourceBubble]?.title || entry.sourceBubble;
+    createdAt = entry.createdAt;
+    bubble = entry.sourceBubble;
+    origIdx = entry.sourceIndex;
+    fromSaved = true;
+    overlaySavedIndex = savedIdx;
+  } else {
+    const data = insightData[bubble];
+    if (!data || !data.cards[origIdx]) return;
+    card = data.cards[origIdx];
+    catTitle = data.title;
+    createdAt = card.createdAt;
   }
-  savedCards.unshift({
-    sourceBubble: bubble,
-    sourceIndex: origIdx,
-    createdAt: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-  });
-  if (!removedFromStories[bubble]) removedFromStories[bubble] = new Set();
-  removedFromStories[bubble].add(origIdx);
+
+  overlayBubble = bubble;
+  overlayIndex = origIdx;
+  overlayFromSaved = fromSaved;
+  activeDetailPane = 'd-' + (screen === 'save' ? 'save' : 'stories');
+
+  const listId = screen === 'save' ? 'd-save-feed' : 'd-stories-list';
+  document.querySelectorAll('#' + listId + ' .feed-row').forEach(r => r.classList.remove('d-selected'));
+  const rows = document.querySelectorAll('#' + listId + ' .feed-row');
+  if (screen === 'save' && rows[savedIdx]) rows[savedIdx].classList.add('d-selected');
+  else {
+    rows.forEach(r => {
+      if (r.dataset.bubble === bubble && r.dataset.index == origIdx) r.classList.add('d-selected');
+    });
+  }
+
+  const cardEl = document.getElementById(screen === 'save' ? 'd-card-save' : 'd-card-stories');
+  const emptyEl = document.getElementById(screen === 'save' ? 'd-empty-save' : 'd-empty-stories');
+  const pane = screen === 'save' ? 'd-save' : 'd-stories';
+  const srcHtml = renderSourceLinks(card.sources);
+  cardEl.innerHTML = `
+    <div class="row-badge">${catTitle}</div>
+    <div class="d-card-title">${card.headline}</div>
+    <div class="d-card-body">${card.body}</div>
+    ${srcHtml ? `<div class="overlay-sources d-card-sources">${srcHtml}</div>` : ''}
+    <div class="d-card-info-bottom">
+      <div class="d-card-meta">Created &middot; ${createdAt || '—'}</div>
+      ${renderCardDock(pane)}
+    </div>
+    <hr class="d-card-divider" />
+    <div class="d-card-chat-msgs" id="d-card-chat-msgs-${screen}"></div>`;
+  cardChatHistory[screen] = [];
+  cardChatContext[screen] = { card, catTitle };
+  cardThreadIds[screen] = null;
+  cardEl.classList.add('d-visible');
+  const inputBar = document.getElementById('d-card-chat-input-bar-' + screen);
+  if (inputBar) inputBar.classList.add('d-visible');
+  const inputEl = document.getElementById('d-card-chat-input-' + screen);
+  if (inputEl) { inputEl.value = ''; inputEl.style.height = ''; }
+  if (emptyEl) emptyEl.style.display = 'none';
+
+  updateSaveToggleIcon(activeDetailPane);
   closeAllSpheres();
-  showSphereToast('overlay', 'Saved');
-  setTimeout(() => {
-    closeCardOverlay();
-    renderCardFeed();
-  }, 800);
 }
 
-// Unsave from shared overlay (when opened from Saved tab)
-function unsaveFromOverlay() {
-  if (!overlayFromSaved || overlaySavedIndex == null) return;
-  const entry = savedCards[overlaySavedIndex];
-  if (!entry) return;
-  closeAllSpheres();
-  showSphereToast('overlay', 'Returned to Stories');
-  setTimeout(() => {
-    savedCards.splice(overlaySavedIndex, 1);
-    if (removedFromStories[entry.sourceBubble]) {
-      removedFromStories[entry.sourceBubble].delete(entry.sourceIndex);
-    }
-    closeCardOverlay();
-    renderCardFeed();
-  }, 800);
+function renderCardDock(pane) {
+  return `
+    <div class="d-action-dock">
+      <div class="sphere-wrap">
+        <div class="sphere-tray" id="sphere-tray-${pane}">
+          <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink()" aria-label="Copy link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+          <button class="tray-icon tray-save" id="tray-save-${pane}" onclick="event.stopPropagation(); saveOrUnsaveFromOverlay()" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/></svg></button>
+        </div>
+        <button class="action-sphere" onclick="event.stopPropagation(); toggleSphere('${pane}')" aria-label="Actions"></button>
+        <div class="sphere-toast" id="sphere-toast-${pane}"></div>
+      </div>
+    </div>`;
 }
 
-// ============================
-// SPHERE: universal action affordance
-// ============================
-function toggleSphere() {
-  const tray = document.getElementById('sphere-tray-overlay');
-  const sphere = document.getElementById('sphere-overlay');
-  if (!tray || !sphere) return;
+// =========================================================================
+// SAVE / UNSAVE
+// =========================================================================
+function updateSaveToggleIcon(pane) {
+  const idMap = { 'overlay': 'tray-save-overlay', 'd-stories': 'tray-save-d-stories', 'd-save': 'tray-save-d-save' };
+  const el = document.getElementById(idMap[pane]);
+  if (!el) return;
+  const isSaved = savedCards.some(c => c.sourceBubble === overlayBubble && c.sourceIndex === overlayIndex);
+  el.setAttribute('aria-label', isSaved ? 'Unsave' : 'Save');
+  el.innerHTML = isSaved
+    ? `<svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/><line x1="9" y1="11" x2="15" y2="11" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>`
+    : `<svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/></svg>`;
+}
+
+function saveOrUnsaveFromOverlay() {
+  if (overlayBubble == null || overlayIndex == null) return;
+  const alreadySaved = savedCards.some(c => c.sourceBubble === overlayBubble && c.sourceIndex === overlayIndex);
+  const pane = activeDetailPane;
+  if (alreadySaved) {
+    // Unsave
+    const idx = savedCards.findIndex(c => c.sourceBubble === overlayBubble && c.sourceIndex === overlayIndex);
+    closeAllSpheres();
+    showSphereToast(pane, 'Returned to Stories');
+    setTimeout(() => {
+      savedCards.splice(idx, 1);
+      if (removedFromStories[overlayBubble]) removedFromStories[overlayBubble].delete(overlayIndex);
+      if (pane === 'overlay') closeCardOverlay();
+      else closeDetail(pane);
+      renderCardFeed();
+      renderSaveFeed();
+    }, 800);
+  } else {
+    savedCards.unshift({
+      sourceBubble: overlayBubble,
+      sourceIndex: overlayIndex,
+      createdAt: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    });
+    if (!removedFromStories[overlayBubble]) removedFromStories[overlayBubble] = new Set();
+    removedFromStories[overlayBubble].add(overlayIndex);
+    closeAllSpheres();
+    showSphereToast(pane, 'Saved');
+    setTimeout(() => {
+      if (pane === 'overlay') closeCardOverlay();
+      else closeDetail(pane);
+      renderCardFeed();
+      renderSaveFeed();
+    }, 800);
+  }
+}
+
+function closeDetail(pane) {
+  const screen = pane === 'd-save' ? 'save' : 'stories';
+  const cardEl = document.getElementById(screen === 'save' ? 'd-card-save' : 'd-card-stories');
+  const emptyEl = document.getElementById(screen === 'save' ? 'd-empty-save' : 'd-empty-stories');
+  if (cardEl) { cardEl.classList.remove('d-visible'); cardEl.innerHTML = ''; }
+  if (emptyEl) emptyEl.style.display = '';
+  const inputBar = document.getElementById('d-card-chat-input-bar-' + screen);
+  if (inputBar) inputBar.classList.remove('d-visible');
+  overlayBubble = null; overlayIndex = null; overlayFromSaved = false; overlaySavedIndex = null;
+  activeDetailPane = null;
+}
+
+// =========================================================================
+// SPHERE
+// =========================================================================
+function toggleSphere(pane) {
+  const tray = document.getElementById('sphere-tray-' + pane);
+  if (!tray) return;
   const wasOpen = tray.classList.contains('open');
   closeAllSpheres();
-  if (!wasOpen) {
-    tray.classList.add('open');
-    sphere.classList.add('open');
-  }
+  if (!wasOpen) tray.classList.add('open');
 }
-
 
 function closeAllSpheres() {
   document.querySelectorAll('.sphere-tray.open').forEach(t => t.classList.remove('open'));
-  document.querySelectorAll('.insight-sphere.open').forEach(s => s.classList.remove('open'));
 }
 
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('.insight-sphere-wrap')) closeAllSpheres();
+  if (!e.target.closest('.sphere-wrap')) closeAllSpheres();
 }, true);
 
-function showSphereToast(id, msg) {
-  const toast = document.getElementById('sphere-toast-' + id);
+function showSphereToast(pane, msg) {
+  const toast = document.getElementById('sphere-toast-' + pane);
   if (!toast) return;
   toast.textContent = msg;
   toast.classList.add('visible');
@@ -1674,51 +2098,35 @@ function showSphereToast(id, msg) {
   toast._hideT = setTimeout(() => toast.classList.remove('visible'), 1800);
 }
 
-// Demo source tooltip: shows a message acknowledging the destination system
+// =========================================================================
+// SOURCE TOOLTIP
+// =========================================================================
 function showSourceTooltip(e, system, record) {
   e.stopPropagation();
-  _sourceTooltipSkipDismiss = true;
   const tooltip = document.getElementById('source-tooltip');
   if (!tooltip) return;
-
   tooltip.innerHTML = `In Lens, this would take you directly to <strong>${record}</strong> in <strong>${system}</strong>.`;
-
-  // Anchor below the tapped link element
   const link = e.target.closest('.source-link') || e.target;
   const linkRect = link.getBoundingClientRect();
-  const frame = document.querySelector('.phone-frame');
-  const frameRect = frame.getBoundingClientRect();
-
   const tooltipWidth = 240;
-  // Center tooltip under the link, clamp to phone frame edges
   let left = linkRect.left + linkRect.width / 2 - tooltipWidth / 2;
-  left = Math.max(frameRect.left + 12, Math.min(left, frameRect.right - tooltipWidth - 12));
-
-  // Position just below the link with a small gap for the caret
+  left = Math.max(12, Math.min(left, window.innerWidth - tooltipWidth - 12));
   const top = linkRect.bottom + 8;
-
-  // Point the caret at the center of the link
   const caretLeft = linkRect.left + linkRect.width / 2 - left;
-
   tooltip.style.left = left + 'px';
   tooltip.style.top = top + 'px';
   tooltip.style.maxWidth = tooltipWidth + 'px';
   tooltip.style.setProperty('--caret-left', caretLeft + 'px');
-
   tooltip.classList.add('visible');
   tooltip._fresh = true;
   setTimeout(() => { tooltip._fresh = false; }, 300);
   clearTimeout(tooltip._hideT);
   tooltip._hideT = setTimeout(() => tooltip.classList.remove('visible'), 4000);
 }
-
-// Dismiss tooltip on tap anywhere (ignores the tap that opened it)
 document.addEventListener('click', () => {
   const tooltip = document.getElementById('source-tooltip');
   if (tooltip && !tooltip._fresh) tooltip.classList.remove('visible');
 });
-
-// Dismiss tooltip on scroll
 document.addEventListener('scroll', () => {
   const tooltip = document.getElementById('source-tooltip');
   if (tooltip) tooltip.classList.remove('visible');
@@ -1730,10 +2138,8 @@ function copyCardLink() {
   const fakeId = (overlayBubble + '-' + overlayIndex + '-' + (card?.headline || '').slice(0,6))
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const url = 'https://lens.nomocoda.com/c/' + fakeId;
-  const done = () => {
-    showSphereToast('overlay', 'Link copied');
-    closeAllSpheres();
-  };
+  const pane = activeDetailPane || 'overlay';
+  const done = () => { showSphereToast(pane, 'Link copied'); closeAllSpheres(); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(done).catch(() => {
       const ta = document.createElement('textarea');
@@ -1742,51 +2148,38 @@ function copyCardLink() {
       document.body.removeChild(ta);
       done();
     });
-  } else {
-    done();
-  }
+  } else { done(); }
 }
 
-// Bridge overlay card to chat
-let activeChatSources = []; // sources from the bridged card, used in Lens responses
+// =========================================================================
+// BRIDGE TO CHAT
+// =========================================================================
+let activeChatSources = [];
 
-function renderSourceLinks(sources) {
-  if (!sources || !sources.length) return '';
-  return sources.map((s, i) => {
-    const dot = i < sources.length - 1 ? ' <span class="source-dot">&bull;</span> ' : '';
-    return `<span class="source-link" onclick="event.stopPropagation(); showSourceTooltip(event, '${s.system}', '${s.record.replace(/'/g, "\\'")}')">${s.system}</span>${dot}`;
-  }).join('');
-}
-
-function renderChatCard(card, catTitle) {
+function renderChatCardRow(card, catTitle) {
   const srcHtml = renderSourceLinks(card.sources);
   return `
-    <div class="chat-card" id="chat-card-box">
-      <div class="chat-card-content">
-        <div class="feed-card-header">
-          <span class="feed-card-category">${catTitle}</span>
-        </div>
-        <div class="insight-headline">${card.headline}</div>
-        <div class="chat-card-ellipsis">...</div>
-        <div class="insight-body" style="-webkit-line-clamp:unset;">${card.body}</div>
-        ${srcHtml ? `<div class="insight-sources">${srcHtml}</div>` : ''}
-      </div>
+    <div class="chat-card-row" id="chat-card-box">
+      <div class="row-badge">${catTitle}</div>
+      <div class="row-title">${card.headline}</div>
+      <div class="chat-card-ellipsis">...</div>
+      <div class="chat-card-body">${card.body}${srcHtml ? `<div class="overlay-sources" style="padding-top:10px;">${srcHtml}</div>` : ''}</div>
+      <div class="row-meta" style="margin-top: 8px;">Created &middot; ${card.createdAt || '—'}</div>
       <div class="chat-card-toggle" onclick="toggleChatCard()" role="button" aria-expanded="false">more</div>
     </div>`;
 }
 
 function toggleChatCard() {
-  const box = document.getElementById('chat-card-box');
-  const btn = box.querySelector('.chat-card-toggle');
-  if (box.classList.contains('expanded')) {
-    box.classList.remove('expanded');
-    btn.textContent = 'more';
-    btn.setAttribute('aria-expanded', 'false');
-  } else {
-    box.classList.add('expanded');
-    btn.textContent = 'less';
-    btn.setAttribute('aria-expanded', 'true');
-  }
+  document.querySelectorAll('#chat-card-box').forEach(box => {
+    const btn = box.querySelector('.chat-card-toggle');
+    if (box.classList.contains('expanded')) {
+      box.classList.remove('expanded');
+      if (btn) { btn.textContent = 'more'; btn.setAttribute('aria-expanded', 'false'); }
+    } else {
+      box.classList.add('expanded');
+      if (btn) { btn.textContent = 'less'; btn.setAttribute('aria-expanded', 'true'); }
+    }
+  });
 }
 
 function bridgeToChat() {
@@ -1794,116 +2187,135 @@ function bridgeToChat() {
   const card = insightData[overlayBubble].cards[overlayIndex];
   const catTitle = insightData[overlayBubble]?.title || overlayBubble;
   activeChatSources = card.sources || [];
-  document.getElementById('chat-messages').innerHTML = renderChatCard(card, catTitle);
-  // Seed chatHistory so the model knows which card the user is looking at
+  const html = renderChatCardRow(card, catTitle);
+  const mobile = document.getElementById('chat-messages');
+  const desktop = document.getElementById('d-chat-messages');
+  if (mobile) mobile.innerHTML = html;
+  if (desktop) desktop.innerHTML = html.replace('id="chat-card-box"', 'id="chat-card-box-d"');
   chatHistory = [
     { role: 'user', content: `[Bridged card: ${catTitle}]\nHeadline: ${card.headline}\nBody: ${card.body}` },
     { role: 'assistant', content: `This is the ${catTitle.toLowerCase()} card you opened. What would you like to explore?` }
   ];
-  closeCardOverlay();
+  if (activeDetailPane === 'overlay') closeCardOverlay();
+  else if (activeDetailPane) closeDetail(activeDetailPane);
   switchTab('ask');
 }
 
-// Prevent page bounce on iOS
-document.body.addEventListener('touchmove', function(e) {
-  if (!e.target.closest('.chat-messages, .card-feed, .save-feed, .filter-chips, .insight-card-body, .card-overlay-body')) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
-// Swipe down to dismiss card overlay
-(function() {
-  const overlay = document.getElementById('card-overlay');
-  let startY = 0;
-  let dragging = false;
-
-  overlay.addEventListener('touchstart', e => {
-    // Only start drag from the overlay header or top area, not from scrollable content
-    const body = e.target.closest('.card-overlay-body');
-    if (body && body.scrollTop > 0) return;
-    startY = e.touches[0].clientY;
-    dragging = true;
-  }, { passive: true });
-
-  overlay.addEventListener('touchmove', e => {
-    if (!dragging) return;
-    const dy = e.touches[0].clientY - startY;
-    if (dy > 0) {
-      e.preventDefault(); // Prevent native scroll while dragging overlay
-      overlay.style.transform = `translateY(${dy}px)`;
-      overlay.style.transition = 'none';
-    }
-  }, { passive: false }); // non-passive so preventDefault works
-
-  overlay.addEventListener('touchend', e => {
-    if (!dragging) return;
-    dragging = false;
-    const dy = e.changedTouches[0].clientY - startY;
-    overlay.style.transition = '';
-    overlay.style.transform = '';
-    if (dy > 80) {
-      e.preventDefault(); // Prevent iOS ghost click on elements below
-      closeCardOverlay();
-    }
-  }, { passive: false }); // non-passive so preventDefault works
-})();
-
-// ---------------------------------------------------------------------------
-// Chat: connected to Worker (/chat endpoint)
-// ---------------------------------------------------------------------------
+// =========================================================================
+// CHAT
+// =========================================================================
 const WORKER_URL = 'https://lens-api-proxy.nomocoda.workers.dev';
 let chatHistory = [];
 
-function appendMessage(role, html) {
-  const chat = document.getElementById('chat-messages');
+function appendMessage(role, text) {
   const isUser = role === 'user';
-  // Append source citations to Lens responses when a card is in context
+  const senderName = isUser ? 'Travis' : 'Lens';
+  const senderClass = isUser ? 's-user' : 's-lens';
+  const rowClass = isUser ? 'user-row' : 'lens-row';
+  const avatar = isUser
+    ? `<div class="avatar user-av"><span class="user-initial">T</span></div>`
+    : `<div class="avatar lens-av">${LENS_SVG}</div>`;
   let sourcesBlock = '';
   if (!isUser && activeChatSources.length) {
-    sourcesBlock = `<div class="message-sources">${renderSourceLinks(activeChatSources)}</div>`;
+    sourcesBlock = `<div class="overlay-sources" style="padding-top:10px;">${renderSourceLinks(activeChatSources)}</div>`;
   }
-  chat.innerHTML += `<div class="message message-${isUser ? 'user' : 'lens'}"><div class="message-sender">${isUser ? 'You' : 'Lens'}</div><div class="message-text">${html}${sourcesBlock}</div><div class="message-time">Just now</div></div>`;
-  chat.scrollTop = chat.scrollHeight;
+  const html = `
+    <div class="chat-row ${rowClass}">
+      <div class="chat-sender-row">
+        ${avatar}
+        <span class="chat-sender ${senderClass}">${senderName}</span>
+      </div>
+      <div class="chat-text">${text}${sourcesBlock}</div>
+    </div>`;
+  const mobile = document.getElementById('chat-messages');
+  const desktop = document.getElementById('d-chat-messages');
+  if (mobile) { mobile.insertAdjacentHTML('beforeend', html); mobile.scrollTop = mobile.scrollHeight; }
+  if (desktop) { desktop.insertAdjacentHTML('beforeend', html); desktop.scrollTop = desktop.scrollHeight; }
 }
 
 function showTyping() {
-  const chat = document.getElementById('chat-messages');
-  chat.innerHTML += `<div class="message message-lens" id="typing-msg"><div class="message-sender">Lens</div><div class="message-text"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
-  chat.scrollTop = chat.scrollHeight;
+  const html = `
+    <div class="chat-row lens-row" id="typing-msg">
+      <div class="chat-sender-row">
+        <div class="avatar lens-av">${LENS_SVG}</div>
+        <span class="chat-sender s-lens">Lens</span>
+      </div>
+      <div class="chat-text"><span class="typing-indicator"><span></span><span></span><span></span></span></div>
+    </div>`;
+  const mobile = document.getElementById('chat-messages');
+  const desktop = document.getElementById('d-chat-messages');
+  if (mobile) { mobile.insertAdjacentHTML('beforeend', html); mobile.scrollTop = mobile.scrollHeight; }
+  if (desktop) { desktop.insertAdjacentHTML('beforeend', html.replace('id="typing-msg"', 'id="typing-msg-d"')); desktop.scrollTop = desktop.scrollHeight; }
 }
 
 function removeTyping() {
-  const el = document.getElementById('typing-msg');
-  if (el) el.remove();
+  const m = document.getElementById('typing-msg'); if (m) m.remove();
+  const d = document.getElementById('typing-msg-d'); if (d) d.remove();
 }
 
 async function sendToLens(userText) {
   appendMessage('user', userText);
   chatHistory.push({ role: 'user', content: userText });
+  syncMainThread({ role: 'user', content: userText });
   showTyping();
-
   try {
     const res = await fetch(WORKER_URL + '/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userText, history: chatHistory.slice(0, -1) }),
     });
-
     removeTyping();
-
-    if (!res.ok) {
-      appendMessage('lens', 'Something went wrong connecting to Lens. Try again in a moment.');
-      return;
-    }
-
+    if (!res.ok) { appendMessage('lens', 'Something went wrong connecting to Lens. Try again in a moment.'); return; }
     const data = await res.json();
     const reply = data.content?.[0]?.text || 'No response received.';
     chatHistory.push({ role: 'assistant', content: reply });
+    syncMainThread({ role: 'assistant', content: reply });
     appendMessage('lens', reply);
   } catch (err) {
     removeTyping();
     appendMessage('lens', 'Connection issue. Check your network and try again.');
   }
+}
+
+function syncMainThread(msg) {
+  let thread = currentChatThreadId ? chatThreads.find(t => t.id === currentChatThreadId) : null;
+  if (!thread) {
+    const id = 'chat-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
+    thread = {
+      id,
+      title: 'New chat',
+      ts: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+      messages: [],
+      autoTitled: false,
+    };
+    chatThreads.unshift(thread);
+    currentChatThreadId = id;
+  }
+  thread.messages.push(msg);
+  renderChatHistory();
+  if (!thread.autoTitled && thread.messages.some(m => m.role === 'assistant') && thread.messages.some(m => m.role === 'user')) {
+    thread.autoTitled = true;
+    generateThreadTitle(thread);
+  }
+}
+
+async function generateThreadTitle(thread) {
+  const convo = thread.messages.slice(0, 4).map(m => `${m.role === 'user' ? 'User' : 'Lens'}: ${m.content}`).join('\n\n');
+  const prompt = `Write a 3-6 word title summarizing the topic of this conversation. Plain text only, no quotes, no punctuation at the end.\n\n${convo}`;
+  try {
+    const res = await fetch(WORKER_URL + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: prompt, history: [] }),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const raw = (data.content?.[0]?.text || '').trim().replace(/^["']|["']$/g, '').replace(/[.?!]+$/, '');
+    if (raw) {
+      thread.title = raw.slice(0, 60);
+      renderChatHistory();
+    }
+  } catch (_) {}
 }
 
 function autoGrowInput(el) {
@@ -1912,82 +2324,329 @@ function autoGrowInput(el) {
   el.style.overflow = el.scrollHeight > 120 ? 'auto' : 'hidden';
 }
 
-function sendMessage() {
-  const input = document.getElementById('chat-input');
+function sendMessage(fromDesktop) {
+  const inputId = fromDesktop ? 'd-chat-input' : 'chat-input';
+  const input = document.getElementById(inputId);
+  if (!input) return;
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
   input.style.height = '';
   input.style.overflow = 'hidden';
+  // Sync other input if both present
+  const other = document.getElementById(fromDesktop ? 'chat-input' : 'd-chat-input');
+  if (other) { other.value = ''; other.style.height = ''; }
+  if (!fromDesktop) showMobileThreadView();
   sendToLens(text);
 }
 
-function sendChip(el) {
-  const text = el.textContent;
-  el.parentElement.style.opacity = '0';
-  el.parentElement.style.transition = 'opacity 0.3s ease';
-  setTimeout(() => sendToLens(text), 300);
+// =========================================================================
+// CARD-SCOPED INLINE CHAT (Stories + Saved detail)
+// =========================================================================
+const cardChatHistory = {};
+const cardChatContext = {};
+const cardThreadIds = {};
+
+function appendCardMsg(screen, role, text) {
+  const container = document.getElementById('d-card-chat-msgs-' + screen);
+  if (!container) return;
+  const isUser = role === 'user';
+  const senderName = isUser ? 'Travis' : 'Lens';
+  const senderClass = isUser ? 's-user' : 's-lens';
+  const rowClass = isUser ? 'user-row' : 'lens-row';
+  const avatar = isUser
+    ? `<div class="avatar user-av"><span class="user-initial">T</span></div>`
+    : `<div class="avatar lens-av">${LENS_SVG}</div>`;
+  const html = `
+    <div class="chat-row ${rowClass}">
+      <div class="chat-sender-row">
+        ${avatar}
+        <span class="chat-sender ${senderClass}">${senderName}</span>
+      </div>
+      <div class="chat-text">${text}</div>
+    </div>`;
+  container.insertAdjacentHTML('beforeend', html);
+  const scroll = container.closest('.d-detail-col') || container.closest('.overlay-body');
+  if (scroll) scroll.scrollTop = scroll.scrollHeight;
 }
 
-// ---------------------------------------------------------------------------
-// Voice input: Web Speech API (browser-native, no external API needed)
-// ---------------------------------------------------------------------------
+function showCardTyping(screen) {
+  const container = document.getElementById('d-card-chat-msgs-' + screen);
+  if (!container) return;
+  const html = `
+    <div class="chat-row lens-row" id="card-typing-${screen}">
+      <div class="chat-sender-row">
+        <div class="avatar lens-av">${LENS_SVG}</div>
+        <span class="chat-sender s-lens">Lens</span>
+      </div>
+      <div class="chat-text"><span class="typing-indicator"><span></span><span></span><span></span></span></div>
+    </div>`;
+  container.insertAdjacentHTML('beforeend', html);
+  const scroll = container.closest('.d-detail-col') || container.closest('.overlay-body');
+  if (scroll) scroll.scrollTop = scroll.scrollHeight;
+}
+
+function removeCardTyping(screen) {
+  const el = document.getElementById('card-typing-' + screen);
+  if (el) el.remove();
+}
+
+async function sendCardMessage(screen) {
+  const inputId = screen === 'overlay' ? 'm-card-chat-input' : 'd-card-chat-input-' + screen;
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = '';
+
+  appendCardMsg(screen, 'user', text);
+  cardChatHistory[screen] = cardChatHistory[screen] || [];
+  cardChatHistory[screen].push({ role: 'user', content: text });
+  syncCardThread(screen, { role: 'user', content: text });
+
+  showCardTyping(screen);
+  try {
+    const ctx = cardChatContext[screen];
+    const priorHistory = ctx
+      ? [
+          { role: 'user', content: `[Card context] ${ctx.catTitle}\nHeadline: ${ctx.card.headline}\nBody: ${ctx.card.body}` },
+          { role: 'assistant', content: `Got it. Ask me anything about this ${ctx.catTitle.toLowerCase()} story.` },
+          ...cardChatHistory[screen].slice(0, -1),
+        ]
+      : cardChatHistory[screen].slice(0, -1);
+    const res = await fetch(WORKER_URL + '/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, history: priorHistory }),
+    });
+    removeCardTyping(screen);
+    if (!res.ok) { appendCardMsg(screen, 'lens', 'Something went wrong. Try again in a moment.'); return; }
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'No response received.';
+    cardChatHistory[screen].push({ role: 'assistant', content: reply });
+    syncCardThread(screen, { role: 'assistant', content: reply });
+    appendCardMsg(screen, 'lens', reply);
+  } catch (err) {
+    removeCardTyping(screen);
+    appendCardMsg(screen, 'lens', 'Connection issue. Check your network and try again.');
+  }
+}
+
+// =========================================================================
+// CHAT HISTORY (Chat tab middle column)
+// =========================================================================
+const chatThreads = [
+  { id: 't1', title: 'Q1 miss drivers', ts: 'April 15', messages: [
+    { role: 'user', content: 'Walk me through what drove the Q1 miss.' },
+    { role: 'assistant', content: 'New revenue was $920K gross, but $280K of churn offset it. The churned account cited a feature gap that\'s now on the roadmap. Hitting the year-end target needs roughly $1M net per remaining quarter.' },
+  ]},
+  { id: 't2', title: 'Inbound pipeline trend', ts: 'April 12', messages: [
+    { role: 'user', content: 'Is the inbound pipeline growth sustainable?' },
+    { role: 'assistant', content: 'Content-led inbound went from 18% to 35% of pipeline in two quarters. Deals through that channel are closing faster and costing less to acquire, but the sample is still one full cycle. Treat it as a directional signal.' },
+  ]},
+  { id: 't3', title: 'Q2 forecast adjustments', ts: 'April 9', messages: [
+    { role: 'user', content: 'If the two anchor deals close, where does that put Q2?' },
+    { role: 'assistant', content: 'Closing both would cover roughly 80% of the Q2 target from two accounts — notable concentration. Three new deals entered discovery this week; too early to tell if they diversify the mix.' },
+  ]},
+];
+let currentChatThreadId = null;
+
+function renderChatHistory() {
+  const list = document.getElementById('d-chat-history-list');
+  if (list) {
+    list.innerHTML = chatThreads.map(t => {
+      const preview = (t.messages.find(m => m.role === 'user')?.content || '').slice(0, 60);
+      const active = t.id === currentChatThreadId ? ' active' : '';
+      return `
+        <div class="d-chat-history-item${active}" onclick="loadChatThread('${t.id}')">
+          <div class="d-chat-history-item-title">${t.title}</div>
+          <div class="d-chat-history-item-preview">${preview}</div>
+          <div class="d-chat-history-item-ts">${t.ts}</div>
+        </div>`;
+    }).join('');
+  }
+  renderMobileChatHistory();
+}
+
+function renderMobileChatHistory() {
+  const list = document.getElementById('m-chat-history-list');
+  if (!list) return;
+  if (!chatThreads.length) {
+    list.innerHTML = `<div class="m-chat-history-empty">No chats yet. Start one below or tap a card to ask about it.</div>`;
+    return;
+  }
+  list.innerHTML = chatThreads.map(t => {
+    const preview = (t.messages.find(m => m.role === 'user')?.content || '').slice(0, 90);
+    return `
+      <div class="m-chat-history-item" onclick="loadChatThread('${t.id}')">
+        <div class="m-chat-history-item-title">${t.title}</div>
+        <div class="m-chat-history-item-preview">${preview}</div>
+        <div class="m-chat-history-item-ts">${t.ts}</div>
+      </div>`;
+  }).join('');
+}
+
+function showMobileHistoryView() {
+  const list = document.getElementById('m-chat-history-list');
+  const msgs = document.getElementById('chat-messages');
+  const back = document.getElementById('m-back-btn');
+  if (list) list.classList.remove('hidden');
+  if (msgs) msgs.classList.add('hidden');
+  if (back) back.style.display = 'none';
+}
+
+function showMobileThreadView() {
+  const list = document.getElementById('m-chat-history-list');
+  const msgs = document.getElementById('chat-messages');
+  const back = document.getElementById('m-back-btn');
+  if (list) list.classList.add('hidden');
+  if (msgs) msgs.classList.remove('hidden');
+  if (back) back.style.display = 'flex';
+}
+
+function mobileBackToHistory() {
+  currentChatThreadId = null;
+  chatHistory = [];
+  activeChatSources = [];
+  const mobile = document.getElementById('chat-messages');
+  if (mobile) mobile.innerHTML = '';
+  renderChatHistory();
+  showMobileHistoryView();
+}
+
+function loadChatThread(id) {
+  const thread = chatThreads.find(t => t.id === id);
+  if (!thread) return;
+  currentChatThreadId = id;
+  const desktop = document.getElementById('d-chat-messages');
+  if (desktop) desktop.innerHTML = '';
+  const mobile = document.getElementById('chat-messages');
+  if (mobile) mobile.innerHTML = '';
+  chatHistory = [];
+  activeChatSources = [];
+  thread.messages.forEach(m => {
+    chatHistory.push(m);
+    appendMessage(m.role === 'assistant' ? 'lens' : 'user', m.content);
+  });
+  renderChatHistory();
+  showMobileThreadView();
+}
+
+function newChatSession() {
+  currentChatThreadId = null;
+  chatHistory = [];
+  activeChatSources = [];
+  const desktop = document.getElementById('d-chat-messages');
+  if (desktop) desktop.innerHTML = '';
+  const mobile = document.getElementById('chat-messages');
+  if (mobile) mobile.innerHTML = '';
+  renderChatHistory();
+  const input = document.getElementById('d-chat-input');
+  if (input) { input.value = ''; input.style.height = ''; input.focus(); }
+}
+
+function mobileNewChat() {
+  currentChatThreadId = null;
+  chatHistory = [];
+  activeChatSources = [];
+  const mobile = document.getElementById('chat-messages');
+  if (mobile) mobile.innerHTML = '';
+  renderChatHistory();
+  showMobileThreadView();
+  const input = document.getElementById('chat-input');
+  if (input) { input.value = ''; input.style.height = ''; input.focus(); }
+}
+
+function syncCardThread(screen, msg) {
+  const ctx = cardChatContext[screen];
+  if (!ctx) return;
+  let threadId = cardThreadIds[screen];
+  let thread = threadId ? chatThreads.find(t => t.id === threadId) : null;
+  if (!thread) {
+    threadId = 'card-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
+    thread = {
+      id: threadId,
+      title: ctx.card.headline,
+      ts: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+      messages: [],
+    };
+    chatThreads.unshift(thread);
+    cardThreadIds[screen] = threadId;
+  }
+  thread.messages.push(msg);
+  renderChatHistory();
+}
+
+// =========================================================================
+// VOICE INPUT (Web Speech)
+// =========================================================================
 let isRecording = false;
 let recognition = null;
+let activeMicBtn = null;
 
-function initSpeechRecognition() {
+function initSpeechRecognition(inputId) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) return null;
   const rec = new SpeechRecognition();
   rec.continuous = false;
   rec.interimResults = true;
   rec.lang = 'en-US';
-
   rec.onresult = (e) => {
-    const input = document.getElementById('chat-input');
+    const input = document.getElementById(inputId);
+    if (!input) return;
     let transcript = '';
-    for (let i = 0; i < e.results.length; i++) {
-      transcript += e.results[i][0].transcript;
-    }
+    for (let i = 0; i < e.results.length; i++) transcript += e.results[i][0].transcript;
     input.value = transcript;
   };
-
   rec.onend = () => {
     isRecording = false;
-    document.getElementById('mic-btn').classList.remove('recording');
-    // Focus the input so the user can review/edit before sending
-    const input = document.getElementById('chat-input');
-    if (input.value.trim()) input.focus();
+    if (activeMicBtn) activeMicBtn.classList.remove('recording');
+    const input = document.getElementById(inputId);
+    if (input && input.value.trim()) input.focus();
   };
-
-  rec.onerror = (e) => {
-    console.error('Speech recognition error:', e.error);
+  rec.onerror = () => {
     isRecording = false;
-    document.getElementById('mic-btn').classList.remove('recording');
+    if (activeMicBtn) activeMicBtn.classList.remove('recording');
   };
-
   return rec;
 }
 
-function toggleMic() {
+function toggleMic(btnId, inputId) {
+  btnId = btnId || 'mic-btn';
+  inputId = inputId || 'chat-input';
+  const btn = document.getElementById(btnId);
   if (isRecording) {
     if (recognition) recognition.stop();
     isRecording = false;
-    document.getElementById('mic-btn').classList.remove('recording');
+    if (activeMicBtn) activeMicBtn.classList.remove('recording');
   } else {
-    recognition = initSpeechRecognition();
-    if (!recognition) {
-      console.error('Speech recognition not supported');
-      return;
-    }
+    recognition = initSpeechRecognition(inputId);
+    if (!recognition) return;
     recognition.start();
     isRecording = true;
-    document.getElementById('mic-btn').classList.add('recording');
+    activeMicBtn = btn;
+    btn.classList.add('recording');
   }
 }
 
-// Initial render
+// =========================================================================
+// iOS: prevent page bounce
+// =========================================================================
+document.body.addEventListener('touchmove', function(e) {
+  if (!e.target.closest('.chat-list, .row-list, .filter-chips, .overlay-body, .d-detail-col, .d-list-col')) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+// Swipe-to-dismiss removed: card overlay is now a full-screen page, dismissed via back button.
+
+// =========================================================================
+// INIT
+// =========================================================================
 renderCardFeed();
+renderSaveFeed();
+renderChatHistory();
 </script>
 
 </body>
