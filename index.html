@@ -1389,8 +1389,21 @@ body {
   .dscr .feed-row { padding: 16px 22px; }
   .dscr .chat-row { padding: 14px 28px; }
 
-  /* Make rows in desktop list column clickable with hover */
-  .d-list-col .feed-row:hover { filter: brightness(0.97); }
+  /* Gmail-style elevated hover on card previews */
+  .d-list-col .feed-row {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .d-list-col .feed-row:hover {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.06);
+    transform: translateY(-1px);
+    z-index: 1;
+  }
+  .d-list-col .feed-row:hover::after { background: transparent; }
+  .d-list-col .feed-row.d-selected:hover {
+    box-shadow: none;
+    transform: none;
+  }
 }
 
 /* Breathe animation on screen (subtle) */
