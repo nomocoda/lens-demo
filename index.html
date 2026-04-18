@@ -210,14 +210,13 @@ body {
   padding: 5px 12px;
   border-radius: 20px;
   margin-bottom: 6px;
-  background: rgba(55,37,73,0.08);
-  color: var(--lens);
-  border: 1px solid rgba(55,37,73,0.18);
+  background: transparent;
+  color: var(--active-border);
+  border: 1px solid var(--active-border);
 }
 .feed-row.is-read .row-badge {
-  background: transparent;
   color: #B0AAD8;
-  border-color: rgba(55,37,73,0.15);
+  border-color: #B0AAD8;
 }
 
 .row-title {
@@ -1058,11 +1057,11 @@ body {
   .d-list-col {
     width: 340px;
     flex-shrink: 0;
-    border-right: 1px solid rgba(0,0,0,0.06);
+    border-right: 1px solid var(--border);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background: #F9F7FD;
+    background: #fff;
   }
   .d-search {
     flex: 1;
@@ -1308,7 +1307,7 @@ body {
     cursor: pointer;
     transition: background 0.12s;
   }
-  .d-chat-history-item:hover { background: #F5F5F8; }
+  .d-chat-history-item:hover { background: var(--active-bg); }
   .d-chat-history-item.active {
     background: var(--active-bg);
   }
