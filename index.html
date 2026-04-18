@@ -12,21 +12,28 @@
 button { border: none; background: none; font: inherit; color: inherit; outline: none; -webkit-appearance: none; appearance: none; cursor: pointer; }
 
 :root {
-  --lens: #6C5CE7;
-  --lens-deep: #4A3F8F;
-  --lens-dark: #2D2660;
-  --screen: #F3F1FA;
-  --row-lens: #F3F1FA;
-  --row-user: #F3F1FA;
-  --sep: rgba(108,92,231,0.1);
-  --sep-defined: rgba(108,92,231,0.18);
-  --text-body: #1A1A1A;
-  --text-meta: #9990C8;
-  --text-muted: #888;
-  --person: #8C5038;
-  --person-bg: #F2E2DC;
-  --glass: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(108, 92, 231, 0.12);
+  --lens:          #372549;
+  --lens-deep:     #2A1C38;
+  --lens-dark:     #1E132A;
+  --ruby:          #B75D69;
+  --lens-tint:     #EDE9F4;
+  --lens-tint-bd:  #CFC8DF;
+  --active-bg:     #E2DBEF;
+  --active-border: #7C5FA0;
+  --screen:        #F3F1FA;
+  --row-lens:      #F3F1FA;
+  --row-user:      #F3F1FA;
+  --border:        #E2E2E7;
+  --sep:           rgba(55,37,73,0.10);
+  --sep-defined:   rgba(55,37,73,0.18);
+  --text-head:     #111111;
+  --text-body:     #3A3A3A;
+  --text-meta:     #9A9AA6;
+  --text-muted:    #888;
+  --person:        #B75D69;
+  --person-bg:     #F4E3E6;
+  --glass:         rgba(255,255,255,0.85);
+  --glass-border:  rgba(55,37,73,0.12);
 }
 
 html, body { height: 100%; height: 100dvh; }
@@ -147,8 +154,8 @@ body {
   font-weight: 500;
   letter-spacing: 0.1px;
   color: var(--lens);
-  background: rgba(108,92,231,0.07);
-  border: 1px solid rgba(108,92,231,0.16);
+  background: rgba(55,37,73,0.07);
+  border: 1px solid rgba(55,37,73,0.16);
   transition: background 0.15s, color 0.15s, border-color 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -202,14 +209,14 @@ body {
   padding: 5px 12px;
   border-radius: 20px;
   margin-bottom: 6px;
-  background: rgba(108,92,231,0.08);
+  background: rgba(55,37,73,0.08);
   color: var(--lens);
-  border: 1px solid rgba(108,92,231,0.18);
+  border: 1px solid rgba(55,37,73,0.18);
 }
 .feed-row.is-read .row-badge {
   background: transparent;
   color: #B0AAD8;
-  border-color: rgba(108,92,231,0.15);
+  border-color: rgba(55,37,73,0.15);
 }
 
 .row-title {
@@ -250,7 +257,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-left: 12px;
-  box-shadow: 0 2px 6px rgba(108,92,231,0.28);
+  box-shadow: 0 2px 6px rgba(55,37,73,0.28);
 }
 
 /* =========================================================================
@@ -296,9 +303,9 @@ body {
   justify-content: center;
   overflow: hidden;
 }
-.avatar.lens-av { background: var(--row-lens); box-shadow: inset 0 0 0 1px rgba(108,92,231,0.15); }
-.avatar.user-av { background: var(--person-bg); }
-.user-initial { font-size: 11px; font-weight: 700; line-height: 1; color: var(--person); }
+.avatar.lens-av { background: var(--lens-tint); border: 1px solid var(--lens-tint-bd); color: var(--active-border); }
+.avatar.user-av { background: var(--ruby); }
+.user-initial { font-size: 11px; font-weight: 700; line-height: 1; color: #fff; }
 .avatar.lens-av svg { display: block; width: 17px; height: 17px; }
 
 .chat-sender {
@@ -306,7 +313,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.3px;
 }
-.chat-sender.s-lens { color: var(--lens); }
+.chat-sender.s-lens { color: var(--active-border); }
 .chat-sender.s-user { color: var(--person); }
 
 .chat-text {
@@ -324,7 +331,7 @@ body {
 .chat-text .typing-indicator span {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: rgba(108,92,231,0.45);
+  background: rgba(55,37,73,0.45);
   animation: typingBounce 1.4s ease-in-out infinite;
 }
 .chat-text .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
@@ -339,10 +346,10 @@ body {
   padding: 14px 20px;
   background: var(--row-lens);
   position: relative;
-  border-top: 1px solid rgba(108,92,231,0.18);
-  border-bottom: 1px solid rgba(108,92,231,0.18);
+  border-top: 1px solid rgba(55,37,73,0.18);
+  border-bottom: 1px solid rgba(55,37,73,0.18);
 }
-.chat-card-row .row-badge { background: rgba(108,92,231,0.14); border: none; color: var(--lens); }
+.chat-card-row .row-badge { background: rgba(55,37,73,0.14); border: none; color: var(--lens); }
 .chat-card-row .row-title { margin-bottom: 6px; }
 .chat-card-row .chat-card-body {
   font-size: 13px;
@@ -389,7 +396,7 @@ body {
 .chat-input {
   width: 100%;
   background: #fff;
-  border: 1px solid rgba(108,92,231,0.16);
+  border: 1px solid rgba(55,37,73,0.16);
   border-radius: 16px;
   padding: 11px 44px 11px 16px;
   font-size: 14px;
@@ -406,7 +413,7 @@ body {
 .chat-input::placeholder { color: #BBB; }
 .chat-input:focus {
   border-color: var(--lens);
-  box-shadow: 0 0 0 3px rgba(108,92,231,0.08);
+  box-shadow: 0 0 0 3px rgba(55,37,73,0.08);
 }
 .mic-btn {
   position: absolute;
@@ -420,7 +427,7 @@ body {
   transition: background 0.2s, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .mic-btn svg { width: 17px; height: 17px; stroke: var(--lens-deep); stroke-width: 1.8; fill: none; }
-.mic-btn:hover { background: rgba(108,92,231,0.08); }
+.mic-btn:hover { background: rgba(55,37,73,0.08); }
 .mic-btn.recording { background: rgba(232, 74, 74, 0.12); animation: micPulse 1.5s ease-in-out infinite; }
 .mic-btn.recording svg { stroke: #E84A4A; }
 @keyframes micPulse {
@@ -434,7 +441,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(108,92,231,0.25);
+  box-shadow: 0 2px 6px rgba(55,37,73,0.25);
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
   flex-shrink: 0;
 }
@@ -520,8 +527,8 @@ body {
   transform: translateY(-50%);
   width: 34px; height: 34px;
   border-radius: 50%;
-  background: rgba(108,92,231,0.08);
-  border: 1px solid rgba(108,92,231,0.18);
+  background: rgba(55,37,73,0.08);
+  border: 1px solid rgba(55,37,73,0.18);
   color: var(--lens);
   display: flex;
   align-items: center;
@@ -530,13 +537,13 @@ body {
 .m-new-chat-btn { right: 14px; }
 .m-back-btn { left: 14px; }
 .m-new-chat-btn svg, .m-back-btn svg { width: 16px; height: 16px; }
-.m-new-chat-btn:active, .m-back-btn:active { background: rgba(108,92,231,0.14); }
+.m-new-chat-btn:active, .m-back-btn:active { background: rgba(55,37,73,0.14); }
 
 /* Mobile chat-input-bar pill send (matches desktop card chat) */
 .ask-view .chat-input-bar, .m-card-chat-input-bar { background: transparent; border-top: none; }
 .ask-view .chat-input-bar .send-btn {
-  background: rgba(108,92,231,0.08);
-  border: 1px solid rgba(108,92,231,0.18);
+  background: rgba(55,37,73,0.08);
+  border: 1px solid rgba(55,37,73,0.18);
   box-shadow: none;
 }
 .ask-view .chat-input-bar .send-btn svg { fill: var(--lens); }
@@ -641,7 +648,7 @@ body {
 .overlay-close {
   width: 32px; height: 32px;
   border-radius: 50%;
-  background: rgba(108,92,231,0.08);
+  background: rgba(55,37,73,0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -696,8 +703,8 @@ body {
 }
 .source-link {
   font-size: 11px;
-  font-weight: 500;
-  color: var(--lens);
+  font-weight: 600;
+  color: var(--ruby);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -743,12 +750,12 @@ body {
 .m-card-chat-input-bar .chat-input-wrap { flex: 1; position: relative; display: flex; align-items: center; }
 .m-card-chat-input-bar .send-btn {
   width: 42px; height: 42px;
-  background: rgba(108,92,231,0.08);
-  border: 1px solid rgba(108,92,231,0.18);
+  background: rgba(55,37,73,0.08);
+  border: 1px solid rgba(55,37,73,0.18);
   box-shadow: none;
 }
 .m-card-chat-input-bar .send-btn svg { fill: var(--lens); }
-.m-card-chat-input-bar .send-btn:hover { background: rgba(108,92,231,0.16); transform: scale(1.04); }
+.m-card-chat-input-bar .send-btn:hover { background: rgba(55,37,73,0.16); transform: scale(1.04); }
 
 /* =========================================================================
    SPHERE action affordance (used in mobile overlay + desktop detail)
@@ -762,11 +769,22 @@ body {
 .action-sphere {
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: var(--lens) url('nomocoda-mark.png') center/cover no-repeat;
+  background: var(--lens-tint);
+  border: 1px solid var(--lens-tint-bd);
+  color: var(--active-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   z-index: 2;
-  box-shadow: 0 4px 14px rgba(108,92,231,0.28), 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 14px rgba(55,37,73,0.14), 0 2px 6px rgba(0,0,0,0.06);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
+}
+.action-sphere svg {
+  width: 62%;
+  height: 62%;
+  display: block;
+  pointer-events: none;
 }
 .action-sphere:hover { transform: scale(1.06); filter: brightness(0.92); }
 .action-sphere.open { filter: brightness(0.82) saturate(1.1); }
@@ -788,7 +806,7 @@ body {
   border-radius: 50%;
   background: #fff;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 14px rgba(108,92,231,0.18), 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 14px rgba(55,37,73,0.18), 0 1px 3px rgba(0,0,0,0.06);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -842,7 +860,7 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(108,92,231,0.15), 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 32px rgba(55,37,73,0.15), 0 2px 8px rgba(0,0,0,0.06);
   font-size: 13px;
   line-height: 1.5;
   color: var(--text-body);
@@ -906,33 +924,26 @@ body {
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 50px rgba(108,92,231,0.15), 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 8px 50px rgba(55,37,73,0.15), 0 2px 8px rgba(0,0,0,0.06);
     display: flex;
     flex-direction: column;
     height: calc(100vh - 80px);
     min-height: 720px;
   }
-  .browser-chrome {
+  /* App top bar — product header (search, etc.) */
+  .app-topbar {
     flex-shrink: 0;
+    height: 52px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    gap: 14px;
-    background: var(--lens);
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    position: relative;
+    padding: 0 20px;
   }
-  .browser-dots { display: flex; gap: 6px; flex-shrink: 0; }
-  .bd { width: 11px; height: 11px; border-radius: 50%; }
-  .bd.red { background: #FF5F57; } .bd.yellow { background: #FEBC2E; } .bd.green { background: #28C840; }
-  .browser-chrome .d-search {
-    flex: 1;
-    max-width: 420px;
+  .app-topbar .d-search {
+    flex: 0 1 420px;
     margin: 0 auto;
-    background: #fff;
-    border: 1px solid rgba(255,255,255,0.5);
   }
-  .browser-chrome .d-search:focus-within { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,0.18); }
   /* Sidebar rail (persistent left nav) */
   .app-body {
     flex: 1;
@@ -948,8 +959,8 @@ body {
     flex-direction: column;
     padding: 18px 12px 16px;
     gap: 20px;
-    background: #fff;
-    border-right: 1px solid rgba(0,0,0,0.06);
+    background: var(--lens);
+    border-right: 1px solid rgba(0,0,0,0.15);
   }
   .app-company-mark {
     display: inline-flex;
@@ -963,7 +974,7 @@ body {
     font-family: 'Fraunces', serif;
     font-size: 18px;
     font-weight: 600;
-    color: #1A1730;
+    color: #FFFFFF;
     letter-spacing: -0.3px;
     line-height: 1;
   }
@@ -981,7 +992,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 13.5px;
     font-weight: 500;
-    color: #6E6B82;
+    color: rgba(255,255,255,0.60);
     padding: 8px 10px;
     border-radius: 8px;
     display: flex;
@@ -1000,8 +1011,8 @@ body {
     stroke-linecap: round;
     stroke-linejoin: round;
   }
-  .app-navtab:hover { background: rgba(108,92,231,0.06); color: var(--lens); }
-  .app-navtab.active { background: rgba(108,92,231,0.10); color: var(--lens); font-weight: 700; }
+  .app-navtab:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .app-navtab.active { background: rgba(255,255,255,0.14); color: #fff; font-weight: 700; }
   .app-user-chip {
     margin-top: auto;
     display: flex;
@@ -1014,6 +1025,7 @@ body {
   .app-user-chip .avatar { width: 28px; height: 28px; }
   .app-user-chip .user-initial { font-size: 12px; }
   .app-user-chip .chat-sender { font-size: 13px; font-weight: 700; letter-spacing: 0.1px; }
+  .app-user-chip .chat-sender.s-user { color: #fff; }
 
   .app-content {
     flex: 1;
@@ -1035,20 +1047,23 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background: #F3F1FA;
+    background: #F9F7FD;
   }
   .d-search {
     flex: 1;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 12px;
-    background: #F3F1FA;
-    border-radius: 8px;
-    border: 1px solid transparent;
-    transition: border-color 0.15s, background 0.15s;
+    padding: 9px 14px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(55,37,73,0.16);
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .d-search:focus-within { border-color: rgba(108,92,231,0.28); background: #fff; }
+  .d-search:focus-within {
+    border-color: var(--lens);
+    box-shadow: 0 0 0 3px rgba(55,37,73,0.08);
+  }
   .d-search svg { width: 14px; height: 14px; stroke: #9A94B0; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
   .d-search input {
     flex: 1; min-width: 0;
@@ -1071,7 +1086,7 @@ body {
     position: relative;
     transition: background 0.15s, color 0.15s;
   }
-  .d-filter-btn:hover { background: rgba(108,92,231,0.06); color: var(--lens); }
+  .d-filter-btn:hover { background: rgba(55,37,73,0.06); color: var(--lens); }
   .d-filter-btn.has-filter { color: var(--lens); }
   .d-filter-btn.has-filter::after {
     content: '';
@@ -1110,7 +1125,7 @@ body {
     text-align: left;
     transition: background 0.12s;
   }
-  .d-filter-opt:hover { background: rgba(108,92,231,0.06); }
+  .d-filter-opt:hover { background: rgba(55,37,73,0.06); }
   .d-filter-opt.active { color: var(--lens); font-weight: 700; }
   .d-filter-opt .check-dot {
     width: 14px; height: 14px; border-radius: 50%;
@@ -1124,16 +1139,16 @@ body {
     box-shadow: inset 0 0 0 2px #fff;
   }
   .d-list-col .row-list { overflow-y: visible; }
+  .d-list-col .feed-row { background: transparent; }
   .d-list-col .feed-row.d-selected {
-    box-shadow: inset 3px 0 0 var(--lens);
-    filter: brightness(0.98);
+    background: var(--active-bg);
   }
 
   .d-detail-col {
     flex: 1;
     min-width: 0;
     overflow-y: auto;
-    background: #F9F7FD;
+    background: #fff;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1195,6 +1210,32 @@ body {
     flex-shrink: 0;
   }
 
+  /* Card snapshot at start of a card-origin chat thread */
+  .d-chat-wrap .chat-card-ref {
+    padding: 20px 40px 20px;
+    border-bottom: 1px solid var(--border);
+    background: #fff;
+  }
+  .d-chat-wrap .chat-card-ref .d-card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+    margin: 8px 0 12px;
+  }
+  .d-chat-wrap .chat-card-ref .d-card-body {
+    font-size: 14.5px;
+    color: #444;
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+  .d-chat-wrap .chat-card-ref .d-card-meta {
+    font-size: 12px;
+    color: var(--text-meta);
+    font-weight: 500;
+    margin-top: 10px;
+  }
   /* Chat (desktop) */
   .d-chat-wrap {
     flex: 1;
@@ -1202,7 +1243,7 @@ body {
     min-height: 0;
     display: flex;
     flex-direction: column;
-    background: #F9F7FD;
+    background: #fff;
   }
   .d-chat-wrap .chat-list { padding: 8px 0 8px; }
   .d-chat-wrap .chat-row { background: transparent !important; padding: 14px 40px; }
@@ -1224,13 +1265,13 @@ body {
   }
   .d-chat-wrap .send-btn {
     width: 42px; height: 42px;
-    background: rgba(108,92,231,0.08);
-    border: 1px solid rgba(108,92,231,0.18);
+    background: rgba(55,37,73,0.08);
+    border: 1px solid rgba(55,37,73,0.18);
     box-shadow: none;
   }
   .d-chat-wrap .send-btn svg { fill: var(--lens); }
   .d-chat-wrap .send-btn:hover {
-    background: rgba(108,92,231,0.16);
+    background: rgba(55,37,73,0.16);
     transform: scale(1.04);
   }
 
@@ -1238,66 +1279,89 @@ body {
   .d-chat-history-col {
     width: 260px;
     flex-shrink: 0;
-    border-right: 1px solid rgba(0,0,0,0.06);
+    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    background: #F3F1FA;
+    background: #fff;
   }
   .d-chat-history-header {
-    padding: 12px 12px 8px;
+    height: 52px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     flex-shrink: 0;
   }
+  .d-chat-history-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: -0.3px;
+  }
   .d-new-chat-btn {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    background: rgba(108,92,231,0.08);
-    border: 1px solid rgba(108,92,231,0.18);
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    background: var(--lens-tint);
+    border: none;
     color: var(--lens);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
     transition: background 0.15s;
   }
-  .d-new-chat-btn svg { width: 14px; height: 14px; }
-  .d-new-chat-btn:hover { background: rgba(108,92,231,0.14); }
+  .d-new-chat-btn svg { width: 12px; height: 12px; }
+  .d-new-chat-btn:hover { background: var(--lens-tint-bd); }
   .d-chat-history-list {
     flex: 1;
     overflow-y: auto;
-    padding: 4px 8px 12px;
+    padding: 0;
   }
   .d-chat-history-item {
-    padding: 10px 12px;
-    border-radius: 8px;
-    margin-bottom: 2px;
-    transition: background 0.12s;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    border-left: 3px solid transparent;
     cursor: pointer;
+    transition: background 0.12s;
   }
-  .d-chat-history-item:hover { background: rgba(108,92,231,0.05); }
-  .d-chat-history-item.active { background: rgba(108,92,231,0.10); }
+  .d-chat-history-item:hover { background: #F5F5F8; }
+  .d-chat-history-item.active {
+    background: var(--active-bg);
+  }
+  .d-chat-history-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 3px;
+  }
   .d-chat-history-item-title {
     font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-body);
-    margin-bottom: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-head);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+  }
+  .d-chat-history-item.active .d-chat-history-item-title { color: var(--lens); }
+  .d-chat-history-item-ts {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--text-meta);
+    flex-shrink: 0;
   }
   .d-chat-history-item-preview {
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-meta);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  .d-chat-history-item-ts {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    color: #A8A3BD;
-    margin-top: 4px;
+    line-height: 1.4;
   }
 
   /* Inline card chat (Stories + Saved detail pane) */
@@ -1333,13 +1397,13 @@ body {
   .d-card-chat-input-bar.d-visible { display: flex; }
   .d-card-chat-input-bar .send-btn {
     width: 42px; height: 42px;
-    background: rgba(108,92,231,0.08);
-    border: 1px solid rgba(108,92,231,0.18);
+    background: rgba(55,37,73,0.08);
+    border: 1px solid rgba(55,37,73,0.18);
     box-shadow: none;
   }
   .d-card-chat-input-bar .send-btn svg { fill: var(--lens); }
   .d-card-chat-input-bar .send-btn:hover {
-    background: rgba(108,92,231,0.16);
+    background: rgba(55,37,73,0.16);
     transform: scale(1.04);
   }
 
@@ -1390,7 +1454,7 @@ body {
       <div class="screen-header">
         <span class="screen-title">Stories</span>
         <svg class="squiggle" width="74" height="10" viewBox="0 0 74 10">
-          <path d="M2,7 C20,10 45,4 72,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <path d="M2,7 C20,10 45,4 72,7" stroke="#372549" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
         </svg>
       </div>
       <div class="row-list" id="stories-list"></div>
@@ -1404,7 +1468,7 @@ body {
         </button>
         <span class="screen-title">Chat</span>
         <svg class="squiggle" width="48" height="10" viewBox="0 0 48 10">
-          <path d="M2,7 C14,10 30,4 46,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <path d="M2,7 C14,10 30,4 46,7" stroke="#372549" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
         </svg>
         <button class="m-new-chat-btn" id="m-new-chat-btn" onclick="mobileNewChat()" aria-label="New chat">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1430,7 +1494,7 @@ body {
       <div class="screen-header" style="position: relative;">
         <span class="screen-title">Saved</span>
         <svg class="squiggle" width="50" height="10" viewBox="0 0 50 10">
-          <path d="M2,7 C15,10 32,4 48,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+          <path d="M2,7 C15,10 32,4 48,7" stroke="#372549" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
         </svg>
         <div class="screen-count" id="saved-count"></div>
       </div>
@@ -1481,8 +1545,7 @@ body {
      ========================================================================= -->
 <div class="desktop-frame">
   <div class="browser-frame">
-    <div class="browser-chrome">
-      <div class="browser-dots"><span class="bd red"></span><span class="bd yellow"></span><span class="bd green"></span></div>
+    <div class="app-topbar">
       <label class="d-search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <input type="text" id="d-search-input" placeholder="Search stories" oninput="searchStories(this.value)" />
@@ -1493,7 +1556,7 @@ body {
         <div class="app-company-mark">
           <span class="app-company-name">Atlas SaaS</span>
           <svg class="squiggle app-company-squiggle" width="74" height="10" viewBox="0 0 74 10">
-            <path d="M2,7 C20,10 45,4 72,7" stroke="#6C5CE7" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+            <path d="M2,7 C20,10 45,4 72,7" stroke="#FFFFFF" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
           </svg>
         </div>
         <nav class="app-nav-group">
@@ -1547,8 +1610,9 @@ body {
       <div class="dscr master-detail" id="dscr-chat">
         <div class="d-chat-history-col">
           <div class="d-chat-history-header">
+            <span class="d-chat-history-title">Conversations</span>
             <button class="d-new-chat-btn" onclick="newChatSession()" aria-label="New chat">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 2v8M2 6h8"/></svg>
             </button>
           </div>
           <div class="d-chat-history-list" id="d-chat-history-list"></div>
@@ -1657,7 +1721,7 @@ const insightData = {
 };
 
 // Inline Lens logomark SVG
-const LENS_SVG = '<svg viewBox="65 0 510 524" xmlns="http://www.w3.org/2000/svg"><path fill="#6C5CE7" fill-rule="evenodd" d="M122.8,237.2c-3.9-8.4-.4-18.4,8-22.3,8.4-3.9,18.4-.4,22.3,8,8.8,18.8,43.1,93.4,91.8,195.7,4,8.3.4,18.4-7.9,22.3-8.3,4-18.4.4-22.3-7.9-48.8-102.3-83-177-91.9-195.8h0ZM129,167.1c3.8,8.4,0,18.4-8.3,22.2s-18.4,0-22.2-8.3l-15.9-35.1c-3.8-8.4,0-18.4,8.3-22.2,8.4-3.8,18.4,0,22.2,8.3l15.9,35.1ZM384,178c36.3,25,47.9,69.5,46.4,98.6-4.7,90-60.8,122.1-78.3,138.4-6.8,6.3-17.4,6-23.7-.8-6.3-6.8-6-17.4.8-23.7,14.7-13.8,63.8-39.9,67.7-115.7.9-17.1-4.3-42.1-21.2-60-12.4,28.7-38.6,51.8-78.4,55.6-24.1,2.3-37.7-6-44.4-16.2-6.9-10.6-7.5-25.8-.3-41.5,13.1-28.3,52.6-59.1,97.4-49.8-2.5-15.2-10.3-29.4-23.5-38.5-19.1-13.1-48.5-14.5-88.4,2.4-8.5,3.6-18.4-.4-22-8.9-3.6-8.5.4-18.4,8.9-22,44.8-19,79.9-18.2,105.2-7.5,27.4,11.5,44.4,34.6,50.9,60.9,2.3,9.2,3.2,18.9,2.9,28.5h0ZM346.9,197c-29.2-8-55.3,11.6-63.8,29.9-1.2,2.6-2,5-2.1,7.3,0,.6-.5,1.3,0,1.6,2.5,2.1,6.9,1.9,13.1,1.3,27.7-2.7,45.4-19.6,52.8-40.1h0ZM527.5,106.2c2.7-8.8,12-13.9,20.9-11.2,8.8,2.7,13.9,12,11.2,20.9-59.2,196.1-58.9,195.6-70.5,232.2-2.8,8.8-12.2,13.7-21,10.9-8.8-2.8-13.7-12.2-10.9-21,11.5-36.6,11.2-36.1,70.4-231.9h0Z"/></svg>';
+const LENS_SVG = '<svg viewBox="65 0 510 524" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" fill-rule="evenodd" d="M122.8,237.2c-3.9-8.4-.4-18.4,8-22.3,8.4-3.9,18.4-.4,22.3,8,8.8,18.8,43.1,93.4,91.8,195.7,4,8.3.4,18.4-7.9,22.3-8.3,4-18.4.4-22.3-7.9-48.8-102.3-83-177-91.9-195.8h0ZM129,167.1c3.8,8.4,0,18.4-8.3,22.2s-18.4,0-22.2-8.3l-15.9-35.1c-3.8-8.4,0-18.4,8.3-22.2,8.4-3.8,18.4,0,22.2,8.3l15.9,35.1ZM384,178c36.3,25,47.9,69.5,46.4,98.6-4.7,90-60.8,122.1-78.3,138.4-6.8,6.3-17.4,6-23.7-.8-6.3-6.8-6-17.4.8-23.7,14.7-13.8,63.8-39.9,67.7-115.7.9-17.1-4.3-42.1-21.2-60-12.4,28.7-38.6,51.8-78.4,55.6-24.1,2.3-37.7-6-44.4-16.2-6.9-10.6-7.5-25.8-.3-41.5,13.1-28.3,52.6-59.1,97.4-49.8-2.5-15.2-10.3-29.4-23.5-38.5-19.1-13.1-48.5-14.5-88.4,2.4-8.5,3.6-18.4-.4-22-8.9-3.6-8.5.4-18.4,8.9-22,44.8-19,79.9-18.2,105.2-7.5,27.4,11.5,44.4,34.6,50.9,60.9,2.3,9.2,3.2,18.9,2.9,28.5h0ZM346.9,197c-29.2-8-55.3,11.6-63.8,29.9-1.2,2.6-2,5-2.1,7.3,0,.6-.5,1.3,0,1.6,2.5,2.1,6.9,1.9,13.1,1.3,27.7-2.7,45.4-19.6,52.8-40.1h0ZM527.5,106.2c2.7-8.8,12-13.9,20.9-11.2,8.8,2.7,13.9,12,11.2,20.9-59.2,196.1-58.9,195.6-70.5,232.2-2.8,8.8-12.2,13.7-21,10.9-8.8-2.8-13.7-12.2-10.9-21,11.5-36.6,11.2-36.1,70.4-231.9h0Z"/></svg>';
 
 // =========================================================================
 // STATE
@@ -1884,7 +1948,7 @@ function openCardOverlay(bubble, origIdx, opts) {
     <hr class="m-card-divider" />
     <div class="m-card-chat-msgs" id="d-card-chat-msgs-overlay"></div>`;
   cardChatHistory['overlay'] = [];
-  cardChatContext['overlay'] = { card, catTitle: data.title };
+  cardChatContext['overlay'] = { card, catTitle: data.title, createdAt: card.createdAt };
   cardThreadIds['overlay'] = null;
   const mInput = document.getElementById('m-card-chat-input');
   if (mInput) { mInput.value = ''; mInput.style.height = ''; }
@@ -1968,7 +2032,7 @@ function openDetail(screen, bubble, origIdx, savedIdx) {
     <hr class="d-card-divider" />
     <div class="d-card-chat-msgs" id="d-card-chat-msgs-${screen}"></div>`;
   cardChatHistory[screen] = [];
-  cardChatContext[screen] = { card, catTitle };
+  cardChatContext[screen] = { card, catTitle, createdAt };
   cardThreadIds[screen] = null;
   cardEl.classList.add('d-visible');
   const inputBar = document.getElementById('d-card-chat-input-bar-' + screen);
@@ -1989,7 +2053,7 @@ function renderCardDock(pane) {
           <button class="tray-icon tray-copy" onclick="event.stopPropagation(); copyCardLink()" aria-label="Copy link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
           <button class="tray-icon tray-save" id="tray-save-${pane}" onclick="event.stopPropagation(); saveOrUnsaveFromOverlay()" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v16l-7-4-7 4V5a2 2 0 0 1 2-2z"/></svg></button>
         </div>
-        <button class="action-sphere" onclick="event.stopPropagation(); toggleSphere('${pane}')" aria-label="Actions"></button>
+        <button class="action-sphere" onclick="event.stopPropagation(); toggleSphere('${pane}')" aria-label="Actions">${LENS_SVG}</button>
         <div class="sphere-toast" id="sphere-toast-${pane}"></div>
       </div>
     </div>`;
@@ -2447,9 +2511,11 @@ function renderChatHistory() {
       const active = t.id === currentChatThreadId ? ' active' : '';
       return `
         <div class="d-chat-history-item${active}" onclick="loadChatThread('${t.id}')">
-          <div class="d-chat-history-item-title">${t.title}</div>
+          <div class="d-chat-history-item-top">
+            <span class="d-chat-history-item-title">${t.title}</span>
+            <span class="d-chat-history-item-ts">${t.ts}</span>
+          </div>
           <div class="d-chat-history-item-preview">${preview}</div>
-          <div class="d-chat-history-item-ts">${t.ts}</div>
         </div>`;
     }).join('');
   }
@@ -2512,12 +2578,29 @@ function loadChatThread(id) {
   if (mobile) mobile.innerHTML = '';
   chatHistory = [];
   activeChatSources = [];
+  if (thread.cardRef) {
+    const cardHtml = renderChatCardRef(thread.cardRef);
+    if (desktop) desktop.innerHTML = cardHtml;
+    if (mobile) mobile.innerHTML = cardHtml;
+  }
   thread.messages.forEach(m => {
     chatHistory.push(m);
     appendMessage(m.role === 'assistant' ? 'lens' : 'user', m.content);
   });
   renderChatHistory();
   showMobileThreadView();
+}
+
+function renderChatCardRef(ref) {
+  const srcHtml = renderSourceLinks(ref.card.sources);
+  return `
+    <div class="chat-card-ref">
+      <div class="row-badge">${ref.catTitle}</div>
+      <div class="d-card-title">${ref.card.headline}</div>
+      <div class="d-card-body">${ref.card.body}</div>
+      ${srcHtml ? `<div class="overlay-sources d-card-sources">${srcHtml}</div>` : ''}
+      <div class="d-card-meta">Created &middot; ${ref.createdAt || '—'}</div>
+    </div>`;
 }
 
 function newChatSession() {
@@ -2557,6 +2640,7 @@ function syncCardThread(screen, msg) {
       title: ctx.card.headline,
       ts: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
       messages: [],
+      cardRef: { card: ctx.card, catTitle: ctx.catTitle, createdAt: ctx.createdAt },
     };
     chatThreads.unshift(thread);
     cardThreadIds[screen] = threadId;
