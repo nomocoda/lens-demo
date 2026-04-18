@@ -16,6 +16,7 @@ button { border: none; background: none; font: inherit; color: inherit; outline:
   --lens-deep:     #2A1C38;
   --lens-dark:     #1E132A;
   --ruby:          #B75D69;
+  --emerald:       #1E9E7E;
   --lens-tint:     #EDE9F4;
   --lens-tint-bd:  #CFC8DF;
   --active-bg:     #E2DBEF;
@@ -568,12 +569,6 @@ body {
 
 /* Mobile chat-input-bar pill send (matches desktop card chat) */
 .ask-view .chat-input-bar, .m-card-chat-input-bar { background: transparent; border-top: none; }
-.ask-view .chat-input-bar .send-btn {
-  background: rgba(55,37,73,0.08);
-  border: 1px solid rgba(55,37,73,0.18);
-  box-shadow: none;
-}
-.ask-view .chat-input-bar .send-btn svg { fill: var(--lens); }
 .ask-view .chat-list .chat-row, .m-card-chat-msgs .chat-row { background: transparent !important; }
 .ask-view .chat-list .chat-row::after,
 .m-card-chat-msgs .chat-row::after {
@@ -731,7 +726,7 @@ body {
 .source-link {
   font-size: 11px;
   font-weight: 600;
-  color: var(--ruby);
+  color: var(--emerald);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -775,14 +770,7 @@ body {
   border-top: none;
 }
 .m-card-chat-input-bar .chat-input-wrap { flex: 1; position: relative; display: flex; align-items: center; }
-.m-card-chat-input-bar .send-btn {
-  width: 42px; height: 42px;
-  background: rgba(55,37,73,0.08);
-  border: 1px solid rgba(55,37,73,0.18);
-  box-shadow: none;
-}
-.m-card-chat-input-bar .send-btn svg { fill: var(--lens); }
-.m-card-chat-input-bar .send-btn:hover { background: rgba(55,37,73,0.16); transform: scale(1.04); }
+.m-card-chat-input-bar .send-btn { width: 42px; height: 42px; }
 
 /* =========================================================================
    SPHERE action affordance (used in mobile overlay + desktop detail)
@@ -796,15 +784,15 @@ body {
 .action-sphere {
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: var(--lens-tint);
-  border: 1px solid var(--lens-tint-bd);
-  color: var(--active-border);
+  background: #fff;
+  border: 1.5px solid var(--lens);
+  color: var(--lens);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 2;
-  box-shadow: 0 4px 14px rgba(55,37,73,0.14), 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(55,37,73,0.08);
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
 }
 .action-sphere svg {
@@ -1268,17 +1256,7 @@ body {
     padding: 14px 40px 18px;
     gap: 8px;
   }
-  .d-chat-wrap .send-btn {
-    width: 42px; height: 42px;
-    background: rgba(55,37,73,0.08);
-    border: 1px solid rgba(55,37,73,0.18);
-    box-shadow: none;
-  }
-  .d-chat-wrap .send-btn svg { fill: var(--lens); }
-  .d-chat-wrap .send-btn:hover {
-    background: rgba(55,37,73,0.16);
-    transform: scale(1.04);
-  }
+  .d-chat-wrap .send-btn { width: 42px; height: 42px; }
 
   /* Chat history column (middle col in Chat tab) */
   .d-chat-history-col {
@@ -1400,17 +1378,7 @@ body {
     border-top: none;
   }
   .d-card-chat-input-bar.d-visible { display: flex; }
-  .d-card-chat-input-bar .send-btn {
-    width: 42px; height: 42px;
-    background: rgba(55,37,73,0.08);
-    border: 1px solid rgba(55,37,73,0.18);
-    box-shadow: none;
-  }
-  .d-card-chat-input-bar .send-btn svg { fill: var(--lens); }
-  .d-card-chat-input-bar .send-btn:hover {
-    background: rgba(55,37,73,0.16);
-    transform: scale(1.04);
-  }
+  .d-card-chat-input-bar .send-btn { width: 42px; height: 42px; }
 
   /* Screen count float for Saved */
   .dscr .screen-count { top: 14px; right: 18px; }
