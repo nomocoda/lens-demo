@@ -135,7 +135,7 @@ body {
 /* =========================================================================
    VIEWS
    ========================================================================= */
-.stories-view, .ask-view, .save-view {
+.home-view, .stories-view, .ask-view, .save-view {
   position: absolute;
   inset: 0;
   display: flex;
@@ -143,9 +143,201 @@ body {
   background: var(--screen);
   transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.stories-view.hidden, .ask-view.hidden, .save-view.hidden {
+.home-view.hidden, .stories-view.hidden, .ask-view.hidden, .save-view.hidden {
   opacity: 0; pointer-events: none; transform: scale(0.97);
 }
+
+/* Mobile HOME */
+.m-home-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.m-home-hero {
+  padding: 8px 18px 20px;
+  background: linear-gradient(180deg, #FAF8FD 0%, #FFFFFF 100%);
+  border-bottom: 1px solid var(--sep);
+}
+.m-home-greeting {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--lens);
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  text-wrap: balance;
+  text-align: center;
+}
+.m-home-counter-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--sep);
+  background: #fff;
+}
+.m-home-counter {
+  display: flex;
+  gap: 4px;
+  perspective: 300px;
+}
+.m-home-counter .d-home-counter-digit {
+  position: relative;
+  width: 32px;
+  height: 42px;
+  background: linear-gradient(180deg, #2A1C38 0%, #1E132A 50%, #2A1C38 50.5%, #16101F 100%);
+  color: #F4EBDC;
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 42px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    inset 0 -1px 0 rgba(0,0,0,0.35),
+    0 2px 6px rgba(0,0,0,0.18);
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  transform-origin: 50% 0%;
+  animation: digitFlip 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  backface-visibility: hidden;
+}
+.m-home-counter .d-home-counter-digit:nth-child(2) { animation-delay: 0.22s; }
+.m-home-counter .d-home-counter-digit::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(0,0,0,0.55);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+}
+.m-home-counter-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-meta);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.m-home-chat-bar {
+  position: relative;
+  border: 1px solid rgba(55,37,73,0.16);
+  border-radius: 22px;
+  background: #fff;
+  padding: 14px 14px 54px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.m-home-chat-bar:focus-within {
+  border-color: var(--lens);
+  box-shadow: 0 0 0 3px rgba(55,37,73,0.08);
+}
+.m-home-chat-bar .chat-input-wrap {
+  position: static;
+  width: 100%;
+  display: block;
+  min-height: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.m-home-chat-bar .chat-input {
+  width: 100%;
+  min-height: 60px;
+  padding: 0;
+  line-height: 1.5;
+  resize: none;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+.m-home-chat-bar .chat-input:focus {
+  border: none;
+  box-shadow: none;
+}
+.m-home-chat-bar .mic-btn {
+  position: absolute;
+  right: 54px;
+  bottom: 10px;
+  top: auto;
+  width: 34px;
+  height: 34px;
+  z-index: 2;
+}
+.m-home-chat-bar .send-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 34px;
+  height: 34px;
+  box-shadow: 0 1px 4px rgba(183,93,105,0.28);
+  z-index: 2;
+}
+.m-home-chat-bar .send-btn svg { width: 14px; height: 14px; }
+.m-home-section {
+  padding: 4px 0 10px;
+  border-bottom: 1px solid var(--sep);
+}
+.m-home-section:last-child { border-bottom: none; }
+.m-home-section-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 18px 10px;
+}
+.m-home-section-header .m-home-section-all {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.m-home-section-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--lens);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+.m-home-section-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--lens);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.m-home-section-all svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.m-home-see-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 18px 18px 22px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--lens);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-top: 1px solid var(--sep);
+}
+.m-home-see-all:active { background: rgba(55,37,73,0.04); }
+.m-home-see-all svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Stories header wrapper holds both title and filter chips */
 .stories-view .screen-header { position: relative; }
@@ -486,15 +678,15 @@ body {
 .send-btn {
   width: 42px; height: 42px;
   border-radius: 50%;
-  background: var(--lens);
+  background: var(--ruby);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(55,37,73,0.25);
+  box-shadow: 0 2px 8px rgba(183,93,105,0.35);
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
   flex-shrink: 0;
 }
-.send-btn:hover { background: var(--lens-dark); transform: scale(1.06); }
+.send-btn:hover { background: #9E4D58; transform: scale(1.06); }
 .send-btn svg { width: 16px; height: 16px; fill: #fff; }
 
 /* Empty states */
@@ -1224,6 +1416,160 @@ body {
   .dscr { display: none; flex: 1; min-height: 0; }
   .dscr.d-active { display: flex; }
 
+  /* HOME: hero (greeting+chat / counter) + two-column stories/chats */
+  .dscr.d-home {
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+  }
+  .d-home-hero {
+    flex-shrink: 0;
+    padding: 36px 40px 32px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #FAF8FD 0%, #FFFFFF 100%);
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .d-home-hero-main { min-width: 0; }
+  .d-home-hero-aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .d-home-greeting {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--lens);
+    letter-spacing: -0.3px;
+    margin-bottom: 18px;
+    line-height: 1.25;
+  }
+  .d-home-chat-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .d-home-chat-bar .chat-input-wrap {
+    flex: 1;
+    min-height: 88px;
+    align-items: stretch;
+    border-radius: 14px;
+  }
+  .d-home-chat-bar .chat-input {
+    min-height: 88px;
+    padding: 14px 16px;
+    line-height: 1.5;
+    font-size: 15px;
+    resize: none;
+  }
+  .d-home-chat-bar .mic-btn { align-self: flex-end; margin-bottom: 6px; }
+  .d-home-chat-bar .send-btn { width: 46px; height: 46px; align-self: flex-end; }
+  .d-home-counter {
+    display: flex;
+    gap: 6px;
+    perspective: 400px;
+  }
+  .d-home-counter-digit {
+    position: relative;
+    width: 46px;
+    height: 62px;
+    background: linear-gradient(180deg, #2A1C38 0%, #1E132A 50%, #2A1C38 50.5%, #16101F 100%);
+    color: #F4EBDC;
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 62px;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.10),
+      inset 0 -1px 0 rgba(0,0,0,0.35),
+      0 2px 6px rgba(0,0,0,0.18);
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+    transform-origin: 50% 0%;
+    animation: digitFlip 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    backface-visibility: hidden;
+  }
+  .d-home-counter-digit:nth-child(2) { animation-delay: 0.22s; }
+  @keyframes digitFlip {
+    0%   { transform: rotateX(-90deg); opacity: 0; }
+    55%  { transform: rotateX(10deg); opacity: 1; }
+    100% { transform: rotateX(0deg); opacity: 1; }
+  }
+  .d-home-counter-digit::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 1px;
+    background: rgba(0,0,0,0.55);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+  }
+  .d-home-counter-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-meta);
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .d-home-cols {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .d-home-col {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .d-home-col:last-child { border-right: none; }
+  .d-home-col-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .d-home-col-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-head);
+    letter-spacing: -0.3px;
+  }
+  .d-home-col-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--lens);
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.12s;
+  }
+  .d-home-col-all:hover { background: rgba(55,37,73,0.06); }
+  .d-home-col-all svg { width: 12px; height: 12px; }
+  .d-home-col .row-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .d-home-col .feed-row { padding: 16px 24px; }
+
   /* Stories + Saved: master-detail */
   .dscr.master-detail { flex-direction: row; }
   .d-list-col {
@@ -1349,6 +1695,29 @@ body {
     color: #C0BBD8;
     font-size: 13px;
     font-weight: 500;
+  }
+  .d-empty.d-empty-quote {
+    padding: 40px 60px;
+    gap: 18px;
+  }
+  .d-empty-quote-text {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--lens);
+    text-align: center;
+    max-width: 460px;
+    letter-spacing: -0.2px;
+    text-wrap: balance;
+  }
+  .d-empty-quote-attr {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-meta);
+    letter-spacing: 0.2px;
   }
   .d-card {
     display: none;
@@ -1622,8 +1991,51 @@ body {
 
   <div class="content-area">
 
+    <!-- HOME -->
+    <div class="home-view" id="home-view">
+      <div class="screen-header">
+        <span class="screen-title brand-lens">Lens</span>
+        <svg class="squiggle" width="48" height="7" viewBox="0 0 52 7" preserveAspectRatio="none">
+          <path d="M1.2,5.1 Q26,3.1 50.8,4.4" stroke="#8E79B3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="m-home-scroll">
+        <div class="m-home-hero">
+          <div class="m-home-greeting">I'm ready. How can I help?</div>
+          <div class="m-home-chat-bar">
+            <div class="chat-input-wrap">
+              <textarea class="chat-input" id="m-home-chat-input" rows="3" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHomeMessage(true)}" oninput="autoGrowInput(this)"></textarea>
+              <button class="mic-btn" id="m-home-mic-btn" onclick="toggleMic('m-home-mic-btn','m-home-chat-input')" aria-label="Voice input">
+                <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              </button>
+            </div>
+            <button class="send-btn" onclick="sendHomeMessage(true)" aria-label="Send">
+              <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="m-home-counter-section">
+          <div class="m-home-counter">
+            <span class="d-home-counter-digit" id="m-home-counter-d1">0</span>
+            <span class="d-home-counter-digit" id="m-home-counter-d2">8</span>
+          </div>
+          <div class="m-home-counter-label">Stories read this week</div>
+        </div>
+        <div class="m-home-section">
+          <div class="m-home-section-header">
+            <span class="m-home-section-title">Stories</span>
+          </div>
+          <div class="row-list" id="m-home-stories-list"></div>
+          <button class="m-home-see-all" onclick="switchTab('stories')">
+            See all stories
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- STORIES -->
-    <div class="stories-view" id="stories-view">
+    <div class="stories-view hidden" id="stories-view">
       <div class="screen-header">
         <span class="screen-title brand-lens">Lens</span>
         <svg class="squiggle" width="48" height="10" viewBox="0 0 48 10">
@@ -1730,7 +2142,11 @@ body {
   </div>
 
   <div class="bottom-tab-bar">
-    <button class="bottom-tab active" id="tab-stories" onclick="switchTab('stories')" aria-label="Stories">
+    <button class="bottom-tab active" id="tab-home" onclick="switchTab('home')" aria-label="Home">
+      <svg viewBox="0 0 22 22"><path d="M3 10l8-7 8 7"/><path d="M5 9v10h12V9"/></svg>
+      <span class="bottom-tab-label">Home</span>
+    </button>
+    <button class="bottom-tab" id="tab-stories" onclick="switchTab('stories')" aria-label="Stories">
       <svg viewBox="0 0 22 22"><rect x="3.5" y="3" width="15" height="16" rx="1.4"/><line x1="6.5" y1="7.5" x2="15.5" y2="7.5"/><line x1="6.5" y1="11.5" x2="15.5" y2="11.5"/><line x1="6.5" y1="15" x2="12" y2="15"/></svg>
       <span class="bottom-tab-label">Stories</span>
     </button>
@@ -1753,8 +2169,8 @@ body {
     <div class="app-topbar">
       <div class="d-brand-lens">
         <span class="d-brand-lens-name">Lens</span>
-        <svg class="squiggle d-brand-lens-squiggle" width="42" height="8" viewBox="0 0 48 10">
-          <path d="M2,7 C14,10 30,4 46,7" stroke="#CFC8DF" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <svg class="squiggle d-brand-lens-squiggle" width="48" height="7" viewBox="0 0 52 7" preserveAspectRatio="none">
+          <path d="M1.2,5.1 Q26,3.1 50.8,4.4" stroke="#8E79B3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
       <label class="d-search">
@@ -1768,7 +2184,11 @@ body {
           <span class="app-company-name">Atlas SaaS</span>
         </div>
         <nav class="app-nav-group">
-          <button class="app-navtab active" id="dtab-stories" onclick="switchTab('stories')">
+          <button class="app-navtab active" id="dtab-home" onclick="switchTab('home')">
+            <svg class="navtab-icon" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span>Home</span>
+          </button>
+          <button class="app-navtab" id="dtab-stories" onclick="switchTab('stories')">
             <svg class="navtab-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
             <span>Stories</span>
           </button>
@@ -1789,15 +2209,64 @@ body {
 
       <div class="app-content">
 
+      <!-- HOME: hero (greeting+chat / counter) + two-col Stories/Chats -->
+      <div class="dscr d-home d-active" id="dscr-home">
+        <div class="d-home-hero">
+          <div class="d-home-hero-main">
+            <div class="d-home-greeting">I'm ready. How can I help?</div>
+            <div class="d-home-chat-bar">
+              <div class="chat-input-wrap">
+                <textarea class="chat-input" id="d-home-chat-input" rows="3" placeholder="Ask Lens anything..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHomeMessage()}" oninput="autoGrowInput(this)"></textarea>
+                <button class="mic-btn" id="d-home-mic-btn" onclick="toggleMic('d-home-mic-btn','d-home-chat-input')" aria-label="Voice input">
+                  <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </button>
+              </div>
+              <button class="send-btn" onclick="sendHomeMessage()" aria-label="Send">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="d-home-hero-aside">
+            <div class="d-home-counter">
+              <span class="d-home-counter-digit" id="d-home-counter-d1">0</span>
+              <span class="d-home-counter-digit" id="d-home-counter-d2">8</span>
+            </div>
+            <div class="d-home-counter-label">Stories read this week</div>
+          </div>
+        </div>
+        <div class="d-home-cols">
+          <div class="d-home-col">
+            <div class="d-home-col-header">
+              <span class="d-home-col-title">Stories</span>
+              <button class="d-home-col-all" onclick="switchTab('stories')">
+                View all
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+            <div class="row-list" id="d-home-stories-list"></div>
+          </div>
+          <div class="d-home-col">
+            <div class="d-home-col-header">
+              <span class="d-home-col-title">Chats</span>
+              <button class="d-home-col-all" onclick="switchTab('ask')">
+                View all
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+            <div class="row-list" id="d-home-chats-list"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- STORIES: master-detail -->
-      <div class="dscr master-detail d-active" id="dscr-stories">
+      <div class="dscr master-detail" id="dscr-stories">
         <div class="d-list-col">
           <div class="row-list" id="d-stories-list"></div>
         </div>
         <div class="d-detail-col" id="d-detail-stories">
-          <div class="d-empty" id="d-empty-stories">
-            <svg width="30" height="30" viewBox="0 0 22 22" fill="none" stroke="#C0BBD8" stroke-width="1.5"><circle cx="11" cy="11" r="7.5"/><circle cx="11" cy="11" r="3"/><line x1="11" y1="1" x2="11" y2="3.5"/><line x1="11" y1="18.5" x2="11" y2="21"/><line x1="1" y1="11" x2="3.5" y2="11"/><line x1="18.5" y1="11" x2="21" y2="11"/></svg>
-            <div>Select a story to read</div>
+          <div class="d-empty d-empty-quote" id="d-empty-stories">
+            <blockquote class="d-empty-quote-text">&ldquo;Reading a Lens story is faster than taking three sips of&nbsp;coffee.&rdquo;</blockquote>
+            <div class="d-empty-quote-attr">&mdash; Anonymous</div>
           </div>
           <div class="d-card" id="d-card-stories"></div>
           <div class="d-card-chat-input-bar" id="d-card-chat-input-bar-stories">
@@ -1934,7 +2403,7 @@ const LENS_SVG = '<svg viewBox="65 0 510 524" xmlns="http://www.w3.org/2000/svg"
 // =========================================================================
 // STATE
 // =========================================================================
-let currentView = 'stories';
+let currentView = 'home';
 let currentFilter = 'all';
 let overlayBubble = null;
 let overlayIndex = null;
@@ -1972,20 +2441,25 @@ function switchTab(tab) {
   currentView = tab;
 
   // Mobile tabs
+  document.getElementById('tab-home').classList.toggle('active', tab === 'home');
   document.getElementById('tab-stories').classList.toggle('active', tab === 'stories');
   document.getElementById('tab-ask').classList.toggle('active', tab === 'ask');
   document.getElementById('tab-save').classList.toggle('active', tab === 'save');
+  document.getElementById('home-view').classList.toggle('hidden', tab !== 'home');
   document.getElementById('stories-view').classList.toggle('hidden', tab !== 'stories');
   document.getElementById('ask-view').classList.toggle('hidden', tab !== 'ask');
   document.getElementById('save-view').classList.toggle('hidden', tab !== 'save');
 
   // Desktop tabs
+  document.getElementById('dtab-home').classList.toggle('active', tab === 'home');
   document.getElementById('dtab-stories').classList.toggle('active', tab === 'stories');
   document.getElementById('dtab-ask').classList.toggle('active', tab === 'ask');
   document.getElementById('dtab-save').classList.toggle('active', tab === 'save');
+  document.getElementById('dscr-home').classList.toggle('d-active', tab === 'home');
   document.getElementById('dscr-stories').classList.toggle('d-active', tab === 'stories');
   document.getElementById('dscr-chat').classList.toggle('d-active', tab === 'ask');
   document.getElementById('dscr-save').classList.toggle('d-active', tab === 'save');
+  if (tab === 'home') renderHome();
 
   closeCardOverlay();
   document.querySelectorAll('.m-search-panel').forEach(p => p.classList.add('hidden'));
@@ -1998,6 +2472,24 @@ function switchTab(tab) {
     renderMobileChatHistory();
   }
   closeAllSpheres();
+  scrollActiveTabToTop(tab);
+}
+
+function scrollActiveTabToTop(tab) {
+  const ids = {
+    home: ['home-view', 'dscr-home'],
+    stories: ['stories-view', 'dscr-stories'],
+    ask: ['ask-view', 'dscr-chat'],
+    save: ['save-view', 'dscr-save']
+  }[tab] || [];
+  ids.forEach(id => {
+    const v = document.getElementById(id);
+    if (!v) return;
+    v.scrollTop = 0;
+    v.querySelectorAll('*').forEach(el => {
+      if (el.scrollTop > 0) el.scrollTop = 0;
+    });
+  });
 }
 
 // =========================================================================
@@ -2049,6 +2541,64 @@ function renderCardFeed() {
     desktop.innerHTML = items.map(({ bubble, origIdx, card }) =>
       renderRow(bubble, origIdx, card, { filter: currentFilter, onclick: `openDetail('stories','${bubble}',${origIdx})` })
     ).join('');
+  }
+}
+
+function renderHomeCounter() {
+  const n = Math.min(99, Math.max(0, 8));
+  const d1 = Math.floor(n / 10);
+  const d2 = n % 10;
+  ['d-home-counter-d1','m-home-counter-d1'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = d1; });
+  ['d-home-counter-d2','m-home-counter-d2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = d2; });
+}
+
+function renderHome() {
+  renderHomeCounter();
+  const items = buildFeedData().slice(0, 5);
+  const storiesEl = document.getElementById('d-home-stories-list');
+  if (storiesEl) {
+    storiesEl.innerHTML = items.map(({ bubble, origIdx, card }) =>
+      renderRow(bubble, origIdx, card, { onclick: `switchTab('stories'); setTimeout(()=>openDetail('stories','${bubble}',${origIdx}), 0)` })
+    ).join('');
+  }
+  const chatsEl = document.getElementById('d-home-chats-list');
+  if (chatsEl) {
+    chatsEl.innerHTML = chatThreads.map(t => {
+      const preview = (t.messages.find(m => m.role === 'user')?.content || '').slice(0, 80);
+      return `
+        <div class="d-chat-history-item" onclick="switchTab('ask'); setTimeout(()=>loadChatThread('${t.id}'), 0)">
+          <div class="d-chat-history-item-top">
+            <span class="d-chat-history-item-title">${t.title}</span>
+            <span class="d-chat-history-item-ts">${t.ts}</span>
+          </div>
+          <div class="d-chat-history-item-preview">${preview}</div>
+        </div>`;
+    }).join('');
+  }
+  const mStoriesEl = document.getElementById('m-home-stories-list');
+  if (mStoriesEl) {
+    mStoriesEl.innerHTML = items.slice(0, 3).map(({ bubble, origIdx, card }) =>
+      renderRow(bubble, origIdx, card, { onclick: `switchTab('stories'); setTimeout(()=>openCardOverlay('${bubble}', ${origIdx}), 0)` })
+    ).join('');
+  }
+}
+
+function sendHomeMessage(fromMobile) {
+  const input = document.getElementById(fromMobile ? 'm-home-chat-input' : 'd-home-chat-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  input.style.height = '';
+  switchTab('ask');
+  if (fromMobile) {
+    const target = document.getElementById('chat-input');
+    if (target) target.value = text;
+    sendMessage();
+  } else {
+    const target = document.getElementById('d-chat-input');
+    if (target) target.value = text;
+    sendMessage(true);
   }
 }
 
@@ -2115,7 +2665,7 @@ function applyStoryFilters() {
 function searchStories(v) { applyStoryFilters(); }
 
 function getActiveMobileView() {
-  const views = ['stories-view', 'ask-view', 'save-view'];
+  const views = ['home-view', 'stories-view', 'ask-view', 'save-view'];
   for (const id of views) {
     const el = document.getElementById(id);
     if (el && !el.classList.contains('hidden')) return el;
@@ -3079,6 +3629,7 @@ document.body.addEventListener('touchmove', function(e) {
 renderCardFeed();
 renderSaveFeed();
 renderChatHistory();
+renderHome();
 </script>
 
 </body>
