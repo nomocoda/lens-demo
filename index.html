@@ -1427,17 +1427,12 @@ body {
     padding: 36px 40px 32px;
     border-bottom: 1px solid var(--border);
     background: linear-gradient(180deg, #FAF8FD 0%, #FFFFFF 100%);
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 40px;
-    align-items: center;
+    display: block;
   }
-  .d-home-hero-main { min-width: 0; }
-  .d-home-hero-aside {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+  .d-home-hero-main {
+    max-width: 720px;
+    margin: 0 auto;
+    min-width: 0;
   }
   .d-home-greeting {
     font-family: 'Lora', Georgia, serif;
@@ -1607,6 +1602,34 @@ body {
     overflow-y: auto;
   }
   .d-home-col .feed-row { padding: 16px 24px; }
+  .d-home-col-right {
+    display: flex;
+    flex-direction: column;
+  }
+  .d-home-col-section {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border);
+  }
+  .d-home-col-section .row-list {
+    flex: 0 0 auto;
+    overflow: visible;
+  }
+  .d-home-counter-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 36px 24px;
+    background: linear-gradient(180deg, #FAF8FD 0%, #FFFFFF 100%);
+  }
+  .d-home-counter-block .d-home-counter-label {
+    font-size: 13px;
+    text-align: center;
+  }
 
   /* Stories + Saved: master-detail */
   .dscr.master-detail { flex-direction: row; }
@@ -2264,13 +2287,6 @@ body {
               </button>
             </div>
           </div>
-          <div class="d-home-hero-aside">
-            <div class="d-home-counter">
-              <span class="d-home-counter-digit" id="d-home-counter-d1">0</span>
-              <span class="d-home-counter-digit" id="d-home-counter-d2">8</span>
-            </div>
-            <div class="d-home-counter-label">Stories read this week</div>
-          </div>
         </div>
         <div class="d-home-cols">
           <div class="d-home-col">
@@ -2283,15 +2299,24 @@ body {
             </div>
             <div class="row-list" id="d-home-stories-list"></div>
           </div>
-          <div class="d-home-col">
-            <div class="d-home-col-header">
-              <span class="d-home-col-title">Chats</span>
-              <button class="d-home-col-all" onclick="switchTab('ask')">
-                View all
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </button>
+          <div class="d-home-col d-home-col-right">
+            <div class="d-home-col-section">
+              <div class="d-home-col-header">
+                <span class="d-home-col-title">Chats</span>
+                <button class="d-home-col-all" onclick="switchTab('ask')">
+                  View all
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </button>
+              </div>
+              <div class="row-list" id="d-home-chats-list"></div>
             </div>
-            <div class="row-list" id="d-home-chats-list"></div>
+            <div class="d-home-counter-block">
+              <div class="d-home-counter">
+                <span class="d-home-counter-digit" id="d-home-counter-d1">0</span>
+                <span class="d-home-counter-digit" id="d-home-counter-d2">8</span>
+              </div>
+              <div class="d-home-counter-label">Stories read this week</div>
+            </div>
           </div>
         </div>
       </div>
@@ -2601,7 +2626,7 @@ function renderHome() {
   }
   const chatsEl = document.getElementById('d-home-chats-list');
   if (chatsEl) {
-    chatsEl.innerHTML = chatThreads.map(t => {
+    chatsEl.innerHTML = chatThreads.slice(0, 3).map(t => {
       const preview = (t.messages.find(m => m.role === 'user')?.content || '').slice(0, 80);
       return `
         <div class="d-chat-history-item" onclick="switchTab('ask'); setTimeout(()=>loadChatThread('${t.id}'), 0)">
