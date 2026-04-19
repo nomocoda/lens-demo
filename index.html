@@ -1429,7 +1429,7 @@ body {
     background: linear-gradient(180deg, #FAF8FD 0%, #FFFFFF 100%);
     display: grid;
     grid-template-columns: 3fr 1fr;
-    gap: 32px;
+    gap: 40px;
     align-items: center;
   }
   .d-home-hero-main { min-width: 0; }
@@ -1449,25 +1449,62 @@ body {
     line-height: 1.25;
   }
   .d-home-chat-bar {
-    display: flex;
-    align-items: flex-end;
-    gap: 10px;
+    position: relative;
+    border: 1px solid rgba(55,37,73,0.16);
+    border-radius: 22px;
+    background: #fff;
+    padding: 16px 18px 58px 18px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .d-home-chat-bar:focus-within {
+    border-color: var(--lens);
+    box-shadow: 0 0 0 3px rgba(55,37,73,0.08);
   }
   .d-home-chat-bar .chat-input-wrap {
-    flex: 1;
-    min-height: 88px;
-    align-items: stretch;
-    border-radius: 14px;
+    position: static;
+    width: 100%;
+    display: block;
+    min-height: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
   }
   .d-home-chat-bar .chat-input {
-    min-height: 88px;
-    padding: 14px 16px;
+    width: 100%;
+    min-height: 54px;
+    padding: 0;
     line-height: 1.5;
     font-size: 15px;
     resize: none;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
   }
-  .d-home-chat-bar .mic-btn { align-self: flex-end; margin-bottom: 6px; }
-  .d-home-chat-bar .send-btn { width: 46px; height: 46px; align-self: flex-end; }
+  .d-home-chat-bar .chat-input:focus {
+    border: none;
+    box-shadow: none;
+  }
+  .d-home-chat-bar .mic-btn {
+    position: absolute;
+    right: 58px;
+    bottom: 12px;
+    top: auto;
+    width: 38px;
+    height: 38px;
+    z-index: 2;
+  }
+  .d-home-chat-bar .send-btn {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 38px;
+    height: 38px;
+    box-shadow: 0 1px 4px rgba(183,93,105,0.28);
+    z-index: 2;
+  }
+  .d-home-chat-bar .send-btn svg { width: 15px; height: 15px; }
   .d-home-counter {
     display: flex;
     gap: 6px;
