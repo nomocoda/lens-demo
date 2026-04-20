@@ -154,6 +154,18 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+.m-home-user-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px 4px;
+  background: #fff;
+}
+.m-home-user-chip .avatar { width: 32px; height: 32px; flex-shrink: 0; }
+.m-home-user-chip .user-initial { font-size: 13px; }
+.m-home-user-chip-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.m-home-user-chip-name { font-size: 14px; font-weight: 700; color: var(--lens); letter-spacing: 0.1px; }
+.m-home-user-chip-role { font-size: 11px; font-weight: 500; color: var(--ink-soft); letter-spacing: 0.1px; }
 .m-home-hero {
   padding: 8px 18px 20px;
   background: #fff;
@@ -2067,6 +2079,13 @@ body {
         </svg>
       </div>
       <div class="m-home-scroll">
+        <div class="m-home-user-chip">
+          <div class="avatar user-av"><span class="user-initial">A</span></div>
+          <div class="m-home-user-chip-text">
+            <span class="m-home-user-chip-name">Alex</span>
+            <span class="m-home-user-chip-role">VP of Marketing</span>
+          </div>
+        </div>
         <div class="m-home-hero">
           <div class="m-home-greeting">What should we dig into today?</div>
           <div class="m-home-chat-bar">
