@@ -1349,8 +1349,9 @@ body {
     top: 50%;
     transform: translateY(-50%);
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    gap: 12px;
     padding: 2px 6px 0;
   }
   .d-brand-lens-name {
@@ -1360,6 +1361,29 @@ body {
     letter-spacing: -0.2px;
     color: var(--lens);
     line-height: 1;
+  }
+  .d-brand-lens-divider {
+    width: 1px;
+    height: 22px;
+    background: var(--sep-defined);
+  }
+  .d-brand-lens-user {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+  }
+  .d-brand-lens-user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ruby);
+    letter-spacing: 0.1px;
+  }
+  .d-brand-lens-user-role {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-meta);
+    letter-spacing: 0.1px;
+    white-space: nowrap;
   }
   .d-brand-lens-squiggle { display: none; }
   /* Sidebar rail (persistent left nav) */
@@ -2284,9 +2308,11 @@ body {
     <div class="app-topbar">
       <div class="d-brand-lens">
         <span class="d-brand-lens-name">Lens</span>
-        <svg class="squiggle d-brand-lens-squiggle" width="48" height="7" viewBox="0 0 52 7" preserveAspectRatio="none">
-          <path d="M1.2,5.1 Q26,3.1 50.8,4.4" stroke="#8E79B3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        </svg>
+        <span class="d-brand-lens-divider" aria-hidden="true"></span>
+        <div class="d-brand-lens-user">
+          <span class="d-brand-lens-user-name">Alex</span>
+          <span class="d-brand-lens-user-role">VP of Marketing</span>
+        </div>
       </div>
       <label class="d-search">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -2319,10 +2345,7 @@ body {
         </nav>
         <div class="app-user-chip">
           <div class="avatar user-av"><span class="user-initial">A</span></div>
-          <div class="app-user-chip-text">
-            <span class="chat-sender s-user">Alex</span>
-            <span class="app-user-chip-role">VP of Marketing</span>
-          </div>
+          <span class="chat-sender s-user">Alex</span>
         </div>
       </aside>
 
