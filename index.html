@@ -105,18 +105,30 @@ body {
   position: relative;
 }
 .home-view .screen-header { padding: 14px 20px 20px; }
+.home-view .screen-header .squiggle { display: none; }
+.m-home-header-group {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 16px;
+  width: 100%;
+}
+.m-home-header-brand {
+  justify-self: end;
+  text-align: left;
+}
+.m-home-header-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--sep-defined);
+}
+.m-home-header-user { justify-self: start; }
 .m-home-header-user {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   line-height: 1.2;
-  text-align: right;
-  z-index: 32;
-  max-width: 42%;
+  text-align: left;
 }
 .m-home-header-user-name {
   font-size: 13px;
@@ -1349,10 +1361,7 @@ body {
     color: var(--lens);
     line-height: 1;
   }
-  .d-brand-lens-squiggle {
-    display: block;
-    margin-top: 4px;
-  }
+  .d-brand-lens-squiggle { display: none; }
   /* Sidebar rail (persistent left nav) */
   .app-body {
     flex: 1;
@@ -2091,13 +2100,18 @@ body {
     <!-- HOME -->
     <div class="home-view" id="home-view">
       <div class="screen-header">
-        <span class="screen-title brand-lens">Lens</span>
-        <svg class="squiggle" width="48" height="7" viewBox="0 0 52 7" preserveAspectRatio="none">
-          <path d="M1.2,5.1 Q26,3.1 50.8,4.4" stroke="#8E79B3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        </svg>
-        <div class="m-home-header-user">
-          <span class="m-home-header-user-name">Alex</span>
-          <span class="m-home-header-user-role">VP of Marketing</span>
+        <div class="m-home-header-group">
+          <div class="m-home-header-brand">
+            <span class="screen-title brand-lens">Lens</span>
+            <svg class="squiggle" width="48" height="7" viewBox="0 0 52 7" preserveAspectRatio="none">
+              <path d="M1.2,5.1 Q26,3.1 50.8,4.4" stroke="#8E79B3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="m-home-header-divider" aria-hidden="true"></span>
+          <div class="m-home-header-user">
+            <span class="m-home-header-user-name">Alex</span>
+            <span class="m-home-header-user-role">VP of Marketing</span>
+          </div>
         </div>
       </div>
       <div class="m-home-scroll">
