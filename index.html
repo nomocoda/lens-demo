@@ -1403,8 +1403,10 @@ body {
   }
   .app-user-chip .avatar { width: 28px; height: 28px; }
   .app-user-chip .user-initial { font-size: 12px; }
+  .app-user-chip-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .app-user-chip .chat-sender { font-size: 13px; font-weight: 700; letter-spacing: 0.1px; }
   .app-user-chip .chat-sender.s-user { color: #fff; }
+  .app-user-chip-role { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: 0.1px; }
 
   .app-content {
     flex: 1;
@@ -2245,7 +2247,7 @@ body {
     </div>
     <div class="app-body">
       <aside class="app-sidebar">
-        <!-- DEMO: "Atlas SaaS" workspace + "Travis" user are hardcoded. Launch: pulled from auth provider (Azure AD / Google Workspace / Okta). See DEMO_FIDELITY.md #5, #6, #7 -->
+        <!-- DEMO: "Atlas SaaS" workspace + "Alex" user (VP of Marketing) are hardcoded. Launch: pulled from auth provider (Azure AD / Google Workspace / Okta). See DEMO_FIDELITY.md #5, #6, #7 -->
         <div class="app-company-mark">
           <span class="app-company-name">Atlas SaaS</span>
         </div>
@@ -2268,8 +2270,11 @@ body {
           </button>
         </nav>
         <div class="app-user-chip">
-          <div class="avatar user-av"><span class="user-initial">T</span></div>
-          <span class="chat-sender s-user">Travis</span>
+          <div class="avatar user-av"><span class="user-initial">A</span></div>
+          <div class="app-user-chip-text">
+            <span class="chat-sender s-user">Alex</span>
+            <span class="app-user-chip-role">VP of Marketing</span>
+          </div>
         </div>
       </aside>
 
@@ -3218,11 +3223,11 @@ let chatHistory = [];
 
 function appendMessage(role, text) {
   const isUser = role === 'user';
-  const senderName = isUser ? 'Travis' : 'Lens';
+  const senderName = isUser ? 'Alex' : 'Lens';
   const senderClass = isUser ? 's-user' : 's-lens';
   const rowClass = isUser ? 'user-row' : 'lens-row';
   const avatar = isUser
-    ? `<div class="avatar user-av"><span class="user-initial">T</span></div>`
+    ? `<div class="avatar user-av"><span class="user-initial">A</span></div>`
     : `<div class="avatar lens-av"><span class="user-initial">L</span></div>`;
   let sourcesBlock = '';
   if (!isUser && activeChatSources.length) {
@@ -3360,11 +3365,11 @@ function appendCardMsg(screen, role, text) {
   const container = document.getElementById('d-card-chat-msgs-' + screen);
   if (!container) return;
   const isUser = role === 'user';
-  const senderName = isUser ? 'Travis' : 'Lens';
+  const senderName = isUser ? 'Alex' : 'Lens';
   const senderClass = isUser ? 's-user' : 's-lens';
   const rowClass = isUser ? 'user-row' : 'lens-row';
   const avatar = isUser
-    ? `<div class="avatar user-av"><span class="user-initial">T</span></div>`
+    ? `<div class="avatar user-av"><span class="user-initial">A</span></div>`
     : `<div class="avatar lens-av"><span class="user-initial">L</span></div>`;
   const html = `
     <div class="chat-row ${rowClass}">
