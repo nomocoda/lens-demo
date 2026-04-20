@@ -102,7 +102,37 @@ body {
   padding: 18px 20px 12px;
   text-align: center;
   background: #fff;
+  position: relative;
 }
+.home-view .screen-header { padding: 14px 20px 12px; }
+.m-home-header-user {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: left;
+  z-index: 32;
+  max-width: 42%;
+}
+.m-home-header-user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lens);
+  letter-spacing: 0.1px;
+}
+.m-home-header-user-role {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-meta);
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.m-home-search-btn { right: 14px; }
 .screen-title {
   display: block;
   font-size: 26px;
@@ -154,18 +184,6 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-.m-home-user-chip {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 18px 4px;
-  background: #fff;
-}
-.m-home-user-chip .avatar { width: 32px; height: 32px; flex-shrink: 0; }
-.m-home-user-chip .user-initial { font-size: 13px; }
-.m-home-user-chip-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
-.m-home-user-chip-name { font-size: 14px; font-weight: 700; color: var(--lens); letter-spacing: 0.1px; }
-.m-home-user-chip-role { font-size: 11px; font-weight: 500; color: var(--ink-soft); letter-spacing: 0.1px; }
 .m-home-hero {
   padding: 8px 18px 20px;
   background: #fff;
@@ -2073,19 +2091,23 @@ body {
     <!-- HOME -->
     <div class="home-view" id="home-view">
       <div class="screen-header">
+        <div class="m-home-header-user">
+          <span class="m-home-header-user-name">Alex</span>
+          <span class="m-home-header-user-role">VP of Marketing</span>
+        </div>
         <span class="screen-title brand-lens">Lens</span>
         <svg class="squiggle" width="48" height="7" viewBox="0 0 52 7" preserveAspectRatio="none">
           <path d="M1.2,5.1 Q26,3.1 50.8,4.4" stroke="#8E79B3" stroke-width="1.8" fill="none" stroke-linecap="round"/>
         </svg>
+        <button class="m-search-btn m-home-search-btn" onclick="toggleMobileSearch()" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </button>
+      </div>
+      <div class="m-search-panel hidden">
+        <input type="text" placeholder="Search stories" oninput="onMobileSearchInput(this.value)" />
+        <button onclick="toggleMobileSearch(false)">Cancel</button>
       </div>
       <div class="m-home-scroll">
-        <div class="m-home-user-chip">
-          <div class="avatar user-av"><span class="user-initial">A</span></div>
-          <div class="m-home-user-chip-text">
-            <span class="m-home-user-chip-name">Alex</span>
-            <span class="m-home-user-chip-role">VP of Marketing</span>
-          </div>
-        </div>
         <div class="m-home-hero">
           <div class="m-home-greeting">What should we dig into today?</div>
           <div class="m-home-chat-bar">
