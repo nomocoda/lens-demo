@@ -3683,7 +3683,7 @@ function toggleMic(btnId, inputId) {
 // iOS: prevent page bounce
 // =========================================================================
 document.body.addEventListener('touchmove', function(e) {
-  if (!e.target.closest('.chat-list, .row-list, .filter-chips, .overlay-body, .d-detail-col, .d-list-col')) {
+  if (!e.target.closest('.chat-list, .row-list, .filter-chips, .overlay-body, .d-detail-col, .d-list-col, .m-home-scroll')) {
     e.preventDefault();
   }
 }, { passive: false });
