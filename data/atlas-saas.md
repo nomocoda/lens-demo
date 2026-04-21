@@ -23,57 +23,35 @@
 
 ---
 
-## 2. The VP of Marketing (the Lens user in this demo)
+## 2. Atlas SaaS leadership team
 
-The demo persona is **the VP of Marketing at Atlas SaaS**. No name shown to the user in the demo; internally we'll call her Sophie Zhang. The VP of Marketing is the one Lens is talking to in chat, the one whose perspective shapes which Data Stories surface.
+Atlas is run by a small executive team and two co-founders. Each leader owns a functional domain. Lens describes the company and its leaders; who the current Lens user is, and what falls inside their seat, comes from the role declared in the operating instructions — not from this section.
 
-**Role context:**
-- Owns the full marketing function: demand gen, content, product marketing, brand, growth.
-- Reports to the CEO. Works closely with Kevin O'Malley (VP Sales), Marco Reyes (Head of CS), Jess Wilder (Head of Product), and Megan Park (CFO).
-- Manages a team of 18: demand gen, content, product marketing, events, ops.
-- Primary systems: HubSpot, Salesforce, Google Analytics, paid channel dashboards (LinkedIn Ads, Google Ads), SEMrush.
+**Sophie Zhang — VP of Marketing.** Owns demand gen, content, product marketing, brand, and growth. Reports to the CEO. Manages a team of 18. Primary systems: HubSpot, Salesforce (marketing views), Google Analytics, LinkedIn Ads, Google Ads, SEMrush. The marketing function is accountable for pipeline contribution (expected to source 30%+), CAC efficiency (blended CAC $18.2K, up from $14.8K), MQL-to-SQL conversion, content-influenced pipeline, competitive positioning against FlowStack, and GTM execution for Atlas Assist.
 
-**What this VP of Marketing cares about, in priority order:**
-1. Pipeline contribution vs. the quarterly target. Marketing is expected to source 30%+ of pipeline; the board tracks the number.
-2. CAC efficiency. Blended CAC is up from $14.8K to $18.2K. Paid channels are driving most of the increase.
-3. MQL-to-SQL conversion. Lead quality vs. lead volume is the ongoing tension with the paid budget.
-4. GTM execution for Atlas Assist (the AI copilot feature, alpha May 1, public beta June 15). This launch is the board's enterprise wedge.
-5. Content-influenced pipeline. The inbound motion is working, but attribution is concentrated in one asset.
-6. Competitive positioning against FlowStack, whose Copilot feature launched 3 weeks ago.
-7. SaaStr Annual (June 10-12). Atlas has a booth, the CEO is on a panel; Atlas Assist needs to be demo-ready.
+**Kevin O'Malley — VP of Sales.** Owns pipeline conversion and the revenue number. Leading the Ridgeline Health deal personally. Primary systems: Salesforce (opportunity and forecast views), Gong, Outreach. The revenue function is accountable for pipeline coverage, deal velocity, quota attainment, expansion, and rep-level performance. Source of truth for weighted pipeline dollar figures, coverage ratios, quota attainment, and the revenue forecast.
 
-**What the VP of Marketing doesn't want from Lens:**
-- Dashboard regurgitation. Sophie already has HubSpot, Salesforce, and the channel dashboards.
-- Action items dressed up as questions. Sophie came to Lens for lift, not to be quizzed.
-- Pretending to know things it doesn't. One honest "I don't have access to that" beats ten plausible fabrications.
+**Jess Wilder — Head of Product.** Owns the Atlas Assist roadmap and the platform rewrite timeline. Primary systems: Linear, Mixpanel, Notion. The product function is accountable for sprint velocity, defect rates, feature adoption, roadmap progress, deployment frequency, and incident signals. Source of truth for engineering capacity and release timing.
 
-**Domain weights for card generation:**
-- Marketing: 45% (primary)
-- Revenue: 25% (secondary)
-- Customers: 20% (secondary)
-- Product: 10% (peripheral — GTM and launch signals only)
+**Megan Park — CFO.** Approves function-level budgets. Tracks CAC payback and pipeline coverage for the board. Primary systems: NetSuite, ProfitWell, board reporting tooling. Source of truth for consolidated financial figures, ARR, burn, runway, and any figure shared with investors.
 
-**Intelligence altitude:**
-- Department level (marketing team performance, channel performance): always surfaced.
-- Company level (marketing contribution to business metrics): surfaced.
-- Individual team-member level: never surfaced. Lens does not evaluate people.
+**Marco Reyes — Head of Customer Success.** Source of NPS data, reference account availability, and case study pipeline.
+
+**Diana Okafor — Head of Support.** Top-ticket categories are content and in-app education signals. CSAT is tracked by Support but is not connected to Lens's data systems. Lens has no visibility into CSAT figures.
+
+**Founders:**
+- **CEO / Co-founder:** leading Series C prep. All VPs report to the CEO.
+- **CTO / Co-founder (Daniel Choi):** leading the platform rewrite and Atlas Assist engineering alongside Jess.
+
+**VP Engineering:** *Position open.* Rachel Navarro left three weeks ago. Interim leads Clara Mendes (backend) and Amir Haddad (frontend) are covering. Cross-functional impact: platform rewrite timing touches the GTM calendar, Atlas Assist launch, and release cadence.
+
+**AE (mid-market): Priya Sharma.** Day-to-day owner of the Ridgeline Health deal.
 
 ---
 
-## 3. Org structure (key people Lens references)
+## 3. Marketing team composition
 
-- **VP Marketing:** the user (Sophie Zhang). Owns demand gen, content, brand, product marketing, events, ops.
-- **CEO / Co-founder:** leading Series C prep. Sophie reports to the CEO.
-- **CFO:** Megan Park. Approves marketing budget, tracks CAC payback and pipeline coverage for the board.
-- **CTO / Co-founder:** Daniel Choi. Leading the platform rewrite and Atlas Assist engineering.
-- **VP Engineering:** *Position open.* Rachel Navarro left 3 weeks ago. Interim leads Clara Mendes (backend) and Amir Haddad (frontend) are covering. Relevant to marketing because GTM calendar depends on the rewrite shipping on time.
-- **VP Sales:** Kevin O'Malley. Owns pipeline conversion. Leading the Ridgeline Health deal personally. Sophie's key cross-functional partner.
-- **Head of Product:** Jess Wilder. Owns Atlas Assist roadmap. Sophie's partner for product marketing and launch briefs.
-- **Head of Customer Success:** Marco Reyes. Source of NPS data, reference account availability, and case study pipeline.
-- **Head of Support:** Diana Okafor. CSAT and top-ticket categories are content and in-app education signals.
-- **AE (mid-market):** Priya Sharma. Day-to-day owner of the Ridgeline Health deal; key to Sophie's healthcare reference plan.
-
-**On Sophie's team:**
+Sophie's marketing org reports (the 18-person marketing function):
 - **Director of Content:** runs the blog, SEO, long-form assets.
 - **Director of Demand Gen:** owns paid channels, email nurture, campaign execution.
 - **Head of Product Marketing:** owns launch briefs, sales enablement, competitive positioning.
@@ -168,9 +146,9 @@ The demo persona is **the VP of Marketing at Atlas SaaS**. No name shown to the 
 
 ---
 
-## 5. Revenue (Revenue domain material, Marketing lens)
+## 5. Revenue (Revenue domain material)
 
-Revenue signals visible to the VP of Marketing. Raw P&L lives with Megan; Sophie sees the pipeline and conversion slices and the unit economics that feed her budget decisions.
+Revenue-domain signals for Atlas SaaS. Raw P&L consolidation lives with Megan (Finance). Pipeline, conversion slices, and unit economics below are the revenue-domain figures Atlas systems expose. Which of these figures a given role can surface is governed by the role's scope in the operating instructions — not declared here.
 
 ### Pipeline health
 
