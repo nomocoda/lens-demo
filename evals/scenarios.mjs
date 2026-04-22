@@ -516,4 +516,246 @@ export const SCENARIOS = [
     failCriteria:
       'The card surfaces workforce/hiring state (role open, headcount, tenure, capacity, ramp) as the anchor subject or as a causal explanation in the connect sentence. Lens treats the operator as the object of the story instead of the outcome.',
   },
+
+  // ==========================================================================
+  // Track 5: Revenue Leader Archetype Depth (RL)
+  //
+  // The Revenue Leader archetype (locked 2026-04-21) has three goal clusters:
+  //   1. Quarter Attainment and Forecast Reliability — hit the number, commit
+  //      the number accurately, defend the commit in the forecast call, no
+  //      deals slipping between forecast and close, CRM commit-field hygiene.
+  //   2. Pipeline Coverage and Health — coverage ratio (3x is the line),
+  //      deal aging, single-threading, source concentration, stage compression.
+  //   3. Win Rate and Competitive Position — win rate by segment/competitor/
+  //      deal size, loss patterns, discount discipline that protects ASP.
+  //
+  // Role titles: VP of Sales, Sales Director, Head of Sales, Regional VP,
+  // CRO (in smaller orgs where CRO is hands-on).
+  //
+  // These scenarios verify the live card generator does not collapse RL to
+  // generic "pipeline went up" dashboard-speak, stays in RL's three anchors
+  // when the signal targets each cluster, and holds the outcomes-not-operators
+  // boundary when the signal carries an open-AE-seat cut.
+  // ==========================================================================
+  {
+    id: 'RL-01',
+    name: 'Goal Cluster Breadth',
+    track: 'Revenue Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Revenue',
+        bubble: 'revenue',
+        userMessage:
+          'Generate 5 Data Stories for the VP of Revenue across the current company state. The reader is an executive leader whose concerns span quarter attainment and forecast reliability, pipeline coverage and health, and win rate and competitive position. Do not cluster all cards into one of those concerns.',
+      },
+    ],
+    passCriteria:
+      'The 5 cards distribute across all 3 Revenue Leader goal clusters (Quarter Attainment and Forecast Reliability; Pipeline Coverage and Health; Win Rate and Competitive Position). No cluster holds more than 3 of the 5 cards. Clear visible range of concern across the three anchors a Revenue Leader actually watches.',
+    failCriteria:
+      'All or nearly all cards index a single cluster (typically pipeline coverage or pipeline dollar math). Or fewer than 2 clusters are represented. The card set would leave a Revenue Leader feeling Lens only understands one axis of their role.',
+  },
+  {
+    id: 'RL-02',
+    name: 'Forecast Reliability Anchor',
+    track: 'Revenue Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Revenue',
+        bubble: 'revenue',
+        userMessage:
+          'Generate 2 Data Stories about this signal for the VP of Revenue: deals in the current-quarter commit category have been moving between stages late in the quarter, and a meaningful share of committed dollar value is concentrated in fewer than a handful of deals. Anchor in what a Revenue Leader would watch about forecast reliability and quarter attainment.',
+      },
+    ],
+    passCriteria:
+      'Both cards stay in the Quarter Attainment and Forecast Reliability cluster. They anchor in commit-deal movement, slip patterns between forecast call and close, deal concentration in the commit list, CRM commit-field hygiene, or the shape of quarter-end dependency. They do NOT pivot to pipeline coverage ratios for NEXT quarter or to win rate patterns — those are the other two Revenue Leader clusters.',
+    failCriteria:
+      'Cards re-anchor in coverage ratios, win rate, competitive displacement, or top-of-funnel pipeline volume as the headline subject. Or cards ignore the forecast-reliability theme and produce generic ARR/pipeline total cards.',
+  },
+  {
+    id: 'RL-03',
+    name: 'Pipeline Health Anchor',
+    track: 'Revenue Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Revenue',
+        bubble: 'revenue',
+        userMessage:
+          'Generate 2 Data Stories for the VP of Revenue about pipeline health for next quarter based on the current company state. Anchor in the engine feeding the pipe, not in what closes this quarter.',
+      },
+    ],
+    passCriteria:
+      'Both cards anchor in Pipeline Coverage and Health framing a Revenue Leader owns: coverage ratio against next-quarter target, deal aging and stage compression, single-threading concentration, source concentration across the pipe, segment mix, or velocity patterns in the open pipe. The framing is about the health of the engine, not about closing this quarter and not about win rate on deals that have already entered the funnel.',
+    failCriteria:
+      'Cards pivot to forecast reliability (commit-deal slippage, quarter-end dependency) or win rate / competitive position framing. Or cards produce generic pipeline dollar totals with no health dimension (aging, threading, concentration, velocity).',
+  },
+  {
+    id: 'RL-04',
+    name: 'Win Rate Anchor',
+    track: 'Revenue Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Revenue',
+        bubble: 'revenue',
+        userMessage:
+          'Generate 2 Data Stories for the VP of Revenue about win rate and competitive position based on the current company state. Anchor in how deals are being won or lost, not in how many deals are entering the pipe.',
+      },
+    ],
+    passCriteria:
+      'Both cards anchor in Win Rate and Competitive Position framing: win rate by segment/competitor/deal size, loss patterns that signal positioning or execution, competitor displacement or losses, or discount discipline that protects ASP. The framing is about deal outcomes once a deal has entered the funnel, not about top-of-funnel volume and not about forecast commit hygiene.',
+    failCriteria:
+      'Cards pivot to pipeline coverage / top-of-funnel volume (Pipeline Health cluster) or forecast commit slippage (Forecast Reliability cluster). Or cards produce generic close-rate figures without segment, competitor, deal-size, or discount dimension.',
+  },
+  {
+    id: 'RL-05',
+    name: 'Outcomes Not Operators Boundary',
+    track: 'Revenue Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Revenue',
+        bubble: 'revenue',
+        userMessage:
+          'Generate 1 Data Story about this signal for the VP of Revenue: one of the enterprise-segment AE seats has been open for four weeks and enterprise deal cycle time over the same period runs longer than the segment\'s six-month median.',
+      },
+    ],
+    passCriteria:
+      'The card anchors in the OUTCOME signal (enterprise deal cycle time at its current level versus the six-month median, stage compression or stall patterns, or a related downstream deal-motion metric) without surfacing the workforce cut — no mention of the seat being open, the open AE, headcount, hiring, capacity, or team size as the anchor or connect. Or: a one-sentence decline noting the workforce angle sits outside the Lens lens, with a redirect to an adjacent outcome signal. Either shape passes.',
+    failCriteria:
+      'The card surfaces workforce/hiring state (open AE seat, vacancy, headcount, capacity, ramp, "with the seat open," "while the search runs") as the anchor subject or as a causal explanation in the connect sentence. Lens treats the operator as the object of the story instead of the outcome.',
+  },
+
+  // ==========================================================================
+  // Track 6: Customer Leader Archetype Depth (CL)
+  //
+  // The Customer Leader archetype (locked 2026-04-21) has three goal clusters:
+  //   1. Renewal Forecast Reliability and Retention Variance — NRR/GRR the
+  //      board sees, at-risk ARR dollar-volume and its movement within the
+  //      quarter, late-stage renewal status changes weighted by ARR-band
+  //      concentration, segment-level retention variance against segment share
+  //      of total ARR, renewal cycle-time against trailing-quarter baseline.
+  //   2. Expansion Revenue Compounding NRR — the case that CS is a revenue
+  //      engine. Expansion ARR as % of new ARR against stage-benchmark ranges,
+  //      multi-product adoption breadth driving NRR bands, CSQL handoff
+  //      economics (creation volume, Sales acceptance, conversion), usage-limit
+  //      proximity against historical upgrade-conversion, ARPA trend separated
+  //      from contraction, license-utilization distributions mapped to expansion.
+  //   3. Portfolio-Level Retention Risk Surfacing Ahead of Churn Events —
+  //      coverage-tier retention divergence weighted by tier share of ARR,
+  //      top-ARR concentration against early-warning-signal coverage, cohort
+  //      retention by vintage/vertical/channel, health-distribution calibration
+  //      against realized renewal, value-realization evidence, onboarding TTFV
+  //      compounding into cohort retention.
+  //
+  // Role titles: VP of Customer Success, CCO, Head of CS, Director of CS (at
+  // companies where the Director is the senior CS executive).
+  //
+  // These scenarios verify the live card generator does not collapse CL to
+  // generic "churn went up" dashboard-speak, stays in CL's three anchors when
+  // the signal targets each cluster, and holds the outcomes-not-operators
+  // boundary when the signal carries a CSM-turnover or open-seat cut.
+  // ==========================================================================
+  {
+    id: 'CL-01',
+    name: 'Goal Cluster Breadth',
+    track: 'Customer Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Customer Success',
+        bubble: 'customers',
+        userMessage:
+          'Generate 5 Data Stories for the VP of Customer Success across the current company state. The reader is an executive leader whose concerns span renewal forecast reliability and retention variance, expansion revenue compounding NRR, and portfolio-level retention risk surfacing ahead of churn events. Do not cluster all cards into one of those concerns.',
+      },
+    ],
+    passCriteria:
+      'The 5 cards distribute across all 3 Customer Leader goal clusters (Renewal Forecast Reliability and Retention Variance; Expansion Revenue Compounding NRR; Portfolio-Level Retention Risk Surfacing Ahead of Churn Events). No cluster holds more than 3 of the 5 cards. Clear visible range of concern across the three anchors a Customer Leader actually watches.',
+    failCriteria:
+      'All or nearly all cards index a single cluster (typically top-line retention/churn math). Or fewer than 2 clusters are represented. The card set would leave a Customer Leader feeling Lens only understands one axis of their role.',
+  },
+  {
+    id: 'CL-02',
+    name: 'Renewal Forecast Reliability Anchor',
+    track: 'Customer Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Customer Success',
+        bubble: 'customers',
+        userMessage:
+          'Generate 2 Data Stories about this signal for the VP of Customer Success: late-stage renewal status on several Q2 renewals has moved between forecast categories in the past two weeks and a handful of those renewals carry disproportionate ARR weight. Anchor in what a Customer Leader would watch about renewal forecast reliability and retention variance.',
+      },
+    ],
+    passCriteria:
+      'Both cards stay in the Renewal Forecast Reliability and Retention Variance cluster. They anchor in at-risk ARR dollar-volume movement, late-stage renewal status changes weighted by ARR-band concentration, segment-level retention variance against segment share of ARR, or renewal cycle-time against trailing baseline. They do NOT pivot to expansion revenue, NRR composition, or pure portfolio-risk cohort analysis — those are the other two Customer Leader clusters.',
+    failCriteria:
+      'Cards re-anchor in expansion ARR, multi-product adoption, CSQL economics, or cohort-level portfolio risk as the headline subject. Or cards ignore the forecast-reliability theme and produce generic churn-rate cards with no ARR-weighting dimension.',
+  },
+  {
+    id: 'CL-03',
+    name: 'Expansion Revenue Anchor',
+    track: 'Customer Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Customer Success',
+        bubble: 'customers',
+        userMessage:
+          'Generate 2 Data Stories for the VP of Customer Success about expansion revenue and NRR composition based on the current company state. Anchor in the case that CS is a revenue engine, not a cost center.',
+      },
+    ],
+    passCriteria:
+      'Both cards anchor in Expansion Revenue Compounding NRR framing: expansion ARR as % of new ARR, multi-product adoption breadth driving NRR bands, CSQL handoff economics (creation, Sales acceptance, conversion), usage-limit proximity against historical upgrade conversion, ARPA trend separated from contraction, or license-utilization distributions mapped to expansion conversion. The framing is about the compounding-growth engine, not about defending renewal commits and not about portfolio-level cohort risk surfacing.',
+    failCriteria:
+      'Cards pivot to renewal forecast reliability (at-risk ARR, late-stage status changes) or cohort-level portfolio risk (coverage-tier divergence, onboarding TTFV). Or cards produce generic customer activity cards that never engage with expansion as a revenue-engine narrative.',
+  },
+  {
+    id: 'CL-04',
+    name: 'Portfolio Retention Risk Anchor',
+    track: 'Customer Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Customer Success',
+        bubble: 'customers',
+        userMessage:
+          'Generate 2 Data Stories for the VP of Customer Success about portfolio-level retention risk patterns surfacing ahead of churn events, based on the current company state. Anchor in structural patterns across the book, not in individual account risk or this quarter\'s renewal commits.',
+      },
+    ],
+    passCriteria:
+      'Both cards anchor in Portfolio-Level Retention Risk framing: coverage-tier retention divergence weighted by tier share of ARR, top-ARR concentration against early-warning signal coverage, cohort retention by vintage/vertical/channel, health-distribution calibration against realized renewal, value-realization evidence against retention curves, or onboarding TTFV compounding into cohort retention multiple quarters later. The framing is about structural portfolio patterns only this seat can see across the whole book.',
+    failCriteria:
+      'Cards pivot to renewal forecast reliability (at-risk ARR dollar-volume this quarter, late-stage status changes) or expansion revenue framing (expansion ARR %, multi-product adoption). Or cards produce individual account-risk cards rather than portfolio-level pattern cards.',
+  },
+  {
+    id: 'CL-05',
+    name: 'Outcomes Not Operators Boundary',
+    track: 'Customer Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        role: 'VP Customer Success',
+        bubble: 'customers',
+        userMessage:
+          'Generate 1 Data Story about this signal for the VP of Customer Success: the CSM who owned the largest renewal on the Q2 list left the company three weeks ago and that renewal\'s forecast-commit status has moved from committed to at-risk over the same period.',
+      },
+    ],
+    passCriteria:
+      'The card anchors in the OUTCOME signal (at-risk ARR dollar-volume in the Q2 renewal list, late-stage renewal status changes weighted by ARR concentration, or a related downstream renewal-health metric) without surfacing the workforce cut — no mention of the CSM leaving, CSM turnover, headcount, hiring, capacity, tenure, or team composition as the anchor or connect. Or: a one-sentence decline noting the workforce angle sits outside the Lens lens, with a redirect to an adjacent outcome signal. Either shape passes.',
+    failCriteria:
+      'The card surfaces workforce/turnover state (the CSM leaving, CSM attrition, headcount, capacity, ramp, "since the CSM left," "with the CSM gone," "while the search runs") as the anchor subject or as a causal explanation in the connect sentence. Lens treats the operator as the object of the story instead of the outcome.',
+  },
 ];
