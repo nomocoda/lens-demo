@@ -428,4 +428,92 @@ export const SCENARIOS = [
     failCriteria:
       'Both archetypes receive substantively the same response. Archetype evaporates once conversation starts. Generic framing that would serve any leader.',
   },
+
+  // ==========================================================================
+  // Track 4: Marketing Leader Archetype Depth (ML)
+  //
+  // The Marketing Leader archetype (locked 2026-04-21) has four goal clusters:
+  //   1. Measurable Growth and ROI
+  //   2. Brand and Value Proposition
+  //   3. Alignment and Collaboration
+  //   4. Customer Centricity
+  //
+  // Audit of the current marketing seed cards showed heavy over-indexing on
+  // cluster 1, partial on cluster 2, zero on clusters 3 and 4. These
+  // scenarios verify the live card generator and chat model do not repeat
+  // that drift, and that the 2026-04-21 "outcomes not operators" boundary
+  // holds when the signal has a workforce cut available.
+  // ==========================================================================
+  {
+    id: 'ML-01',
+    name: 'Goal Cluster Breadth',
+    track: 'Marketing Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        bubble: 'marketing',
+        userMessage:
+          'Generate 5 Data Stories for the VP of Marketing across the current company state. The reader is an executive leader whose concerns span measurable growth and ROI, brand and value proposition, alignment with revenue and product teams, and customer centricity. Do not cluster all cards into one of those concerns.',
+      },
+    ],
+    passCriteria:
+      'The 5 cards distribute across at least 3 of the 4 Marketing Leader goal clusters (Measurable Growth and ROI; Brand and Value Proposition; Alignment and Collaboration with revenue/product/CS; Customer Centricity including ICP fit and customer understanding). No cluster holds more than 3 of the 5 cards. Clear visible range of concern.',
+    failCriteria:
+      'All or nearly all cards index a single cluster (typically Measurable Growth / CAC / MQL / pipeline sourcing). Or fewer than 3 clusters are represented. The card set would leave a Marketing Leader feeling Lens only understands one axis of their role.',
+  },
+  {
+    id: 'ML-02',
+    name: 'Alignment Cluster Anchor',
+    track: 'Marketing Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        bubble: 'marketing',
+        userMessage:
+          'Generate 2 Data Stories about this signal for the VP of Marketing: the handoff between marketing-qualified leads and sales-accepted leads has shifted this quarter. Anchor in what a Marketing Leader would watch about cross-team alignment, not in pipeline dollar math.',
+      },
+    ],
+    passCriteria:
+      'Both cards stay in the Alignment and Collaboration cluster. They anchor in handoff quality, acceptance timing, shared-definition signals, or mid-funnel dynamics that marketing and revenue jointly own. They do NOT pivot to ARR exposure, pipeline coverage ratios, or quota math — those are Revenue Leader framings.',
+    failCriteria:
+      'Cards re-anchor in pipeline dollars, coverage ratios, ARR, or revenue attribution as the headline subject. Or cards ignore the alignment theme and produce generic MQL/SQL volume cards.',
+  },
+  {
+    id: 'ML-03',
+    name: 'Customer Centricity Anchor',
+    track: 'Marketing Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        bubble: 'marketing',
+        userMessage:
+          'Generate 2 Data Stories for the VP of Marketing about ICP fit and customer understanding based on the current company state.',
+      },
+    ],
+    passCriteria:
+      'Both cards anchor in customer-centricity framing a Marketing Leader owns: ICP pattern shifts, segment fit signals, customer-story momentum, advocacy/reference pool health, or customer-research inputs that shape messaging. The framing is about understanding the customer, not about retention economics or expansion dollars.',
+    failCriteria:
+      'Cards pivot to NRR, churn dollars, expansion pipeline, or account-level retention math (those are Revenue / Customer Leader framings). Or cards produce generic marketing activity cards that never engage with customer fit or understanding.',
+  },
+  {
+    id: 'ML-04',
+    name: 'Outcomes Not Operators Boundary',
+    track: 'Marketing Leader Archetype',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        bubble: 'marketing',
+        userMessage:
+          'Generate 1 Data Story about this signal for the VP of Marketing: the Content Marketing Manager role has been open for three weeks and content output has held flat over the same period.',
+      },
+    ],
+    passCriteria:
+      'The card anchors in the OUTCOME signal (content output holding flat, content-attributed pipeline pace, asset concentration, or a related downstream metric) without surfacing the workforce cut — no mention of the role being open, headcount, hiring, tenure, or team capacity as the anchor or connect. Or: a one-sentence decline noting the workforce angle sits outside the Lens lens, with a redirect to an adjacent outcome signal. Either shape passes.',
+    failCriteria:
+      'The card surfaces workforce/hiring state (role open, headcount, tenure, capacity, ramp) as the anchor subject or as a causal explanation in the connect sentence. Lens treats the operator as the object of the story instead of the outcome.',
+  },
 ];

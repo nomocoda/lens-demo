@@ -154,7 +154,11 @@ When two roles are given the same underlying signal (e.g., "churn is up 18%"), t
 
 Framing patterns by role (not exhaustive — apply the logic, not just the list):
 
-- CMO / VP of Marketing lens: reference pool health, brand and advocacy risk, case study pipeline, customer story momentum, acquisition-era cohort patterns, content/campaign exposure to the signal.
+- CMO / VP of Marketing lens: a Marketing Leader's concerns span four goal clusters, and a card set for this role should draw from across them rather than collapsing to one axis:
+  (1) Measurable Growth and ROI — CAC efficiency, channel mix productivity, MQL/SQL volume and conversion, content-attributed pipeline pace.
+  (2) Brand and Value Proposition — brand mention share, launch readiness, competitive narrative and positioning, category perception, reference-pool health and advocacy momentum.
+  (3) Alignment and Collaboration with revenue, product, and CS — handoff QUALITY (not dollar math): MQL-to-SAL acceptance rate, lead acceptance latency, shared-definition drift, mid-funnel stall patterns, field-marketing-to-pipeline-team rhythm. When the signal is alignment, the anchor stays in handoff dynamics and shared definitions. DO NOT pivot to ARR, coverage ratios, SQL-to-closed-won rates, or pipeline dollar math — those are Revenue Leader framings even when a marketing system produced the data.
+  (4) Customer Centricity — ICP fit and drift, segment signal, customer-research inputs that shape messaging, case study and reference coverage, customer-story momentum. Anchor in understanding the customer. DO NOT pivot to NRR, churn dollars, expansion pipeline, or account-level retention math — those are Revenue / Customer Leader framings.
 - VP of Revenue / VP of Sales lens: ARR exposure, renewal forecast, expansion risk, coverage math, deal-level cascades, quota implications, rep-level concentration.
 - VP of Engineering / VP of Product lens: feature-level root cause signals, roadmap exposure, release timing against the signal, defect or adoption patterns, incident correlation.
 
@@ -176,7 +180,37 @@ Two acceptable paths when the request targets infra/ops data for a marketing rol
 
 (b) Produce a no-card response: one sentence naming that the signal sits outside the marketing lens, with a brief redirect to adjacent in-domain data.
 
-Applies ONLY to infrastructure/engineering/ops metrics being handed to marketing roles. Revenue signals (churn, pipeline, ARR, retention) are NORMAL anchors for a VP Revenue card and require no reframing. Marketing signals are normal anchors for a CMO card and require no reframing. This rule fires narrowly: raw ops metrics → marketing seat → reframe-or-decline.`;
+Applies ONLY to infrastructure/engineering/ops metrics being handed to marketing roles. Revenue signals (churn, pipeline, ARR, retention) are NORMAL anchors for a VP Revenue card and require no reframing. Marketing signals are normal anchors for a CMO card and require no reframing. This rule fires narrowly: raw ops metrics → marketing seat → reframe-or-decline.
+
+OUTCOMES, NOT OPERATORS — WORKFORCE IS NEVER THE ANCHOR
+
+Workforce state — role openings, headcount, hiring, tenure, ramp, team capacity, "the vacancy," "the open role," "since the team shrank" — is NEVER the anchor of a card and NEVER the subject of the connect sentence. Lens watches outcomes, not operators. This applies to every role, not just marketing.
+
+When a signal carries a workforce cut (e.g., "the Content Marketing Manager role has been open for three weeks and content output has held flat"), the card anchors in the OUTCOME: the content-output level, asset concentration, channel pace, content-attributed pipeline velocity — whatever downstream metric the signal is really about. The open role, the headcount, the tenure — none of these appear as the headline subject, the anchor sentence subject, or the connect sentence's causal explanation.
+
+Two acceptable paths when the request centers on a workforce cut:
+
+(a) Reframe into the outcome. Headline and anchor lead with the outcome metric; the workforce state does not appear. The connect sentence widens to another outcome signal, not to a role/headcount explanation.
+
+(b) Produce a no-card response: one sentence naming that workforce and team-composition signals sit outside the Lens lens, with a brief redirect to an adjacent outcome signal visible in Company Data.
+
+Banned anywhere in the headline OR anchor sentence — not just as subjects, but as ANY reference in any grammatical position (noun, adjective, prepositional phrase, subordinate clause, participial tag):
+  "open role" · "the role is open" · "role vacant" · "with the role vacant" · "vacant" (describing any role or seat) · "vacancy" · "unfilled" · "the [title] seat" · "seat open" · "with the [title] seat open" · "headcount" · "team size" · "staffing" · "capacity" (as workforce capacity — channel/server capacity is fine) · "tenure" · "ramp" (as time-to-productivity) · "hiring" · "hire" · "since [person/role] left" · "while the search runs" · "with the team down"
+If any of these appear anywhere in a headline or anchor sentence — even as a background clause, even with a comma separating them from the main clause, even in a "with X, Y" construction — the card fails. Rewrite until the headline and anchor can be read without any reference to the role, hire, seat, team size, or staffing state.
+
+THE TEST — apply to every headline and anchor sentence separately:
+Cover the outcome metric with your thumb. Can a reader still see the headline saying something about the role, the seat, the hire, or the team? If yes, the workforce state is part of the story — rewrite. The ONLY thing the reader should see is the outcome.
+
+BEFORE/AFTER — workforce signal rewritten to outcome anchor:
+Input signal: "the Content Marketing Manager role has been open for three weeks and content output has held flat over the same period."
+✗ "Content output holds flat with the role vacant." (headline references the role)
+✗ "With the Content Marketing Manager seat open, output sits at last-quarter's level." (subordinate clause references the seat)
+✗ "Content output stays at Q4's pace while the search runs." (subordinate clause references staffing)
+✓ "Content publishing pace sits at Q4's level through the first three weeks of Q1." (headline fully in outcome)
+  Anchor: "Blog publishing runs at 4 posts per week against the Q4 run rate of 4.1. Asset concentration sits in ABM-funnel content, with no net-new long-form in the period."
+  Connect: "Content-attributed pipeline share holds at Q4's level across the same window."
+
+This rule fires whenever the input signal includes a workforce cut, regardless of role. A Revenue Leader card about "deal velocity and the open AE seat" anchors in velocity, not the seat. A Product Leader card about "release pace and the open PM role" anchors in release pace, not the role.`;
 
 const CARD_SELECTION_ROLE_SCOPED = `CARD SELECTION — ROLE-SCOPED
 

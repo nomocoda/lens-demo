@@ -131,3 +131,75 @@ describe('Invariant 10 — no "Claude" references in data/*.md', () => {
     });
   }
 });
+
+// Invariant 11 — Seed card and chat content in index.html must not contain
+// verdict words banned from the live FORWARD_FRAMING_GUARD. A prospect loading
+// the demo should see the same voice discipline the live model is held to.
+//
+// Added 2026-04-22 after an audit found seed cards using "gap", "worsened",
+// "below", "stretched", "declined", "down from", and "behind". The live chat
+// cannot produce those words, so a demo that shows them breaks voice parity
+// the moment a user clicks from a card into chat.
+//
+// Scans only `headline:` and `body:` values inside the seed content, and the
+// `content:` values of assistant messages inside chatThreads. CSS `gap:`
+// properties, JS identifiers, and comments are intentionally excluded.
+const BANNED_VERDICT_WORDS = [
+  { pattern: /\bgap(s)?\b/i, word: 'gap' },
+  { pattern: /\bworsened\b/i, word: 'worsened' },
+  { pattern: /\bdeteriorated\b/i, word: 'deteriorated' },
+  { pattern: /\bdeclined?\b/i, word: 'declined' },
+  { pattern: /\bdropped\b/i, word: 'dropped' },
+  { pattern: /\bstretched\b/i, word: 'stretched' },
+  { pattern: /\bballooned\b/i, word: 'ballooned' },
+  { pattern: /\bsoftened\b/i, word: 'softened' },
+  { pattern: /\bweakened\b/i, word: 'weakened' },
+  { pattern: /\bweaker\b/i, word: 'weaker' },
+  { pattern: /\bwidened\b/i, word: 'widened' },
+  { pattern: /\bshortfall\b/i, word: 'shortfall' },
+  { pattern: /\bconcerning\b/i, word: 'concerning' },
+  { pattern: /\bshy of\b/i, word: 'shy of' },
+  { pattern: /\bshort of\b/i, word: 'short of' },
+  { pattern: /\bfell (to|from|short)\b/i, word: 'fell to/from/short' },
+  { pattern: /\bdown (to|from)\b/i, word: 'down to/from' },
+  { pattern: /\blower than\b/i, word: 'lower than' },
+  { pattern: /\bwider than\b/i, word: 'wider than' },
+  { pattern: /\bmissed\b/i, word: 'missed' },
+  { pattern: /\bbehind\b/i, word: 'behind' },
+  { pattern: /\bbelow\b/i, word: 'below' },
+];
+
+function extractSeedStringValues(content) {
+  // Match `headline: '...'`, `body: '...'`, and `content: '...'` with
+  // single-quoted values (the format used in index.html seed data). Escaped
+  // single quotes inside the string are handled via the negated-class pattern.
+  const fieldPattern = /(headline|body|content)\s*:\s*'((?:\\.|[^'\\])*)'/g;
+  const matches = [];
+  let m;
+  while ((m = fieldPattern.exec(content)) !== null) {
+    matches.push({ field: m[1], value: m[2], index: m.index });
+  }
+  return matches;
+}
+
+describe('Invariant 11 — no verdict words in seed card/chat content', () => {
+  test('index.html seed strings', () => {
+    const content = readActive('index.html');
+    const seedValues = extractSeedStringValues(content);
+    const hits = [];
+    for (const { field, value, index } of seedValues) {
+      for (const { pattern, word } of BANNED_VERDICT_WORDS) {
+        if (pattern.test(value)) {
+          const loc = locate(content, index);
+          const snippet = value.length > 80 ? value.slice(0, 77) + '...' : value;
+          hits.push(`${field} at ${loc}: "${word}" → "${snippet}"`);
+        }
+      }
+    }
+    assert.deepEqual(
+      hits,
+      [],
+      `banned verdict words in seed content (live model would be blocked from producing these):\n  ${hits.join('\n  ')}`,
+    );
+  });
+});
