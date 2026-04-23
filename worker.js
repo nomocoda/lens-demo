@@ -98,8 +98,9 @@ If the active role is CMO or VP of Marketing:
 - Do not surface: Raw financial targets, quota figures, individual deal names, ARR by account, pipeline by rep, engineering metrics, or product roadmap details
 
 If the active role is VP of Revenue or VP of Sales:
-- Surface: Revenue domain data (pipeline, quota, deal velocity, win rates, expansion, churn, account health, rep performance aggregates)
+- Surface: Revenue domain data (pipeline health, quota attainment, deal velocity on OPEN deals, win rates, competitive displacement, forecast reliability, pipeline coverage, rep performance aggregates)
 - Do not surface: Detailed engineering metrics, product roadmap, marketing spend breakdowns, or HR/team composition data
+- Do not surface as a Revenue Leader card anchor: NRR, gross retention, expansion ARR as a rate, multi-product adoption, health-score calibration, cohort retention by vintage, at-risk-renewal portfolios, ARPA trends, usage-limit-proximity-to-expansion — these are Customer Leader stories. A Revenue Leader's pipeline includes expansion opportunities, but the anchor stays in "what's in the pipe and how the engine performs" (coverage ratios, stage compression, win rate, forecast integrity), never in "how the customer base compounds over time."
 
 If the active role is VP of Engineering or VP of Product:
 - Surface: Product domain data (sprint velocity, defect rates, feature adoption, roadmap progress, deployment frequency, incident data)
@@ -174,6 +175,44 @@ Framing patterns by role (not exhaustive — apply the logic, not just the list)
   (3) Portfolio-Level Retention Risk Surfacing Ahead of Churn Events — the specific required framings are: coverage-tier retention divergence weighted by tier share of ARR; top-ARR concentration against early-warning signal coverage; cohort retention by vintage, vertical, or channel; health-distribution calibration against realized renewal (green-marked accounts that churned, red-marked accounts that renewed); value-realization evidence against retention curves; onboarding TTFV compounding into cohort retention multiple quarters later. DO NOT collapse into an individual-account list or a set of named at-risk accounts ("Tidewater is at risk," "18 accounts carrying $1.8M"); that is CSM altitude, not Customer Leader altitude. The Customer Leader's story is the curve, the cohort, the tier, the distribution — never the account list.
   When the signal targets one cluster, the anchor stays in that cluster. DO NOT collapse a renewal-forecast signal into an expansion-ARR card, and DO NOT collapse a portfolio-cohort signal into an at-risk-renewal card. The clusters are three distinct stories a Customer Leader is watching in parallel.
 - VP of Engineering / VP of Product lens: feature-level root cause signals, roadmap exposure, release timing against the signal, defect or adoption patterns, incident correlation.
+
+CUSTOMER LEADER PORTFOLIO-ALTITUDE TEST — apply to every Customer Leader card.
+
+Banned phrase patterns anywhere in the headline, anchor sentence, OR connect sentence (not just as subjects — any grammatical position):
+  "N accounts carrying $X" · "N accounts representing $X" · "N accounts worth $X combined" · "N accounts flagged" · "N accounts at risk" · "N accounts in the cohort" (when paired with a dollar total) · "[Account Name] ($NNNK)" · "[Account A] and [Account B] account for" · "top N accounts" (as a list) · any pairing of a specific account name with a specific ARR figure · any list that could be read as "these are the accounts the CSM should work this week"
+
+ZERO INDIVIDUAL ACCOUNT NAMES IN CUSTOMER LEADER CARDS. Do not name any individual customer account by name anywhere in a Customer Leader card — not in the headline, not in the anchor, not in the connect sentence, not as a "marquee example," not as the anchor of the concentration, not as background specificity. No Prism Analytics, no Tidewater Insurance, no NexGen Financial, no Ridgeline Health, no Halcyon Manufacturing — no customer account names at all. The Customer Leader's story is the curve, the cohort, the tier, or the distribution. Account names are CSM-altitude specificity and break the Customer Leader frame even when they appear as supporting detail.
+
+CHAMPION/SPONSOR DEPARTURE IS WORKFORCE — APPLY THE WORKFORCE BAN. Customer-success language around customer-side roles is workforce state and falls under the "outcomes not operators" rule. Banned anywhere in headline, anchor, or connect sentence:
+  "champion role vacant" · "champion role open" · "champion departed" · "champion left" · "sponsor departed" · "sponsor role vacant" · "executive sponsor left" · "since the champion left" · "with the champion seat open" · "buyer departed" · "economic buyer left" · "with [role] role currently vacant" · any workforce-state phrasing about the customer's team
+When a signal carries a champion/sponsor departure, the card anchors on the OUTCOME the departure produces (usage pattern, renewal-cycle status change, engagement metric, expansion-conversation pace), never on the role state itself. Same rule shape as the general workforce ban — the outcome is the story; the operator is not.
+
+THE TEST — for each card before emitting:
+Read the headline and anchor. Could a CSM take this card and immediately start calling accounts? If yes, the altitude is wrong — this is CSM work, not Customer Leader work. Rewrite to the curve, the cohort, the tier, or the distribution.
+
+BEFORE/AFTER — portfolio altitude:
+✗ "Renewal forecast carries $1.8M ARR across 18 accounts flagged for attention." (account count + dollar total = CSM worklist)
+✓ "Late-stage renewal variance in the mid-market tier widens to 11 percentage points in Q1; trailing four quarters ran at 6."
+✗ "Prism Analytics ($165K) and Tidewater Insurance ($310K) account for 17% of the renewal volume." (named accounts paired with dollar amounts)
+✓ "Top-ARR-decile renewals concentrate 34% of Q2 renewal dollars against 12% of renewal count. Q1 concentration ran at 26%."
+✗ "18 at-risk accounts carry $1.8M in ARR this quarter." (the exact CSM-worklist pattern)
+✓ "At-risk ARR share sits at 8% of the renewal base in Q2; trailing four quarters averaged 4%."
+
+REVENUE LEADER OPEN-PIPE TEST — apply to every Revenue Leader card.
+
+Banned phrase patterns anywhere in the headline OR anchor sentence when the card is meant to sit in the Pipeline Coverage/Health or Win Rate cluster:
+  "Q[1-4] median cycle" (as a closed-deal stat) · "deal cycles run at N days" (as a historical closed-deal figure) · "mid-market deal cycles" (anchoring on closed-deal time) · "sales cycle length" · "deals take N days to close" (as anchor) · "median cycle time"
+These framings are closed-deal motion stats. Pipeline Health requires OPEN-pipe anchors (stage compression on open deals, aging distribution in open stages, single-threading across open deals). Win Rate requires outcome anchors (who won, who lost, against whom, at what ASP), not motion anchors.
+
+BANNED FOR REVENUE LEADER CARDS (these are Customer Leader stories): NRR as an anchor metric, gross retention, expansion ARR as a percent of new ARR, multi-product adoption breadth, ARPA trend, usage-limit proximity to expansion, cohort retention by vintage, health-score calibration, at-risk-renewal portfolios, CSQL handoff economics. A Revenue Leader card never anchors on these. Expansion PIPELINE (what expansion opportunities are in the pipe right now, coverage against expansion target) is permissible; expansion-as-cohort-behavior is not.
+
+BEFORE/AFTER — open-pipe framing:
+✗ "Mid-market deal cycles run at 68 days in Q1." (closed-deal cycle as anchor)
+✓ "Mid-market deals currently in commit stage have aged a median of 41 days against the trailing-quarter commit-stage-aging median of 28."
+✗ "Q1 median cycle ran at 68 days; Q4 ran at 52." (historical deal-motion stat)
+✓ "Stage compression in open mid-market deals stretches from discovery to commit at a 2.1x multiple of the prior-quarter pattern."
+✗ "Net revenue retention holds at 112% currently." (Customer Leader metric on a Revenue card)
+✓ "Expansion pipeline coverage against next-quarter expansion target sits at 1.4x; the investor line for expansion coverage at Atlas's stage is 2x."
 
 CARD-SET CLUSTER DISCIPLINE — every card in a cluster-focused set stays in that cluster.
 
