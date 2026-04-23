@@ -8,18 +8,23 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
 const indexHtml = readFileSync(resolve(repoRoot, 'index.html'), 'utf8');
 
-// Locked Intelligence Areas (NomoCoda Operating Context, locked 2026-04-16).
-// Five domains plus the ever-present "all" filter.
-const ALLOWED_FILTER_SLUGS = new Set(['all', 'customers', 'revenue', 'team', 'ops', 'market']);
-const ALLOWED_DOMAIN_KEYS = new Set(['customers', 'revenue', 'team', 'ops', 'market']);
-const ALLOWED_DOMAIN_TITLES = new Set(['Customers', 'Revenue', 'Team', 'Ops', 'Market']);
+// Locked Intelligence Areas (NomoCoda Operating Context, locked 2026-04-20).
+// Four domains plus the ever-present "all" filter. Team/Ops/Market retired
+// 2026-04-20; Marketing + Product added.
+const ALLOWED_FILTER_SLUGS = new Set(['all', 'customers', 'revenue', 'marketing', 'product']);
+const ALLOWED_DOMAIN_KEYS = new Set(['customers', 'revenue', 'marketing', 'product']);
+const ALLOWED_DOMAIN_TITLES = new Set(['Customers', 'Revenue', 'Marketing', 'Product']);
 
 describe('Invariant 8 — Intelligence Areas match the locked set', () => {
-  test('filter chip data-filter values are all in the allowed set', () => {
-    const slugs = [...indexHtml.matchAll(/data-filter="([^"]+)"/g)].map(m => m[1]);
-    assert.ok(slugs.length > 0, 'no filter chips found in index.html');
-    const offenders = slugs.filter(s => !ALLOWED_FILTER_SLUGS.has(s));
-    assert.deepEqual(offenders, [], `unknown filter slugs: ${offenders.join(', ')}`);
+  test('MOBILE_FILTER_DOMAINS keys are all in the allowed set', () => {
+    // Filter chips are runtime-rendered from MOBILE_FILTER_DOMAINS, not
+    // hardcoded as data-filter HTML attributes. Parse the array instead.
+    const block = /const MOBILE_FILTER_DOMAINS\s*=\s*\[([\s\S]*?)\];/m.exec(indexHtml);
+    assert.ok(block, 'MOBILE_FILTER_DOMAINS array not found in index.html');
+    const keys = [...block[1].matchAll(/key:\s*'([^']+)'/g)].map(m => m[1]);
+    assert.ok(keys.length > 0, 'no keys parsed from MOBILE_FILTER_DOMAINS');
+    const offenders = keys.filter(k => !ALLOWED_DOMAIN_KEYS.has(k));
+    assert.deepEqual(offenders, [], `unknown filter keys: ${offenders.join(', ')}`);
   });
 
   test('insightData domain keys are all in the allowed set', () => {
@@ -32,7 +37,11 @@ describe('Invariant 8 — Intelligence Areas match the locked set', () => {
   });
 
   test('insightData title values are all in the allowed set', () => {
-    const titles = [...indexHtml.matchAll(/^\s*title:\s*'([^']+)',?\s*$/gm)].map(m => m[1]);
+    // Scope to the insightData block. Scanning the whole file catches
+    // unrelated `title:` strings elsewhere (e.g. chat thread seeds).
+    const block = /const insightData = \{([\s\S]*?)^\};/m.exec(indexHtml);
+    assert.ok(block, 'insightData block not found in index.html');
+    const titles = [...block[1].matchAll(/^\s*title:\s*'([^']+)',?\s*$/gm)].map(m => m[1]);
     assert.ok(titles.length > 0, 'no titles parsed from insightData');
     const offenders = titles.filter(t => !ALLOWED_DOMAIN_TITLES.has(t));
     assert.deepEqual(offenders, [], `unknown domain titles: ${offenders.join(', ')}`);
