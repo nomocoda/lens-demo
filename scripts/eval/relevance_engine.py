@@ -751,6 +751,40 @@ def main(argv: Optional[List[str]] = None) -> int:
             print(f"  card[{e['card_index']}].{e['field']}: "
                   f"'against' → 'versus'", file=sys.stderr)
 
+    # Phase 1.3 specificity guardrail — pre-flight drop. Every numeric claim
+    # in title/anchor/connect/body must be LITERAL (present in the dataset
+    # summary, within rounding tolerance) or DERIVED (a simple arithmetic
+    # combination of summary values). Any card containing an UNGROUNDED
+    # numeric is dropped before write so hallucinated figures never reach a
+    # reader. The baseline Phase 1.1 run showed 86/86 cards clean at this
+    # check; the guardrail runs as an always-on safety net.
+    from specificity_guardrail import (  # noqa: E402
+        audit_card, ground_set_from_summary,
+    )
+    ground = ground_set_from_summary(summary)
+    kept: List[Dict] = []
+    dropped: List[Dict] = []
+    for idx, card in enumerate(cards):
+        audit = audit_card(card, ground)
+        if audit["all_grounded"]:
+            kept.append(card)
+        else:
+            dropped.append({
+                "index": idx,
+                "title": card.get("title"),
+                "ungrounded": [n for n in audit["numerics"]
+                               if n["status"] == "UNGROUNDED"],
+            })
+    if dropped:
+        print(f"specificity guardrail dropped {len(dropped)} card(s):",
+              file=sys.stderr)
+        for d in dropped:
+            tags = ", ".join(f"{n['field']}:{n['raw']}"
+                             for n in d["ungrounded"][:3])
+            print(f"  card[{d['index']}] '{d['title']}' — {tags}",
+                  file=sys.stderr)
+    cards = kept
+
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(cards, indent=2) + "\n")
