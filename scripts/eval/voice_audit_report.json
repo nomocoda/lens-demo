@@ -1,0 +1,223 @@
+{
+  "generated_at_utc": "2026-04-24T22:28:47+00:00",
+  "inputs": [
+    {
+      "seed": 1,
+      "card_count": 20
+    },
+    {
+      "seed": 2026,
+      "card_count": 18
+    },
+    {
+      "seed": 42,
+      "card_count": 16
+    },
+    {
+      "seed": 7,
+      "card_count": 16
+    },
+    {
+      "seed": 99,
+      "card_count": 16
+    }
+  ],
+  "totals": {
+    "cards_scanned": 86,
+    "cards_with_violations": 6,
+    "violations_total": 13,
+    "violations_by_severity": {
+      "soft": 11,
+      "hard": 2
+    },
+    "per_seed_violation_counts": {
+      "1": 4,
+      "2026": 2,
+      "42": 2,
+      "7": 3,
+      "99": 2
+    }
+  },
+  "violations_by_category": {
+    "soft": [
+      {
+        "key": "gap",
+        "count": 11
+      }
+    ],
+    "hard": [
+      {
+        "key": "against_as_comparison",
+        "count": 2
+      }
+    ]
+  },
+  "recurrence": {
+    "recurring_across_seeds": [
+      {
+        "key": "gap",
+        "total_occurrences": 11,
+        "seed_count": 4,
+        "seeds": [
+          1,
+          7,
+          42,
+          2026
+        ]
+      }
+    ],
+    "one_off": [
+      {
+        "key": "against_as_comparison",
+        "total_occurrences": 2,
+        "seed_count": 1,
+        "seeds": [
+          99
+        ]
+      }
+    ]
+  },
+  "violations": [
+    {
+      "seed": 1,
+      "card_index": 6,
+      "field": "connect",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…ent budget reallocations total the $84K gap."
+    },
+    {
+      "seed": 1,
+      "card_index": 6,
+      "field": "body",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…ent budget reallocations total the $84K gap."
+    },
+    {
+      "seed": 1,
+      "card_index": 17,
+      "field": "connect",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "Q1 gap ran $310K in paid search favor."
+    },
+    {
+      "seed": 1,
+      "card_index": 17,
+      "field": "body",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…ch pipeline creation by $240K in Q2. Q1 gap ran $310K in paid search favor."
+    },
+    {
+      "seed": 2026,
+      "card_index": 10,
+      "field": "connect",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "Two event reallocations freed up the gap amount."
+    },
+    {
+      "seed": 2026,
+      "card_index": 10,
+      "field": "body",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…d. Two event reallocations freed up the gap amount."
+    },
+    {
+      "seed": 42,
+      "card_index": 9,
+      "field": "connect",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "Reallocation moves the gap to SaaS Connect and Signal Summit event…"
+    },
+    {
+      "seed": 42,
+      "card_index": 9,
+      "field": "body",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…hrough April 23. Reallocation moves the gap to SaaS Connect and Signal Summit event…"
+    },
+    {
+      "seed": 7,
+      "card_index": 6,
+      "field": "title",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…al ads budget carries $84K reallocation gap"
+    },
+    {
+      "seed": 7,
+      "card_index": 6,
+      "field": "connect",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "Two event line items freed up the gap: SaaS Connect and Signal Summit totalin…"
+    },
+    {
+      "seed": 7,
+      "card_index": 6,
+      "field": "body",
+      "severity": "soft",
+      "category": "problem_language",
+      "subcategory": "gap",
+      "rule": "Problem/loss framing — Story Cards surface only forward signal.",
+      "match": "gap",
+      "snippet": "…pent. Two event line items freed up the gap: SaaS Connect and Signal Summit totalin…"
+    },
+    {
+      "seed": 99,
+      "card_index": 1,
+      "field": "anchor",
+      "severity": "hard",
+      "category": "against_as_comparison",
+      "rule": "Used 'against' where 'versus' or 'compared to' is required.",
+      "match": "against",
+      "snippet": "Month-to-date SQLs hit 147 against the Q1 monthly average of 98."
+    },
+    {
+      "seed": 99,
+      "card_index": 1,
+      "field": "body",
+      "severity": "hard",
+      "category": "against_as_comparison",
+      "rule": "Used 'against' where 'versus' or 'compared to' is required.",
+      "match": "against",
+      "snippet": "Month-to-date SQLs hit 147 against the Q1 monthly average of 98. ABM accep…"
+    }
+  ]
+}
