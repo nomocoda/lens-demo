@@ -1,0 +1,218 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "Marketing-sourced deals close 14 days faster this week",
+    "anchor": "Nine marketing-sourced wins this week averaged 38 days to close, with seven coming from mid-market accounts.",
+    "connect": "The prior 11 weeks averaged 51.9 days across 63 deals.",
+    "body": "Nine marketing-sourced wins this week averaged 38 days to close, with seven coming from mid-market accounts. The prior 11 weeks averaged 51.9 days across 63 deals.",
+    "grounded_metrics": [
+      "current_week_marketing_wins",
+      "deal_velocity_comparison"
+    ],
+    "trace": "Current week marketing-sourced wins show significant velocity improvement versus trailing 11-week baseline."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Mid-market SQL volume up 50% in April",
+    "anchor": "April generated 147 mid-market SQLs through the 24th, running ahead of the quarterly average.",
+    "connect": "January through March averaged 98 SQLs per month.",
+    "body": "April generated 147 mid-market SQLs through the 24th, running ahead of the quarterly average. January through March averaged 98 SQLs per month.",
+    "grounded_metrics": [
+      "april_mm_sqls",
+      "q1_sql_baseline"
+    ],
+    "trace": "April mid-market SQL generation shows substantial acceleration versus Q1 baseline performance."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ABM leads accept at 61%, outperforming other channels",
+    "anchor": "SDRs accepted 61.4% of the 70 ABM MQLs this month versus 41.6% on the remaining 77.",
+    "connect": "The 20-point acceptance gap sits at the widest margin this quarter.",
+    "body": "SDRs accepted 61.4% of the 70 ABM MQLs this month versus 41.6% on the remaining 77. The 20-point acceptance gap sits at the widest margin this quarter.",
+    "grounded_metrics": [
+      "abm_acceptance_rate",
+      "non_abm_acceptance"
+    ],
+    "trace": "ABM channel shows meaningfully higher SDR acceptance rate, creating channel quality differential."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Paid social pipeline creation doubles quarter over quarter",
+    "anchor": "Q2 paid social generated $620K in pipeline against $410K in Q1.",
+    "connect": "Paid search moved the opposite direction, from $720K in Q1 to $380K in Q2.",
+    "body": "Q2 paid social generated $620K in pipeline against $410K in Q1. Paid search moved the opposite direction, from $720K in Q1 to $380K in Q2.",
+    "grounded_metrics": [
+      "q2_paid_social_pipeline",
+      "q1_channel_comparison"
+    ],
+    "trace": "Paid social channel acceleration coincides with paid search deceleration, showing channel mix shift."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Digital ad spend runs $84K under budget through April",
+    "anchor": "Q2 digital ads spent $256K through April 23rd versus the $340K planned allocation.",
+    "connect": "The $84K gap moved to events, specifically SaaS Connect and Signal Summit.",
+    "body": "Q2 digital ads spent $256K through April 23rd versus the $340K planned allocation. The $84K gap moved to events, specifically SaaS Connect and Signal Summit.",
+    "grounded_metrics": [
+      "q2_digital_spend_gap",
+      "events_reallocation"
+    ],
+    "trace": "Under-spend in digital ads channeled to event programs, showing budget reallocation mid-quarter."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Branded search climbs for sixth consecutive week",
+    "anchor": "Weekly branded search volume hit 1,921 in the latest period, up 92% over the six-week window.",
+    "connect": "Growth accelerated each week, with no flat or declining periods in the sequence.",
+    "body": "Weekly branded search volume hit 1,921 in the latest period, up 92% over the six-week window. Growth accelerated each week, with no flat or declining periods in the sequence.",
+    "grounded_metrics": [
+      "branded_search_streak",
+      "six_week_growth"
+    ],
+    "trace": "Branded search shows consistent weekly acceleration without interruption, indicating sustained brand momentum."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas brand mentions lead competitive set by 52%",
+    "anchor": "Atlas collected 1,840 brand mentions in April versus Beacon Systems at 1,210.",
+    "connect": "The gap widened from March when both companies ran closer to parity.",
+    "body": "Atlas collected 1,840 brand mentions in April versus Beacon Systems at 1,210. The gap widened from March when both companies ran closer to parity.",
+    "grounded_metrics": [
+      "april_brand_mentions",
+      "competitive_mention_share"
+    ],
+    "trace": "Brand mention volume shows Atlas pulling ahead of primary competitor Beacon Systems in April."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Analyst mentions double over the past two weeks",
+    "anchor": "Nine analyst mentions appeared in the last 14 days, with Forrester and G2 driving six of them.",
+    "connect": "The prior 30 days generated six mentions total across all analyst firms.",
+    "body": "Nine analyst mentions appeared in the last 14 days, with Forrester and G2 driving six of them. The prior 30 days generated six mentions total across all analyst firms.",
+    "grounded_metrics": [
+      "analyst_mentions_14d",
+      "analyst_acceleration"
+    ],
+    "trace": "Recent analyst mention activity shows acceleration, particularly from Forrester and G2 coverage."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Direct traffic crosses organic search for the first time",
+    "anchor": "Direct traffic accounts for 42.3% of April visits versus organic search at 36.5%.",
+    "connect": "The crossover happened April 15th and has held for nine days running.",
+    "body": "Direct traffic accounts for 42.3% of April visits versus organic search at 36.5%. The crossover happened April 15th and has held for nine days running.",
+    "grounded_metrics": [
+      "direct_vs_organic_crossover",
+      "april_traffic_mix"
+    ],
+    "trace": "Direct traffic overtook organic search mid-April, marking first sustained reversal of traffic mix."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Event-sourced deals close 25 days faster than Q4",
+    "anchor": "Q1 event-sourced wins averaged 46.4 days to close across 17 deals.",
+    "connect": "Q4 event deals took 71.7 days across 15 wins.",
+    "body": "Q1 event-sourced wins averaged 46.4 days to close across 17 deals. Q4 event deals took 71.7 days across 15 wins.",
+    "grounded_metrics": [
+      "q1_event_velocity",
+      "q4_event_baseline"
+    ],
+    "trace": "Event-sourced deal velocity improved substantially from Q4 to Q1, showing channel efficiency gains."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "SaaS Connect drove 70% of Q1 event wins",
+    "anchor": "Twelve of the 17 Q1 event wins traced back to SaaS Connect attendance.",
+    "connect": "Peer events contributed the remaining five deals across the quarter.",
+    "body": "Twelve of the 17 Q1 event wins traced back to SaaS Connect attendance. Peer events contributed the remaining five deals across the quarter.",
+    "grounded_metrics": [
+      "saas_connect_wins",
+      "q1_event_attribution"
+    ],
+    "trace": "SaaS Connect dominates event channel performance, generating most Q1 event-attributed wins."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas Insights leads reference opt-in rates at 75%",
+    "anchor": "Three-quarters of Atlas Insights customers agree to serve as references.",
+    "connect": "Atlas Connect lags at 28.9% while Workflow sits at 70%.",
+    "body": "Three-quarters of Atlas Insights customers agree to serve as references. Atlas Connect lags at 28.9% while Workflow sits at 70%.",
+    "grounded_metrics": [
+      "reference_optin_rates",
+      "product_reference_mix"
+    ],
+    "trace": "Product-level reference willingness varies significantly, with Insights customers most willing to advocate."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Named account engagement hits threshold on two prospects",
+    "anchor": "Two of the three target accounts with high-intent activity sit on the Named Accounts list.",
+    "connect": "The Named Accounts universe includes 50 total prospects across segments.",
+    "body": "Two of the three target accounts with high-intent activity sit on the Named Accounts list. The Named Accounts universe includes 50 total prospects across segments.",
+    "grounded_metrics": [
+      "named_account_engagement",
+      "target_list_coverage"
+    ],
+    "trace": "High-intent engagement concentrates within the Named Accounts list, showing targeting effectiveness."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas Assist launch campaign ready two weeks out",
+    "anchor": "May 8th launch date approaches with campaign assets complete and calendar locked.",
+    "connect": "Calendar locks happen this Thursday, April 24th.",
+    "body": "May 8th launch date approaches with campaign assets complete and calendar locked. Calendar locks happen this Thursday, April 24th.",
+    "grounded_metrics": [
+      "atlas_assist_launch",
+      "campaign_readiness"
+    ],
+    "trace": "Upcoming product launch shows campaign preparation on schedule with calendar finalization imminent."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "SDR capacity exceeds inbound volume by 48%",
+    "anchor": "Current week SDR capacity sits at 210 leads versus 142 inbound volume.",
+    "connect": "The four-week average shows capacity at 206 and volume at 201, running much tighter.",
+    "body": "Current week SDR capacity sits at 210 leads versus 142 inbound volume. The four-week average shows capacity at 206 and volume at 201, running much tighter.",
+    "grounded_metrics": [
+      "sdr_capacity_gap",
+      "inbound_volume_trend"
+    ],
+    "trace": "SDR capacity currently exceeds inbound lead flow, contrasting with typical near-capacity utilization."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Mid-market fintech accounts dominate recent wins",
+    "anchor": "Eight of the 12 mid-market closed-wins in the last 60 days come from fintech.",
+    "connect": "All 12 accounts run Snowflake plus dbt in their data stack.",
+    "body": "Eight of the 12 mid-market closed-wins in the last 60 days come from fintech. All 12 accounts run Snowflake plus dbt in their data stack.",
+    "grounded_metrics": [
+      "fintech_win_concentration",
+      "tech_stack_pattern"
+    ],
+    "trace": "Recent mid-market wins show strong fintech vertical concentration with consistent tech stack profile."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Enterprise win rate climbs to 31% in Q2",
+    "anchor": "Eight of 26 enterprise deals closed-won this quarter, improving from the trailing four-quarter rate.",
+    "connect": "The four-quarter enterprise win rate averaged 22%.",
+    "body": "Eight of 26 enterprise deals closed-won this quarter, improving from the trailing four-quarter rate. The four-quarter enterprise win rate averaged 22%.",
+    "grounded_metrics": [
+      "q2_enterprise_win_rate",
+      "enterprise_win_trend"
+    ],
+    "trace": "Enterprise segment win rate shows improvement in Q2 versus historical four-quarter performance."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Enterprise deal value averages $187K in Q2",
+    "anchor": "Q2 enterprise wins average $187K per deal across eight closed opportunities.",
+    "connect": "The trailing four quarters averaged $142K per enterprise win.",
+    "body": "Q2 enterprise wins average $187K per deal across eight closed opportunities. The trailing four quarters averaged $142K per enterprise win.",
+    "grounded_metrics": [
+      "q2_enterprise_deal_size",
+      "enterprise_value_trend"
+    ],
+    "trace": "Enterprise deal values increase substantially in Q2 versus historical average deal sizes."
+  }
+]
