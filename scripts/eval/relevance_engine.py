@@ -350,8 +350,15 @@ def build_summary(ds: Dict[str, list]) -> str:
         cid for cid in hi_per_co
         if hi_per_co[cid] >= 5 and by_co.get(cid, {}).get("is_target_account")
     ]
-    named_target = [cid for cid in hot_target
-                    if by_co[cid].get("target_list_name") == "Named Accounts"]
+    # Bucket by target_list_name so every hot account shows up in the summary.
+    # Earlier versions only surfaced the Named Accounts count, which made the
+    # March ABM Add account invisible to the model and produced cards that
+    # under-counted the active target set (P13 ground truth: 2 Named + 1 March
+    # ABM Add = 3 hot accounts).
+    hot_by_list: Dict[str, int] = defaultdict(int)
+    for cid in hot_target:
+        list_name = by_co[cid].get("target_list_name") or "(unlisted)"
+        hot_by_list[list_name] += 1
 
     # P14 — upcoming product launch + campaign status
     launches = ds["product_launches"]
@@ -412,7 +419,13 @@ def build_summary(ds: Dict[str, list]) -> str:
     aw = ref_rates.get("Atlas Workflow", 0)
     ac = ref_rates.get("Atlas Connect", 0)
     lines.append(f"- Reference opt-ins: Atlas Insights {ai*100:.1f}%, Atlas Workflow {aw*100:.1f}%, Atlas Connect {ac*100:.1f}%.")
-    lines.append(f"- Current-week target accounts with 5+ high-intent events: n={len(hot_target)}. Of those, on the Named Accounts list: {len(named_target)}. (Target-list membership universe: {sum(1 for c in companies if c.get('is_target_account'))}.)")
+    # Render every list bucket explicitly so each hot account is visible to
+    # the model with equivalent framing. Sort alphabetically for stable output.
+    if hot_by_list:
+        bucket_str = ", ".join(f"{name} {n}" for name, n in sorted(hot_by_list.items()))
+    else:
+        bucket_str = "(none)"
+    lines.append(f"- Current-week target accounts with 5+ high-intent events: n={len(hot_target)}. Breakdown by target list: {bucket_str}. (Target-list membership universe: {sum(1 for c in companies if c.get('is_target_account'))}.)")
     lines.append("")
     lines.append("# Product launches")
     if next_launch:
@@ -628,6 +641,36 @@ def parse_cards(text: str) -> List[Dict]:
     return json.loads(match.group(0))
 
 
+# Voice rule: comparisons use "versus" or "compared to", never "against".
+# Belt-and-braces normalizer for user-facing card fields when Sonnet drifts
+# despite the Voice Brief calibration note. Trace is internal commentary and
+# is intentionally NOT normalized.
+_USER_FACING_FIELDS = ("title", "anchor", "connect", "body")
+_AGAINST_RE = re.compile(r"\bagainst\b", re.IGNORECASE)
+
+
+def normalize_voice(cards: List[Dict]) -> Tuple[List[Dict], List[Dict]]:
+    """Apply post-generation voice fixes; return (cards, list of edits made).
+
+    Edits each user-facing field in place. The return list of edits lets the
+    caller log which cards required normalization, which is itself a signal
+    of voice drift across the run.
+    """
+    edits: List[Dict] = []
+    for idx, card in enumerate(cards):
+        for field in _USER_FACING_FIELDS:
+            value = card.get(field)
+            if not isinstance(value, str):
+                continue
+            if not _AGAINST_RE.search(value):
+                continue
+            new_value = _AGAINST_RE.sub("versus", value)
+            card[field] = new_value
+            edits.append({"card_index": idx, "field": field,
+                          "before": value, "after": new_value})
+    return cards, edits
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
@@ -699,6 +742,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         print("--- raw response ---", file=sys.stderr)
         print(text, file=sys.stderr)
         return 2
+
+    cards, voice_edits = normalize_voice(cards)
+    if voice_edits:
+        print(f"voice normalizer applied {len(voice_edits)} edit(s):",
+              file=sys.stderr)
+        for e in voice_edits:
+            print(f"  card[{e['card_index']}].{e['field']}: "
+                  f"'against' → 'versus'", file=sys.stderr)
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)

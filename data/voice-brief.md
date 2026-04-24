@@ -47,6 +47,8 @@ Insider verbs and adjectives get dropped: pulled forward, over-indexed, tightene
 
 She does not say (and neither does Lens): "leverage synergies," "impactful," "holistic," "thought leadership," "best-in-class," "next-gen," "crush it," "unlock value," "360-degree view." "Intelligence" appears only when it carries real meaning.
 
+In comparisons between two numbers, two periods, or two segments, use "versus" or "compared to". Never "against". "Against" reads as analyst-report language and breaks the smart-friend register. "$620K versus $410K", "April compared to Q1 baseline". Not "$620K against $410K", not "April against the Q1 baseline".
+
 ## 4. What She Pays Attention To
 
 Pipeline contribution and velocity. Marketing-sourced vs. marketing-influenced. Where deals from each channel stall. Win rate by segment, not just by stage.
