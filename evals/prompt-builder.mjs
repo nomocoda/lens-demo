@@ -15,6 +15,7 @@ const repoRoot = resolve(__dirname, '..');
 const workerSrc = readFileSync(resolve(repoRoot, 'worker.js'), 'utf8');
 const PERSONA = readFileSync(resolve(repoRoot, 'data/persona.md'), 'utf8');
 const VOICE_BRIEF = readFileSync(resolve(repoRoot, 'data/voice-brief.md'), 'utf8');
+const MARKETING_LEADER_BRIEF = readFileSync(resolve(repoRoot, 'data/marketing-leader-brief.md'), 'utf8');
 const COMPANY_DATA = readFileSync(resolve(repoRoot, 'data/atlas-saas.md'), 'utf8');
 
 function extractTaggedConst(src, name) {
@@ -166,6 +167,7 @@ export function buildCardUserMessage({ bubble = 'customers', recentOutputs = [],
 export function buildCardPrompt({ role = null } = {}) {
   const out = interpolate(cardTemplate, {
     PERSONA,
+    MARKETING_LEADER_BRIEF,
     VOICE_BRIEF,
     IDENTITY_GUARDRAIL,
     DATA_BOUNDARY,

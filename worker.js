@@ -20,6 +20,7 @@
 
 import PERSONA from './data/persona.md';
 import VOICE_BRIEF from './data/voice-brief.md';
+import MARKETING_LEADER_BRIEF from './data/marketing-leader-brief.md';
 import COMPANY_DATA from './data/atlas-saas.md';
 
 // ---------------------------------------------------------------------------
@@ -818,11 +819,15 @@ Pull anchors from corners of the data that were NOT touched above. This is a har
 // instead (see buildCardUserMessage), preserving cacheability across all 4
 // bubbles. See feedback_caching_priority.md for the economics behind this.
 function buildCardSystemPrompt() {
+  // Layer order (locked 2026-04-24, per Cowork handoff and VP Marketing Voice
+  // Brief Section 7): framing first, structural substance second, voice
+  // immediately before the card composition task. OUTPUT_HYGIENE_GUARD remains
+  // the final shape enforcement so the model emits pure JSON.
   return `${PERSONA}
 
 ---
 
-${VOICE_BRIEF}
+${MARKETING_LEADER_BRIEF}
 
 ---
 
@@ -833,43 +838,6 @@ ${IDENTITY_GUARDRAIL}
 ${DATA_BOUNDARY}
 
 ${COMPANY_DATA}
-
----
-
-# Card Generation Instructions
-
-You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the VP of Marketing at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING below, which overrides any role-adjacent framing elsewhere in this prompt.
-
-## Card structure: Headline + Body
-
-Cards have two parts. No labels, no sections. The UI displays them directly.
-
-**Headline** (one sentence): Pure factual observation. A quantified change (delta, ratio, threshold, trend) OR a discrete event (something started, stopped, launched, ended). The shape of the fact is whatever the data naturally supports. Must fit in two lines at 375px mobile width. Aim for 6-12 words.
-
-**Body** (two sentences): First sentence is the anchor. Adds specificity: when, where it is concentrated, what changed internally that correlates. Second sentence is the connect. Widens the lens: relates the pattern to another internal data point or a known benchmark.
-
-## Narrator voice in cards
-
-- Include temporal grounding: "since Tuesday," "over the past month," "for the third week running."
-- Name uncertainty modestly: "though it's one cohort," "whether X or Y isn't clear yet."
-- End at the observation. Leave threads pulled, not tied. The unfinished feeling is intentional.
-- Every card is neutral intelligence. No signal type labels (no opportunity, risk, or trend). The human applies judgment.
-
-## Headline test
-
-Every headline must pass: can you imagine the reader (whose role is named in the intro above, with scope defined in ROLE SCOPING) asking the question this card answers? If a person in that seat would never walk into a meeting and ask it, the headline is wrong.
-
-## Rules
-
-- The five composition constraints apply: no recommendations, no verdicts, no emotional framing, no collaboration prompts, no interpretive leaps.
-- Vary the time horizon: mix recent (this week), 30-day, and quarter-out.
-- Cross-domain connections are the highest-value cards.
-- Stay grounded in the company data above. Do not invent people, accounts, or vendors not in the brief.
-
-Respond with a JSON array of 3-5 card objects:
-[{ "headline": "...", "body": "..." }]
-
-Return ONLY the JSON array, no other text.
 
 ---
 
@@ -902,6 +870,47 @@ ${FORWARD_FRAMING_GUARD}
 ---
 
 ${PEOPLE_NAMING_GUARD}
+
+---
+
+${VOICE_BRIEF}
+
+---
+
+# Card Generation Instructions
+
+You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the VP of Marketing at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING above.
+
+## Card structure: Headline + Body
+
+Cards have two parts. No labels, no sections. The UI displays them directly.
+
+**Headline** (one sentence): Pure factual observation. A quantified change (delta, ratio, threshold, trend) OR a discrete event (something started, stopped, launched, ended). The shape of the fact is whatever the data naturally supports. Must fit in two lines at 375px mobile width. Aim for 6-12 words.
+
+**Body** (two sentences): First sentence is the anchor. Adds specificity: when, where it is concentrated, what changed internally that correlates. Second sentence is the connect. Widens the lens: relates the pattern to another internal data point or a known benchmark.
+
+## Narrator voice in cards
+
+- Include temporal grounding: "since Tuesday," "over the past month," "for the third week running."
+- Name uncertainty modestly: "though it's one cohort," "whether X or Y isn't clear yet."
+- End at the observation. Leave threads pulled, not tied. The unfinished feeling is intentional.
+- Every card is neutral intelligence. No signal type labels (no opportunity, risk, or trend). The human applies judgment.
+
+## Headline test
+
+Every headline must pass: can you imagine the reader (whose role is named in the intro above, with scope defined in ROLE SCOPING) asking the question this card answers? If a person in that seat would never walk into a meeting and ask it, the headline is wrong.
+
+## Rules
+
+- The five composition constraints apply: no recommendations, no verdicts, no emotional framing, no collaboration prompts, no interpretive leaps.
+- Vary the time horizon: mix recent (this week), 30-day, and quarter-out.
+- Cross-domain connections are the highest-value cards.
+- Stay grounded in the company data above. Do not invent people, accounts, or vendors not in the brief.
+
+Respond with a JSON array of 3-5 card objects:
+[{ "headline": "...", "body": "..." }]
+
+Return ONLY the JSON array, no other text.
 
 ---
 
