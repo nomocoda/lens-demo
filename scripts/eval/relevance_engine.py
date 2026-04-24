@@ -540,6 +540,24 @@ The guards above are binding. Key reminders:
 - No em dashes. No slogans. No insider marketing jargon the VP's non-marketing friend wouldn't use. Plain English. "Moving faster", not "pulled forward". "Pipeline" stays.
 - Functions and teams, never individual names.
 - No benchmark-as-grading. If you reach for an external ratio, reach for an internal comparison instead.
+
+## Problem-word substitutions (lexical, zero-tolerance)
+
+Story Cards never contain the words "gap", "gaps", "loss", "losses", "miss",
+"missed", "misses", "failure", "failures" anywhere in title, anchor, connect,
+or body. The Voice Brief already forbids problem framing; this is the
+lexical floor. If the underlying data point is an under-spend, an under-
+attainment, or a delta versus plan, surface it as forward signal:
+
+- "$84K gap" / "the gap" → "$84K of unspent budget" or "$84K of headroom"
+  or simply name what the dollars went to ("$84K reallocated to SaaS Connect
+  and Signal Summit"). Never the word "gap".
+- "missed plan" → "tracking at $X versus the $Y plan" (state the level).
+- "X is a gap" / "X represents a gap" → "X is where the next read lives" or
+  rewrite around what is now visible because of it.
+
+PRE-EMIT CHECK: scan every title, anchor, connect, and body string for the
+words above. If any appear, rewrite that field before emitting.
 """
 
 
