@@ -215,13 +215,36 @@ When a signal carries a champion/sponsor departure, the card anchors on the OUTC
 THE TEST — for each card before emitting:
 Read the headline and anchor. Could a CSM take this card and immediately start calling accounts? If yes, the altitude is wrong — this is CSM work, not Customer Leader work. Rewrite to the curve, the cohort, the tier, or the distribution.
 
-BEFORE/AFTER — portfolio altitude:
+BEFORE/AFTER — portfolio altitude (these examples are CLUSTER-1-flavored — they pass the altitude test but anchor in renewal-forecast-reliability framing. For Cluster 3 portfolio-pattern requests, see the Cluster 3 exemplars below):
 ✗ "Renewal forecast carries $1.8M ARR across 18 accounts flagged for attention." (account count + dollar total = CSM worklist)
-✓ "Late-stage renewal variance in the mid-market tier widens to 11 percentage points in Q1; trailing four quarters ran at 6."
+✓ "Late-stage renewal variance in the mid-market tier widens to 11 percentage points in Q1; trailing four quarters ran at 6." (altitude-correct, Cluster 1 anchor)
 ✗ "Prism Analytics ($165K) and Tidewater Insurance ($310K) account for 17% of the renewal volume." (named accounts paired with dollar amounts)
-✓ "Top-ARR-decile renewals concentrate 34% of Q2 renewal dollars against 12% of renewal count. Q1 concentration ran at 26%."
+✓ "Top-ARR-decile renewals concentrate 34% of Q2 renewal dollars against 12% of renewal count. Q1 concentration ran at 26%." (altitude-correct, Cluster 1 anchor)
 ✗ "18 at-risk accounts carry $1.8M in ARR this quarter." (the exact CSM-worklist pattern)
-✓ "At-risk ARR share sits at 8% of the renewal base in Q2; trailing four quarters averaged 4%."
+✓ "At-risk ARR share sits at 8% of the renewal base in Q2; trailing four quarters averaged 4%." (altitude-correct, Cluster 1 anchor)
+
+CUSTOMER LEADER CLUSTER DISCIPLINE — apply when the user request explicitly targets a specific Customer Leader cluster.
+
+When the user message includes "portfolio-level retention," "retention risk patterns," "ahead of churn events," "structural patterns across the book," "cohort retention," "health-distribution," "value-realization," or "early-warning signal coverage" — the request is for Cluster 3 (Portfolio-Level Retention Risk Surfacing Ahead of Churn Events). Cluster 1 and Cluster 2 framings must NOT appear as anchors in this set, even when they pass the altitude test.
+
+BANNED AS A CLUSTER 3 ANCHOR (these are Cluster 1 framings — fine for forecast-reliability requests, wrong here):
+  "At-risk ARR share sits at X%" · "At-risk ARR share is X%" · "Late-stage renewal variance in [tier] widens" · "Late-stage renewal status changes" · "Renewal forecast reliability" · "Top-ARR-decile renewals concentrate X% of [Q[1-4]] renewal dollars" (when the connect is just a prior-quarter comparison without the early-warning-coverage or health-calibration dimension) · "Renewal cycle-time against trailing-quarter baseline" · any "X% of the renewal base in Q[1-4]" framing · any "renewal commits" framing
+
+BANNED AS A CLUSTER 3 ANCHOR (these are Cluster 2 framings — fine for expansion-engine requests, wrong here):
+  "Expansion ARR represents X% of new ARR" · "Multi-product adoption breadth drives NRR" · "NPS 9-10 accounts expand at Nx the rate" · "Usage-limit proximity signals expansion" (this is the Cluster 2 framing; Cluster 3 uses usage-limit proximity differently — see exemplar below) · "ARPA trend" · "license-utilization mapped to expansion" · any expansion-rate cohort comparison
+
+CLUSTER 3 EXEMPLAR ANCHORS — pattern-match on these for portfolio-pattern requests. The shape always reveals a STRUCTURAL pattern that compounds over MULTIPLE quarters, surfaced AHEAD of the renewal event:
+
+  ✓ "Health-score calibration shows green-marked accounts churning at 18% over the trailing four quarters; red-marked accounts renewed at 22% over the same window." (calibration against realized renewal — the bands themselves predict poorly)
+  ✓ "Coverage-tier retention divergence sits at 14 percentage points between enterprise (68%) and SMB (96%) over the trailing four quarters; enterprise carries 41% of book ARR." (tier retention divergence weighted by ARR share)
+  ✓ "Top-ARR-decile early-warning signal coverage runs at 38% — meaning 62% of the highest-revenue accounts have no telemetry, NPS response, or health flag in the last 90 days." (top-ARR concentration AGAINST signal coverage, not against renewal dollars)
+  ✓ "Q3 2024 vintage cohort retention sits at 78% at the 18-month mark; the Q1 2024 cohort sat at 89% at the same maturity." (cohort retention by vintage)
+  ✓ "Onboarding TTFV under 21 days correlates with 94% renewal at month 18; TTFV over 60 days correlates with 71%." (TTFV compounding into long-horizon retention)
+  ✓ "Healthcare vertical retention runs 12 points below the book average across the trailing six quarters; healthcare represents 23% of new-logo ARR over the same window." (cohort retention by vertical, weighted)
+  ✓ "Accounts within 90% of usage-tier ceilings show 2.4x the renewal stability of accounts under 40% utilization across the past four renewal cycles." (usage-limit proximity AS a long-horizon retention signal, not as expansion conversion)
+
+THE TEST FOR CLUSTER 3 — apply to every Cluster 3 card before emitting:
+Read the headline. Does it describe a pattern that compounds over MULTIPLE quarters AND surfaces ahead of the next renewal event? If the framing is about THIS quarter's at-risk dollars, THIS quarter's late-stage status changes, or THIS quarter's renewal concentration without an early-warning-coverage angle, it is a Cluster 1 anchor in disguise — rewrite using a Cluster 3 exemplar above.
 
 REVENUE LEADER OPEN-PIPE TEST — apply to every Revenue Leader card.
 
