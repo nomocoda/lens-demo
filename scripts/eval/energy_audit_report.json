@@ -1,0 +1,147 @@
+{
+  "generated_at_utc": "2026-04-24T22:51:01+00:00",
+  "inputs": [
+    {
+      "seed": 1,
+      "card_count": 20
+    },
+    {
+      "seed": 2026,
+      "card_count": 18
+    },
+    {
+      "seed": 42,
+      "card_count": 16
+    },
+    {
+      "seed": 7,
+      "card_count": 16
+    },
+    {
+      "seed": 99,
+      "card_count": 16
+    }
+  ],
+  "totals": {
+    "cards_scanned": 86,
+    "cards_with_violations": 8,
+    "violations_total": 8,
+    "violations_by_category": {
+      "generic_verb": 8
+    },
+    "per_seed_violation_counts": {
+      "1": 1,
+      "2026": 1,
+      "42": 2,
+      "7": 3,
+      "99": 1
+    }
+  },
+  "recurrence": {
+    "recurring_across_seeds": [
+      {
+        "key": "generic_verb::shows",
+        "total_occurrences": 8,
+        "seed_count": 5,
+        "seeds": [
+          1,
+          7,
+          42,
+          99,
+          2026
+        ]
+      }
+    ],
+    "one_off": []
+  },
+  "violations": [
+    {
+      "seed": 1,
+      "card_index": 18,
+      "field": "title",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "Brand momentum shows across three signals",
+      "field_value": "Brand momentum shows across three signals",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 2026,
+      "card_index": 6,
+      "field": "anchor",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "April traffic split shows direct at 42.2% versus organic search a…",
+      "field_value": "April traffic split shows direct at 42.2% versus organic search at 36.5%.",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 42,
+      "card_index": 10,
+      "field": "connect",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "Connect product shows the lowest customer advocacy willingnes…",
+      "field_value": "Connect product shows the lowest customer advocacy willingness.",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 42,
+      "card_index": 14,
+      "field": "connect",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "Associated campaign status shows ready with calendar locking April 24.",
+      "field_value": "Associated campaign status shows ready with calendar locking April 24.",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 7,
+      "card_index": 2,
+      "field": "title",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "Event sourcing shows 25-day cycle compression",
+      "field_value": "Event sourcing shows 25-day cycle compression",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 7,
+      "card_index": 12,
+      "field": "anchor",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "May 8th Atlas Assist launch shows campaign status ready with calendar loc…",
+      "field_value": "May 8th Atlas Assist launch shows campaign status ready with calendar locking April 24th.",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 7,
+      "card_index": 13,
+      "field": "anchor",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "Current week shows 210 SDR capacity versus 142 inbound lea…",
+      "field_value": "Current week shows 210 SDR capacity versus 142 inbound leads.",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    },
+    {
+      "seed": 99,
+      "card_index": 6,
+      "field": "anchor",
+      "category": "generic_verb",
+      "subcategory": "shows",
+      "match": "shows",
+      "snippet": "April traffic mix shows direct at 42% versus organic at 37%.",
+      "field_value": "April traffic mix shows direct at 42% versus organic at 37%.",
+      "reframe_hint": "use a concrete verb (led, doubled, crossed, trailed, climbed, etc.)"
+    }
+  ]
+}
