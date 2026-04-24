@@ -648,6 +648,10 @@ ${COMPOSITION_COMPLETENESS_GUARD}
 
 ---
 
+${PEOPLE_NAMING_GUARD}
+
+---
+
 REWRITER WORKFLOW — APPLY TO EACH CARD IN THE INPUT ARRAY:
 
 1. Read the headline. Read each sentence of the body.
@@ -667,7 +671,12 @@ REWRITER WORKFLOW — APPLY TO EACH CARD IN THE INPUT ARRAY:
    - If sentence 2 uses any causal word from the banned list, rewrite into Shape A/B/C/D.
    - If sentence 2 decomposes the primary signal into a sub-cohort, segment, or named subset ("Enterprise accounts show...", "Mid-market is where...", "Among NPS 7-8 accounts..."), rewrite into Shape A/B/C/D. Naming WHICH subset is affected is a form of causality even without causal connectives.
    - If sentence 2 answers "why did sentence 1 change?", rewrite. Sentence 2 must answer "what else is true?".
-4. COMPOSITION CHECK:
+4. PEOPLE NAMING CHECK — APPLIES TO HEADLINE AND BOTH BODY SENTENCES:
+   - Scan for any first name, last name, full name, or initials of an individual person. The Company Data brief lists named team members; cards must NOT name them.
+   - Banned constructions even when they read as harmless biographical context: "Clara Mendes flagged...", "Diana's team...", "Jess leads the demo...", "Amir covers frontend...", "Clara raises this with Daniel."
+   - Replace the named individual with their function or system: "engineering flagged...", "the product team ranks...", "the alpha demo is on the calendar for May 1...", "the auth coverage gap surfaced this week."
+   - Named accounts and named competitors stay (Prism Analytics, FlowStack, Beacon Logistics, Ridgeline Health, etc.). Only INDIVIDUAL PEOPLE are stripped.
+5. COMPOSITION CHECK:
    - If the card object has any key other than "headline" and "body", strip the extras.
    - If the body has fewer than two or more than two sentences, rewrite to exactly two.
    - ROLE ASSIGNMENT — classify each sentence before deciding which to rewrite:
@@ -889,6 +898,10 @@ ${FRESHNESS_GUARD}
 ---
 
 ${FORWARD_FRAMING_GUARD}
+
+---
+
+${PEOPLE_NAMING_GUARD}
 
 ---
 

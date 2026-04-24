@@ -19,10 +19,32 @@ if (!API_KEY) {
 const API_URL = 'https://api.anthropic.com/v1/messages';
 const API_VERSION = '2023-06-01';
 
+// 14 archetypes from the Goal Cluster work (memory: project_goal_cluster_layer).
+// Each archetype is sampled in its primary domain bubble. Role labels picked
+// to be recognizable archetype handles for the model (the prompt-builder's
+// applyRoleOverride swaps the hardcoded "VP of Marketing" for these strings).
 const ARCHETYPES = [
-  { role: 'VP of Marketing', bubble: 'marketing' },
-  { role: 'VP of Revenue',   bubble: 'revenue' },
-  { role: 'VP of Customer Success', bubble: 'customers' },
+  // Marketing domain (3)
+  { archetype: 'Marketing Leader',      role: 'VP of Marketing',                  bubble: 'marketing' },
+  { archetype: 'Marketing Strategist',  role: 'Director of Demand Generation',    bubble: 'marketing' },
+  { archetype: 'Marketing Builder',     role: 'Marketing Manager',                bubble: 'marketing' },
+
+  // Revenue domain (4)
+  { archetype: 'Revenue Leader',        role: 'VP of Revenue',                    bubble: 'revenue' },
+  { archetype: 'Revenue Generator',     role: 'Senior Account Executive',         bubble: 'revenue' },
+  { archetype: 'Revenue Developer',     role: 'SDR Manager',                      bubble: 'revenue' },
+  { archetype: 'Revenue Operator',      role: 'Director of Revenue Operations',   bubble: 'revenue' },
+
+  // Customers domain (4)
+  { archetype: 'Customer Leader',       role: 'VP of Customer Success',           bubble: 'customers' },
+  { archetype: 'Customer Advocate',     role: 'Senior Customer Success Manager',  bubble: 'customers' },
+  { archetype: 'Customer Operator',     role: 'Director of Customer Operations',  bubble: 'customers' },
+  { archetype: 'Customer Technician',   role: 'Senior Implementation Engineer',   bubble: 'customers' },
+
+  // Product domain (3)
+  { archetype: 'Product Leader',        role: 'VP of Product',                    bubble: 'product' },
+  { archetype: 'Product Builder',       role: 'Senior Product Manager',           bubble: 'product' },
+  { archetype: 'Product Guardian',      role: 'IT and Security Lead',             bubble: 'product' },
 ];
 
 const args = process.argv.slice(2);
@@ -101,10 +123,11 @@ async function generateCardSet({ role, bubble }) {
   return { draftCards, finalCards };
 }
 
-function printCardSet({ role, bubble, sampleIdx, finalCards, draftCards }) {
+function printCardSet({ archetype, role, bubble, sampleIdx, finalCards, draftCards }) {
   const hr = '─'.repeat(70);
   console.log(`\n${hr}`);
-  console.log(`${role}  ·  bubble: ${bubble}  ·  sample ${sampleIdx + 1}`);
+  const tag = archetype ? `${archetype}  ·  ${role}` : role;
+  console.log(`${tag}  ·  bubble: ${bubble}  ·  sample ${sampleIdx + 1}`);
   console.log(hr);
   if (!finalCards) {
     console.log('[no parseable cards]');
@@ -123,7 +146,7 @@ function printCardSet({ role, bubble, sampleIdx, finalCards, draftCards }) {
 async function main() {
   const targets = runAll
     ? ARCHETYPES
-    : [{ role: arg('role', 'VP of Marketing'), bubble: arg('bubble', 'marketing') }];
+    : [{ archetype: null, role: arg('role', 'VP of Marketing'), bubble: arg('bubble', 'marketing') }];
 
   console.log(`Sampling ${targets.length} archetype(s) × ${n} samples each = ${targets.length * n} card sets`);
   console.log(`Draft model: ${LENS_MODEL}  ·  Rewriter model: ${REWRITER_MODEL}`);
