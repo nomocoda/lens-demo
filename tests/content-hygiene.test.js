@@ -8,12 +8,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
 
 // Active surfaces only. Archived lens-*.html files are out of scope by design.
+// marketing-leader-brief.md is imported into worker.js and loaded into every
+// prompt build, so it gets the same hygiene treatment as the other data/*.md
+// bundle files.
 const ACTIVE_FILES = [
   'index.html',
   'worker.js',
   'data/persona.md',
   'data/voice-brief.md',
   'data/atlas-saas.md',
+  'data/marketing-leader-brief.md',
 ];
 
 function readActive(path) {

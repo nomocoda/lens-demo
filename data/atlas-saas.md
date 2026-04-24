@@ -25,19 +25,19 @@
 
 ## 2. Atlas SaaS leadership team
 
-Atlas is run by a small executive team and two co-founders. Each leader owns a functional domain. Lens describes the company and its leaders; who the current Lens user is, and what falls inside their seat, comes from the role declared in the operating instructions — not from this section.
+Atlas is run by a small executive team and two co-founders. Each leader owns a functional domain. Lens describes the company and its leaders; who the current Lens user is, and what falls inside their seat, comes from the role declared in the operating instructions, not from this section.
 
-**Sophie Zhang — VP of Marketing.** Owns demand gen, content, product marketing, brand, and growth. Reports to the CEO. Manages a team of 18. Primary systems: HubSpot, Salesforce (marketing views), Google Analytics, LinkedIn Ads, Google Ads, SEMrush. The marketing function is accountable for pipeline contribution (expected to source 30%+), CAC efficiency (blended CAC $18.2K, up from $14.8K), MQL-to-SQL conversion, content-influenced pipeline, competitive positioning against FlowStack, and GTM execution for Atlas Assist.
+**Sophie Zhang, VP of Marketing.** Owns demand gen, content, product marketing, brand, and growth. Reports to the CEO. Manages a team of 18. Primary systems: HubSpot, Salesforce (marketing views), Google Analytics, LinkedIn Ads, Google Ads, SEMrush. The marketing function is accountable for pipeline contribution (expected to source 30%+), CAC efficiency (blended CAC $18.2K, up from $14.8K), MQL-to-SQL conversion, content-influenced pipeline, competitive positioning against FlowStack, and GTM execution for Atlas Assist.
 
-**Kevin O'Malley — VP of Sales.** Owns pipeline conversion and the revenue number. Leading the Ridgeline Health deal personally. Primary systems: Salesforce (opportunity and forecast views), Gong, Outreach. The revenue function is accountable for pipeline coverage, deal velocity, quota attainment, expansion, and rep-level performance. Source of truth for weighted pipeline dollar figures, coverage ratios, quota attainment, and the revenue forecast.
+**Kevin O'Malley, VP of Sales.** Owns pipeline conversion and the revenue number. Leading the Ridgeline Health deal personally. Primary systems: Salesforce (opportunity and forecast views), Gong, Outreach. The revenue function is accountable for pipeline coverage, deal velocity, quota attainment, expansion, and rep-level performance. Source of truth for weighted pipeline dollar figures, coverage ratios, quota attainment, and the revenue forecast.
 
-**Jess Wilder — Head of Product.** Owns the Atlas Assist roadmap and the platform rewrite timeline. Primary systems: Linear, Mixpanel, Notion. The product function is accountable for sprint velocity, defect rates, feature adoption, roadmap progress, deployment frequency, and incident signals. Source of truth for engineering capacity and release timing.
+**Jess Wilder, Head of Product.** Owns the Atlas Assist roadmap and the platform rewrite timeline. Primary systems: Linear, Mixpanel, Notion. The product function is accountable for sprint velocity, defect rates, feature adoption, roadmap progress, deployment frequency, and incident signals. Source of truth for engineering capacity and release timing.
 
-**Megan Park — CFO.** Approves function-level budgets. Tracks CAC payback and pipeline coverage for the board. Primary systems: NetSuite, ProfitWell, board reporting tooling. Source of truth for consolidated financial figures, ARR, burn, runway, and any figure shared with investors.
+**Megan Park, CFO.** Approves function-level budgets. Tracks CAC payback and pipeline coverage for the board. Primary systems: NetSuite, ProfitWell, board reporting tooling. Source of truth for consolidated financial figures, ARR, burn, runway, and any figure shared with investors.
 
-**Marco Reyes — Head of Customer Success.** Source of NPS data, reference account availability, and case study pipeline.
+**Marco Reyes, Head of Customer Success.** Source of NPS data, reference account availability, and case study pipeline.
 
-**Diana Okafor — Head of Support.** Top-ticket categories are content and in-app education signals. CSAT is tracked by Support but is not connected to Lens's data systems. Lens has no visibility into CSAT figures.
+**Diana Okafor, Head of Support.** Top-ticket categories are content and in-app education signals. CSAT is tracked by Support but is not connected to Lens's data systems. Lens has no visibility into CSAT figures.
 
 **Founders:**
 - **CEO / Co-founder:** leading Series C prep. All VPs report to the CEO.
@@ -148,7 +148,7 @@ Sophie's marketing org reports (the 18-person marketing function):
 
 ## 5. Revenue (Revenue domain material)
 
-Revenue-domain signals for Atlas SaaS. Raw P&L consolidation lives with Megan (Finance). Pipeline, conversion slices, and unit economics below are the revenue-domain figures Atlas systems expose. Which of these figures a given role can surface is governed by the role's scope in the operating instructions — not declared here.
+Revenue-domain signals for Atlas SaaS. Raw P&L consolidation lives with Megan (Finance). Pipeline, conversion slices, and unit economics below are the revenue-domain figures Atlas systems expose. Which of these figures a given role can surface is governed by the role's scope in the operating instructions, not declared here.
 
 ### Pipeline health
 
@@ -240,7 +240,7 @@ Product signals the VP of Marketing watches: launch readiness, feature adoption 
 ### Platform rewrite ("Atlas 2.0")
 
 - **Status:** 62% complete. Beta target June 15.
-- **Enterprise features unlocked by the rewrite:** Custom RBAC, audit logs, API controls. Exact features Beacon cited when churning.
+- **Enterprise features unlocked by the rewrite:** Custom role-based access controls, audit logs, API controls. Exact features Beacon cited when churning.
 - **GTM dependency:** Atlas Assist demo runs on the new architecture. If the rewrite slips, the May 1 alpha slips, and the announcement calendar slips with it.
 - **Engineering signal (internal):** Clara Mendes flagged zero test coverage on the auth module. She's surfacing it to Daniel this week.
 
@@ -253,7 +253,7 @@ Product signals the VP of Marketing watches: launch readiness, feature adoption 
 ### Product-adjacent marketing signals
 
 - **NPS 38:** Primary source of reference-customer willingness.
-- **Top feature requests (by vote):** Custom RBAC (94), Workflow versioning (71), Native Salesforce integration (63). All either in rewrite or on roadmap.
+- **Top feature requests (by vote):** Custom role-based access controls (94), Workflow versioning (71), Native Salesforce integration (63). All either in rewrite or on roadmap.
 - **Trial-to-paid conversion:** 8.2%, down from 9.7%. Sophie's hypothesis is onboarding UX, not lead quality. Supports the content-over-paid budget read.
 - **Support ticket volume up 28% QoQ:** "Workflow builder UX confusion" is 34% of tickets. Content and in-app education opportunity.
 - **Tidewater Insurance ticket concentration:** 3x normal volume, onboarding-related. Not case-study-ready.
@@ -328,15 +328,15 @@ These are not pre-written cards. They're examples of the kinds of cross-domain c
 - **Cross-domain connections are the highest-value cards.** Marketing ↔ Revenue, Marketing ↔ Product, Marketing ↔ Customers. Show the connections a department head can't see alone.
 - **Stay grounded in this document.** Do not invent new people, accounts, or vendors. The fictional company is bounded by what's here.
 
-### Language register — use
+### Language register, use
 
 pipeline contribution, demand gen efficiency, CAC payback, MQL volume, MQL-to-SQL conversion, channel ROI, content-influenced pipeline, dark funnel, GTM execution velocity, competitive displacement rate, growth from existing customers.
 
-### Language register — never
+### Language register, never
 
 - "expansion revenue" → use "growth from existing customers"
 - "opportunity" or "risk" as Signal labels → Signals are neutral
-- "implementation gap" → rephrase without this term
+- retired NomoCoda phrase combining "implementation" with "gap" → rephrase without it
 - em dashes anywhere → restructure the sentence
 
 ---

@@ -1,4 +1,4 @@
-# VP Marketing Voice Brief — Pilot
+# VP Marketing Voice Brief, Pilot
 
 **Last synced from Notion:** 2026-04-24 (Voice Spine locked).
 
@@ -10,14 +10,14 @@ This Voice Brief pilots a voice layer for the VP of Marketing archetype in B2B S
 
 | Source | URL | Why Included |
 |---|---|---|
-| Marketing Brew — How marketers are using AI beyond buzzwords | https://www.marketingbrew.com/stories/2026/03/02/how-marketers-are-using-ai-beyond-buzzwords | Tier 1 anchor. Practitioner voice on AI adoption and measurement. Pragmatic, implementation-focused. |
-| Marketing Brew — CMOs on their biggest priorities for 2026 | https://www.marketingbrew.com/stories/2026/01/05/cmos-biggest-priorities-for-2026 | Tier 1 anchor. Direct quotes from sitting CMOs on budgets, alignment, priorities beyond AI. |
-| Marketing Brew — Top social marketing trends of 2026 | https://www.marketingbrew.com/stories/2026/01/06/top-social-marketing-trends-2026 | Tier 1 anchor. Social and brand rhythm, pushback against low-effort AI content, category signal framing. |
-| Marketing Brew — How The Trade Desk is aiming to remain king of the open web | https://www.marketingbrew.com/stories/2026/04/09/the-trade-desk-strategy-exec-changes-agency-scrutiny | Tier 1 anchor. Metrics-driven competitive positioning. Shows how senior marketers frame strategy and results. |
-| MKT1 Newsletter (Emily Kramer) — I Analyzed 100 B2B Marketing Teams with Claude Code | https://newsletter.mkt1.co/p/state-of-marketing-report-teams-part-1 | Senior practitioner voice on org design, team structure, pipeline math. Research-grounded, specific metrics. |
-| Exit Five — The Top 25 B2B Marketing Voices on LinkedIn | https://www.exitfive.com/articles/top-25-b2b-marketers-to-follow-on-linkedin | Peer community view. Curator perspective on what useful, specific marketing content sounds like. |
+| Marketing Brew, How marketers are using AI beyond buzzwords | https://www.marketingbrew.com/stories/2026/03/02/how-marketers-are-using-ai-beyond-buzzwords | Tier 1 anchor. Practitioner voice on AI adoption and measurement. Pragmatic, implementation-focused. |
+| Marketing Brew, CMOs on their biggest priorities for 2026 | https://www.marketingbrew.com/stories/2026/01/05/cmos-biggest-priorities-for-2026 | Tier 1 anchor. Direct quotes from sitting CMOs on budgets, alignment, priorities beyond AI. |
+| Marketing Brew, Top social marketing trends of 2026 | https://www.marketingbrew.com/stories/2026/01/06/top-social-marketing-trends-2026 | Tier 1 anchor. Social and brand rhythm, pushback against low-effort AI content, category signal framing. |
+| Marketing Brew, How The Trade Desk is aiming to remain king of the open web | https://www.marketingbrew.com/stories/2026/04/09/the-trade-desk-strategy-exec-changes-agency-scrutiny | Tier 1 anchor. Metrics-driven competitive positioning. Shows how senior marketers frame strategy and results. |
+| MKT1 Newsletter (Emily Kramer), I Analyzed 100 B2B Marketing Teams | https://newsletter.mkt1.co/p/state-of-marketing-report-teams-part-1 | Senior practitioner voice on org design, team structure, pipeline math. Research-grounded, specific metrics. |
+| Exit Five, The Top 25 B2B Marketing Voices on LinkedIn | https://www.exitfive.com/articles/top-25-b2b-marketers-to-follow-on-linkedin | Peer community view. Curator perspective on what useful, specific marketing content sounds like. |
 | Morning Brew (daily issue) | https://www.morningbrew.com | Baseline corporate-hallway voice. Punchy headlines, specific examples, business-first framing. |
-| LinkedIn — aggregated public VP Marketing posts (search-sourced) | WebSearch: "B2B SaaS VP Marketing LinkedIn post 2026 pipeline" | Contemporary cadence from currently-seated VPs of Marketing. Captures the real-time operator register. |
+| LinkedIn, aggregated public VP Marketing posts (search-sourced) | WebSearch: "B2B SaaS VP Marketing LinkedIn post 2026 pipeline" | Contemporary cadence from currently-seated VPs of Marketing. Captures the real-time operator register. |
 
 ## 3. Voice Spine (locked 2026-04-24)
 

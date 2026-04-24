@@ -412,7 +412,7 @@ body {
 }
 
 /* =========================================================================
-   ROW LANGUAGE — shared between Stories, Saved, Chat
+   ROW LANGUAGE, shared between Stories, Saved, Chat
    ========================================================================= */
 .row-list {
   flex: 1;
@@ -691,7 +691,7 @@ body {
   30% { transform: translateY(-5px); opacity: 1; }
 }
 
-/* Bridged card inside chat — same row language, with expand/collapse */
+/* Bridged card inside chat, same row language, with expand/collapse */
 .chat-card-row {
   padding: 14px 20px;
   background: var(--row-lens);
@@ -1064,7 +1064,7 @@ body {
 .bottom-tab.active::after { display: none; }
 
 /* =========================================================================
-   CARD OVERLAY (mobile) — modal that rises from bottom
+   CARD OVERLAY (mobile), modal that rises from bottom
    ========================================================================= */
 .card-overlay-backdrop {
   position: absolute;
@@ -1352,7 +1352,7 @@ body {
 .desktop-frame { display: none; }
 
 /* =========================================================================
-   MEDIA — FULL-SCREEN mobile (≤430px)
+   MEDIA, FULL-SCREEN mobile (≤430px)
    ========================================================================= */
 @media (max-width: 430px) {
   html, body { background: var(--screen); overflow: hidden; }
@@ -1369,7 +1369,7 @@ body {
 }
 
 /* =========================================================================
-   MEDIA — DESKTOP (≥768px)
+   MEDIA, DESKTOP (≥768px)
    ========================================================================= */
 @media (min-width: 768px) {
   body { overflow: hidden; padding: 0; align-items: stretch; justify-content: stretch; background: #fff; }
@@ -1396,7 +1396,7 @@ body {
     flex: 1;
     min-height: 0;
   }
-  /* App top bar — product header (search, etc.) */
+  /* App top bar, product header (search, etc.) */
   .app-topbar {
     flex-shrink: 0;
     height: 52px;
@@ -1945,7 +1945,7 @@ body {
     font-weight: 500;
   }
 
-  /* Action sphere in detail pane — sits inline at bottom-right of card info */
+  /* Action sphere in detail pane, sits inline at bottom-right of card info */
   .d-card-info-bottom {
     display: flex;
     align-items: center;
@@ -1959,7 +1959,7 @@ body {
     flex-shrink: 0;
   }
 
-  /* Card snapshot at start of a card-origin chat thread — desktop override */
+  /* Card snapshot at start of a card-origin chat thread, desktop override */
   .d-chat-wrap .chat-card-ref { padding: 20px 40px 20px; }
   .d-chat-wrap .chat-card-ref .d-card-title { font-size: 22px; }
   .d-chat-wrap .chat-card-ref .d-card-body { font-size: 14.5px; }
@@ -2562,7 +2562,7 @@ const insightData = {
   marketing: {
     title: 'Marketing',
     // 15 placeholder titles locked April 24, 2026 against VP Marketing Voice Spine.
-    // 15 cards locked April 24, 2026. Ordered to scatter themes — adjacent cards
+    // 15 cards locked April 24, 2026. Ordered to scatter themes, adjacent cards
     // intentionally jump between brand, pipeline, channel, ICP, launch, and intent
     // so the feed feels like a real signal stream rather than a sorted report.
     cards: [
@@ -2574,8 +2574,8 @@ const insightData = {
       { isNew: true, createdAt: 'April 24, 2026', headline: 'Marketing deals are closing faster this week than any week this quarter.', body: 'Marketing-sourced deals closed in 38 days on average this week, compared to 52 days quarter-to-date. Mid-market accounts make up the bulk of the speed-up: seven of the nine closes came from that segment.', sources: [{ system: 'Salesforce', record: 'Opportunity Velocity Report' }, { system: 'HubSpot', record: 'Lead Source Attribution' }] },
       { isNew: true, createdAt: 'April 24, 2026', headline: 'Analysts wrote about the company more in two weeks than the prior month.', body: 'Nine analyst notes referenced Atlas across the past two weeks; the full prior month had six. Forrester and G2 lead the count with three pieces each, most tied to the platform release notes from April 9.', sources: [{ system: 'Notion', record: 'Analyst Coverage Tracker' }, { system: 'Brandwatch', record: 'Industry Coverage Feed' }] },
       { isNew: true, createdAt: 'April 24, 2026', headline: 'Paid social is producing more pipeline than paid search this quarter.', body: 'Paid social generated $620K in new pipeline through April; paid search generated $380K over the same window. The order flipped from Q1, when paid search led $720K to $410K.', sources: [{ system: 'HubSpot', record: 'Channel Pipeline Q2' }, { system: 'Google Ads', record: 'Q1 vs Q2 Spend' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Sales development has room to handle more leads than it is getting right now.', body: 'Inbound lead volume averaged 142 per week through April, compared to 210 per week in February. The shortfall concentrates in mid-market, the segment the Q1 demand campaigns prioritized before wind-down.', sources: [{ system: 'HubSpot', record: 'Inbound Volume Trend' }, { system: 'Salesforce', record: 'Mid-Market SQL Flow' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'The company was mentioned more than its three biggest competitors this month.', body: 'Atlas was named in 1,840 industry conversations in April; the next-named competitor came in at 1,210. LinkedIn posts and podcast transcripts make up most of the gap; press coverage is roughly even.', sources: [{ system: 'Brandwatch', record: 'Share of Voice April' }, { system: 'LinkedIn', record: 'Mention Tracker' }] },
+      { isNew: true, createdAt: 'April 24, 2026', headline: 'Sales development has room to handle more leads than it is getting right now.', body: 'Inbound lead volume averaged 142 per week through April, compared to 210 per week in February. The shift concentrates in mid-market, the segment the Q1 demand campaigns prioritized before wind-down.', sources: [{ system: 'HubSpot', record: 'Inbound Volume Trend' }, { system: 'Salesforce', record: 'Mid-Market SQL Flow' }] },
+      { isNew: true, createdAt: 'April 24, 2026', headline: 'The company was mentioned more than its three biggest competitors this month.', body: 'Atlas was named in 1,840 industry conversations in April; the next-named competitor came in at 1,210. LinkedIn posts and podcast transcripts make up most of the lead; press coverage is roughly even.', sources: [{ system: 'Brandwatch', record: 'Share of Voice April' }, { system: 'LinkedIn', record: 'Mention Tracker' }] },
       { isNew: true, createdAt: 'April 24, 2026', headline: 'Customers are most open to references and case studies on two product lines.', body: '76% of Atlas Insights customers opted in to references this quarter; 71% on Atlas Workflow. The next-highest product line sits at 28%.', sources: [{ system: 'Gainsight', record: 'Reference Opt-In Q2' }, { system: 'Salesforce', record: 'Product Line Customer Roster' }] },
       { isNew: true, createdAt: 'April 24, 2026', headline: 'Enterprise deals are closing at a higher rate this quarter than usual.', body: '31% win rate on enterprise opportunities closed this quarter, compared to a trailing four-quarter average of 22%. Average deal size on the wins is also up: $187K versus $142K over the same trailing window.', sources: [{ system: 'Salesforce', record: 'Enterprise Win Rate Q2' }, { system: 'Salesforce', record: 'Deal Size Trend' }] },
       { isNew: true, createdAt: 'April 24, 2026', headline: 'More visitors typed the website address directly than searched for it this month.', body: 'Direct traffic accounted for 42% of new sessions in April; organic search accounted for 38%. The lines crossed around April 8, the same week the launch teaser hit major industry newsletters.', sources: [{ system: 'Google Analytics', record: 'Channel Mix April' }, { system: 'HubSpot', record: 'Newsletter Placement Log' }] },
@@ -2586,16 +2586,16 @@ const insightData = {
   revenue: {
     title: 'Revenue',
     cards: [
-      { isNew: true, createdAt: 'April 18, 2026', headline: 'Marketing-sourced pipeline is tracking at 30% of Q2 total.', body: '$890K weighted against a $1.4M company target, with 11 days of the quarter in. Coverage overall sits at 2.1x against the 3-4x board benchmark.', sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Lead Source Q2' }] },
-      { isNew: true, createdAt: 'April 16, 2026', headline: 'Open mid-market pipeline has aged past 45 days on 34% of deals.', body: 'At end of Q1 that band sat at 18%. Procurement review steps across the category are extending late-stage time-in-stage, not early-stage. Win rate on stage-3 deals past 60 days runs at 22% against 41% for deals under 45 days.', sources: [{ system: 'Salesforce', record: 'Pipeline Aging Report' }, { system: 'Salesforce', record: 'Stage Conversion Q2' }] },
-      { isNew: true, createdAt: 'April 14, 2026', headline: 'Q1 forecast called $2.1M and closed at $1.8M — 86% of commit.', body: 'Mid-market called $1.2M and closed $900K; enterprise called $700K and closed $720K; small-business called $200K and closed $180K. The three-quarter forecast-to-close average sits at 89% against a 95% target.', sources: [{ system: 'Salesforce', record: 'Q1 Forecast vs Actual' }, { system: 'Salesforce', record: 'Forecast Reliability Trend' }] }
+      { isNew: true, createdAt: 'April 18, 2026', headline: 'Marketing-sourced pipeline is tracking at 30% of Q2 total.', body: '$890K weighted versus a $1.4M company target, with 11 days of the quarter in. Coverage overall sits at 2.1x.', sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Lead Source Q2' }] },
+      { isNew: true, createdAt: 'April 16, 2026', headline: 'Open mid-market pipeline has aged past 45 days on 34% of deals.', body: 'At end of Q1 that band sat at 18%. Procurement review steps across the category are extending late-stage time-in-stage, not early-stage. Win rate on stage-3 deals past 60 days runs at 22%, versus 41% for deals under 45 days.', sources: [{ system: 'Salesforce', record: 'Pipeline Aging Report' }, { system: 'Salesforce', record: 'Stage Conversion Q2' }] },
+      { isNew: true, createdAt: 'April 14, 2026', headline: 'Q1 forecast called $2.1M and closed at $1.8M, 86% of commit.', body: 'Mid-market called $1.2M and closed $900K; enterprise called $700K and closed $720K; small-business called $200K and closed $180K. The three-quarter forecast-to-close average sits at 89%, versus a 95% target.', sources: [{ system: 'Salesforce', record: 'Q1 Forecast vs Actual' }, { system: 'Salesforce', record: 'Forecast Reliability Trend' }] }
     ]
   },
   customers: {
     title: 'Customers',
     cards: [
-      { isNew: true, createdAt: 'April 17, 2026', headline: 'Net revenue retention sits at 112% this quarter against 118% two quarters ago.', body: 'Expansion ARR this quarter concentrated in the mid-market cohort at 74% of the total. Gross retention held at 91% over the same window. The next 90 days of expansion pipeline sits at $420K across 11 accounts.', sources: [{ system: 'Salesforce', record: 'NRR Cohort Report' }, { system: 'Salesforce', record: 'Expansion Pipeline Q2' }] },
-      { isNew: true, createdAt: 'April 15, 2026', headline: 'Custom RBAC and audit logs Beacon Logistics flagged at churn ship June 15, ahead of their July 15 renewal.', body: 'Beacon cited custom RBAC, audit logs, and API controls in their churn-risk review three months ago. The platform release that delivers them remains on its June 15 milestone. Atlas Assist runs on the same architecture; its May 1 alpha demo serves as the milestone check.', sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Gainsight', record: 'Beacon Churn-Risk Review' }] },
+      { isNew: true, createdAt: 'April 17, 2026', headline: 'Net revenue retention sits at 112% this quarter, compared to 118% two quarters ago.', body: 'Expansion ARR this quarter concentrated in the mid-market cohort at 74% of the total. Gross retention held at 91% over the same window. The next 90 days of expansion pipeline sits at $420K across 11 accounts.', sources: [{ system: 'Salesforce', record: 'NRR Cohort Report' }, { system: 'Salesforce', record: 'Expansion Pipeline Q2' }] },
+      { isNew: true, createdAt: 'April 15, 2026', headline: 'Custom role-based access controls and audit logs Beacon Logistics flagged at churn ship June 15, ahead of their July 15 renewal.', body: 'Beacon cited custom role-based access controls, audit logs, and API controls in their churn-risk review three months ago. The platform release that delivers them remains on its June 15 milestone. Atlas Assist runs on the same architecture; its May 1 alpha demo serves as the milestone check.', sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Gainsight', record: 'Beacon Churn-Risk Review' }] },
       { isNew: false, createdAt: 'April 10, 2026', headline: 'Accounts using under 40% of licensed seats carry 18% of portfolio ARR.', body: 'At end of Q4 that band sat at 13%. Six accounts in the band renew in the next 90 days, totaling $280K ARR. Portfolio gross retention through Q1 held at 91%.', sources: [{ system: 'Gainsight', record: 'Health Score Band' }, { system: 'Salesforce', record: 'Renewal Forecast' }] }
     ]
   }
@@ -2731,7 +2731,7 @@ function renderRow(bubble, origIdx, card, opts = {}) {
         <div class="row-badge">${catTitle}</div>
         <div class="row-title">${card.headline}</div>
         <div class="row-preview">${card.body}</div>
-        <div class="row-meta">Created &middot; ${card.createdAt || '—'}</div>
+        <div class="row-meta">Created &middot; ${card.createdAt || '-'}</div>
       </div>
     </div>`;
 }
@@ -3047,7 +3047,7 @@ function openCardOverlay(bubble, origIdx, opts) {
     <div class="overlay-text">${card.body}</div>
     ${srcHtml ? `<div class="overlay-sources">${srcHtml}</div>` : ''}
     <div class="m-card-info-bottom">
-      <div class="overlay-meta">Created &middot; ${card.createdAt || '—'}</div>
+      <div class="overlay-meta">Created &middot; ${card.createdAt || '-'}</div>
       ${renderCardDock('overlay')}
     </div>
     <hr class="m-card-divider" />
@@ -3131,7 +3131,7 @@ function openDetail(screen, bubble, origIdx, savedIdx) {
     <div class="d-card-body">${card.body}</div>
     ${srcHtml ? `<div class="overlay-sources d-card-sources">${srcHtml}</div>` : ''}
     <div class="d-card-info-bottom">
-      <div class="d-card-meta">Created &middot; ${createdAt || '—'}</div>
+      <div class="d-card-meta">Created &middot; ${createdAt || '-'}</div>
       ${renderCardDock(pane)}
     </div>
     <hr class="d-card-divider" />
@@ -3321,7 +3321,7 @@ function renderChatCardRow(card, catTitle) {
       <div class="row-title">${card.headline}</div>
       <div class="chat-card-ellipsis">...</div>
       <div class="chat-card-body">${card.body}${srcHtml ? `<div class="overlay-sources" style="padding-top:10px;">${srcHtml}</div>` : ''}</div>
-      <div class="row-meta" style="margin-top: 8px;">Created &middot; ${card.createdAt || '—'}</div>
+      <div class="row-meta" style="margin-top: 8px;">Created &middot; ${card.createdAt || '-'}</div>
       <div class="chat-card-toggle" onclick="toggleChatCard()" role="button" aria-expanded="false">more</div>
     </div>`;
 }
@@ -3726,7 +3726,7 @@ function renderChatCardRef(ref) {
       <div class="d-card-title">${ref.card.headline}</div>
       <div class="d-card-body">${ref.card.body}</div>
       ${srcHtml ? `<div class="overlay-sources d-card-sources">${srcHtml}</div>` : ''}
-      <div class="d-card-meta">Created &middot; ${ref.createdAt || '—'}</div>
+      <div class="d-card-meta">Created &middot; ${ref.createdAt || '-'}</div>
     </div>`;
 }
 
