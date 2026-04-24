@@ -3531,17 +3531,25 @@ async function sendCardMessage(screen) {
 // =========================================================================
 // DEMO: 3 seed chat threads with static April timestamps. Launch: real chat history from Mem0 Pro, scoped to current user, relative timestamps. See DEMO_FIDELITY.md #3
 const chatThreads = [
-  { id: 't1', title: 'CAC by channel', ts: 'April 17', messages: [
-    { role: 'user', content: 'Where is the CAC increase concentrated?' },
-    { role: 'assistant', content: 'Blended CAC sits at $18.2K this quarter; a year ago it ran at $14.8K. LinkedIn Ads is at $22.4K per customer, against $16.1K six months ago. Content and organic is at $6.8K, against $8.2K six months ago. The paid-to-content ratio runs at 3.3x now, against 2.4x six months ago.' },
+  { id: 't1', title: 'Latest mid-market case study', ts: 'April 22', messages: [
+    { role: 'user', content: "Where's the latest version of the mid-market case study?" },
+    { role: 'assistant', content: 'The Notion doc "Mid-Market Customer Story Q2" was last edited Tuesday. Six edits since you opened it on April 15, mostly to the customer-quote section. The PDF version Sales is using in pitches lives in the shared drive, last exported April 18.' },
   ]},
-  { id: 't2', title: 'Inbound pipeline trend', ts: 'April 12', messages: [
-    { role: 'user', content: 'Is the inbound share of pipeline holding up?' },
-    { role: 'assistant', content: 'Inbound moved from 18% to 35% of pipeline across the last two quarters. Content-sourced leads are converting to SQL at 17%, against 7% for paid, over the same window. The sample is still one full cycle; whether the pattern holds as volume scales is the open question.' },
+  { id: 't2', title: 'Ridgeline Health on Workflow Templates', ts: 'April 21', messages: [
+    { role: 'user', content: 'Has Ridgeline Health started using the new Workflow Templates yet?' },
+    { role: 'assistant', content: 'Three users on the Ridgeline account opened Workflow Templates this week, all between Monday and Tuesday. Two built and saved their first template; the third bounced after looking at the gallery. The account admin turned the feature on for the broader team on April 15, but only those three have logged in since.' },
   ]},
-  { id: 't3', title: 'Atlas Assist launch readiness', ts: 'April 9', messages: [
-    { role: 'user', content: 'How is the Atlas Assist launch shaping up for May 15?' },
-    { role: 'assistant', content: 'Messaging brief is 80% complete, sales deck is waiting on the May 1 alpha, demo video and launch blog post have not started, three reporters briefed. The 2024 SOC 2 launch moved from announcement to first attributed pipeline in 9 days; the 2025 Workflow Templates launch took 18. Category benchmark is 10-14.' },
+  { id: 't3', title: 'Q2 ABM campaign status', ts: 'April 19', messages: [
+    { role: 'user', content: "What's the status of the Q2 ABM campaign?" },
+    { role: 'assistant', content: "On track. All 50 target accounts have content sequences live. Outreach launched April 8; engagement rates sit at 22% open and 6% reply, both above last quarter's averages of 18% and 4%. The ABM-sourced pipeline target for Q2 is $400K; current weighted pipeline is $145K with two months left in the quarter." },
+  ]},
+  { id: 't4', title: 'ROI Calculator usage', ts: 'April 16', messages: [
+    { role: 'user', content: 'What percentage of customers have used the ROI Calculator at least once?' },
+    { role: 'assistant', content: '62% of paying accounts have hit the ROI Calculator page at least once since signup; 41% have run a calculation; 12% have shared a result via the export feature. The calculator is the top content asset by attribution: it touches 38% of all closed-won deals.' },
+  ]},
+  { id: 't5', title: 'SaaS Connect lead count', ts: 'April 14', messages: [
+    { role: 'user', content: 'How many leads do we have in pipeline from SaaS Connect last week?' },
+    { role: 'assistant', content: "94 leads scanned at the booth, 31 marked as fit on first pass. 12 have already moved to MQL based on follow-up engagement; 4 are scheduled for a sales conversation this week. The same window after last year's SaaS Connect produced 7 MQLs from 28 fit leads." },
   ]},
 ];
 let currentChatThreadId = null;
