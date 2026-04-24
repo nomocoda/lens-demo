@@ -569,6 +569,68 @@ body {
   margin-top: 10px;
 }
 
+/* File attachment block in chat (Lens delivering a file) */
+.chat-file-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  margin: 10px 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  max-width: 320px;
+}
+.chat-file-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  background: var(--gray-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.chat-file-thumb-page {
+  width: 36px;
+  height: 44px;
+  background: #fff;
+  border-radius: 3px;
+  border: 1px solid var(--gray-100);
+  padding: 5px 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.chat-file-thumb-bar {
+  height: 4px;
+  background: var(--active-border);
+  opacity: 0.55;
+  border-radius: 1px;
+  margin-bottom: 2px;
+}
+.chat-file-thumb-line {
+  height: 2px;
+  background: var(--gray-200);
+  border-radius: 1px;
+}
+.chat-file-thumb-line.short { width: 60%; }
+.chat-file-info { min-width: 0; flex: 1; }
+.chat-file-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-head);
+  letter-spacing: -0.1px;
+  line-height: 1.3;
+  margin-bottom: 3px;
+  word-break: break-word;
+}
+.chat-file-sub {
+  font-size: 11.5px;
+  color: var(--text-meta);
+  line-height: 1.3;
+}
+
 .chat-sender-row {
   display: flex;
   align-items: center;
@@ -3531,6 +3593,10 @@ async function sendCardMessage(screen) {
 // =========================================================================
 // DEMO: 3 seed chat threads with static April timestamps. Launch: real chat history from Mem0 Pro, scoped to current user, relative timestamps. See DEMO_FIDELITY.md #3
 const chatThreads = [
+  { id: 't0', title: 'Atlas Assist messaging deck', ts: 'April 24', messages: [
+    { role: 'user', content: 'Send me the Atlas Assist messaging deck Jess shared.' },
+    { role: 'assistant', content: 'Here it is. Last edited April 22.<div class="chat-file-block"><div class="chat-file-thumb"><div class="chat-file-thumb-page"><div class="chat-file-thumb-bar"></div><div class="chat-file-thumb-line"></div><div class="chat-file-thumb-line short"></div><div class="chat-file-thumb-line"></div></div></div><div class="chat-file-info"><div class="chat-file-name">Atlas Assist Messaging v3.pdf</div><div class="chat-file-sub">Google Drive &middot; 12 slides<br>Updated April 22</div></div></div>Twelve slides. Sales has been pulling from slides 4 and 5 most often this week.' },
+  ]},
   { id: 't1', title: 'Latest mid-market case study', ts: 'April 22', messages: [
     { role: 'user', content: "Where's the latest version of the mid-market case study?" },
     { role: 'assistant', content: 'The Notion doc "Mid-Market Customer Story Q2" was last edited Tuesday. Six edits since you opened it on April 15, mostly to the customer-quote section. The PDF version Sales is using in pitches lives in the shared drive, last exported April 18.' },
