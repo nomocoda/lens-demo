@@ -1,0 +1,242 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "Marketing-sourced deals close 25% faster this week",
+    "anchor": "Current week wins average 38 days to close versus 51 days over the prior 11 weeks.",
+    "connect": "Mid-market accounts drive 7 of 9 current-week wins.",
+    "body": "Current week wins average 38 days to close versus 51 days over the prior 11 weeks. Mid-market accounts drive 7 of 9 current-week wins.",
+    "grounded_metrics": [
+      "marketing_sourced_velocity",
+      "weekly_win_patterns"
+    ],
+    "trace": "Significant velocity improvement in marketing-sourced deals this week, concentrated in mid-market segment."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Enterprise win rate jumps 8 points in Q2",
+    "anchor": "Q2 enterprise deals convert at 31% versus 22% over the trailing four quarters.",
+    "connect": "Average deal size increased to $187K from $142K.",
+    "body": "Q2 enterprise deals convert at 31% versus 22% over the trailing four quarters. Average deal size increased to $187K from $142K.",
+    "grounded_metrics": [
+      "enterprise_win_rate",
+      "deal_size_trends"
+    ],
+    "trace": "Material improvement in enterprise conversion with higher ASP, suggesting positioning or qualification improvements."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Event-sourced deals accelerate by 24 days",
+    "anchor": "Q1 event wins close in 45 days versus 70 days in Q4.",
+    "connect": "SaaS Connect drives 14 of 23 Q1 event wins.",
+    "body": "Q1 event wins close in 45 days versus 70 days in Q4. SaaS Connect drives 14 of 23 Q1 event wins.",
+    "grounded_metrics": [
+      "event_sourced_velocity",
+      "saas_connect_performance"
+    ],
+    "trace": "Event-sourced pipeline showing strong velocity improvement, with SaaS Connect as primary driver."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Mid-market SQLs up 50% in April",
+    "anchor": "April produces 147 mid-market SQLs versus 98 monthly average in Q1.",
+    "connect": "Q1 months ran consistently at 95-101 SQLs.",
+    "body": "April produces 147 mid-market SQLs versus 98 monthly average in Q1. Q1 months ran consistently at 95-101 SQLs.",
+    "grounded_metrics": [
+      "midmarket_sql_volume",
+      "monthly_trends"
+    ],
+    "trace": "Significant mid-market SQL volume increase in April, breaking from steady Q1 pattern."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ABM acceptance rate runs 20 points higher",
+    "anchor": "ABM MQLs convert to SDR acceptance at 61% versus 42% for non-ABM.",
+    "connect": "April volume: 70 ABM MQLs, 77 non-ABM MQLs.",
+    "body": "ABM MQLs convert to SDR acceptance at 61% versus 42% for non-ABM. April volume: 70 ABM MQLs, 77 non-ABM MQLs.",
+    "grounded_metrics": [
+      "abm_acceptance_rates",
+      "mql_channel_mix"
+    ],
+    "trace": "Clear qualification advantage for ABM channel with nearly equal volume distribution."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Paid social flips lead over paid search",
+    "anchor": "Q2 paid social creates $620K pipeline versus $380K from paid search.",
+    "connect": "Q1 ran opposite: paid search $720K, paid social $410K.",
+    "body": "Q2 paid social creates $620K pipeline versus $380K from paid search. Q1 ran opposite: paid search $720K, paid social $410K.",
+    "grounded_metrics": [
+      "paid_channel_pipeline",
+      "quarterly_mix_shift"
+    ],
+    "trace": "Channel mix reversal between Q1 and Q2, with paid social becoming the lead paid channel."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Digital ads run $84K under plan",
+    "anchor": "Q2 digital spend tracks at $256K versus $340K planned through April 23.",
+    "connect": "Two event budget reallocations total the $84K gap.",
+    "body": "Q2 digital spend tracks at $256K versus $340K planned through April 23. Two event budget reallocations total the $84K gap.",
+    "grounded_metrics": [
+      "digital_spend_pacing",
+      "budget_reallocation"
+    ],
+    "trace": "Under-spend in digital ads matches exactly with event budget reallocations to SaaS Connect and Signal Summit."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Branded search doubles over six weeks",
+    "anchor": "Weekly branded search volume climbs from 1000 to 1921 with gains every week.",
+    "connect": "Cumulative growth reaches 92% through April 19.",
+    "body": "Weekly branded search volume climbs from 1000 to 1921 with gains every week. Cumulative growth reaches 92% through April 19.",
+    "grounded_metrics": [
+      "branded_search_trend",
+      "weekly_momentum"
+    ],
+    "trace": "Consistent week-over-week branded search increases suggesting strong brand awareness momentum."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas mentions lead Beacon by 630",
+    "anchor": "April brand mentions: Atlas SaaS 1840, top competitor Beacon Systems 1210.",
+    "connect": "Atlas holds 60% share of voice between the two brands.",
+    "body": "April brand mentions: Atlas SaaS 1840, top competitor Beacon Systems 1210. Atlas holds 60% share of voice between the two brands.",
+    "grounded_metrics": [
+      "brand_mentions",
+      "competitive_share_voice"
+    ],
+    "trace": "Clear brand mention leadership over primary competitor Beacon Systems in April."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Analyst attention increases 50% in two weeks",
+    "anchor": "Last 14 days produce 9 analyst mentions versus 6 in the prior 30 days.",
+    "connect": "Forrester and G2 each contribute 3 mentions in the recent window.",
+    "body": "Last 14 days produce 9 analyst mentions versus 6 in the prior 30 days. Forrester and G2 each contribute 3 mentions in the recent window.",
+    "grounded_metrics": [
+      "analyst_mentions",
+      "firm_distribution"
+    ],
+    "trace": "Accelerating analyst coverage with Forrester and G2 as primary drivers."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Direct traffic crosses organic for the first time",
+    "anchor": "April traffic share: direct 42.4%, organic search 36.4%.",
+    "connect": "Direct first exceeded organic on April 15.",
+    "body": "April traffic share: direct 42.4%, organic search 36.4%. Direct first exceeded organic on April 15.",
+    "grounded_metrics": [
+      "traffic_channel_mix",
+      "direct_organic_crossover"
+    ],
+    "trace": "Milestone shift where direct traffic became the leading channel, crossing organic search mid-April."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas Insights reference opt-ins reach 76%",
+    "anchor": "Customer reference rates: Atlas Insights 75.6%, Atlas Workflow 71.1%.",
+    "connect": "Atlas Connect lags at 27.5% opt-in rate.",
+    "body": "Customer reference rates: Atlas Insights 75.6%, Atlas Workflow 71.1%. Atlas Connect lags at 27.5% opt-in rate.",
+    "grounded_metrics": [
+      "reference_opt_rates",
+      "product_line_advocacy"
+    ],
+    "trace": "Strong reference willingness for core products but Connect shows low advocacy levels."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Named accounts show high-intent clustering",
+    "anchor": "Three target accounts register 5+ high-intent events this week.",
+    "connect": "Two of the three sit on the Named Accounts list of 50.",
+    "body": "Three target accounts register 5+ high-intent events this week. Two of the three sit on the Named Accounts list of 50.",
+    "grounded_metrics": [
+      "target_account_intent",
+      "named_account_overlap"
+    ],
+    "trace": "High-intent activity concentrated in named target accounts, suggesting ABM targeting accuracy."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas Assist launch locks calendar this week",
+    "anchor": "Product launch scheduled for May 8 with campaign status ready.",
+    "connect": "Calendar locks Friday April 24.",
+    "body": "Product launch scheduled for May 8 with campaign status ready. Calendar locks Friday April 24.",
+    "grounded_metrics": [
+      "product_launch_timeline",
+      "campaign_readiness"
+    ],
+    "trace": "Atlas Assist launch on track with marketing campaign ready and calendar locking this week."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "SDR capacity exceeds inbound flow by 68 leads",
+    "anchor": "Current week SDR capacity: 210 versus inbound volume of 142.",
+    "connect": "Trailing month averaged capacity 214, inbound 193.",
+    "body": "Current week SDR capacity: 210 versus inbound volume of 142. Trailing month averaged capacity 214, inbound 193.",
+    "grounded_metrics": [
+      "sdr_capacity",
+      "inbound_volume_gap"
+    ],
+    "trace": "SDR capacity currently above inbound volume, shift from typical near-capacity utilization."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Fintech dominates mid-market wins",
+    "anchor": "Last 60 days: 8 of 12 mid-market wins come from fintech vertical.",
+    "connect": "All 12 wins run Snowflake plus dbt stack.",
+    "body": "Last 60 days: 8 of 12 mid-market wins come from fintech vertical. All 12 wins run Snowflake plus dbt stack.",
+    "grounded_metrics": [
+      "vertical_win_concentration",
+      "tech_stack_patterns"
+    ],
+    "trace": "Strong fintech vertical concentration in mid-market wins with consistent tech stack profile."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Event spend shifts to SaaS Connect concentration",
+    "anchor": "Budget reallocation: SaaS Connect and Signal Summit absorb $84K from digital ads.",
+    "connect": "SaaS Connect already delivered 14 Q1 wins from events.",
+    "body": "Budget reallocation: SaaS Connect and Signal Summit absorb $84K from digital ads. SaaS Connect already delivered 14 Q1 wins from events.",
+    "grounded_metrics": [
+      "event_budget_shift",
+      "saas_connect_roi"
+    ],
+    "trace": "Budget moving toward event concentration with SaaS Connect proving strong win generation."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Q2 pipeline mix inverts from Q1",
+    "anchor": "Paid social leads paid search pipeline creation by $240K in Q2.",
+    "connect": "Q1 gap ran $310K in paid search favor.",
+    "body": "Paid social leads paid search pipeline creation by $240K in Q2. Q1 gap ran $310K in paid search favor.",
+    "grounded_metrics": [
+      "pipeline_channel_inversion",
+      "quarterly_pipeline_mix"
+    ],
+    "trace": "Complete channel performance reversal between quarters, with paid social taking lead pipeline role."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Brand momentum shows across three signals",
+    "anchor": "Branded search up 92%, direct traffic leads organic, mentions up 52%.",
+    "connect": "Direct traffic crossover happened April 15.",
+    "body": "Branded search up 92%, direct traffic leads organic, mentions up 52%. Direct traffic crossover happened April 15.",
+    "grounded_metrics": [
+      "brand_momentum_bundle",
+      "multi_signal_alignment"
+    ],
+    "trace": "Multiple brand signals showing coordinated strength: search, traffic, and mention volume all positive."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Mid-market velocity advantage widens",
+    "anchor": "Current week marketing-sourced wins: 7 mid-market of 9 total.",
+    "connect": "Mid-market deals average 38-day close versus enterprise 31% win rate.",
+    "body": "Current week marketing-sourced wins: 7 mid-market of 9 total. Mid-market deals average 38-day close versus enterprise 31% win rate.",
+    "grounded_metrics": [
+      "midmarket_velocity",
+      "segment_performance_gap"
+    ],
+    "trace": "Mid-market showing both volume and velocity advantages in marketing-sourced pipeline."
+  }
+]

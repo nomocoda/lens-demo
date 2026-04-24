@@ -10,21 +10,29 @@ the 15 seeded patterns and feed them in place of COMPANY_DATA. A future
 Option B would expose dataset query tools and let the model discover signals
 through tool use — see OPTION_B_NOTE below.
 
-Prompt stack (order matches worker.js buildCardSystemPrompt):
+Prompt stack order (adapted from worker.js buildCardSystemPrompt for cache
+efficiency — DATA_BOUNDARY + dataset summary moved from middle to tail, so
+the ~100K stable prefix caches cleanly across seeds via a cache_control
+breakpoint between blocks 14 and 15):
+
+  STABLE PREFIX (cached):
   1.  PERSONA                         (data/persona.md)
   2.  MARKETING_LEADER_BRIEF          (data/marketing-leader-brief.md)
   3.  IDENTITY_GUARDRAIL              (worker.js)
-  4.  DATA_BOUNDARY + dataset summary (replaces COMPANY_DATA)
-  5.  FABRICATION_GUARD               (worker.js)
-  6.  ROLE_SCOPING                    (worker.js)
-  7.  CARD_SELECTION_ROLE_SCOPED      (worker.js)
-  8.  SIGNAL_VS_REPORT_GUARD          (worker.js)
-  9.  COMPOSITION_COMPLETENESS_GUARD  (worker.js, adapted schema)
- 10.  FORWARD_FRAMING_GUARD           (worker.js)
- 11.  PEOPLE_NAMING_GUARD             (worker.js)
- 12.  VOICE_BRIEF                     (data/voice-brief.md)  -- LAST BEFORE TASK
- 13.  Eval card generation instructions
- 14.  OUTPUT_HYGIENE_GUARD (adapted to eval schema)
+  4.  FABRICATION_GUARD               (worker.js)
+  5.  ROLE_SCOPING                    (worker.js)
+  6.  CARD_SELECTION_ROLE_SCOPED      (worker.js)
+  7.  SIGNAL_VS_REPORT_GUARD          (worker.js)
+  8.  COMPOSITION_COMPLETENESS_GUARD  (worker.js, adapted schema)
+  9.  FORWARD_FRAMING_GUARD           (worker.js)
+ 10.  PEOPLE_NAMING_GUARD             (worker.js)
+ 11.  VOICE_BRIEF                     (data/voice-brief.md)
+ 12.  Eval card generation instructions (EVAL_COMPOSITION_RULES)
+ 13.  Eval card instructions body     (EVAL_CARD_INSTRUCTIONS)
+ 14.  OUTPUT_HYGIENE_GUARD            (adapted to eval schema)
+  ---- cache_control breakpoint ----
+  DATASET BLOCK (per-seed):
+ 15.  DATA_BOUNDARY + dataset summary (replaces COMPANY_DATA)
 
 FRESHNESS_GUARD is intentionally dropped. It rotates across generations using
 marquee-signal letters A-H from the production atlas-saas.md, which do not
@@ -522,14 +530,22 @@ The guards above are binding. Key reminders:
 """
 
 
-def build_card_system_prompt(persona: str, marketing_leader_brief: str,
-                             voice_brief: str, guards: Dict[str, str],
-                             dataset_summary: str) -> str:
+def build_stable_prefix(persona: str, marketing_leader_brief: str,
+                        voice_brief: str, guards: Dict[str, str]) -> str:
+    """Everything in the system prompt that does NOT vary across seeds.
+
+    Kept first so it caches as a single prefix across every run. The dataset
+    summary is appended as a separate (uncached) system block at call time.
+    Structure diverges slightly from worker.js buildCardSystemPrompt() —
+    DATA_BOUNDARY + dataset are placed at the END rather than the middle, so
+    the ~100K stable stack caches cleanly. The model still sees the full
+    guard context before the data; only the ordering within the system prompt
+    is batched for cache efficiency.
+    """
     return (
         f"{persona}\n\n---\n\n"
         f"{marketing_leader_brief}\n\n---\n\n"
         f"{guards['IDENTITY_GUARDRAIL']}\n\n---\n\n"
-        f"{guards['DATA_BOUNDARY']}\n\n{dataset_summary}\n\n---\n\n"
         f"{guards['FABRICATION_GUARD']}\n\n---\n\n"
         f"{guards['ROLE_SCOPING']}\n\n---\n\n"
         f"{guards['CARD_SELECTION_ROLE_SCOPED']}\n\n---\n\n"
@@ -542,6 +558,12 @@ def build_card_system_prompt(persona: str, marketing_leader_brief: str,
         f"{EVAL_CARD_INSTRUCTIONS}\n\n---\n\n"
         f"{EVAL_OUTPUT_HYGIENE}"
     )
+
+
+def build_dataset_block(data_boundary: str, dataset_summary: str) -> str:
+    """The variable, per-seed tail of the system prompt. Lives OUTSIDE the
+    cached prefix so it can change per seed without invalidating the cache."""
+    return f"{data_boundary}\n\n{dataset_summary}"
 
 
 def build_user_message() -> str:
@@ -569,12 +591,12 @@ def load_api_key() -> str:
     raise RuntimeError("ANTHROPIC_API_KEY not set in env or .env")
 
 
-def call_claude(system: str, user: str, model: str, max_tokens: int,
-                api_key: str) -> Tuple[str, Dict]:
+def call_claude(system_blocks: List[Dict], user: str, model: str,
+                max_tokens: int, api_key: str) -> Tuple[str, Dict]:
     payload = {
         "model": model,
         "max_tokens": max_tokens,
-        "system": [{"type": "text", "text": system}],
+        "system": system_blocks,
         "messages": [{"role": "user", "content": user}],
     }
     req = urllib.request.Request(
@@ -631,23 +653,36 @@ def main(argv: Optional[List[str]] = None) -> int:
     voice_brief = (DATA_DIR / "voice-brief.md").read_text()
 
     summary = build_summary(ds)
-    system_prompt = build_card_system_prompt(persona, marketing_leader_brief,
-                                             voice_brief, guards, summary)
+    stable_prefix = build_stable_prefix(persona, marketing_leader_brief,
+                                        voice_brief, guards)
+    dataset_block = build_dataset_block(guards["DATA_BOUNDARY"], summary)
+    # Two system blocks: stable prefix is cached (cache_control breakpoint),
+    # dataset block varies per seed.
+    system_blocks = [
+        {"type": "text", "text": stable_prefix,
+         "cache_control": {"type": "ephemeral"}},
+        {"type": "text", "text": dataset_block},
+    ]
     user_message = build_user_message()
 
     if args.dry_run:
         print("=== DATASET SUMMARY ===")
         print(summary)
         print()
-        print(f"=== SYSTEM PROMPT LENGTH: {len(system_prompt)} chars ===")
+        print(f"=== STABLE PREFIX LENGTH: {len(stable_prefix):,} chars "
+              f"(cached) ===")
+        print(f"=== DATASET BLOCK LENGTH: {len(dataset_block):,} chars "
+              f"(uncached, per-seed) ===")
         print(f"=== USER MESSAGE ===\n{user_message}")
         return 0
 
     api_key = load_api_key()
+    total_len = len(stable_prefix) + len(dataset_block)
     print(f"Calling Claude ({args.model}) with system prompt of "
-          f"{len(system_prompt):,} chars / summary of {len(summary):,} chars...",
+          f"{total_len:,} chars "
+          f"(prefix {len(stable_prefix):,} cached + dataset {len(dataset_block):,} per-seed)...",
           file=sys.stderr)
-    text, response = call_claude(system_prompt, user_message,
+    text, response = call_claude(system_blocks, user_message,
                                  args.model, args.max_tokens, api_key)
 
     usage = response.get("usage", {})
