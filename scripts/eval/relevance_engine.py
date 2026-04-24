@@ -641,34 +641,61 @@ def parse_cards(text: str) -> List[Dict]:
     return json.loads(match.group(0))
 
 
-# Voice rule: comparisons use "versus" or "compared to", never "against".
-# Belt-and-braces normalizer for user-facing card fields when Sonnet drifts
-# despite the Voice Brief calibration note. Trace is internal commentary and
-# is intentionally NOT normalized.
+# Voice rules (Phase 1.4 + 1.4b) — belt-and-braces normalizer for user-facing
+# card fields when Sonnet drifts despite the Voice Brief calibration note.
+# Trace is internal commentary and is intentionally NOT normalized.
+#
+# Two-tier strategy:
+#   Tier 1 (mechanical rewrite): "against" → "versus" is a clean lexical swap
+#     in comparison contexts, so we apply it automatically.
+#   Tier 2 (fail-and-regenerate): problem-framing words (loss/gap/miss/failure)
+#     have no clean single-word substitute that preserves meaning. Forcing a
+#     swap (e.g. gap→shift) produces semantically off copy ("freed up the
+#     shift", "Q1 shift ran $310K"). Story Cards surface forward signal only,
+#     so the right move is to surface unresolved hits and let the caller
+#     regenerate the seed. The CLI exits non-zero when any are present.
 _USER_FACING_FIELDS = ("title", "anchor", "connect", "body")
 _AGAINST_RE = re.compile(r"\bagainst\b", re.IGNORECASE)
+_PROBLEM_WORDS_RE = re.compile(
+    r"\b(?:loss|losses|gap|gaps|miss|missed|misses|failure|failures)\b",
+    re.IGNORECASE,
+)
 
 
-def normalize_voice(cards: List[Dict]) -> Tuple[List[Dict], List[Dict]]:
-    """Apply post-generation voice fixes; return (cards, list of edits made).
+def normalize_voice(
+    cards: List[Dict],
+) -> Tuple[List[Dict], List[Dict], List[Dict]]:
+    """Apply post-generation voice fixes.
 
-    Edits each user-facing field in place. The return list of edits lets the
-    caller log which cards required normalization, which is itself a signal
-    of voice drift across the run.
+    Returns (cards, edits, unresolved):
+      edits     — Tier 1 mechanical rewrites applied in place.
+      unresolved — Tier 2 problem-word hits the caller must regenerate.
     """
     edits: List[Dict] = []
+    unresolved: List[Dict] = []
     for idx, card in enumerate(cards):
         for field in _USER_FACING_FIELDS:
             value = card.get(field)
             if not isinstance(value, str):
                 continue
-            if not _AGAINST_RE.search(value):
-                continue
-            new_value = _AGAINST_RE.sub("versus", value)
-            card[field] = new_value
-            edits.append({"card_index": idx, "field": field,
-                          "before": value, "after": new_value})
-    return cards, edits
+            new_value = value
+            if _AGAINST_RE.search(new_value):
+                rewritten = _AGAINST_RE.sub("versus", new_value)
+                edits.append({"card_index": idx, "field": field,
+                              "rule": "against→versus",
+                              "before": new_value, "after": rewritten})
+                new_value = rewritten
+            if new_value != value:
+                card[field] = new_value
+            for m in _PROBLEM_WORDS_RE.finditer(new_value):
+                start = max(0, m.start() - 30)
+                end = min(len(new_value), m.end() + 30)
+                unresolved.append({
+                    "card_index": idx, "field": field,
+                    "match": m.group(0),
+                    "snippet": new_value[start:end],
+                })
+    return cards, edits, unresolved
 
 
 # ---------------------------------------------------------------------------
@@ -743,13 +770,21 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(text, file=sys.stderr)
         return 2
 
-    cards, voice_edits = normalize_voice(cards)
+    cards, voice_edits, voice_unresolved = normalize_voice(cards)
     if voice_edits:
         print(f"voice normalizer applied {len(voice_edits)} edit(s):",
               file=sys.stderr)
         for e in voice_edits:
-            print(f"  card[{e['card_index']}].{e['field']}: "
-                  f"'against' → 'versus'", file=sys.stderr)
+            print(f"  card[{e['card_index']}].{e['field']}: {e['rule']}",
+                  file=sys.stderr)
+    if voice_unresolved:
+        print(f"voice normalizer found {len(voice_unresolved)} unresolved "
+              f"problem-word hit(s) — regenerate the seed:",
+              file=sys.stderr)
+        for u in voice_unresolved:
+            print(f"  card[{u['card_index']}].{u['field']}: '{u['match']}' "
+                  f"in '…{u['snippet']}…'", file=sys.stderr)
+        return 3
 
     # Phase 1.3 specificity guardrail — pre-flight drop. Every numeric claim
     # in title/anchor/connect/body must be LITERAL (present in the dataset
