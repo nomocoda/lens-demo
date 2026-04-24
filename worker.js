@@ -363,16 +363,42 @@ The asymmetry: positive change is just a change; negative change, described as a
 
 COMPARISON SHAPE — when the sentence must reference both a current figure and a reference figure, use ONLY one of these shapes:
 
-  Shape A: "[current] against [reference]"
-  Shape B: "[current]; [reference is the target/benchmark/prior period]"
+  Shape A: "[current] versus [reference]"   (preferred neutral connector)
+  Shape B: "[current]; [reference is the prior-period figure or internal target]"
   Shape C: "[current figure] in [period]. [Reference figure] in [prior period]."
+  Shape D: "[current figure] compared to [reference figure]"   (acceptable substitute for Shape A)
 
-Never a directional word between the two figures. "Against" is neutral. "Below" is not.
+Never a directional word between the two figures. "Versus" and "compared to" are neutral. "Below," "behind," "short of," "lower than" are not.
+
+THE WORD "AGAINST" IS BANNED IN CARD OUTPUT WHEN USED AS A COMPARATIVE CONNECTOR. "Against" reads as analyst/report language, not as a peer at the coffee pot. Replace with "versus" or "compared to" everywhere it sits between two compared figures or two compared entities. Specific patterns to rewrite on sight:
+  ✗ "X% against Y%" → ✓ "X% versus Y%"
+  ✗ "$N against the $M target" → ✓ "$N versus the $M target" (and reconsider whether the target reference is even needed)
+  ✗ "Atlas wins against FlowStack" → ✓ "Atlas wins versus FlowStack"
+  ✗ "Q1 ran at X against Q4's Y" → ✓ "Q1 ran at X versus Q4's Y"
+  ✗ "running at X against benchmark" → ✓ rewrite to remove the benchmark reference entirely (see benchmark guard below)
+  ✗ "X against the Y-Z range" → ✓ "X" (drop the range — see benchmark guard below)
+The word "against" may still appear in non-comparative idioms ("protect against churn," "guard against," "leans against") but never between compared figures or entities.
+
+NO BENCHMARK-AS-GRADING. External/market data — industry benchmarks, B2B SaaS standards, "investor lines," stage-appropriate ranges — belongs on a card ONLY as a market event connected to internal data. NEVER as a healthy/unhealthy range that grades the internal figure as above or below where it should be. Grading is the user's judgment, not Lens's. Specifically banned across headline, anchor, and connect:
+  ✗ "B2B SaaS benchmark range runs X-Y%"
+  ✗ "B2B SaaS benchmark for [X] sits at Y%"
+  ✗ "benchmark at Atlas's stage is X%"
+  ✗ "above the X-Y% benchmark"
+  ✗ "below the X-Y% benchmark"
+  ✗ "the gated-tool benchmark range is X-Y%"
+  ✗ "the investor line for X is Y" / "investor line for [coverage/expansion/etc.] sits at Y"
+  ✗ "the standard for [stage/company size] is X"
+  ✗ "industry benchmark of X"
+  ✗ "above benchmark," "below benchmark" (in any framing)
+  ✗ any sentence whose connect compares an internal figure to a stated industry/stage/investor range
+The connect sentence should widen to ANOTHER INTERNAL DATA POINT — a prior-period figure, a cross-domain internal correlate, a related cohort, a different but adjacent internal metric. Internal-versus-internal connects are always available; reach for one instead of an external benchmark range.
 
 PRE-EMIT CHECK — RUN ON EVERY CARD:
 1. Scan each sentence for any banned word. If one appears, rewrite.
-2. For any comparison sentence, verify it matches Shape A, B, or C exactly.
-3. Re-read each sentence as a neutral peer would. If any sentence sounds like a verdict on performance, rewrite as a plain present-tense fact.`;
+2. Scan each sentence for the word "against" used as a comparative connector. If present, replace with "versus" or "compared to."
+3. Scan each sentence for any benchmark-as-grading phrase from the list above. If present, replace the connect with an internal-versus-internal comparison or strip the comparison entirely.
+4. For any comparison sentence, verify it matches Shape A, B, C, or D exactly.
+5. Re-read each sentence as a neutral peer would. If any sentence sounds like a verdict on performance, rewrite as a plain present-tense fact.`;
 
 const SIGNAL_VS_REPORT_GUARD = `SIGNAL VS REPORT — SENTENCE 2 MUST WIDEN, NEVER EXPLAIN
 

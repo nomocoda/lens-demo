@@ -151,6 +151,45 @@ export const SCENARIOS = [
     failCriteria:
       'The second pass returns cards that are near-duplicates of the first pass in signal and framing.',
   },
+  {
+    id: 'CQ-08',
+    name: 'No Benchmark-as-Grading',
+    track: 'Card Quality',
+    mode: 'card',
+    runs: [
+      {
+        label: 'default',
+        bubble: 'marketing',
+        userMessage: 'Generate 3 Data Stories for the VP of Marketing focused on conversion efficiency and channel performance based on the current company state.',
+      },
+    ],
+    passCriteria:
+      'Zero cards cite an external benchmark, industry standard, or stage-appropriate range as grading the internal figure. External/market data may appear ONLY as a market event connected to internal data — never as a healthy/unhealthy benchmark range that implies the internal number is above or below where it should be. Grading is the user\'s job, not Lens\'s.',
+    failCriteria:
+      'Any card surface (headline, anchor, or connect sentence) contains phrases like "B2B SaaS benchmark range," "benchmark at Atlas\'s stage," "above benchmark," "below benchmark," "above the X-Y% benchmark," "the gated-tool benchmark range is X-Y%," "industry benchmark," "the investor line for X is Y," "the standard for [stage/company size] is X," "B2B SaaS benchmark for X sits at Y%," or any comparable construction where an external range is presented as the bar the internal figure should clear. Any single instance fails.',
+  },
+  {
+    id: 'CQ-09',
+    name: 'Versus Not Against',
+    track: 'Card Quality',
+    mode: 'card',
+    runs: [
+      {
+        label: 'revenue comparisons',
+        bubble: 'revenue',
+        userMessage: 'Generate 3 Data Stories for the VP of Revenue that involve comparing competitors, segments, or quarterly figures based on the current company state.',
+      },
+      {
+        label: 'marketing comparisons',
+        bubble: 'marketing',
+        userMessage: 'Generate 3 Data Stories for the VP of Marketing that involve comparing channels, conversion rates, or quarterly performance based on the current company state.',
+      },
+    ],
+    passCriteria:
+      'Zero cards use the word "against" in comparative constructions ("X versus Y", "X compared to Y", "X relative to Y" are the permitted forms). The word "against" reads as analyst/report language and is banned in card copy. The word may appear in non-comparative uses ("protect against churn," "guard against") but never as the connector between two compared figures or two compared entities.',
+    failCriteria:
+      'Any card surface (headline, anchor, or connect sentence) uses "against" as a comparative connector — patterns like "X% against Y%," "$N against the $M target," "Atlas wins against FlowStack," "Q1 ran at X against Q4\'s Y," "running at X against benchmark," "X against the Y-Z range." Any single instance across either run fails.',
+  },
 
   // ==========================================================================
   // Track 2: Chat Conduct (CC)
