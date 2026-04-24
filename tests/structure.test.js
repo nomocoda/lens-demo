@@ -8,12 +8,12 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
 const indexHtml = readFileSync(resolve(repoRoot, 'index.html'), 'utf8');
 
-// Locked Intelligence Areas (NomoCoda Operating Context, locked 2026-04-20).
-// Four domains plus the ever-present "all" filter. Team/Ops/Market retired
-// 2026-04-20; Marketing + Product added.
-const ALLOWED_FILTER_SLUGS = new Set(['all', 'customers', 'revenue', 'marketing', 'product']);
-const ALLOWED_DOMAIN_KEYS = new Set(['customers', 'revenue', 'marketing', 'product']);
-const ALLOWED_DOMAIN_TITLES = new Set(['Customers', 'Revenue', 'Marketing', 'Product']);
+// Locked Intelligence Areas (NomoCoda Operating Context v11, locked 2026-04-24).
+// Three GTM delivery domains plus the ever-present "all" filter. Product
+// retired as a delivery domain 2026-04-24 and is now a Source Domain only.
+const ALLOWED_FILTER_SLUGS = new Set(['all', 'customers', 'revenue', 'marketing']);
+const ALLOWED_DOMAIN_KEYS = new Set(['customers', 'revenue', 'marketing']);
+const ALLOWED_DOMAIN_TITLES = new Set(['Customers', 'Revenue', 'Marketing']);
 
 describe('Invariant 8 — Intelligence Areas match the locked set', () => {
   test('MOBILE_FILTER_DOMAINS keys are all in the allowed set', () => {

@@ -2595,14 +2595,8 @@ const insightData = {
     title: 'Customers',
     cards: [
       { isNew: true, createdAt: 'April 17, 2026', headline: 'Net revenue retention sits at 112% this quarter against 118% two quarters ago.', body: 'Expansion ARR this quarter concentrated in the mid-market cohort at 74% of the total. Gross retention held at 91% over the same window. The next 90 days of expansion pipeline sits at $420K across 11 accounts.', sources: [{ system: 'Salesforce', record: 'NRR Cohort Report' }, { system: 'Salesforce', record: 'Expansion Pipeline Q2' }] },
+      { isNew: true, createdAt: 'April 15, 2026', headline: 'Custom RBAC and audit logs Beacon Logistics flagged at churn ship June 15, ahead of their July 15 renewal.', body: 'Beacon cited custom RBAC, audit logs, and API controls in their churn-risk review three months ago. The platform release that delivers them remains on its June 15 milestone. Atlas Assist runs on the same architecture; its May 1 alpha demo serves as the milestone check.', sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Gainsight', record: 'Beacon Churn-Risk Review' }] },
       { isNew: false, createdAt: 'April 10, 2026', headline: 'Accounts using under 40% of licensed seats carry 18% of portfolio ARR.', body: 'At end of Q4 that band sat at 13%. Six accounts in the band renew in the next 90 days, totaling $280K ARR. Portfolio gross retention through Q1 held at 91%.', sources: [{ system: 'Gainsight', record: 'Health Score Band' }, { system: 'Salesforce', record: 'Renewal Forecast' }] }
-    ]
-  },
-  product: {
-    title: 'Product',
-    cards: [
-      { isNew: true, createdAt: 'April 16, 2026', headline: 'Atlas Assist messaging brief is 80% complete with 25 days to the May 15 announcement.', body: 'Sales deck is waiting on the May 1 alpha; demo video and launch blog post are not started; PR outreach has three reporters briefed. The 2024 SOC 2 launch moved from announcement to first attributed pipeline in 9 days; the 2025 Workflow Templates launch took 18.', sources: [{ system: 'Notion', record: 'Atlas Assist Launch Plan' }, { system: 'Asana', record: 'Product Marketing Deliverables' }] },
-      { isNew: true, createdAt: 'April 15, 2026', headline: 'Platform rewrite reached 62% this week with a June 15 beta target.', body: 'Unlocks the custom RBAC, audit logs, and API controls Beacon Logistics cited on churn three months ago. Atlas Assist runs on the new architecture, so the May 1 alpha demo tracks the rewrite\'s milestone pace. The timeline has held through the last three milestones.', sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Asana', record: 'Engineering Milestones' }] }
     ]
   }
 };
@@ -2708,7 +2702,7 @@ function scrollActiveTabToTop(tab) {
 // =========================================================================
 function buildFeedData() {
   const items = [];
-  const categoryOrder = ['marketing', 'revenue', 'customers', 'product'];
+  const categoryOrder = ['marketing', 'revenue', 'customers'];
   categoryOrder.forEach(bubble => {
     const data = insightData[bubble];
     if (!data) return;
@@ -2910,8 +2904,7 @@ let mobileActiveFilters = new Set();
 const MOBILE_FILTER_DOMAINS = [
   { key: 'marketing', label: 'Marketing' },
   { key: 'revenue',   label: 'Revenue' },
-  { key: 'customers', label: 'Customers' },
-  { key: 'product',   label: 'Product' }
+  { key: 'customers', label: 'Customers' }
 ];
 
 function renderMobileFilterPanel(panel) {
