@@ -1,0 +1,242 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "Health score model hits 0.81 AUC for the third consecutive quarter",
+    "anchor": "The model's renewal prediction accuracy climbed from 0.67 two quarters ago to 0.74 last quarter to 0.81 currently.",
+    "connect": "Override rate dropped to 11% from the 24% peak, suggesting CSMs trust the model outputs more consistently.",
+    "body": "The model's renewal prediction accuracy climbed from 0.67 two quarters ago to 0.74 last quarter to 0.81 currently. Override rate dropped to 11% from the 24% peak, suggesting CSMs trust the model outputs more consistently.",
+    "grounded_metrics": [
+      "health_score_auc",
+      "override_rate_trend"
+    ],
+    "trace": "Three consecutive quarters of AUC improvement with concurrent override rate decline indicates both model quality and CSM adoption are moving in the right direction."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Playbook completion measurement becomes visible for the first time",
+    "anchor": "The April 18 CS platform update shipped completion event attribution, enabling end-to-end playbook outcome tracking.",
+    "connect": "312 playbooks completed in the 30 days since the feature went live.",
+    "body": "The April 18 CS platform update shipped completion event attribution, enabling end-to-end playbook outcome tracking. 312 playbooks completed in the 30 days since the feature went live.",
+    "grounded_metrics": [
+      "playbook_completion_attribution",
+      "completion_count"
+    ],
+    "trace": "Platform capability unlock that makes playbook governance measurable where it was previously invisible."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Product telemetry moves from 72-hour delay to real-time signal processing",
+    "anchor": "The Mixpanel-to-CS-platform sync shifted to real-time on April 18, replacing the batch-nightly mode that carried 3-day latency.",
+    "connect": "Health model reactions to usage spikes now happen within minutes instead of waiting for the next batch cycle.",
+    "body": "The Mixpanel-to-CS-platform sync shifted to real-time on April 18, replacing the batch-nightly mode that carried 3-day latency. Health model reactions to usage spikes now happen within minutes instead of waiting for the next batch cycle.",
+    "grounded_metrics": [
+      "telemetry_sync_latency",
+      "real_time_integration"
+    ],
+    "trace": "Infrastructure improvement that closes the signal-to-model timing gap from days to minutes."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Likelihood-to-renew layer enters shadow production alongside composite scoring",
+    "anchor": "The probabilistic model started running April 21, producing its own pass-fail history for direct comparison with the current health score outputs.",
+    "connect": "Both models now generate parallel predictions that can be evaluated side-by-side versus actual renewal outcomes.",
+    "body": "The probabilistic model started running April 21, producing its own pass-fail history for direct comparison with the current health score outputs. Both models now generate parallel predictions that can be evaluated side-by-side versus actual renewal outcomes.",
+    "grounded_metrics": [
+      "shadow_production_model",
+      "parallel_prediction"
+    ],
+    "trace": "Second model in validation phase that will enable A/B comparison of prediction approaches using live data."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Coverage tier refresh moves 47 accounts based on actual usage patterns",
+    "anchor": "The reclassification shifted accounts from Mid-Touch to High-Touch using 14 months of usage and renewal data instead of original onboarding tier assignments.",
+    "connect": "New playbook routing for the reclassified accounts begins Q3 2026.",
+    "body": "The reclassification shifted accounts from Mid-Touch to High-Touch using 14 months of usage and renewal data instead of original onboarding tier assignments. New playbook routing for the reclassified accounts begins Q3 2026.",
+    "grounded_metrics": [
+      "coverage_tier_refresh",
+      "account_reclassification"
+    ],
+    "trace": "Segmentation correction based on observed behavior rather than initial assumptions at onboarding."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "BigQuery feature-usage pipeline approved to replace proxy signals",
+    "anchor": "The Q2 2026 project will substitute actual feature-usage data for the login frequency proxies currently feeding the health score model.",
+    "connect": "Approval came April 22, targeting implementation within the current quarter.",
+    "body": "The Q2 2026 project will substitute actual feature-usage data for the login frequency proxies currently feeding the health score model. Approval came April 22, targeting implementation within the current quarter.",
+    "grounded_metrics": [
+      "bigquery_pipeline_approval",
+      "proxy_signal_replacement"
+    ],
+    "trace": "Data quality upgrade that moves from indirect login signals to direct feature engagement signals."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Handoff data completeness jumps from 41% to 84% across Q2 deals",
+    "anchor": "24 closed-won handoffs now include stakeholder maps, buying reasons, and verbal commitments at an 84% completion rate.",
+    "connect": "Day-0 health score accuracy improves with richer account context available at the handoff moment.",
+    "body": "24 closed-won handoffs now include stakeholder maps, buying reasons, and verbal commitments at an 84% completion rate. Day-0 health score accuracy improves with richer account context available at the handoff moment.",
+    "grounded_metrics": [
+      "handoff_completeness",
+      "day_zero_accuracy"
+    ],
+    "trace": "Sales-to-CS handoff quality improvement that enriches the initial health model inputs."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Tech stack consolidation frees 40% of connector maintenance overhead",
+    "anchor": "3 CS tools retired in Q1 2026 reduced the integration load and admin bandwidth requirements.",
+    "connect": "Freed capacity flows toward health model improvement work and playbook optimization.",
+    "body": "3 CS tools retired in Q1 2026 reduced the integration load and admin bandwidth requirements. Freed capacity flows toward health model improvement work and playbook optimization.",
+    "grounded_metrics": [
+      "tech_stack_consolidation",
+      "admin_bandwidth"
+    ],
+    "trace": "Platform rationalization that creates operational capacity for higher-value modeling work."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Salesforce sync maintains 99.7% uptime above operational threshold",
+    "anchor": "March 2026 uptime exceeded the 99% reliability target for nightly CRM-to-CS-platform data handoffs.",
+    "connect": "Health model signal reliability holds steady with consistent data pipeline performance.",
+    "body": "March 2026 uptime exceeded the 99% reliability target for nightly CRM-to-CS-platform data handoffs. Health model signal reliability holds steady with consistent data pipeline performance.",
+    "grounded_metrics": [
+      "salesforce_sync_uptime",
+      "data_pipeline_reliability"
+    ],
+    "trace": "Infrastructure stability metric that supports consistent model input quality."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Custom Permissions launch traces directly to Beacon Logistics early renewal",
+    "anchor": "The March 8 feature release led to 21 consecutive green health days, early renewal conversation on April 2, and contract signature April 14.",
+    "connect": "Cross-entity attribution pipeline now connects product events to renewal outcomes end-to-end.",
+    "body": "The March 8 feature release led to 21 consecutive green health days, early renewal conversation on April 2, and contract signature April 14. Cross-entity attribution pipeline now connects product events to renewal outcomes end-to-end.",
+    "grounded_metrics": [
+      "cross_entity_attribution",
+      "product_event_to_renewal"
+    ],
+    "trace": "Complete attribution story from feature launch through health signal change to renewal acceleration."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Onboarding completion rate sits at 89% across Q1 cohort",
+    "anchor": "9 onboardings in the Q1 2026 cohort reached activation milestones at an 89% completion rate.",
+    "connect": "Activation signals feed back into the health model as enriched data points for ongoing scoring.",
+    "body": "9 onboardings in the Q1 2026 cohort reached activation milestones at an 89% completion rate. Activation signals feed back into the health model as enriched data points for ongoing scoring.",
+    "grounded_metrics": [
+      "onboarding_completion_rate",
+      "activation_signals"
+    ],
+    "trace": "Onboarding performance metric that contributes to health score model input quality."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "2026 Annual CS Benchmark data arrives April 30 for segmentation tuning",
+    "anchor": "The industry benchmark refresh will provide updated coverage tier ratios to calibrate versus current segmentation model built on 2025 data.",
+    "connect": "Fresh baseline data enables tuning coverage tiers versus current industry standards.",
+    "body": "The industry benchmark refresh will provide updated coverage tier ratios to calibrate versus current segmentation model built on 2025 data. Fresh baseline data enables tuning coverage tiers versus current industry standards.",
+    "grounded_metrics": [
+      "cs_benchmark_2026",
+      "segmentation_calibration"
+    ],
+    "trace": "External benchmark timing that enables segmentation model refresh with current industry data."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market NRR holds at 117% for third consecutive quarter above benchmark",
+    "anchor": "Q3 2025, Q4 2025, and Q1 2026 all ran above the 110% benchmark threshold for the mid-market segment.",
+    "connect": "Sustained performance above benchmark validates current segmentation and playbook effectiveness in the tier.",
+    "body": "Q3 2025, Q4 2025, and Q1 2026 all ran above the 110% benchmark threshold for the mid-market segment. Sustained performance above benchmark validates current segmentation and playbook effectiveness in the tier.",
+    "grounded_metrics": [
+      "mid_market_nrr",
+      "benchmark_comparison"
+    ],
+    "trace": "Three-quarter performance trend that supports current mid-market coverage model and playbook design."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Real-time telemetry and completion attribution ship on the same date",
+    "anchor": "April 18 delivered both the Mixpanel real-time sync and playbook completion event tracking in the same CS platform update.",
+    "connect": "Two infrastructure improvements now enable faster health model reactions and measurable playbook outcomes simultaneously.",
+    "body": "April 18 delivered both the Mixpanel real-time sync and playbook completion event tracking in the same CS platform update. Two infrastructure improvements now enable faster health model reactions and measurable playbook outcomes simultaneously.",
+    "grounded_metrics": [
+      "platform_update_april_18",
+      "dual_infrastructure_improvement"
+    ],
+    "trace": "Single release that upgraded both signal speed and playbook measurement capabilities."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Override rate trajectory moves consistently downward from 24% peak",
+    "anchor": "CSM override frequency dropped from 24% at peak to 17% last quarter to 11% currently across all coverage tiers.",
+    "connect": "Declining override pattern aligns with the three consecutive quarters of health score AUC improvement.",
+    "body": "CSM override frequency dropped from 24% at peak to 17% last quarter to 11% currently across all coverage tiers. Declining override pattern aligns with the three consecutive quarters of health score AUC improvement.",
+    "grounded_metrics": [
+      "override_rate_trajectory",
+      "csm_trust_pattern"
+    ],
+    "trace": "CSM behavior pattern showing increasing trust in model outputs as prediction accuracy improves."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Proxy signal replacement timeline accelerates with BigQuery approval",
+    "anchor": "Q2 2026 implementation of feature-usage signals will retire the login frequency proxies currently in the health model.",
+    "connect": "Real-time telemetry pipeline now delivers the infrastructure needed to support actual usage data instead of indirect signals.",
+    "body": "Q2 2026 implementation of feature-usage signals will retire the login frequency proxies currently in the health model. Real-time telemetry pipeline now delivers the infrastructure needed to support actual usage data instead of indirect signals.",
+    "grounded_metrics": [
+      "proxy_replacement_timeline",
+      "usage_data_upgrade"
+    ],
+    "trace": "Data quality upgrade sequence where infrastructure improvement enables better signal substitution."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Shadow model and production model generate parallel prediction streams",
+    "anchor": "The likelihood-to-renew layer produces independent pass-fail predictions alongside the current composite score starting April 21.",
+    "connect": "Direct comparison capability now exists to evaluate which prediction approach performs better on live renewal outcomes.",
+    "body": "The likelihood-to-renew layer produces independent pass-fail predictions alongside the current composite score starting April 21. Direct comparison capability now exists to evaluate which prediction approach performs better on live renewal outcomes.",
+    "grounded_metrics": [
+      "parallel_prediction_streams",
+      "model_comparison"
+    ],
+    "trace": "A/B model testing setup that enables objective comparison of prediction methodologies."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Handoff enrichment creates Day-0 health score improvement opportunity",
+    "anchor": "84% field completion rate on Q2 handoffs provides stakeholder context, buying reasons, and commitment details at account start.",
+    "connect": "Richer initial data enables more accurate health scoring from the first day of CS engagement.",
+    "body": "84% field completion rate on Q2 handoffs provides stakeholder context, buying reasons, and commitment details at account start. Richer initial data enables more accurate health scoring from the first day of CS engagement.",
+    "grounded_metrics": [
+      "handoff_enrichment",
+      "initial_scoring_accuracy"
+    ],
+    "trace": "Data quality improvement at the handoff moment that strengthens health model inputs from account inception."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Coverage tier refresh uses observed behavior instead of onboarding assumptions",
+    "anchor": "47 accounts moved to High-Touch based on 14 months of actual usage and renewal patterns rather than initial tier assignments.",
+    "connect": "Q3 2026 playbook routing will align with demonstrated account behavior instead of predicted behavior.",
+    "body": "47 accounts moved to High-Touch based on 14 months of actual usage and renewal patterns rather than initial tier assignments. Q3 2026 playbook routing will align with demonstrated account behavior instead of predicted behavior.",
+    "grounded_metrics": [
+      "behavior_based_segmentation",
+      "tier_realignment"
+    ],
+    "trace": "Segmentation correction that prioritizes observed patterns over initial predictions."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Platform consolidation and pipeline improvement happen in parallel",
+    "anchor": "Q1 2026 delivered both 3-tool retirement and BigQuery pipeline approval within the same operational window.",
+    "connect": "Infrastructure simplification creates capacity while data quality improvements target model enhancement.",
+    "body": "Q1 2026 delivered both 3-tool retirement and BigQuery pipeline approval within the same operational window. Infrastructure simplification creates capacity while data quality improvements target model enhancement.",
+    "grounded_metrics": [
+      "parallel_infrastructure_improvement",
+      "operational_efficiency"
+    ],
+    "trace": "Simultaneous capacity creation through consolidation and capability enhancement through better data pipelines."
+  }
+]
