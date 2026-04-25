@@ -1,0 +1,159 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "April mid-market SQLs hit 146, up 51% from quarterly baseline",
+    "anchor": "Month-to-date April SQLs at 146 versus the Jan-Mar monthly average of 97.",
+    "connect": "Q1 monthly SQL volumes ran steady: January 93, February 98, March 100.",
+    "body": "Month-to-date April SQLs at 146 versus the Jan-Mar monthly average of 97. Q1 monthly SQL volumes ran steady: January 93, February 98, March 100.",
+    "grounded_metrics": [
+      "april_mm_sqls",
+      "q1_mm_sql_baseline"
+    ],
+    "trace": "April mid-market SQL volume shows significant acceleration versus Q1 steady-state baseline."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ABM SQLs accept at 61% versus 42% for non-ABM leads",
+    "anchor": "April ABM acceptance rate sits at 61.4% on 70 ABM MQLs; non-ABM at 42.1% on 76 non-ABM MQLs.",
+    "connect": "ABM volume and non-ABM volume run nearly even this month at 70 and 76 respectively.",
+    "body": "April ABM acceptance rate sits at 61.4% on 70 ABM MQLs; non-ABM at 42.1% on 76 non-ABM MQLs. ABM volume and non-ABM volume run nearly even this month at 70 and 76 respectively.",
+    "grounded_metrics": [
+      "abm_acceptance_april",
+      "non_abm_acceptance_april"
+    ],
+    "trace": "ABM channel shows higher SDR acceptance rate with nearly equal lead volumes versus broad-market approaches."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Marketing-sourced deal velocity sits at zero closed wins in Q2",
+    "anchor": "Current week and prior 11 weeks show zero marketing-sourced closed deals.",
+    "connect": "Q1 event-sourced wins from SaaS Connect and peer events also registered zero.",
+    "body": "Current week and prior 11 weeks show zero marketing-sourced closed deals. Q1 event-sourced wins from SaaS Connect and peer events also registered zero.",
+    "grounded_metrics": [
+      "mktg_sourced_wins_q2",
+      "event_sourced_wins_q1"
+    ],
+    "trace": "Marketing-attributed closed deals show no throughput in current tracking windows."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Enterprise deal throughput runs at zero wins across four quarters",
+    "anchor": "Q2 enterprise closed deals register zero wins on zero total opportunities.",
+    "connect": "Trailing four quarters enterprise activity shows the same pattern: zero deals, zero wins.",
+    "body": "Q2 enterprise closed deals register zero wins on zero total opportunities. Trailing four quarters enterprise activity shows the same pattern: zero deals, zero wins.",
+    "grounded_metrics": [
+      "enterprise_closed_q2",
+      "enterprise_closed_trailing"
+    ],
+    "trace": "Enterprise segment shows no deal activity in either current quarter or historical four-quarter window."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Paid channel pipeline creation registers zero across Q1 and Q2",
+    "anchor": "Q2 paid social and paid search pipeline creation both sit at zero dollars.",
+    "connect": "Q1 showed the same pattern: zero pipeline created from paid social and paid search channels.",
+    "body": "Q2 paid social and paid search pipeline creation both sit at zero dollars. Q1 showed the same pattern: zero pipeline created from paid social and paid search channels.",
+    "grounded_metrics": [
+      "paid_social_pipeline_q2",
+      "paid_search_pipeline_q2",
+      "paid_pipeline_q1"
+    ],
+    "trace": "Paid acquisition channels show no pipeline attribution in current and prior quarter tracking."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Digital ads spend sits at zero versus zero planned for Q2",
+    "anchor": "Q2 digital ads actual spend through April 23 registers zero versus zero planned.",
+    "connect": "Reallocation line items show zero moves totaling zero dollars.",
+    "body": "Q2 digital ads actual spend through April 23 registers zero versus zero planned. Reallocation line items show zero moves totaling zero dollars.",
+    "grounded_metrics": [
+      "digital_ads_spend_q2",
+      "q2_reallocation"
+    ],
+    "trace": "Digital advertising spend shows zero execution and zero budget allocation for current quarter."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Brand search tracking shows no volume data in six-week window",
+    "anchor": "Branded search weekly volumes register no data points in the tracking period.",
+    "connect": "Week-over-week increase count sits at zero of negative one weeks measured.",
+    "body": "Branded search weekly volumes register no data points in the tracking period. Week-over-week increase count sits at zero of negative one weeks measured.",
+    "grounded_metrics": [
+      "branded_search_volumes",
+      "branded_search_growth"
+    ],
+    "trace": "Brand search measurement shows no data collection in the six-week tracking window ending April 19."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas brand mentions register zero in April tracking",
+    "anchor": "April Atlas SaaS mentions sit at zero through April 24.",
+    "connect": "Top competitor mentions also register zero in the same window.",
+    "body": "April Atlas SaaS mentions sit at zero through April 24. Top competitor mentions also register zero in the same window.",
+    "grounded_metrics": [
+      "atlas_brand_mentions",
+      "competitor_mentions"
+    ],
+    "trace": "Brand mention tracking shows zero activity for both Atlas and competitive set in April."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Analyst coverage shows no mentions in 44-day tracking window",
+    "anchor": "Last 14 days analyst mentions register zero; prior 30 days also zero.",
+    "connect": "Top firms in the 14-day window show no data points.",
+    "body": "Last 14 days analyst mentions register zero; prior 30 days also zero. Top firms in the 14-day window show no data points.",
+    "grounded_metrics": [
+      "analyst_mentions_14d",
+      "analyst_mentions_30d"
+    ],
+    "trace": "Analyst mention tracking shows zero coverage across both short-term and extended tracking periods."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Web traffic channels register zero share for direct and organic",
+    "anchor": "April traffic share shows direct at zero percent, organic search at zero percent.",
+    "connect": "Direct traffic crossover point versus organic shows no date recorded.",
+    "body": "April traffic share shows direct at zero percent, organic search at zero percent. Direct traffic crossover point versus organic shows no date recorded.",
+    "grounded_metrics": [
+      "web_traffic_april",
+      "direct_organic_crossover"
+    ],
+    "trace": "Web traffic measurement shows zero attribution to primary channels in April data."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Customer reference opt-ins run at zero across three product lines",
+    "anchor": "Atlas Insights, Atlas Workflow, and Atlas Connect reference opt-ins all register zero percent.",
+    "connect": "This spans the complete product portfolio currently tracked for reference availability.",
+    "body": "Atlas Insights, Atlas Workflow, and Atlas Connect reference opt-ins all register zero percent. This spans the complete product portfolio currently tracked for reference availability.",
+    "grounded_metrics": [
+      "reference_opt_ins"
+    ],
+    "trace": "Customer reference program shows zero opt-in participation across all three Atlas product lines."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Target account engagement shows zero high-intent events this week",
+    "anchor": "Current week target accounts with five-plus high-intent events register zero.",
+    "connect": "Target list universe sits at 50 accounts with no breakdown data available.",
+    "body": "Current week target accounts with five-plus high-intent events register zero. Target list universe sits at 50 accounts with no breakdown data available.",
+    "grounded_metrics": [
+      "target_account_engagement",
+      "target_list_universe"
+    ],
+    "trace": "ABM target account tracking shows zero engagement threshold crossings in current week measurement."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Fintech mid-market closed wins register zero in 60-day window",
+    "anchor": "Last 60 days mid-market closed wins show zero total, zero in fintech vertical.",
+    "connect": "Snowflake plus dbt technology stack accounts also register zero wins in the same period.",
+    "body": "Last 60 days mid-market closed wins show zero total, zero in fintech vertical. Snowflake plus dbt technology stack accounts also register zero wins in the same period.",
+    "grounded_metrics": [
+      "mm_closed_wins_60d",
+      "fintech_wins",
+      "snowflake_dbt_wins"
+    ],
+    "trace": "Mid-market segment shows zero deal closure across both vertical and technology stack filters in 60-day tracking."
+  }
+]

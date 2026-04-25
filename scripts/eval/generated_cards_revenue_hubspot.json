@@ -1,0 +1,50 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Enterprise source attribution shows zero marketing and outbound activity",
+    "anchor": "Q2 enterprise win rate by source class shows marketing-sourced at 0.0% and outbound at 0.0%.",
+    "connect": "Both channels report zero wins out of zero closed enterprise deals.",
+    "body": "Q2 enterprise win rate by source class shows marketing-sourced at 0.0% and outbound at 0.0%. Both channels report zero wins out of zero closed enterprise deals.",
+    "grounded_metrics": [
+      "enterprise_source_attribution",
+      "marketing_outbound_enterprise"
+    ],
+    "trace": "Complete absence across both major source channels confirms enterprise segment inactivity rather than channel-specific issue."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Mid-market sales cycle calculation shows zero closed deal basis",
+    "anchor": "Q2 mid-market closed deals count at zero with mean cycle time of 0.0 days.",
+    "connect": "Q1 closed deals also count at zero with mean cycle time of 0.0 days.",
+    "body": "Q2 mid-market closed deals count at zero with mean cycle time of 0.0 days. Q1 closed deals also count at zero with mean cycle time of 0.0 days.",
+    "grounded_metrics": [
+      "mm_sales_cycle",
+      "mm_closed_deals"
+    ],
+    "trace": "Absence of closed mid-market deals across two quarters prevents cycle time analysis and suggests segment-wide execution issues."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Mid-market proposal stage time shows zero-deal calculation basis",
+    "anchor": "Q2 mid-market time-in-proposal shows zero closed deals with mean of 0.0 days.",
+    "connect": "Trailing four quarters shows zero closed deals with mean of 0.0 days in proposal stage.",
+    "body": "Q2 mid-market time-in-proposal shows zero closed deals with mean of 0.0 days. Trailing four quarters shows zero closed deals with mean of 0.0 days in proposal stage.",
+    "grounded_metrics": [
+      "mm_proposal_stage_time",
+      "mm_stage_velocity"
+    ],
+    "trace": "Extended absence of mid-market deal closures prevents stage-specific velocity analysis across multiple quarters."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Beacon Systems head-to-head record shows zero competitive encounters",
+    "anchor": "Q2 2026 head-to-head deals versus Beacon Systems show 0-0 record across zero total deals.",
+    "connect": "Q1 2026 head-to-head record also shows 0-0 record across zero deals.",
+    "body": "Q2 2026 head-to-head deals versus Beacon Systems show 0-0 record across zero total deals. Q1 2026 head-to-head record also shows 0-0 record across zero deals.",
+    "grounded_metrics": [
+      "beacon_head_to_head",
+      "competitive_encounters"
+    ],
+    "trace": "Absence of competitive encounters with Beacon suggests either market separation or general pipeline generation issues preventing competitive situations."
+  }
+]

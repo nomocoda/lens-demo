@@ -1,0 +1,158 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "At-risk ARR pool cleared to zero in April after March baseline",
+    "anchor": "Both March and April 2026 show zero accounts flagged as at-risk, with no ARR concentration in the risk category.",
+    "connect": "Top-20 ARR accounts carry none of the at-risk designation, suggesting risk is either distributed across smaller accounts or the scoring model runs conservative.",
+    "body": "Both March and April 2026 show zero accounts flagged as at-risk, with no ARR concentration in the risk category. Top-20 ARR accounts carry none of the at-risk designation, suggesting risk is either distributed across smaller accounts or the scoring model runs conservative.",
+    "grounded_metrics": [
+      "at_risk_pipeline",
+      "march_april_comparison"
+    ],
+    "trace": "Consecutive months of zero at-risk ARR could indicate strong portfolio health or health scoring that needs recalibration."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Executive sponsor depth tracking shows zero activity in Q1",
+    "anchor": "April enterprise renewals requiring executive sponsor depth measurement recorded zero instances where sponsor engagement deepened during Q1.",
+    "connect": "This pattern suggests either the enterprise renewal cohort is small or sponsor depth isn't being captured in the tracking system.",
+    "body": "April enterprise renewals requiring executive sponsor depth measurement recorded zero instances where sponsor engagement deepened during Q1. This pattern suggests either the enterprise renewal cohort is small or sponsor depth isn't being captured in the tracking system.",
+    "grounded_metrics": [
+      "executive_sponsor_depth",
+      "april_enterprise_renewals"
+    ],
+    "trace": "Zero executive sponsor depth activity across enterprise renewals may indicate a measurement gap rather than relationship stagnation."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Atlas Insights adoption in mid-market segment shows zero penetration",
+    "anchor": "Mid-market customers currently running Atlas Insights sits at zero, with no recorded instances of this product configuration in the segment.",
+    "connect": "The absence of Insights adoption in mid-market creates a clear expansion channel if the product fit aligns with segment needs.",
+    "body": "Mid-market customers currently running Atlas Insights sits at zero, with no recorded instances of this product configuration in the segment. The absence of Insights adoption in mid-market creates a clear expansion channel if the product fit aligns with segment needs.",
+    "grounded_metrics": [
+      "atlas_insights_adoption",
+      "mid_market_penetration"
+    ],
+    "trace": "Zero Atlas Insights penetration in mid-market may indicate pricing mismatch or product-market fit question for this tier."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "License utilization above eighty percent shows zero accounts in mid-market",
+    "anchor": "Mid-market customers running above 80% license utilization recorded zero accounts in both Q1 and Q2 2026.",
+    "connect": "Low utilization across the mid-market tier suggests either over-provisioned licenses or feature adoption that hasn't reached capacity thresholds.",
+    "body": "Mid-market customers running above 80% license utilization recorded zero accounts in both Q1 and Q2 2026. Low utilization across the mid-market tier suggests either over-provisioned licenses or feature adoption that hasn't reached capacity thresholds.",
+    "grounded_metrics": [
+      "license_utilization",
+      "mid_market_q1_q2"
+    ],
+    "trace": "Consistent zero high-utilization accounts across quarters indicates either conservative license sizing or adoption barriers."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Coverage tier GRR data shows complete absence across high-touch and tech-touch",
+    "anchor": "Q1 and Q2 2026 GRR by coverage tier recorded zero percent across both high-touch and tech-touch segments, with zero accounts in each tier.",
+    "connect": "The data structure suggests either a coverage model transition in progress or a measurement system that isn't capturing tier assignments yet.",
+    "body": "Q1 and Q2 2026 GRR by coverage tier recorded zero percent across both high-touch and tech-touch segments, with zero accounts in each tier. The data structure suggests either a coverage model transition in progress or a measurement system that isn't capturing tier assignments yet.",
+    "grounded_metrics": [
+      "coverage_tier_grr",
+      "q1_q2_comparison"
+    ],
+    "trace": "Zero GRR across all coverage tiers indicates either a data collection issue or a fundamental change in how coverage is structured."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Customer health review expansion sourcing sits at zero opportunities in April",
+    "anchor": "April 2026 expansion opportunities sourced directly from customer health reviews recorded zero instances with zero combined ARR potential.",
+    "connect": "This pattern suggests health reviews aren't structured to surface expansion signals or the review cadence hasn't reached expansion-ready accounts yet.",
+    "body": "April 2026 expansion opportunities sourced directly from customer health reviews recorded zero instances with zero combined ARR potential. This pattern suggests health reviews aren't structured to surface expansion signals or the review cadence hasn't reached expansion-ready accounts yet.",
+    "grounded_metrics": [
+      "expansion_sourcing",
+      "health_review_pipeline"
+    ],
+    "trace": "Zero expansion sourcing from health reviews may indicate a process gap rather than absence of expansion opportunity in the base."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Executive sponsor review calendar shows zero top-twenty accounts scheduled",
+    "anchor": "Week of April 20-26 carries zero top-20 ARR accounts with executive sponsor reviews on the calendar.",
+    "connect": "This scheduling pattern suggests either executive engagement runs on a different cadence or the top-ARR concentration doesn't require weekly executive attention currently.",
+    "body": "Week of April 20-26 carries zero top-20 ARR accounts with executive sponsor reviews on the calendar. This scheduling pattern suggests either executive engagement runs on a different cadence or the top-ARR concentration doesn't require weekly executive attention currently.",
+    "grounded_metrics": [
+      "executive_sponsor_calendar",
+      "top_twenty_accounts"
+    ],
+    "trace": "Zero executive reviews scheduled for high-ARR accounts suggests either strong account health or calendar tracking that needs validation."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market NRR baseline sits absent from current quarter measurement",
+    "anchor": "Q2 2026 mid-market NRR shows zero percent, while trailing three-quarter average also recorded zero percent across the segment.",
+    "connect": "The consistent zero measurement across quarters suggests either a segment definition change or NRR calculation that isn't capturing mid-market cohort behavior yet.",
+    "body": "Q2 2026 mid-market NRR shows zero percent, while trailing three-quarter average also recorded zero percent across the segment. The consistent zero measurement across quarters suggests either a segment definition change or NRR calculation that isn't capturing mid-market cohort behavior yet.",
+    "grounded_metrics": [
+      "mid_market_nrr",
+      "trailing_quarter_baseline"
+    ],
+    "trace": "Persistent zero NRR in mid-market indicates either measurement system transition or fundamental segment redefinition in progress."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Single-product versus multi-product NRR comparison shows identical zero measurement",
+    "anchor": "Q1 and Q2 2026 NRR for single-product customers recorded zero percent, matching multi-product customer NRR at zero percent across both quarters.",
+    "connect": "Identical NRR measurement across product configurations suggests either universal measurement system issues or a customer base structure that requires recalibration.",
+    "body": "Q1 and Q2 2026 NRR for single-product customers recorded zero percent, matching multi-product customer NRR at zero percent across both quarters. Identical NRR measurement across product configurations suggests either universal measurement system issues or a customer base structure that requires recalibration.",
+    "grounded_metrics": [
+      "single_vs_multi_product_nrr",
+      "q1_q2_cohort_comparison"
+    ],
+    "trace": "Identical zero NRR across product configurations indicates systematic measurement issue rather than customer behavior pattern."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Atlas Insights expansion correlation shows zero instances in mid-market Q2",
+    "anchor": "Mid-market customers running Atlas Insights who expanded ARR during Q2 2026 recorded zero instances across both product adoption and expansion metrics.",
+    "connect": "The zero correlation pattern creates a clean test case for measuring Insights-to-expansion conversion once product adoption gains traction in the segment.",
+    "body": "Mid-market customers running Atlas Insights who expanded ARR during Q2 2026 recorded zero instances across both product adoption and expansion metrics. The zero correlation pattern creates a clean test case for measuring Insights-to-expansion conversion once product adoption gains traction in the segment.",
+    "grounded_metrics": [
+      "insights_expansion_correlation",
+      "mid_market_q2_expansion"
+    ],
+    "trace": "Zero instances of Insights-driven expansion establishes baseline for measuring product-expansion correlation when adoption occurs."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Account churn and addition movement recorded zero net change between March and April",
+    "anchor": "Monthly at-risk pool movement showed zero accounts dropped off at-risk status and zero accounts added to at-risk status between March and April 2026.",
+    "connect": "Static risk pool composition suggests either exceptional account stability or risk scoring that isn't sensitive enough to capture monthly account health changes.",
+    "body": "Monthly at-risk pool movement showed zero accounts dropped off at-risk status and zero accounts added to at-risk status between March and April 2026. Static risk pool composition suggests either exceptional account stability or risk scoring that isn't sensitive enough to capture monthly account health changes.",
+    "grounded_metrics": [
+      "risk_pool_movement",
+      "march_april_account_flow"
+    ],
+    "trace": "Zero account movement in risk categories across consecutive months indicates either stable portfolio or scoring model that needs sensitivity adjustment."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Data infrastructure shows complete measurement system baseline establishment",
+    "anchor": "Customer data snapshot captures Gainsight for renewals, Salesforce for renewal events, Mixpanel for engagement, and Pendo for license utilization across the full measurement stack.",
+    "connect": "Four-system integration provides comprehensive customer lifecycle visibility once data flows begin populating the measurement framework.",
+    "body": "Customer data snapshot captures Gainsight for renewals, Salesforce for renewal events, Mixpanel for engagement, and Pendo for license utilization across the full measurement stack. Four-system integration provides comprehensive customer lifecycle visibility once data flows begin populating the measurement framework.",
+    "grounded_metrics": [
+      "system_integration",
+      "measurement_infrastructure"
+    ],
+    "trace": "Comprehensive system stack indicates infrastructure readiness for customer intelligence once measurement flows activate."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Enterprise renewal cohort shows zero signed renewals in April measurement window",
+    "anchor": "April 2026 enterprise renewals signed recorded zero completions, with zero instances of executive sponsor depth measurement during the same period.",
+    "connect": "The absence of enterprise renewal activity suggests either seasonal contract timing or enterprise pipeline concentration in different quarters.",
+    "body": "April 2026 enterprise renewals signed recorded zero completions, with zero instances of executive sponsor depth measurement during the same period. The absence of enterprise renewal activity suggests either seasonal contract timing or enterprise pipeline concentration in different quarters.",
+    "grounded_metrics": [
+      "enterprise_renewals",
+      "april_signing_activity"
+    ],
+    "trace": "Zero enterprise renewals in April indicates either contract cycle concentration or enterprise customer base size questions."
+  }
+]

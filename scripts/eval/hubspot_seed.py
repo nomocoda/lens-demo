@@ -180,8 +180,9 @@ _CUSTOM_PROPS: Dict[str, List[Dict]] = {
          "fieldType": "text", "groupName": "companyinformation"},
         {"name": "atlas_segment", "label": "Atlas Segment", "type": "string",
          "fieldType": "text", "groupName": "companyinformation"},
-        {"name": "abm_target", "label": "ABM Target", "type": "bool",
-         "fieldType": "booleancheckbox", "groupName": "companyinformation"},
+        # abm_target stored as string "true"/"false" — HubSpot rejects bool fieldType via proxy
+        {"name": "abm_target", "label": "ABM Target", "type": "string",
+         "fieldType": "text", "groupName": "companyinformation"},
         {"name": "tech_stack", "label": "Tech Stack", "type": "string",
          "fieldType": "textarea", "groupName": "companyinformation"},
     ],
@@ -191,11 +192,12 @@ _CUSTOM_PROPS: Dict[str, List[Dict]] = {
         {"name": "atlas_role_category", "label": "Atlas Role Category", "type": "string",
          "fieldType": "text", "groupName": "contactinformation"},
         {"name": "atlas_became_sql_date", "label": "Atlas Became SQL Date",
-         "type": "date", "fieldType": "date", "groupName": "contactinformation"},
-        {"name": "abm_contact", "label": "ABM Contact", "type": "bool",
-         "fieldType": "booleancheckbox", "groupName": "contactinformation"},
-        {"name": "atlas_sql_accepted", "label": "Atlas SQL Accepted", "type": "bool",
-         "fieldType": "booleancheckbox", "groupName": "contactinformation"},
+         "type": "string", "fieldType": "text", "groupName": "contactinformation"},
+        # abm_contact and atlas_sql_accepted as strings for same reason
+        {"name": "abm_contact", "label": "ABM Contact", "type": "string",
+         "fieldType": "text", "groupName": "contactinformation"},
+        {"name": "atlas_sql_accepted", "label": "Atlas SQL Accepted", "type": "string",
+         "fieldType": "text", "groupName": "contactinformation"},
     ],
     "deals": [
         {"name": "external_id", "label": "Atlas External ID", "type": "string",
@@ -305,6 +307,14 @@ def _batch_create(
             {"inputs": chunk}
         )
         data = result.get("data", result)
+        if data.get("status") == "error":
+            msg = data.get("message", "unknown error")
+            print(f"\n  ERROR batch create {object_type}: {msg[:200]}", flush=True)
+            # Continue with next chunk rather than aborting the whole run
+            done += len(chunk)
+            print(f"  {label}: {done}/{total} (batch error — see above)", end="\r", flush=True)
+            time.sleep(_BATCH_DELAY)
+            continue
         for rec in data.get("results", []):
             ext_id = (rec.get("properties") or {}).get("external_id", "")
             if ext_id:
@@ -381,7 +391,8 @@ def import_companies(
         tech = ";".join(co.get("tech_stack") or []) if isinstance(co.get("tech_stack"), list) else (co.get("tech_stack") or "")
         props: Dict[str, str] = {
             "name": co.get("name") or "",
-            "industry": co.get("industry") or "",
+            # industry excluded: Atlas values (healthtech, fintech, etc.) are not in
+            # HubSpot's allowed enum and cause entire batch to fail
             "numberofemployees": str(co.get("employees") or 0),
             "annualrevenue": str(co.get("current_arr") or 0),
             "lifecyclestage": _atlas_lc_to_hs(co.get("lifecycle_stage") or ""),
@@ -422,10 +433,17 @@ def import_contacts(
 
     for ct in to_create:
         sql_date = ct.get("became_sql_date") or ""
+        # Sanitize email: strip commas/spaces from domain part
+        # (synthetic generator can produce "user@company,.com" via company name)
+        raw_email = ct.get("email") or ""
+        if "@" in raw_email:
+            local, domain = raw_email.split("@", 1)
+            domain = domain.replace(",", "").replace(" ", "")
+            raw_email = f"{local}@{domain}"
         props: Dict[str, str] = {
             "firstname": ct.get("first_name") or "",
             "lastname": ct.get("last_name") or "",
-            "email": ct.get("email") or "",
+            "email": raw_email,
             "jobtitle": ct.get("title") or "",
             "lifecyclestage": _atlas_lc_to_hs(ct.get("lifecycle_stage") or ""),
             "hs_marketable_status": "false",  # non-marketing contact
@@ -489,8 +507,7 @@ def import_deals(
             "dealstage": d.get("stage") or "appointmentscheduled",
             "pipeline": "default",
             "closedate": d.get("close_date") or "",
-            "createdate": d.get("create_date") or "",
-            "lead_source": d.get("lead_source") or "",
+            # lead_source and createdate excluded: not writable HubSpot deal properties
             "external_id": d["id"],
             "atlas_time_in_proposal": str(d.get("time_in_proposal") or 0),
             "atlas_contract_revisions": str(1 if d.get("contract_revisions") else 0),
