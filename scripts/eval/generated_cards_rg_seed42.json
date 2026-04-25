@@ -1,0 +1,196 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Multi-thread depth on large deals doubled this quarter",
+    "anchor": "Active opportunities above $250K ACV now average 4.2 engaged contacts versus 2.1 contacts in Q1.",
+    "connect": "Win rate at 4+ contacts runs at 41% compared to 18% for deals with 1-2 contacts.",
+    "body": "Active opportunities above $250K ACV now average 4.2 engaged contacts versus 2.1 contacts in Q1. Win rate at 4+ contacts runs at 41% compared to 18% for deals with 1-2 contacts.",
+    "grounded_metrics": [
+      "large_deal_multi_thread",
+      "contact_depth_win_rate"
+    ],
+    "trace": "The multi-threading improvement on $250K+ deals shows direct correlation with win rate improvement, suggesting better buying committee engagement."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Champion re-engagement drives stage advancement within three weeks",
+    "anchor": "Nine of 14 deals advanced a stage within 21 days of champion re-engagement events in April.",
+    "connect": "Champion documentation rate crossed 50% for the first time since tracking began.",
+    "body": "Nine of 14 deals advanced a stage within 21 days of champion re-engagement events in April. Champion documentation rate crossed 50% for the first time since tracking began.",
+    "grounded_metrics": [
+      "champion_reengagement",
+      "stage_advancement",
+      "champion_documentation"
+    ],
+    "trace": "Champion re-engagement events in April triggered stage movement in 64% of cases, with documentation discipline improving."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Sterling deal expanded buying committee post-executive demo",
+    "anchor": "Executive demo on April 18 grew Sterling's engaged contacts from 4 to 7, adding CFO and two business-unit leads.",
+    "connect": "Committees that grow during evaluation historically close at 26% above flat committees.",
+    "body": "Executive demo on April 18 grew Sterling's engaged contacts from 4 to 7, adding CFO and two business-unit leads. Committees that grow during evaluation historically close at 26% above flat committees.",
+    "grounded_metrics": [
+      "sterling_committee_growth",
+      "committee_expansion_win_rate"
+    ],
+    "trace": "The Sterling deal shows buying committee expansion pattern that correlates with higher close rates based on historical data."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Enterprise proposal cycles compressed by 11 days this quarter",
+    "anchor": "Median proposal-to-close time runs at 38 days in Q2 versus 49 days in Q1.",
+    "connect": "Q2 enterprise closes with 5+ thread depth account for 7 of 9 total closes.",
+    "body": "Median proposal-to-close time runs at 38 days in Q2 versus 49 days in Q1. Q2 enterprise closes with 5+ thread depth account for 7 of 9 total closes.",
+    "grounded_metrics": [
+      "enterprise_proposal_cycle",
+      "thread_depth_closes"
+    ],
+    "trace": "Proposal stage compression aligns with increased multi-threading on enterprise deals."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Q3 pipeline coverage sits at 3.4x quota",
+    "anchor": "Open Q3 pipeline of $4.2M covers the $1.24M aggregate quota with 79% showing live engagement in the last 14 days.",
+    "connect": "Single-threaded coverage share dropped to 22% in Q2 from 34% in Q1.",
+    "body": "Open Q3 pipeline of $4.2M covers the $1.24M aggregate quota with 79% showing live engagement in the last 14 days. Single-threaded coverage share dropped to 22% in Q2 from 34% in Q1.",
+    "grounded_metrics": [
+      "q3_pipeline_coverage",
+      "engagement_freshness",
+      "single_thread_reduction"
+    ],
+    "trace": "Coverage ratio with engagement quality and reduced single-threading suggests healthier pipeline composition."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Aged proposal deals advance within days of re-issued proposals",
+    "anchor": "Eleven of 14 proposal-stage deals aged over 21 days advanced or closed in the last 30 days.",
+    "connect": "Six of those 11 advances came within 5 days of a re-issued proposal.",
+    "body": "Eleven of 14 proposal-stage deals aged over 21 days advanced or closed in the last 30 days. Six of those 11 advances came within 5 days of a re-issued proposal.",
+    "grounded_metrics": [
+      "aged_proposal_advancement",
+      "proposal_reissue_timing"
+    ],
+    "trace": "The correlation between proposal re-issuance and advancement suggests procurement timing rather than deal quality issues."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Mid-market win rate jumped 8 points with ICP alignment driving the lift",
+    "anchor": "Q2 mid-market win rate sits at 27.1% versus 19.1% in Q1, with 19 wins from 70 opportunities.",
+    "connect": "ICP-aligned deals account for 89% of the Q2 win rate improvement.",
+    "body": "Q2 mid-market win rate sits at 27.1% versus 19.1% in Q1, with 19 wins from 70 opportunities. ICP-aligned deals account for 89% of the Q2 win rate improvement.",
+    "grounded_metrics": [
+      "midmarket_win_rate",
+      "icp_alignment_impact"
+    ],
+    "trace": "The win rate improvement concentrates heavily in ICP-aligned opportunities, suggesting targeting discipline is paying off."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Named champions correlate with 17-point win rate advantage",
+    "anchor": "Q2 deals with named Champion field show 38% win rate versus 21% for deals without champion documentation.",
+    "connect": "Champion field completion rate crossed 50% in Q2 for the first time since tracking began.",
+    "body": "Q2 deals with named Champion field show 38% win rate versus 21% for deals without champion documentation. Champion field completion rate crossed 50% in Q2 for the first time since tracking began.",
+    "grounded_metrics": [
+      "champion_field_win_rate",
+      "champion_documentation_rate"
+    ],
+    "trace": "The correlation between champion documentation and win rates aligns with improved documentation discipline."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Outbound sequence revision drives 5-point conversion lift",
+    "anchor": "Revised outbound cadence launched April 5th converts 42 of 300 contacts to discovery meetings at 14%.",
+    "connect": "Prior sequence cadence ran at 9% conversion to meetings.",
+    "body": "Revised outbound cadence launched April 5th converts 42 of 300 contacts to discovery meetings at 14%. Prior sequence cadence ran at 9% conversion to meetings.",
+    "grounded_metrics": [
+      "outbound_sequence_conversion",
+      "cadence_revision_impact"
+    ],
+    "trace": "The sequence revision shows immediate improvement in contact-to-meeting conversion rates."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Beacon head-to-head win rate climbs to 61% after four-quarter slump",
+    "anchor": "Q2 Beacon Systems matchups show 11-7 record for 61.1% win rate.",
+    "connect": "Trailing four quarters Beacon win rate averaged 24%.",
+    "body": "Q2 Beacon Systems matchups show 11-7 record for 61.1% win rate. Trailing four quarters Beacon win rate averaged 24%.",
+    "grounded_metrics": [
+      "beacon_h2h_win_rate",
+      "four_quarter_beacon_trend"
+    ],
+    "trace": "The Beacon head-to-head improvement represents a significant competitive turnaround from the trailing four-quarter pattern."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Beacon competitive frequency increases as win rate improves",
+    "anchor": "Beacon appeared in 18 of 62 competitive opportunities in Q2, up from 11 of 58 in Q1.",
+    "connect": "Frequency climbed from 19% to 29% of competitive deals over the same window.",
+    "body": "Beacon appeared in 18 of 62 competitive opportunities in Q2, up from 11 of 58 in Q1. Frequency climbed from 19% to 29% of competitive deals over the same window.",
+    "grounded_metrics": [
+      "beacon_competitive_frequency",
+      "competitive_deal_share"
+    ],
+    "trace": "Beacon's increased competitive presence coincides with Atlas's improved win rate against them."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Meridian AI competitive presence more than doubles post-Series B",
+    "anchor": "Meridian AI appeared in 12 of 47 active Q2 deals at 26% frequency versus 10% in Q1.",
+    "connect": "Seven of 12 Meridian deals reached negotiation within 30 days of their March 14th Series B announcement.",
+    "body": "Meridian AI appeared in 12 of 47 active Q2 deals at 26% frequency versus 10% in Q1. Seven of 12 Meridian deals reached negotiation within 30 days of their March 14th Series B announcement.",
+    "grounded_metrics": [
+      "meridian_competitive_frequency",
+      "series_b_deal_acceleration"
+    ],
+    "trace": "Meridian's funding announcement appears to correlate with both increased competitive presence and deal velocity."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Beacon battlecard utilization jumps 41 points with win rate correlation",
+    "anchor": "Battlecard usage in active Beacon head-to-head deals climbed to 72% in April from 31% in February.",
+    "connect": "Head-to-head win rate versus Beacon improved 14 points over the same utilization window.",
+    "body": "Battlecard usage in active Beacon head-to-head deals climbed to 72% in April from 31% in February. Head-to-head win rate versus Beacon improved 14 points over the same utilization window.",
+    "grounded_metrics": [
+      "beacon_battlecard_utilization",
+      "battlecard_win_correlation"
+    ],
+    "trace": "The timing alignment between battlecard adoption and win rate improvement suggests content effectiveness."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Customer success flags surface $310K expansion potential from Q2 onboards",
+    "anchor": "Five of 9 Q2 onboarding completions flagged as expansion-ready with $310K combined ARR potential.",
+    "connect": "Three of the 5 flagged accounts already have logged discovery touches averaging 2.1 contacts each.",
+    "body": "Five of 9 Q2 onboarding completions flagged as expansion-ready with $310K combined ARR potential. Three of the 5 flagged accounts already have logged discovery touches averaging 2.1 contacts each.",
+    "grounded_metrics": [
+      "expansion_ready_flags",
+      "expansion_discovery_activity"
+    ],
+    "trace": "The customer success to sales handoff on expansion opportunities shows early engagement on 60% of flagged accounts."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Outcome reason field drives Q2 capture completeness above 85%",
+    "anchor": "Nineteen of 23 full activity captures on Q2 closed deals landed after the April 5th outcome reason field launch.",
+    "connect": "Full capture rate sits at 88% in Q2 versus 64% in Q1.",
+    "body": "Nineteen of 23 full activity captures on Q2 closed deals landed after the April 5th outcome reason field launch. Full capture rate sits at 88% in Q2 versus 64% in Q1.",
+    "grounded_metrics": [
+      "outcome_reason_field_impact",
+      "capture_completeness"
+    ],
+    "trace": "The outcome reason field launch correlates directly with improved CRM data quality and capture discipline."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Inbound conversion maintains 31% while outbound sequence improves",
+    "anchor": "Inbound-to-meeting conversion holds at 31% over the April window.",
+    "connect": "Revised outbound sequence converts at 14% over the same period.",
+    "body": "Inbound-to-meeting conversion holds at 31% over the April window. Revised outbound sequence converts at 14% over the same period.",
+    "grounded_metrics": [
+      "inbound_meeting_conversion",
+      "outbound_meeting_conversion"
+    ],
+    "trace": "The inbound conversion baseline provides context for the outbound sequence improvement performance."
+  }
+]

@@ -2992,6 +2992,340 @@ def gen_mb_sales_enablement_assets() -> List[Dict]:
     ]
 
 
+# ----------------------------------------------------------------------------
+# Revenue Generator entity generators (Phase 2.14)
+# All deterministic — no random seed dependency.
+# ----------------------------------------------------------------------------
+
+def gen_rg_deal_threads() -> List[Dict]:
+    """Multi-thread depth on active opportunities above $250K ACV.
+
+    P-RG-01: Q2 average thread depth 4.2 contacts (up from Q1 2.1) on $250K+ deals.
+             18 of 22 active opps over $250K carry 4+ engaged contacts vs 9 of 22 Q1.
+             Win rate at 4+ contacts: 41%, at 1-2 contacts: 18%.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "avc_threshold_usd": 250000,
+            "active_opps_above_threshold": 22,
+            "opps_with_4plus_contacts": 18,
+            "avg_thread_depth": 4.2,
+            "win_rate_4plus_contacts": 0.41,
+            "win_rate_1_to_2_contacts": 0.18,
+        },
+        {
+            "period": "Q1_2026",
+            "avc_threshold_usd": 250000,
+            "active_opps_above_threshold": 22,
+            "opps_with_4plus_contacts": 9,
+            "avg_thread_depth": 2.1,
+            "win_rate_4plus_contacts": None,
+            "win_rate_1_to_2_contacts": None,
+        },
+    ]
+
+
+def gen_rg_champion_status() -> List[Dict]:
+    """Champion re-engagement events and champion-documented win rate.
+
+    P-RG-02: April 14 champion re-engagements (gap >7 days) vs March 6.
+             9 of 14 re-engaged deals advanced a stage within 21 days.
+    P-RG-08: Champion-documented win rate Q2: 38% (15/39); undocumented: 21% (8/38).
+             Champion documentation crossed 51% of active opps for the first time.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "champion_gap_threshold_days": 7,
+            "reengaged_deals": 14,
+            "advanced_within_21_days": 9,
+            "champion_doc_rate_active_opps": 0.51,
+            "deals_with_champion_field": 39,
+            "champion_wins": 15,
+            "champion_win_rate": round(15 / 39, 4),
+            "deals_without_champion_field": 38,
+            "no_champion_wins": 8,
+            "no_champion_win_rate": round(8 / 38, 4),
+        },
+        {
+            "period": "2026-03",
+            "champion_gap_threshold_days": 7,
+            "reengaged_deals": 6,
+            "advanced_within_21_days": None,
+            "champion_doc_rate_active_opps": None,
+            "deals_with_champion_field": None,
+            "champion_wins": None,
+            "champion_win_rate": None,
+            "deals_without_champion_field": None,
+            "no_champion_wins": None,
+            "no_champion_win_rate": None,
+        },
+    ]
+
+
+def gen_rg_buying_committee() -> List[Dict]:
+    """Buying committee events and proposal-to-close advancement.
+
+    P-RG-03: Sterling executive demo April 18 grew buying committee from 4 to 7.
+             Committees that grow during evaluation close 26% more often than flat.
+    P-RG-04: Enterprise Proposal-to-Closed-Won median Q2: 38 days (Q1: 49 days).
+             7 of 9 Q2 enterprise closes carried multi-thread depth of 5+.
+    """
+    return [
+        {
+            "company": "Sterling",
+            "event_type": "executive_demo",
+            "event_date": "2026-04-18",
+            "committee_before": 4,
+            "committee_after": 7,
+            "new_contacts": ["CFO", "business-unit lead", "business-unit lead"],
+            "committee_growth_close_lift_pct": 0.26,
+        },
+        {
+            "company": "_aggregate",
+            "event_type": "proposal_advancement",
+            "period": "Q2_2026",
+            "enterprise_proposal_to_close_median_days": 38,
+            "enterprise_closes_total": 9,
+            "enterprise_closes_5plus_threads": 7,
+        },
+        {
+            "company": "_aggregate",
+            "event_type": "proposal_advancement",
+            "period": "Q1_2026",
+            "enterprise_proposal_to_close_median_days": 49,
+            "enterprise_closes_total": None,
+            "enterprise_closes_5plus_threads": None,
+        },
+    ]
+
+
+def gen_rg_pipeline_coverage() -> List[Dict]:
+    """Q3 AE pipeline coverage shape and deal aging clearance.
+
+    P-RG-05: Q3 quota $1.24M; open pipeline $4.2M (3.4x); $3.3M with live engagement
+             in last 14 days (78.6%). Single-threaded coverage share 22%, down from 34%.
+    P-RG-06: 11 of 14 Proposal-stage deals aged >21 days advanced or closed in last 30d.
+             6 of those 11 advanced within 5 days of a re-issued proposal.
+    """
+    return [
+        {
+            "metric": "q3_pipeline_coverage",
+            "period": "Q3_2026",
+            "quota_usd": 1240000,
+            "open_pipeline_usd": 4200000,
+            "coverage_ratio": round(4200000 / 1240000, 2),
+            "pipeline_with_live_engagement_14d_usd": 3300000,
+            "live_engagement_share": round(3300000 / 4200000, 4),
+            "single_threaded_share": 0.22,
+            "prior_single_threaded_share": 0.34,
+        },
+        {
+            "metric": "deal_aging_clearance",
+            "period": "2026-04",
+            "proposal_stage_aging_threshold_days": 21,
+            "deals_above_threshold": 14,
+            "deals_advanced_or_closed": 11,
+            "deals_advanced_within_5d_reissued_proposal": 6,
+        },
+    ]
+
+
+def gen_rg_win_rates() -> List[Dict]:
+    """Mid-market win rate by quarter and ICP alignment.
+
+    P-RG-07: Q2 MM win rate 27% (19/70); Q1 19% (13/68). ICP-aligned share of lift 89%.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "segment": "mid-market",
+            "total_opps": 70,
+            "wins": 19,
+            "win_rate": round(19 / 70, 4),
+            "icp_aligned_lift_share": 0.89,
+        },
+        {
+            "period": "Q1_2026",
+            "segment": "mid-market",
+            "total_opps": 68,
+            "wins": 13,
+            "win_rate": round(13 / 68, 4),
+            "icp_aligned_lift_share": None,
+        },
+    ]
+
+
+def gen_rg_deal_hygiene() -> List[Dict]:
+    """Active deal update freshness and CRM activity capture completeness.
+
+    P-RG-09: 18 active deals; 17 of 18 updated in last 5 days (92%). Highest freshness since Q4.
+    P-RG-10: Q2 closed deals 26; 23 carry full activity history + outcome reason + stakeholder map (88%).
+             Q1 capture rate 64%. Outcome reason field live 2026-04-05; 19 of 23 captured post that date.
+    """
+    return [
+        {
+            "metric": "deal_update_freshness",
+            "period": "2026-04-24",
+            "active_deals": 18,
+            "updated_within_5_days": 17,
+            "freshness_rate": round(17 / 18, 4),
+            "prior_high_note": "Q4_2025",
+        },
+        {
+            "metric": "crm_activity_capture",
+            "period": "Q2_2026",
+            "closed_deals": 26,
+            "fully_captured": 23,
+            "capture_rate": round(23 / 26, 4),
+            "outcome_reason_field_live_date": "2026-04-05",
+            "captured_post_field_live": 19,
+        },
+        {
+            "metric": "crm_activity_capture",
+            "period": "Q1_2026",
+            "closed_deals": None,
+            "fully_captured": None,
+            "capture_rate": 0.64,
+            "outcome_reason_field_live_date": None,
+            "captured_post_field_live": None,
+        },
+    ]
+
+
+def gen_rg_outbound_sequences() -> List[Dict]:
+    """Outbound sequence-to-meeting conversion by cadence version.
+
+    P-RG-11: Revised cadence (live Apr 5) — 42/300 contacts booked discovery meeting (14%).
+             Prior cadence: 9% conversion. Inbound-to-meeting held at 31% same window.
+    """
+    return [
+        {
+            "cadence_version": "revised_apr5",
+            "cadence_live_date": "2026-04-05",
+            "period": "Q2_2026",
+            "sequenced_contacts": 300,
+            "discovery_meetings_booked": 42,
+            "conversion_rate": round(42 / 300, 4),
+            "inbound_to_meeting_rate": 0.31,
+        },
+        {
+            "cadence_version": "prior",
+            "cadence_live_date": None,
+            "period": "Q1_2026",
+            "sequenced_contacts": None,
+            "discovery_meetings_booked": None,
+            "conversion_rate": 0.09,
+            "inbound_to_meeting_rate": None,
+        },
+    ]
+
+
+def gen_rg_competitive_coverage() -> List[Dict]:
+    """Competitor A (Beacon Systems) win rate and Competitor B (Meridian AI) surfacing.
+
+    P-RG-12: Q2 Beacon h2h: 11W/7L of 18 (61%). Trailing 4Q Beacon h2h win rate 24%.
+             Beacon appeared in 18 of 62 competitive opps Q2 vs 11 of 58 Q1.
+    P-RG-13: Meridian AI in 12 of 47 active deals Q2 (26%), up from 4 of 41 Q1 (10%).
+             Meridian announced $25M Series B 2026-03-14. 7 of 12 deals reached negotiation
+             within 30 days of announcement.
+    """
+    return [
+        {
+            "competitor": "Beacon Systems",
+            "competitor_label": "competitor_a",
+            "period": "Q2_2026",
+            "h2h_total": 18,
+            "h2h_wins": 11,
+            "h2h_losses": 7,
+            "h2h_win_rate": round(11 / 18, 4),
+            "competitive_opps_total": 62,
+            "competitor_appearances": 18,
+            "competitor_share": round(18 / 62, 4),
+        },
+        {
+            "competitor": "Beacon Systems",
+            "competitor_label": "competitor_a",
+            "period": "trailing_4q",
+            "h2h_total": None,
+            "h2h_wins": None,
+            "h2h_losses": None,
+            "h2h_win_rate": 0.24,
+            "competitive_opps_total": 58,
+            "competitor_appearances": 11,
+            "competitor_share": round(11 / 58, 4),
+        },
+        {
+            "competitor": "Meridian AI",
+            "competitor_label": "competitor_b",
+            "period": "Q2_2026",
+            "series_b_date": "2026-03-14",
+            "series_b_amount_usd": 25000000,
+            "active_deals_total": 47,
+            "competitor_appearances": 12,
+            "competitor_share": round(12 / 47, 4),
+            "deals_to_negotiation_within_30d_of_series_b": 7,
+        },
+        {
+            "competitor": "Meridian AI",
+            "competitor_label": "competitor_b",
+            "period": "Q1_2026",
+            "series_b_date": None,
+            "series_b_amount_usd": None,
+            "active_deals_total": 41,
+            "competitor_appearances": 4,
+            "competitor_share": round(4 / 41, 4),
+            "deals_to_negotiation_within_30d_of_series_b": None,
+        },
+    ]
+
+
+def gen_rg_battlecard_usage() -> List[Dict]:
+    """Battlecard utilization on Competitor A (Beacon Systems) head-to-head deals.
+
+    P-RG-14: April — 13 of 18 active Beacon h2h deals opened the battlecard (72%).
+             February utilization: 31%. Win rate on h2h deals climbed 14 points same window.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "competitor": "Beacon Systems",
+            "h2h_deals_active": 18,
+            "battlecard_opened": 13,
+            "utilization_rate": round(13 / 18, 4),
+            "h2h_win_rate_change_points": 14,
+        },
+        {
+            "period": "2026-02",
+            "competitor": "Beacon Systems",
+            "h2h_deals_active": None,
+            "battlecard_opened": None,
+            "utilization_rate": 0.31,
+            "h2h_win_rate_change_points": None,
+        },
+    ]
+
+
+def gen_rg_expansion_flags() -> List[Dict]:
+    """Customer Advocate-sourced expansion-ready accounts from Q2 onboarding completions.
+
+    P-RG-15: 5 of 9 Q2 onboarding completions flagged expansion-ready; $310K ARR potential.
+             3 of 5 have a logged discovery touch. Expansion-ready accounts avg 2.1 CSM contacts.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "source": "csm_onboarding_completion_flag",
+            "onboarding_completions": 9,
+            "expansion_ready_flagged": 5,
+            "with_logged_discovery_touch": 3,
+            "expansion_arr_potential_usd": 310000,
+            "avg_csm_contacts_per_expansion_account": 2.1,
+        },
+    ]
+
+
 def apply_deal_field_defaults(deals: List[Dict]) -> None:
     """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
 
@@ -3133,6 +3467,18 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     mb_mql_hygiene = gen_mb_mql_hygiene()
     mb_sales_enablement_assets = gen_mb_sales_enablement_assets()
 
+    # Revenue Generator entity generators (Phase 2.14) — all deterministic
+    rg_deal_threads = gen_rg_deal_threads()
+    rg_champion_status = gen_rg_champion_status()
+    rg_buying_committee = gen_rg_buying_committee()
+    rg_pipeline_coverage = gen_rg_pipeline_coverage()
+    rg_win_rates = gen_rg_win_rates()
+    rg_deal_hygiene = gen_rg_deal_hygiene()
+    rg_outbound_sequences = gen_rg_outbound_sequences()
+    rg_competitive_coverage = gen_rg_competitive_coverage()
+    rg_battlecard_usage = gen_rg_battlecard_usage()
+    rg_expansion_flags = gen_rg_expansion_flags()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -3239,6 +3585,17 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "mb_attribution_accuracy": mb_attribution_accuracy,
         "mb_mql_hygiene": mb_mql_hygiene,
         "mb_sales_enablement_assets": mb_sales_enablement_assets,
+        # Revenue Generator entities (Phase 2.14)
+        "rg_deal_threads": rg_deal_threads,
+        "rg_champion_status": rg_champion_status,
+        "rg_buying_committee": rg_buying_committee,
+        "rg_pipeline_coverage": rg_pipeline_coverage,
+        "rg_win_rates": rg_win_rates,
+        "rg_deal_hygiene": rg_deal_hygiene,
+        "rg_outbound_sequences": rg_outbound_sequences,
+        "rg_competitive_coverage": rg_competitive_coverage,
+        "rg_battlecard_usage": rg_battlecard_usage,
+        "rg_expansion_flags": rg_expansion_flags,
     }
 
 

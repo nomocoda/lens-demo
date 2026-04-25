@@ -145,6 +145,11 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "mb_seo_keywords", "mb_organic_traffic", "mb_content_attribution",
         "mb_routing_ops", "mb_attribution_accuracy", "mb_mql_hygiene",
         "mb_sales_enablement_assets",
+        # Revenue Generator entities (Phase 2.14)
+        "rg_deal_threads", "rg_champion_status", "rg_buying_committee",
+        "rg_pipeline_coverage", "rg_win_rates", "rg_deal_hygiene",
+        "rg_outbound_sequences", "rg_competitive_coverage",
+        "rg_battlecard_usage", "rg_expansion_flags",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1156,6 +1161,129 @@ def build_marketing_builder_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_revenue_generator_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Revenue Generator (AE / Account Executive).
+
+    Cuts tuned to the four Revenue Generator Goal Clusters: Closing Deals in
+    Flight, Pipeline Quality and Coverage, Deal Execution Efficiency, Competitive
+    Winning. Cross-functional bridges to Marketing Strategist (battlecards) and
+    Customer Advocate (expansion handoff) are surfaced as their own sections.
+    """
+    threads = ds.get("rg_deal_threads", [])
+    champion = ds.get("rg_champion_status", [])
+    committee = ds.get("rg_buying_committee", [])
+    coverage = ds.get("rg_pipeline_coverage", [])
+    win_rates = ds.get("rg_win_rates", [])
+    hygiene = ds.get("rg_deal_hygiene", [])
+    sequences = ds.get("rg_outbound_sequences", [])
+    competitive = ds.get("rg_competitive_coverage", [])
+    battlecard = ds.get("rg_battlecard_usage", [])
+    expansion = ds.get("rg_expansion_flags", [])
+
+    def _get(lst, key, val):
+        return next((r for r in lst if r.get(key) == val), {})
+
+    thr_q2 = _get(threads, "period", "Q2_2026")
+    thr_q1 = _get(threads, "period", "Q1_2026")
+    champ_apr = _get(champion, "period", "2026-04")
+    champ_mar = _get(champion, "period", "2026-03")
+    sterling = next((r for r in committee if r.get("company") == "Sterling"), {})
+    prop_q2 = next((r for r in committee if r.get("period") == "Q2_2026"
+                    and r.get("event_type") == "proposal_advancement"), {})
+    prop_q1 = next((r for r in committee if r.get("period") == "Q1_2026"
+                    and r.get("event_type") == "proposal_advancement"), {})
+    pipe_cov = _get(coverage, "metric", "q3_pipeline_coverage")
+    aging = _get(coverage, "metric", "deal_aging_clearance")
+    wr_q2 = _get(win_rates, "period", "Q2_2026")
+    wr_q1 = _get(win_rates, "period", "Q1_2026")
+    freshness = _get(hygiene, "metric", "deal_update_freshness")
+    crm_q2 = next((r for r in hygiene if r.get("metric") == "crm_activity_capture"
+                   and r.get("period") == "Q2_2026"), {})
+    crm_q1 = next((r for r in hygiene if r.get("metric") == "crm_activity_capture"
+                   and r.get("period") == "Q1_2026"), {})
+    seq_rev = _get(sequences, "cadence_version", "revised_apr5")
+    seq_pri = _get(sequences, "cadence_version", "prior")
+    beacon_q2 = next((r for r in competitive if r.get("competitor_label") == "competitor_a"
+                      and r.get("period") == "Q2_2026"), {})
+    beacon_t4q = next((r for r in competitive if r.get("competitor_label") == "competitor_a"
+                       and r.get("period") == "trailing_4q"), {})
+    comp_b_q2 = next((r for r in competitive if r.get("competitor_label") == "competitor_b"
+                      and r.get("period") == "Q2_2026"), {})
+    comp_b_q1 = next((r for r in competitive if r.get("competitor_label") == "competitor_b"
+                      and r.get("period") == "Q1_2026"), {})
+    bc_apr = _get(battlecard, "period", "2026-04")
+    bc_feb = _get(battlecard, "period", "2026-02")
+    exp = expansion[0] if expansion else {}
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — ACCOUNT EXECUTIVE DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Salesforce is the system of record for pipeline and deal activity; HubSpot for marketing attribution; Gong for call activity.")
+    L.append("")
+
+    L.append("# Closing deals in flight — multi-thread and champion depth")
+    if thr_q2:
+        L.append(f"- Active opportunities above ${thr_q2['avc_threshold_usd']:,} ACV: {thr_q2['active_opps_above_threshold']}. Opps with 4+ engaged contacts (Q2 2026): {thr_q2['opps_with_4plus_contacts']} of {thr_q2['active_opps_above_threshold']}. Q1 2026: {thr_q1.get('opps_with_4plus_contacts', 'n/a')} of {thr_q1.get('active_opps_above_threshold', 'n/a')}.")
+        L.append(f"- Average multi-thread depth on $250K+ deals: Q2 {thr_q2['avg_thread_depth']} contacts, Q1 {thr_q1.get('avg_thread_depth', 'n/a')} contacts.")
+        L.append(f"- Win rate at 4+ contacts: {thr_q2['win_rate_4plus_contacts']*100:.0f}%. Win rate at 1-2 contacts: {thr_q2['win_rate_1_to_2_contacts']*100:.0f}%.")
+    if champ_apr:
+        L.append(f"- Champion re-engagement events (champion gap >7 days): April {champ_apr['reengaged_deals']}, March {champ_mar.get('reengaged_deals', 'n/a')}.")
+        L.append(f"- Deals that advanced a stage within 21 days of champion re-engagement (April): {champ_apr['advanced_within_21_days']} of {champ_apr['reengaged_deals']}.")
+    if sterling:
+        new_roles = ", ".join(sterling.get("new_contacts", []))
+        L.append(f"- Sterling enterprise deal: executive demo {sterling['event_date']}. Buying committee before: {sterling['committee_before']} contacts. After: {sterling['committee_after']} contacts ({new_roles} added). Historical close rate for committees that grow during evaluation: {sterling['committee_growth_close_lift_pct']*100:.0f}% above flat committees.")
+    if prop_q2:
+        L.append(f"- Enterprise Proposal-to-Closed-Won median days: Q2 {prop_q2['enterprise_proposal_to_close_median_days']} days, Q1 {prop_q1.get('enterprise_proposal_to_close_median_days', 'n/a')} days.")
+        L.append(f"- Q2 enterprise closes with multi-thread depth 5+: {prop_q2['enterprise_closes_5plus_threads']} of {prop_q2['enterprise_closes_total']}.")
+    L.append("")
+
+    L.append("# Pipeline quality and coverage")
+    if pipe_cov:
+        L.append(f"- Q3 2026 AE quota aggregate: ${pipe_cov['quota_usd']:,}. Open Q3 pipeline: ${pipe_cov['open_pipeline_usd']:,} ({pipe_cov['coverage_ratio']:.1f}x coverage).")
+        L.append(f"- Q3 pipeline with live engagement in last 14 days: ${pipe_cov['pipeline_with_live_engagement_14d_usd']:,} ({pipe_cov['live_engagement_share']*100:.0f}% of open pipeline).")
+        L.append(f"- Single-threaded coverage share: Q2 {pipe_cov['single_threaded_share']*100:.0f}%, Q1 {pipe_cov['prior_single_threaded_share']*100:.0f}%.")
+    if aging:
+        L.append(f"- Proposal-stage deals aged >{aging['proposal_stage_aging_threshold_days']} days (as of April): {aging['deals_above_threshold']}. Advanced or closed in last 30 days: {aging['deals_advanced_or_closed']} of {aging['deals_above_threshold']}.")
+        L.append(f"- Of those advances, {aging['deals_advanced_within_5d_reissued_proposal']} of {aging['deals_advanced_or_closed']} came within 5 days of a re-issued proposal.")
+    if wr_q2:
+        L.append(f"- Mid-market win rate: Q2 {wr_q2['win_rate']*100:.1f}% ({wr_q2['wins']}/{wr_q2['total_opps']}), Q1 {wr_q1.get('win_rate', 0)*100:.1f}% ({wr_q1.get('wins', 'n/a')}/{wr_q1.get('total_opps', 'n/a')}). ICP-aligned share of Q2 lift: {wr_q2['icp_aligned_lift_share']*100:.0f}%.")
+    if champ_apr:
+        L.append(f"- Q2 deals with named Champion field in CRM: {champ_apr['deals_with_champion_field']}, win rate {champ_apr['champion_win_rate']*100:.0f}% ({champ_apr['champion_wins']}/{champ_apr['deals_with_champion_field']}). Without Champion field: {champ_apr['deals_without_champion_field']}, win rate {champ_apr['no_champion_win_rate']*100:.0f}% ({champ_apr['no_champion_wins']}/{champ_apr['deals_without_champion_field']}).")
+        L.append(f"- Champion documentation rate (% of active opps with named Champion): {champ_apr['champion_doc_rate_active_opps']*100:.0f}% in Q2 — first time above 50%.")
+    L.append("")
+
+    L.append("# Deal execution efficiency")
+    if freshness:
+        L.append(f"- Active deals (as of {freshness['period']}): {freshness['active_deals']}. Updated in last 5 days: {freshness['updated_within_5_days']} of {freshness['active_deals']} ({freshness['freshness_rate']*100:.0f}%). Highest stage-note freshness since {freshness['prior_high_note']}.")
+    if crm_q2:
+        L.append(f"- CRM activity capture completeness on closed Q2 deals: {crm_q2['fully_captured']} of {crm_q2['closed_deals']} ({crm_q2['capture_rate']*100:.0f}%) carry full activity history, outcome reason, and stakeholder map. Q1 capture rate: {crm_q1.get('capture_rate', 0)*100:.0f}%.")
+        L.append(f"- Outcome reason field went live {crm_q2['outcome_reason_field_live_date']}. {crm_q2['captured_post_field_live']} of {crm_q2['fully_captured']} full captures landed after that date.")
+    if seq_rev:
+        L.append(f"- Outbound sequence-to-meeting conversion (revised cadence, live {seq_rev['cadence_live_date']}): {seq_rev['discovery_meetings_booked']} of {seq_rev['sequenced_contacts']} contacts booked discovery ({seq_rev['conversion_rate']*100:.0f}%). Prior cadence: {seq_pri.get('conversion_rate', 0)*100:.0f}%.")
+        L.append(f"- Inbound-to-meeting conversion same window: {seq_rev['inbound_to_meeting_rate']*100:.0f}%.")
+    L.append("")
+
+    L.append("# Competitive position")
+    if beacon_q2:
+        L.append(f"- Head-to-head deals versus Beacon Systems: Q2 {beacon_q2['h2h_wins']}W/{beacon_q2['h2h_losses']}L of {beacon_q2['h2h_total']} ({beacon_q2['h2h_win_rate']*100:.1f}%). Trailing four quarters Beacon h2h win rate: {beacon_t4q.get('h2h_win_rate', 0)*100:.0f}%.")
+        L.append(f"- Beacon Systems appeared in {beacon_q2['competitor_appearances']} of {beacon_q2['competitive_opps_total']} competitive opps Q2 ({beacon_q2['competitor_share']*100:.0f}%), versus {beacon_t4q.get('competitor_appearances', 'n/a')} of {beacon_t4q.get('competitive_opps_total', 'n/a')} Q1.")
+    if comp_b_q2:
+        L.append(f"- Meridian AI (Competitor B) appeared in {comp_b_q2['competitor_appearances']} of {comp_b_q2['active_deals_total']} active deals Q2 ({comp_b_q2['competitor_share']*100:.0f}%), up from {comp_b_q1.get('competitor_appearances', 'n/a')} of {comp_b_q1.get('active_deals_total', 'n/a')} Q1 ({comp_b_q1.get('competitor_share', 0)*100:.0f}%).")
+        L.append(f"- Meridian AI Series B: ${comp_b_q2['series_b_amount_usd']:,} announced {comp_b_q2['series_b_date']}. {comp_b_q2['deals_to_negotiation_within_30d_of_series_b']} of {comp_b_q2['competitor_appearances']} Meridian deals reached negotiation within 30 days of announcement.")
+    L.append("")
+
+    L.append("# Cross-functional — Marketing Strategist (battlecard) and Customer Advocate (expansion)")
+    if bc_apr:
+        L.append(f"- Beacon Systems battlecard utilization in active h2h deals: April {bc_apr['battlecard_opened']} of {bc_apr['h2h_deals_active']} ({bc_apr['utilization_rate']*100:.0f}%). February: {bc_feb.get('utilization_rate', 0)*100:.0f}%.")
+        L.append(f"- H2h win rate on Beacon deals climbed {bc_apr['h2h_win_rate_change_points']} points same window as utilization increase.")
+    if exp:
+        L.append(f"- Customer Advocate expansion-ready flags from Q2 onboarding completions: {exp['expansion_ready_flagged']} of {exp['onboarding_completions']} accounts flagged; ${exp['expansion_arr_potential_usd']:,} expansion ARR potential.")
+        L.append(f"- Of the {exp['expansion_ready_flagged']} flagged accounts, {exp['with_logged_discovery_touch']} have a logged discovery touch. Avg CSM contacts per expansion-ready account: {exp['avg_csm_contacts_per_expansion_account']}.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -1225,6 +1353,10 @@ _MARKETING_BUILDER_GOAL_CLUSTERS = (
 _REVENUE_GOAL_CLUSTERS = (
     "Quarter Attainment and Forecast Reliability; Pipeline Coverage and Health; "
     "Win Rate and Competitive Position"
+)
+_REVENUE_GENERATOR_GOAL_CLUSTERS = (
+    "Closing Deals in Flight; Pipeline Quality and Coverage; "
+    "Deal Execution Efficiency; Competitive Winning"
 )
 _CUSTOMER_GOAL_CLUSTERS = (
     "Retained Revenue Landing to Forecast; Expansion Revenue Compounding NRR; "
@@ -1302,6 +1434,20 @@ _ARCHETYPE_CONFIG = {
         ),
         "brief_filename": "marketing-builder-brief.md",
         "user_prompt_subject": "Marketing Execution",
+    },
+    "revenue_generator": {
+        "intelligence_area": "revenue",
+        "audience_label": "Account Executive at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Revenue Generator",
+        "goal_clusters": _REVENUE_GENERATOR_GOAL_CLUSTERS,
+        "snapshot_label": "ACCOUNT EXECUTIVE DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Q2 Beacon h2h win rate 61.1%\", "
+            "your card says 61.1% or rounds honestly to 61%, not 62%."
+        ),
+        "brief_filename": "revenue-generator-brief.md",
+        "user_prompt_subject": "Account Executive",
     },
 }
 
@@ -1413,6 +1559,7 @@ def build_user_message(archetype: str) -> str:
         "customer": "customer data",
         "marketing_strategist": "marketing strategy data",
         "marketing_builder": "marketing execution data",
+        "revenue_generator": "account executive data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -1606,6 +1753,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_marketing_strategist_summary(ds)
     elif archetype == "marketing_builder":
         summary = build_marketing_builder_summary(ds)
+    elif archetype == "revenue_generator":
+        summary = build_revenue_generator_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,
