@@ -1,0 +1,230 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "Speed-to-value positioning lands in 62% of discovery calls",
+    "anchor": "Gong transcript analysis shows 17 of 27 sampled April calls re-state the speed-to-value frame.",
+    "connect": "Platform-consolidation messaging appears in 19% of the same sample.",
+    "body": "Gong transcript analysis shows 17 of 27 sampled April calls re-state the speed-to-value frame. Platform-consolidation messaging appears in 19% of the same sample.",
+    "grounded_metrics": [
+      "gong_discovery_frames",
+      "positioning_resonance"
+    ],
+    "trace": "Discovery call frame analysis from April 2026 Gong samples showing speed-to-value message adoption by prospects."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ICP match rate climbs to 78% on new logos this quarter",
+    "anchor": "Q2 2026 shows 28 of 36 new logos align with the ideal customer profile.",
+    "connect": "Q1 2026 ran at 64% ICP alignment on new business.",
+    "body": "Q2 2026 shows 28 of 36 new logos align with the ideal customer profile. Q1 2026 ran at 64% ICP alignment on new business.",
+    "grounded_metrics": [
+      "icp_match_rate",
+      "new_logo_alignment"
+    ],
+    "trace": "New logo ICP alignment tracking quarter-over-quarter improvement in customer fit."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ICP-aligned deals close 12 days faster than off-profile wins",
+    "anchor": "Velocity analysis shows clear cycle time advantage for on-target customer segment.",
+    "connect": "Q2 enterprise close rates sit at 13% versus mid-market at 31%.",
+    "body": "Velocity analysis shows clear cycle time advantage for on-target customer segment. Q2 enterprise close rates sit at 13% versus mid-market at 31%.",
+    "grounded_metrics": [
+      "icp_velocity",
+      "segment_close_rates"
+    ],
+    "trace": "ICP alignment correlation with deal velocity showing segment-level performance variance."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Beacon Systems win rate jumps to 64% in head-to-head deals",
+    "anchor": "Q2 2026 competitive record shows 14-8 record across 22 direct contests.",
+    "connect": "Prior four-quarter average versus Beacon ran at 28%.",
+    "body": "Q2 2026 competitive record shows 14-8 record across 22 direct contests. Prior four-quarter average versus Beacon ran at 28%.",
+    "grounded_metrics": [
+      "beacon_win_rate",
+      "competitive_performance"
+    ],
+    "trace": "Beacon Systems head-to-head performance showing significant quarter-over-quarter win rate improvement."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Battlecard usage doubles to 61% on competitive opportunities",
+    "anchor": "Q2 2026 shows 38 of 62 competitive deals accessed the Beacon battlecard.",
+    "connect": "Q1 2026 battlecard utilization sat at 22%.",
+    "body": "Q2 2026 shows 38 of 62 competitive deals accessed the Beacon battlecard. Q1 2026 battlecard utilization sat at 22%.",
+    "grounded_metrics": [
+      "battlecard_utilization",
+      "enablement_adoption"
+    ],
+    "trace": "Battlecard adoption rates on competitive opportunities showing significant usage increase."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Northstar objection update drives 9-point win rate lift",
+    "anchor": "Post-April 8 win rate versus Northstar Platform climbs to 51% versus 42% before the update.",
+    "connect": "Northstar mentions in Gong calls drop 22% in the four weeks following the battlecard revision.",
+    "body": "Post-April 8 win rate versus Northstar Platform climbs to 51% versus 42% before the update. Northstar mentions in Gong calls drop 22% in the four weeks following the battlecard revision.",
+    "grounded_metrics": [
+      "northstar_win_rate",
+      "objection_handling"
+    ],
+    "trace": "Northstar Platform competitive response showing win rate improvement after objection-handling update."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Verge IO presence doubles in competitive landscape",
+    "anchor": "Verge IO appears in 18 of 75 Q2 competitive opportunities versus 11% in Q1.",
+    "connect": "Concentration sits highest in mid-market segment deals.",
+    "body": "Verge IO appears in 18 of 75 Q2 competitive opportunities versus 11% in Q1. Concentration sits highest in mid-market segment deals.",
+    "grounded_metrics": [
+      "verge_io_presence",
+      "competitive_emergence"
+    ],
+    "trace": "Verge IO competitive presence tracking showing significant market share growth in target segment."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Verge IO Series B funding follows market presence increase",
+    "anchor": "Verge IO raised $40M Series B on March 14, 2026.",
+    "connect": "Their competitive appearance rate climbs from 11% to 24% between Q1 and Q2.",
+    "body": "Verge IO raised $40M Series B on March 14, 2026. Their competitive appearance rate climbs from 11% to 24% between Q1 and Q2.",
+    "grounded_metrics": [
+      "verge_funding",
+      "competitive_correlation"
+    ],
+    "trace": "Verge IO funding event correlated with increased competitive presence in Atlas deals."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Close reason capture hits 92% across Q2 deals",
+    "anchor": "CRM outcome data shows 47 of 51 closed deals carry structured close reasons.",
+    "connect": "Q1 2026 capture rate sat at 71%.",
+    "body": "CRM outcome data shows 47 of 51 closed deals carry structured close reasons. Q1 2026 capture rate sat at 71%.",
+    "grounded_metrics": [
+      "close_reason_capture",
+      "crm_data_quality"
+    ],
+    "trace": "CRM data quality improvement showing better outcome reason documentation for competitive analysis."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas CRM Sync generates $420K pipeline in first three weeks",
+    "anchor": "April 8 launch creates 14 new opportunities totaling $420,000 in the initial period.",
+    "connect": "Prior launch in October generated $310,000 in the same timeframe.",
+    "body": "April 8 launch creates 14 new opportunities totaling $420,000 in the initial period. Prior launch in October generated $310,000 in the same timeframe.",
+    "grounded_metrics": [
+      "launch_pipeline",
+      "crm_sync_performance"
+    ],
+    "trace": "Atlas CRM Sync launch performance showing pipeline generation improvement versus prior product launch."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Launch enablement adoption climbs to 71% across sales team",
+    "anchor": "First 14 days show 27 of 38 reps accessing CRM Sync battlecard or one-pager.",
+    "connect": "Prior launch adoption rate sat at 42%.",
+    "body": "First 14 days show 27 of 38 reps accessing CRM Sync battlecard or one-pager. Prior launch adoption rate sat at 42%.",
+    "grounded_metrics": [
+      "enablement_adoption",
+      "launch_readiness"
+    ],
+    "trace": "Launch enablement asset adoption showing improved sales team engagement with new product materials."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Asset-opening reps generate 2.4x the pipeline from launches",
+    "anchor": "Pipeline analysis shows clear correlation between enablement engagement and deal creation.",
+    "connect": "71% of the sales team accessed launch materials in the first two weeks.",
+    "body": "Pipeline analysis shows clear correlation between enablement engagement and deal creation. 71% of the sales team accessed launch materials in the first two weeks.",
+    "grounded_metrics": [
+      "enablement_correlation",
+      "pipeline_multiplier"
+    ],
+    "trace": "Sales enablement effectiveness showing pipeline generation correlation with asset usage."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Atlas Forecast Pro launch readiness locks 10 days early",
+    "anchor": "May 15 launch shows 3 of 3 readiness items cleared by May 5.",
+    "connect": "Prior launch positioned just 2 days before ship date.",
+    "body": "May 15 launch shows 3 of 3 readiness items cleared by May 5. Prior launch positioned just 2 days before ship date.",
+    "grounded_metrics": [
+      "launch_readiness",
+      "forecast_pro_gtm"
+    ],
+    "trace": "Launch preparation timeline showing improved GTM readiness versus prior product releases."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Enterprise inbound conversion lifts 8 points with new positioning",
+    "anchor": "Q2 2026 enterprise inbound-to-meeting conversion shows clear lift pattern.",
+    "connect": "Enterprise inbound pipeline reaches $290,000 this quarter.",
+    "body": "Q2 2026 enterprise inbound-to-meeting conversion shows clear lift pattern. Enterprise inbound pipeline reaches $290,000 this quarter.",
+    "grounded_metrics": [
+      "enterprise_conversion",
+      "positioning_impact"
+    ],
+    "trace": "Enterprise inbound performance showing conversion improvement with refreshed positioning approach."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Launch-attributable pipeline crosses 18% of Q2 net new",
+    "anchor": "Launch attribution shows $620,000 of $3,400,000 total quarterly pipeline.",
+    "connect": "Product launches contribute measurable share to total pipeline generation.",
+    "body": "Launch attribution shows $620,000 of $3,400,000 total quarterly pipeline. Product launches contribute measurable share to total pipeline generation.",
+    "grounded_metrics": [
+      "launch_attribution",
+      "pipeline_composition"
+    ],
+    "trace": "Launch pipeline attribution showing significant contribution to quarterly net new pipeline totals."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Earned media pickup rate jumps to 42% on CRM Sync launch",
+    "anchor": "April 8 announcement sees 22 of 53 outreached publications carry the story.",
+    "connect": "Prior launch achieved 28% media pickup rate.",
+    "body": "April 8 announcement sees 22 of 53 outreached publications carry the story. Prior launch achieved 28% media pickup rate.",
+    "grounded_metrics": [
+      "earned_media",
+      "launch_coverage"
+    ],
+    "trace": "CRM Sync launch media coverage showing improved earned media performance versus prior announcements."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Launch-week pipeline doubles versus prior announcement",
+    "anchor": "First 7 days show 2.0x the pipeline generation of the October launch.",
+    "connect": "Media pickup rate climbs from 28% to 42% between launches.",
+    "body": "First 7 days show 2.0x the pipeline generation of the October launch. Media pickup rate climbs from 28% to 42% between launches.",
+    "grounded_metrics": [
+      "launch_velocity",
+      "media_correlation"
+    ],
+    "trace": "Launch-week pipeline performance correlated with improved earned media coverage rates."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Customer exit themes surface in 31% of Beacon competitive deals",
+    "anchor": "Implementation timeline and integration breadth themes from April exit interviews.",
+    "connect": "Both themes appear consistently in Q2 2026 Beacon Systems head-to-head opportunities.",
+    "body": "Implementation timeline and integration breadth themes from April exit interviews. Both themes appear consistently in Q2 2026 Beacon Systems head-to-head opportunities.",
+    "grounded_metrics": [
+      "exit_interview_themes",
+      "competitive_correlation"
+    ],
+    "trace": "Customer success exit interview themes showing up in competitive deal patterns for positioning intelligence."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Exit interview positioning themes feed competitive battlecards",
+    "anchor": "April 2026 shows 14 interviews conducted with 6 themes surfaced.",
+    "connect": "Two themes directly influence positioning revision for competitive response.",
+    "body": "April 2026 shows 14 interviews conducted with 6 themes surfaced. Two themes directly influence positioning revision for competitive response.",
+    "grounded_metrics": [
+      "cs_feedback_loop",
+      "positioning_input"
+    ],
+    "trace": "Customer success to marketing feedback loop showing exit interview intelligence feeding competitive positioning."
+  }
+]

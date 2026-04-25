@@ -1,18 +1,19 @@
-"""Phase 2.5 / 2.6 multi-seed analyzer (Revenue Leader + Customer Leader).
+"""Phase 2.5 / 2.6 / 2.9 multi-seed analyzer (Revenue Leader + Customer Leader + Marketing Strategist).
 
 Reads generated_cards_<archetype>_seed<N>.json for each seed, scores:
   - card count
   - voice violation count (em dash, "against" comparator, banned verdict words)
   - specificity status (engine drops are reported in stderr, this checks ungrounded numerics in saved cards)
-  - 15 archetype-specific pattern coverage (P-RL-01..15 or P-CL-01..15)
+  - 15 archetype-specific pattern coverage (P-RL-01..15, P-CL-01..15, or P-MS-01..15)
 
 Patterns are detected by content keywords and grounded_metrics tags. The detection
 is intentionally permissive (any-of) so a card that legitimately tells the pattern
 with different exact figures still counts.
 
 Usage:
-  python analyze_seeds.py                       # default archetype=revenue
-  python analyze_seeds.py --archetype customer  # Phase 2.6 Customer Leader
+  python analyze_seeds.py                            # default archetype=revenue
+  python analyze_seeds.py --archetype customer       # Phase 2.6 Customer Leader
+  python analyze_seeds.py --archetype marketing_strategist  # Phase 2.9 Marketing Strategist
 """
 import argparse
 import json
@@ -310,9 +311,120 @@ def detect_violations(cards):
     return hits
 
 
+# Marketing Strategist pattern detectors (P-MS-01..15) for Phase 2.9.
+MS_PATTERNS = [
+    ("P-MS-01", "Speed-to-value message resonance 62% of discovery calls", [
+        r"speed[- ]to[- ]value", r"\b62%\b", r"17 of 27", r"17.*27.*call",
+        r"discovery call.*resonan", r"resonan.*discovery", r"Gong.*62",
+        r"62%.*discovery", r"0\.62.*call",
+    ], ["april_gong_discovery", "message_resonance", "discovery_calls",
+        "positioning_close_rates"]),
+
+    ("P-MS-02", "ICP match rate climbs 78% Q2 vs 64% Q1", [
+        r"\b78%\b", r"28 of 36", r"icp[- ]match", r"ICP match.*78",
+        r"78%.*ICP", r"23 of 36", r"0\.7778", r"0\.6389",
+        r"fits the profile", r"fitting the profile",
+    ], ["icp_match_rate", "icp_velocity_lift", "icp_match"]),
+
+    ("P-MS-03", "Beacon Systems head-to-head win rate 64%", [
+        r"\bBeacon\b.*win rate", r"win rate.*\bBeacon\b",
+        r"\b14[- ]8\b", r"14-8 record", r"14 wins.*8",
+        r"64%.*head[- ]to[- ]head", r"head[- ]to[- ]head.*64",
+        r"63\.6%", r"prior.*28%", r"28%.*prior",
+    ], ["beacon_h2h_wins", "beacon_historical", "beacon_win_rate",
+        "beacon", "competitive"]),
+
+    ("P-MS-04", "Battlecard utilization 61% vs Q1 22%", [
+        r"battlecard.*util", r"util.*battlecard",
+        r"\b61%\b.*battlecard", r"battlecard.*61%",
+        r"38.*62.*beacon", r"38 opens.*62",
+        r"Q1.*util.*22", r"22%.*Q1", r"utilization.*climbs",
+    ], ["battlecard_opens", "q1_utilization", "battlecard_utilization",
+        "enablement_util"]),
+
+    ("P-MS-05", "Northstar win rate lift 42%→51% post-update", [
+        r"\bNorthstar\b", r"51%.*win rate", r"win rate.*51%",
+        r"42%.*51%", r"from 42", r"Gong.*22%", r"22%.*Gong",
+        r"Gong.*drop", r"mentions.*drop.*22", r"battlecard.*revision",
+        r"objection.*update", r"april 8.*battlecard",
+    ], ["northstar_win_rate", "northstar_gong_mentions", "northstar"]),
+
+    ("P-MS-06", "Verge IO emergence 24% of deals vs Q1 11%", [
+        r"\bVerge\b", r"24%.*Verge", r"Verge.*24%",
+        r"18 of 75", r"18.*75.*compet", r"Q1.*11%.*Verge",
+        r"Verge.*11%.*Q1", r"emergen", r"doubles.*compet",
+        r"\$40M.*Series B", r"Series B.*\$40M",
+    ], ["verge_competitive_share", "verge_funding", "verge_segment_concentration",
+        "verge", "competitive"]),
+
+    ("P-MS-07", "Close reason capture 92% Q2 vs 71% Q1", [
+        r"close reason", r"reason capture", r"\b92%\b.*close",
+        r"close.*92%", r"47 of 51", r"47.*51.*deal",
+        r"crm.*hygiene", r"hygiene.*crm", r"0\.9216",
+        r"Q1.*71%.*capture", r"capture.*71%.*Q1",
+        r"structured reason", r"outcome.*capture",
+    ], ["outcome_reason_capture", "crm_hygiene", "close_reason_capture"]),
+
+    ("P-MS-08", "CRM Sync launch generates $420K / 14 opps in 3 weeks", [
+        r"\$420K", r"14.*opportunit", r"CRM Sync", r"april 8.*launch",
+        r"launch.*\$420K", r"\$420K.*launch", r"\$420K.*pipeline",
+        r"\$310K.*prior", r"prior.*\$310K",
+    ], ["april_launch_pipeline", "prior_launch_compare", "launch_pipeline"]),
+
+    ("P-MS-09", "Launch asset adoption 71% (27/38 reps) in first 14 days", [
+        r"\b71%\b.*launch", r"launch.*71%", r"27 of 38", r"27.*38.*rep",
+        r"asset.*adopt", r"adopt.*asset", r"battlecard.*one[- ]pager",
+        r"prior.*42%.*launch", r"launch.*42%.*prior",
+        r"reps opened", r"opened.*assets",
+    ], ["launch_asset_adoption", "rep_engagement", "enablement_adoption"]),
+
+    ("P-MS-10", "Asset-opening reps generate 2.4x launch pipeline", [
+        r"2\.4x", r"2\.4 times", r"asset.*pipeline.*lift",
+        r"pipeline.*asset.*lift", r"rep.*engage.*pipeline",
+        r"opened.*launch.*pipeline", r"launch.*2\.4",
+    ], ["asset_pipeline_lift", "launch_asset_adoption", "enablement_roi"]),
+
+    ("P-MS-11", "Forecast Pro readiness 10 days early vs 2 days prior launch", [
+        r"Forecast Pro", r"10 days.*early", r"early.*10 days",
+        r"may 5.*sign", r"sign.*may 5", r"2026-05-05",
+        r"prior.*2 days", r"2 days.*prior", r"signed off.*days",
+        r"launch readiness", r"readiness.*clears",
+    ], ["forecast_pro_readiness", "prior_launch_timing", "launch_readiness"]),
+
+    ("P-MS-12", "Enterprise inbound $290K + 8-point conversion lift", [
+        r"\$290K", r"8[- ]point.*conversion", r"conversion.*8[- ]point",
+        r"8 points.*higher", r"enterprise.*inbound", r"inbound.*enterprise",
+        r"enterprise.*pipeline.*\$290", r"\$290K.*enterprise",
+        r"new.*messag.*frame", r"inbound.*conversion.*lift",
+    ], ["enterprise_inbound_pipeline", "conversion_lift", "inbound_conversion"]),
+
+    ("P-MS-13", "Launch-attributed pipeline 18% of Q2 net new ($620K of $3.4M)", [
+        r"\$620K", r"\$3\.4M", r"18%.*net new", r"net new.*18%",
+        r"launch.*attrib", r"attrib.*launch", r"18%.*Q2 net",
+        r"Q2 net.*18%", r"0\.1824",
+    ], ["launch_attribution_share", "q2_launch_attribution", "attribution_share"]),
+
+    ("P-MS-14", "Earned media pickup 42% (22/53 publications) vs prior 28%", [
+        r"\b42%\b.*media", r"media.*42%", r"22 of 53", r"22.*53.*pub",
+        r"media.*pickup", r"pickup.*media", r"earned.*42%",
+        r"prior.*28%.*media", r"28%.*prior.*media",
+        r"2x.*pipeline.*launch", r"launch.*pipeline.*2x",
+    ], ["media_pickup_rate", "earned_media", "launch_week_velocity"]),
+
+    ("P-MS-15", "CS exit themes feed positioning (31% Beacon overlap, 14 interviews)", [
+        r"exit interview", r"exit theme", r"\b14\b.*interview",
+        r"\b6\b.*theme", r"31%.*Beacon", r"Beacon.*31%",
+        r"competitor.*theme", r"theme.*positioning",
+        r"CS.*exit", r"exit.*CS", r"customer.*feed.*position",
+    ], ["exit_themes_competitive", "april_exit_interviews",
+        "cs_exit_themes", "exit_interview"]),
+]
+
+
 _ARCHETYPE_TABLE = {
     "revenue": (PATTERNS, "Revenue Leader", "revenue", "Phase 2.5"),
     "customer": (CL_PATTERNS, "Customer Leader", "customer", "Phase 2.6"),
+    "marketing_strategist": (MS_PATTERNS, "Marketing Strategist", "marketing_strategist", "Phase 2.9"),
 }
 
 
