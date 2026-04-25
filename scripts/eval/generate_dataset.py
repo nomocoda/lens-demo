@@ -4184,6 +4184,134 @@ def load_dataset(outdir: Path) -> Dict[str, List[Dict]]:
     return ds
 
 
+# HubSpot lifecycle stage value map (Atlas → HubSpot internal name)
+_HS_LIFECYCLE = {
+    "subscriber": "subscriber",
+    "lead": "lead",
+    "mql": "marketingqualifiedlead",
+    "sql": "salesqualifiedlead",
+    "opportunity": "opportunity",
+    "customer": "customer",
+}
+
+
+def write_hubspot_csv(ds: Dict[str, List[Dict]], outdir: Path) -> None:
+    """Write HubSpot-import-compatible CSVs for Companies, Contacts, Deals, and Notes.
+
+    Column names match HubSpot's standard import template headers. Lifecycle stage
+    values are mapped to HubSpot internal names. Company name lookups replace
+    Atlas internal IDs for association columns.
+
+    Gaps not patchable here (documented):
+      - companies: Domain Name, Website URL, City, State, Country, Phone — no source data
+      - contacts: Phone number — no source data
+      - deals: Associated contact email — deals link to companies, not contacts, in Atlas
+    """
+    outdir.mkdir(parents=True, exist_ok=True)
+
+    # Build lookup dicts
+    company_by_id: Dict[str, Dict] = {c["id"]: c for c in ds.get("companies", [])}
+    contact_by_id: Dict[str, Dict] = {c["id"]: c for c in ds.get("contacts", [])}
+
+    # ── Companies ────────────────────────────────────────────────────────────
+    company_rows = []
+    for c in ds.get("companies", []):
+        company_rows.append({
+            "Company name": c["name"],
+            "Lifecycle Stage": _HS_LIFECYCLE.get(c.get("lifecycle_stage", ""), c.get("lifecycle_stage", "")),
+            "Industry": c.get("industry", ""),
+            "Number of Employees": c.get("employees", ""),
+            "Annual Revenue": c.get("current_arr", ""),
+            "Create Date": c.get("created_date", ""),
+            "External ID": c["id"],
+            "Atlas Segment": c.get("segment", ""),
+            "ABM Target": c.get("is_target_account", ""),
+            "ABM List Name": c.get("target_list_name", ""),
+            "Tech Stack": ";".join(c["tech_stack"]) if isinstance(c.get("tech_stack"), list) else c.get("tech_stack", ""),
+        })
+    _write_csv_rows(outdir / "hubspot_companies.csv", company_rows)
+
+    # ── Contacts ─────────────────────────────────────────────────────────────
+    contact_rows = []
+    for c in ds.get("contacts", []):
+        co = company_by_id.get(c.get("company_id", ""), {})
+        contact_rows.append({
+            "First name": c.get("first_name", ""),
+            "Last name": c.get("last_name", ""),
+            "Email": c.get("email", ""),
+            "Job title": c.get("title", ""),
+            "Lifecycle stage": _HS_LIFECYCLE.get(c.get("lifecycle_stage", ""), c.get("lifecycle_stage", "")),
+            "Associated Company": co.get("name", ""),
+            "Create Date": c.get("created_date", ""),
+            "External ID": c["id"],
+            "Atlas Role Category": c.get("role_category", ""),
+            "ABM Target": c.get("is_abm", ""),
+            "SQL Date": c.get("became_sql_date", ""),
+            "SQL Accepted": c.get("sql_accepted", ""),
+        })
+    _write_csv_rows(outdir / "hubspot_contacts.csv", contact_rows)
+
+    # ── Deals ────────────────────────────────────────────────────────────────
+    deal_rows = []
+    for d in ds.get("deals", []):
+        co = company_by_id.get(d.get("company_id", ""), {})
+        co_name = co.get("name", "")
+        deal_rows.append({
+            "Deal name": f"{co_name} – {d['id']}",
+            "Deal stage": d.get("stage", ""),
+            "Pipeline": "default",
+            "Amount": d.get("amount", ""),
+            "Close date": d.get("close_date", ""),
+            "Associated company": co_name,
+            "Create Date": d.get("create_date", ""),
+            "External ID": d["id"],
+            "Lead source": d.get("lead_source", ""),
+            "Atlas Segment": d.get("segment", ""),
+            "Competitive Deal": d.get("head_to_head", ""),
+            "Competitor": d.get("competitor_id", ""),
+            "Time in Proposal (days)": d.get("time_in_proposal", ""),
+            "Contract Revisions": d.get("contract_revisions", ""),
+            "Procurement Cleared Date": d.get("procurement_cleared_date", ""),
+            "Procurement Signoff": d.get("procurement_signoff", ""),
+            "Campaign Source": d.get("campaign_source_id", ""),
+        })
+    _write_csv_rows(outdir / "hubspot_deals.csv", deal_rows)
+
+    # ── Notes (from engagement_events) ───────────────────────────────────────
+    # HubSpot CSV import for activities supports Notes: "Note body", "Activity date",
+    # "Associated contact email". Engagement events are mapped to Notes as the closest
+    # CSV-importable equivalent. High-intent events (demo_request, form_fill,
+    # pricing_page_view) are included; low-signal events (page_view, ad_click) are skipped.
+    high_intent_event_types = {"demo_request", "form_fill", "pricing_page_view", "content_download"}
+    note_rows = []
+    for ev in ds.get("engagement_events", []):
+        if ev.get("event_type") not in high_intent_event_types:
+            continue
+        ct = contact_by_id.get(ev.get("contact_id", ""), {})
+        co = company_by_id.get(ev.get("company_id", ""), {})
+        note_rows.append({
+            "Note body": f"Event: {ev['event_type']} | Intent: {ev.get('intent_level', '')} | Company: {co.get('name', '')}",
+            "Activity date": ev.get("date", ""),
+            "Associated contact email": ct.get("email", ""),
+            "Associated company": co.get("name", ""),
+        })
+    _write_csv_rows(outdir / "hubspot_notes.csv", note_rows)
+
+    print(f"HubSpot CSV export: {len(company_rows)} companies, {len(contact_rows)} contacts, "
+          f"{len(deal_rows)} deals, {len(note_rows)} notes (filtered from {len(ds.get('engagement_events', []))} events)")
+
+
+def _write_csv_rows(path: Path, rows: List[Dict]) -> None:
+    if not rows:
+        return
+    keys = list(rows[0].keys())
+    with path.open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=keys)
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: ("" if v is None else v) for k, v in r.items()})
+
+
 # ----------------------------------------------------------------------------
 # CLI
 # ----------------------------------------------------------------------------
@@ -4191,7 +4319,8 @@ def load_dataset(outdir: Path) -> Dict[str, List[Dict]]:
 def main():
     parser = argparse.ArgumentParser(description="Generate Atlas SaaS synthetic dataset for Stage 1 Relevance Engine eval.")
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default 42).")
-    parser.add_argument("--format", choices=["json", "csv"], default="json", help="Output format.")
+    parser.add_argument("--format", choices=["json", "csv", "hubspot"], default="json",
+                        help="Output format. 'hubspot' writes HubSpot-import-compatible CSVs.")
     parser.add_argument("--output", type=str, default="./output", help="Output directory.")
     parser.add_argument("--validate", action="store_true", help="Skip generation; load from --output and re-run validation.")
     args = parser.parse_args()
@@ -4207,6 +4336,8 @@ def main():
         ds = build_dataset(args.seed)
         if args.format == "json":
             write_json(ds, outdir)
+        elif args.format == "hubspot":
+            write_hubspot_csv(ds, outdir)
         else:
             write_csv(ds, outdir)
 
