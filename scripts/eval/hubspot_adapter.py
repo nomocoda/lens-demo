@@ -37,6 +37,7 @@ surface via the HubSpot path; that delta is measured in Phase 3.5.
 """
 from __future__ import annotations
 
+import http.client
 import json
 import sys
 import time
@@ -169,7 +170,7 @@ class HubSpotComposioAdapter:
         self._conn_id = items[0]["id"]
         return self._conn_id
 
-    def _proxy_get(self, hs_endpoint: str) -> dict:
+    def _proxy_get(self, hs_endpoint: str, _attempt: int = 1) -> dict:
         """Call any HubSpot endpoint via Composio proxy using stored OAuth token."""
         conn_id = self._get_connection_id()
         payload = json.dumps({
@@ -183,12 +184,24 @@ class HubSpotComposioAdapter:
             _PROXY_URL, data=payload, headers=self._headers()
         )
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=60) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as exc:
             body = exc.read().decode("utf-8", errors="replace")[:400]
             raise RuntimeError(
                 f"Composio proxy returned HTTP {exc.code} for {hs_endpoint}: {body}"
+            ) from exc
+        except (http.client.RemoteDisconnected, urllib.error.URLError, OSError) as exc:
+            if _attempt < 3:
+                wait = 2 ** _attempt
+                print(
+                    f"  transient error on attempt {_attempt} ({exc}), retrying in {wait}s...",
+                    file=sys.stderr,
+                )
+                time.sleep(wait)
+                return self._proxy_get(hs_endpoint, _attempt + 1)
+            raise RuntimeError(
+                f"Composio proxy failed after 3 attempts for {hs_endpoint}: {exc}"
             ) from exc
 
     def _get_all_objects(
@@ -214,6 +227,13 @@ class HubSpotComposioAdapter:
             result = self._proxy_get(endpoint)
             # Composio may wrap the HubSpot response in a "data" key
             data = result.get("data", result)
+            # Composio occasionally returns a string body on transient errors
+            if not isinstance(data, dict):
+                print(
+                    f"  unexpected response type ({type(data).__name__}) on page {page} of {object_type} — stopping pagination",
+                    file=sys.stderr,
+                )
+                break
 
             page_records = data.get("results", [])
             records.extend(page_records)
@@ -468,6 +488,53 @@ class HubSpotComposioAdapter:
             "rg_competitive_coverage": empty,
             "rg_battlecard_usage": empty,
             "rg_expansion_flags": empty,
+            # Revenue Developer — no HubSpot equivalent at v1
+            "rd_inbound_speed": empty,
+            "rd_sequence_perf": empty,
+            "rd_subject_test": empty,
+            "rd_segment_penetration": empty,
+            "rd_intent_outreach": empty,
+            "rd_ae_handoff": empty,
+            "rd_linkedin_inbound": empty,
+            "rd_call_timing": empty,
+            "rd_dormant_reengagement": empty,
+            "rd_enterprise_committee": empty,
+            # Revenue Operator — no HubSpot equivalent at v1
+            "ro_forecast_metrics": empty,
+            "ro_pipeline_governance": empty,
+            "ro_data_quality": empty,
+            "ro_tool_sync": empty,
+            "ro_stage_gate": empty,
+            "ro_lead_routing": empty,
+            "ro_attribution": empty,
+            "ro_qbr_changes": empty,
+            "ro_account_dedup": empty,
+            "ro_deal_review_presence": empty,
+            # Customer Advocate — no HubSpot equivalent at v1
+            "ca_active_book": empty,
+            "ca_renewal_pipeline": empty,
+            "ca_early_renewals": empty,
+            "ca_segment_grr": empty,
+            "ca_lighthouse_qbr": empty,
+            "ca_qbr_log": empty,
+            "ca_onboarding": empty,
+            "ca_advocate_pipeline": empty,
+            # Customer Operator — no HubSpot equivalent at v1
+            "co_health_model": empty,
+            "co_playbook_ops": empty,
+            "co_platform_integrations": empty,
+            "co_segmentation": empty,
+            "co_handoff_quality": empty,
+            "co_benchmark": empty,
+            "co_performance": empty,
+            # Customer Technician — no HubSpot equivalent at v1
+            "ct_ttfv_cohort": empty,
+            "ct_go_live_velocity": empty,
+            "ct_integration_and_activation": empty,
+            "ct_handoff_quality": empty,
+            "ct_nps": empty,
+            "ct_support_and_blockers": empty,
+            "ct_product_event": empty,
         }
 
 

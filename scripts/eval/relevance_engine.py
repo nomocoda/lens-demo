@@ -1489,14 +1489,14 @@ def build_customer_advocate_summary(ds: Dict[str, list]) -> str:
     Value Delivery and QBR (P-CA-12 to P-CA-13),
     Cross-functional bridges (P-CA-14 to P-CA-15).
     """
-    book = ds.get("ca_active_book", [{}])[0]
-    renewal_q3 = ds.get("ca_renewal_pipeline", [{}])[0]
-    early_ren = ds.get("ca_early_renewals", [{}])[0]
+    book = (ds.get("ca_active_book") or [{}])[0]
+    renewal_q3 = (ds.get("ca_renewal_pipeline") or [{}])[0]
+    early_ren = (ds.get("ca_early_renewals") or [{}])[0]
     segment_grr = ds.get("ca_segment_grr", [])
-    lighthouse = ds.get("ca_lighthouse_qbr", [{}])[0]
-    qbr_log = ds.get("ca_qbr_log", [{}])[0]
+    lighthouse = (ds.get("ca_lighthouse_qbr") or [{}])[0]
+    qbr_log = (ds.get("ca_qbr_log") or [{}])[0]
     onboarding = ds.get("ca_onboarding", [])
-    advocate = ds.get("ca_advocate_pipeline", [{}])[0]
+    advocate = (ds.get("ca_advocate_pipeline") or [{}])[0]
 
     grr_q2 = next((r for r in segment_grr if r.get("quarter") == "Q2_2026"), {})
     grr_q1 = next((r for r in segment_grr if r.get("quarter") == "Q1_2026"), {})
@@ -1681,12 +1681,12 @@ def build_customer_operator_summary(ds: Dict[str, list]) -> str:
     Segmentation (P-CO-04),
     Performance and Cross-entity Attribution (P-CO-09, P-CO-12, P-CO-13, P-CO-15).
     """
-    health = ds.get("co_health_model", [{}])[0]
-    playbook = ds.get("co_playbook_ops", [{}])[0]
+    health = (ds.get("co_health_model") or [{}])[0]
+    playbook = (ds.get("co_playbook_ops") or [{}])[0]
     integrations = ds.get("co_platform_integrations", [])
-    segmentation = ds.get("co_segmentation", [{}])[0]
-    handoff = ds.get("co_handoff_quality", [{}])[0]
-    benchmark = ds.get("co_benchmark", [{}])[0]
+    segmentation = (ds.get("co_segmentation") or [{}])[0]
+    handoff = (ds.get("co_handoff_quality") or [{}])[0]
+    benchmark = (ds.get("co_benchmark") or [{}])[0]
     performance = ds.get("co_performance", [])
 
     telemetry = next((r for r in integrations if r.get("integration") == "mixpanel_to_cs_platform"), {})
@@ -1975,13 +1975,13 @@ def build_customer_technician_summary(ds: Dict[str, list]) -> str:
     Stakeholder Activation and Adoption (P-CT-04, P-CT-10, P-CT-11, P-CT-15),
     Cross-functional Handoffs and Integration Quality (P-CT-06, P-CT-07, P-CT-09, P-CT-12, P-CT-13).
     """
-    ttfv = ds.get("ct_ttfv_cohort", [{}])[0]
+    ttfv = (ds.get("ct_ttfv_cohort") or [{}])[0]
     velocity = ds.get("ct_go_live_velocity", [])
-    integration = ds.get("ct_integration_and_activation", [{}])[0]
+    integration = (ds.get("ct_integration_and_activation") or [{}])[0]
     handoffs = ds.get("ct_handoff_quality", [])
-    nps_data = ds.get("ct_nps", [{}])[0]
+    nps_data = (ds.get("ct_nps") or [{}])[0]
     support = ds.get("ct_support_and_blockers", [])
-    product_event = ds.get("ct_product_event", [{}])[0]
+    product_event = (ds.get("ct_product_event") or [{}])[0]
 
     mm_velocity = next((r for r in velocity if r.get("segment") == "mid-market"), {})
     ent_velocity = next((r for r in velocity if r.get("segment") == "enterprise"), {})

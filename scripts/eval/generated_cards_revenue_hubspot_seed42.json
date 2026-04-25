@@ -1,0 +1,50 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Procurement pipeline shows zero enterprise deals in contract review",
+    "anchor": "No enterprise opportunities currently sit in procurement review with signoff or contract revisions.",
+    "connect": "Enterprise segment win rate holds at 0% for both Q2 and trailing four quarters.",
+    "body": "No enterprise opportunities currently sit in procurement review with signoff or contract revisions. Enterprise segment win rate holds at 0% for both Q2 and trailing four quarters.",
+    "grounded_metrics": [
+      "procurement_review_deals",
+      "enterprise_win_rate"
+    ],
+    "trace": "Complete absence of enterprise deals in late-stage procurement aligns with zero win rate pattern."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Marketing-sourced pipeline attribution runs at 0% of Q2 creation",
+    "anchor": "Zero dollars of the $13.2M in new pipeline carries marketing attribution tags.",
+    "connect": "Outbound-sourced enterprise deals show 0% win rate with no closed opportunities.",
+    "body": "Zero dollars of the $13.2M in new pipeline carries marketing attribution tags. Outbound-sourced enterprise deals show 0% win rate with no closed opportunities.",
+    "grounded_metrics": [
+      "marketing_attribution",
+      "outbound_win_rate"
+    ],
+    "trace": "Complete absence of marketing attribution suggests either tracking issues or pure outbound model."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Mid-market proposal stage timing shows no baseline from recent closes",
+    "anchor": "Q2 closed mid-market deals provide no proposal-stage duration data with zero completed cycles.",
+    "connect": "Trailing four quarters mid-market proposal timing also shows no measurable baseline.",
+    "body": "Q2 closed mid-market deals provide no proposal-stage duration data with zero completed cycles. Trailing four quarters mid-market proposal timing also shows no measurable baseline.",
+    "grounded_metrics": [
+      "mm_proposal_timing",
+      "mm_historical_cycles"
+    ],
+    "trace": "Absence of mid-market deal closures prevents cycle time analysis across multiple quarters."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Competitive position versus Beacon Systems shows no head-to-head deals",
+    "anchor": "Q2 2026 record versus Beacon runs at 0-0 record with no competed deals.",
+    "connect": "Q1 2026 versus Beacon also shows 0-0 record across the quarter.",
+    "body": "Q2 2026 record versus Beacon runs at 0-0 record with no competed deals. Q1 2026 versus Beacon also shows 0-0 record across the quarter.",
+    "grounded_metrics": [
+      "beacon_head_to_head",
+      "competitive_tracking"
+    ],
+    "trace": "Two quarters of zero competitive deals suggests either market positioning issues or tracking gaps."
+  }
+]

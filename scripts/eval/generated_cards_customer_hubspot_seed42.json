@@ -1,0 +1,135 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "At-risk ARR pool sits at zero dollars across zero accounts for April.",
+    "anchor": "No accounts currently flagged as renewal risk, including zero of the top-20 ARR accounts.",
+    "connect": "March 2026 also showed zero at-risk ARR, indicating consistent portfolio health.",
+    "body": "No accounts currently flagged as renewal risk, including zero of the top-20 ARR accounts. March 2026 also showed zero at-risk ARR, indicating consistent portfolio health.",
+    "grounded_metrics": [
+      "april_at_risk_pool",
+      "march_at_risk_pool"
+    ],
+    "trace": "Zero at-risk accounts for two consecutive months suggests either exceptionally healthy portfolio or potential health score calibration issue."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Enterprise renewal signing activity shows zero completions for April.",
+    "anchor": "No enterprise renewals have crossed the finish line this month, with zero executive sponsor relationships deepening during Q1.",
+    "connect": "This contrasts with the zero at-risk pool, suggesting renewal activity may concentrate in other customer segments.",
+    "body": "No enterprise renewals have crossed the finish line this month, with zero executive sponsor relationships deepening during Q1. This contrasts with the zero at-risk pool, suggesting renewal activity may concentrate in other customer segments.",
+    "grounded_metrics": [
+      "april_enterprise_renewals",
+      "executive_sponsor_depth"
+    ],
+    "trace": "Zero enterprise renewals despite zero at-risk pool indicates segment concentration in renewal timing or data visibility issue."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Multi-product customer share sits at zero percent of the customer base.",
+    "anchor": "No customers currently run multiple Atlas products, indicating single-product adoption across the entire portfolio.",
+    "connect": "Single-product customers show 0% NRR in Q2 2026, matching the multi-product cohort at 0%.",
+    "body": "No customers currently run multiple Atlas products, indicating single-product adoption across the entire portfolio. Single-product customers show 0% NRR in Q2 2026, matching the multi-product cohort at 0%.",
+    "grounded_metrics": [
+      "multi_product_share",
+      "single_product_nrr",
+      "multi_product_nrr"
+    ],
+    "trace": "Zero multi-product adoption eliminates the typical expansion vector and suggests either early-stage company or product suite strategy gap."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market NRR sits at zero percent for Q2 2026.",
+    "anchor": "Mid-market customer cohort shows no net revenue retention, with trailing three-quarter average also at 0.0%.",
+    "connect": "This matches the pattern across both single-product and multi-product customer segments at 0%.",
+    "body": "Mid-market customer cohort shows no net revenue retention, with trailing three-quarter average also at 0.0%. This matches the pattern across both single-product and multi-product customer segments at 0%.",
+    "grounded_metrics": [
+      "q2_mid_market_nrr",
+      "trailing_mid_market_nrr"
+    ],
+    "trace": "Consistent zero NRR across multiple quarters and segments suggests fundamental measurement issue or company in transition phase."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Atlas Insights adoption shows zero mid-market customers running the product.",
+    "anchor": "No mid-market accounts have adopted Atlas Insights, with zero expansion events from this customer segment in Q2.",
+    "connect": "This aligns with the overall zero percent multi-product adoption rate across the customer base.",
+    "body": "No mid-market accounts have adopted Atlas Insights, with zero expansion events from this customer segment in Q2. This aligns with the overall zero percent multi-product adoption rate across the customer base.",
+    "grounded_metrics": [
+      "mid_market_insights_adoption",
+      "multi_product_share"
+    ],
+    "trace": "Zero Insights adoption in mid-market segment connects to broader single-product pattern across portfolio."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Customer health review expansion sourcing produces zero opportunities for April.",
+    "anchor": "No expansion opportunities emerged from customer health reviews this month, totaling zero dollars in pipeline creation.",
+    "connect": "This sits alongside the zero percent NRR across all customer segments in Q2 2026.",
+    "body": "No expansion opportunities emerged from customer health reviews this month, totaling zero dollars in pipeline creation. This sits alongside the zero percent NRR across all customer segments in Q2 2026.",
+    "grounded_metrics": [
+      "april_expansion_opportunities",
+      "q2_mid_market_nrr"
+    ],
+    "trace": "Zero expansion sourcing from health reviews correlates with zero NRR, indicating expansion engine not generating pipeline."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "License utilization above 80% shows zero mid-market customers in Q2.",
+    "anchor": "No mid-market accounts are running above 80% license utilization currently, indicating headroom across the segment.",
+    "connect": "Q1 2026 showed the same pattern with zero accounts above 80% utilization.",
+    "body": "No mid-market accounts are running above 80% license utilization currently, indicating headroom across the segment. Q1 2026 showed the same pattern with zero accounts above 80% utilization.",
+    "grounded_metrics": [
+      "q2_license_utilization",
+      "q1_license_utilization"
+    ],
+    "trace": "Consistent zero high-utilization accounts suggests either early adoption phase or potential expansion opportunity not being converted."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "High-touch coverage tier shows zero accounts with zero percent GRR for Q2.",
+    "anchor": "No customers fall into the high-touch coverage model, representing 0.0% of the customer base by top ARR ranking.",
+    "connect": "Tech-touch coverage also shows zero accounts with 0% GRR across the same period.",
+    "body": "No customers fall into the high-touch coverage model, representing 0.0% of the customer base by top ARR ranking. Tech-touch coverage also shows zero accounts with 0% GRR across the same period.",
+    "grounded_metrics": [
+      "high_touch_grr",
+      "tech_touch_grr"
+    ],
+    "trace": "Zero accounts in both coverage tiers suggests either no active customer base or fundamental data visibility issue."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Coverage tier GRR patterns show identical zero percent performance across high-touch and tech-touch in Q1.",
+    "anchor": "Both high-touch and tech-touch coverage models delivered 0% GRR in Q1 2026, indicating no retention variance by service level.",
+    "connect": "Q2 2026 shows the same pattern with both tiers at zero percent GRR.",
+    "body": "Both high-touch and tech-touch coverage models delivered 0% GRR in Q1 2026, indicating no retention variance by service level. Q2 2026 shows the same pattern with both tiers at zero percent GRR.",
+    "grounded_metrics": [
+      "q1_coverage_grr",
+      "q2_coverage_grr"
+    ],
+    "trace": "Identical zero GRR across coverage tiers eliminates coverage model as retention differentiator."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Executive sponsor review activity shows zero top-20 ARR accounts scheduled for this week.",
+    "anchor": "No high-value accounts have executive sponsor reviews on the calendar for April 20-26, despite zero accounts flagged at-risk.",
+    "connect": "This sits alongside zero enterprise renewals signed for April across the portfolio.",
+    "body": "No high-value accounts have executive sponsor reviews on the calendar for April 20-26, despite zero accounts flagged at-risk. This sits alongside zero enterprise renewals signed for April across the portfolio.",
+    "grounded_metrics": [
+      "executive_sponsor_reviews",
+      "april_enterprise_renewals"
+    ],
+    "trace": "Zero executive engagement despite healthy portfolio signals potential relationship depth or activity visibility."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "At-risk pool movement shows zero accounts dropped and zero added month over month.",
+    "anchor": "No account status changes between March and April, with both months showing zero at-risk ARR.",
+    "connect": "This stability aligns with the zero percent forecast variance pattern across trailing quarters.",
+    "body": "No account status changes between March and April, with both months showing zero at-risk ARR. This stability aligns with the zero percent forecast variance pattern across trailing quarters.",
+    "grounded_metrics": [
+      "at_risk_movement",
+      "forecast_variance_trailing_four"
+    ],
+    "trace": "Zero movement in at-risk pool connects to exceptional forecast accuracy, suggesting stable but potentially inactive portfolio."
+  }
+]

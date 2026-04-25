@@ -1,0 +1,13 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Company Data section contains no revenue operations metrics",
+    "anchor": "The data snapshot shows company profile information but no pipeline, forecast, or CRM metrics.",
+    "connect": "Revenue operations intelligence requires Salesforce pipeline data, forecast accuracy figures, and stage conversion metrics to generate meaningful cards.",
+    "body": "The data snapshot shows company profile information but no pipeline, forecast, or CRM metrics. Revenue operations intelligence requires Salesforce pipeline data, forecast accuracy figures, and stage conversion metrics to generate meaningful cards.",
+    "grounded_metrics": [
+      "company_profile"
+    ],
+    "trace": "No actual revenue operations data was provided in the snapshot sections - only company profile metadata exists."
+  }
+]
