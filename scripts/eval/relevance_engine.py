@@ -1227,7 +1227,7 @@ def build_revenue_generator_summary(ds: Dict[str, list]) -> str:
         L.append(f"- Average multi-thread depth on $250K+ deals: Q2 {thr_q2['avg_thread_depth']} contacts, Q1 {thr_q1.get('avg_thread_depth', 'n/a')} contacts.")
         L.append(f"- Win rate at 4+ contacts: {thr_q2['win_rate_4plus_contacts']*100:.0f}%. Win rate at 1-2 contacts: {thr_q2['win_rate_1_to_2_contacts']*100:.0f}%.")
     if champ_apr:
-        L.append(f"- Champion re-engagement events (champion gap >7 days): April {champ_apr['reengaged_deals']}, March {champ_mar.get('reengaged_deals', 'n/a')}.")
+        L.append(f"- Champion re-engagement events (champion contact lapse >{champ_apr['champion_gap_threshold_days']} days without a logged interaction): April {champ_apr['reengaged_deals']}, March {champ_mar.get('reengaged_deals', 'n/a')}.")
         L.append(f"- Deals that advanced a stage within 21 days of champion re-engagement (April): {champ_apr['advanced_within_21_days']} of {champ_apr['reengaged_deals']}.")
     if sterling:
         new_roles = ", ".join(sterling.get("new_contacts", []))
@@ -1254,7 +1254,7 @@ def build_revenue_generator_summary(ds: Dict[str, list]) -> str:
 
     L.append("# Deal execution efficiency")
     if freshness:
-        L.append(f"- Active deals (as of {freshness['period']}): {freshness['active_deals']}. Updated in last 5 days: {freshness['updated_within_5_days']} of {freshness['active_deals']} ({freshness['freshness_rate']*100:.0f}%). Highest stage-note freshness since {freshness['prior_high_note']}.")
+        L.append(f"- Active deals (as of {freshness['period']}): {freshness['active_deals']}. Stage notes and next-steps updated in last 5 days: {freshness['updated_within_5_days']} of {freshness['active_deals']} ({freshness['freshness_rate']*100:.0f}%).")
     if crm_q2:
         L.append(f"- CRM activity capture completeness on closed Q2 deals: {crm_q2['fully_captured']} of {crm_q2['closed_deals']} ({crm_q2['capture_rate']*100:.0f}%) carry full activity history, outcome reason, and stakeholder map. Q1 capture rate: {crm_q1.get('capture_rate', 0)*100:.0f}%.")
         L.append(f"- Outcome reason field went live {crm_q2['outcome_reason_field_live_date']}. {crm_q2['captured_post_field_live']} of {crm_q2['fully_captured']} full captures landed after that date.")
@@ -1655,7 +1655,7 @@ _WORD_TO_DIGIT = {
 }
 _NUM_TOKEN = r"\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten"
 _WINS_LOSSES_RE = re.compile(
-    rf"\b(?P<w>{_NUM_TOKEN})\s+wins?\s*(?:,\s*|\s+and\s+|\s+versus\s+)(?P<l>{_NUM_TOKEN})\s+loss(?:es)?\b",
+    rf"\b(?P<w>{_NUM_TOKEN})\s+wins?\s*(?:,\s*|\s+and\s+|\s+versus\s+|\s+against\s+)(?P<l>{_NUM_TOKEN})\s+loss(?:es)?\b",
     re.IGNORECASE,
 )
 
@@ -1665,6 +1665,9 @@ def _wins_losses_sub(match: "re.Match") -> str:
         t = token.lower()
         return _WORD_TO_DIGIT.get(t, token)
     return f"{to_digit(match.group('w'))}-{to_digit(match.group('l'))} record"
+# Tier 1: "closing/closes the gap" → "narrowing/narrows the distance" (forward framing)
+_CLOSING_GAP_RE = re.compile(r"\bclos(?:ing|es)\s+the\s+gap\b", re.IGNORECASE)
+
 _PROBLEM_WORDS_RE = re.compile(
     r"\b(?:loss|losses|gap|gaps|miss|missed|misses|failure|failures)\b",
     re.IGNORECASE,
@@ -1691,7 +1694,15 @@ def normalize_voice(
             if _WINS_LOSSES_RE.search(new_value):
                 rewritten = _WINS_LOSSES_RE.sub(_wins_losses_sub, new_value)
                 edits.append({"card_index": idx, "field": field,
-                              "rule": "X wins and/,/versus Y loss(es)→X-Y record",
+                              "rule": "X wins and/,/versus/against Y loss(es)→X-Y record",
+                              "before": new_value, "after": rewritten})
+                new_value = rewritten
+            if _CLOSING_GAP_RE.search(new_value):
+                def _gap_sub(m: "re.Match") -> str:
+                    return "narrowing the distance" if m.group(0).lower().startswith("closing") else "narrows the distance"
+                rewritten = _CLOSING_GAP_RE.sub(_gap_sub, new_value)
+                edits.append({"card_index": idx, "field": field,
+                              "rule": "closing/closes the gap→narrowing/narrows the distance",
                               "before": new_value, "after": rewritten})
                 new_value = rewritten
             if _AGAINST_RE.search(new_value):
