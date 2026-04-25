@@ -1,0 +1,170 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Multi-channel sequences breakthrough at step 7-8 this month",
+    "anchor": "41% of meeting-producing replies land on touch 7 or 8 across 240 active prospects, with multi-channel outreach running at 2.3x the meeting rate of email-only sequences.",
+    "connect": "Prior quarter breakthrough step was touch 4-5.",
+    "body": "41% of meeting-producing replies land on touch 7 or 8 across 240 active prospects, with multi-channel outreach running at 2.3x the meeting rate of email-only sequences. Prior quarter breakthrough step was touch 4-5.",
+    "grounded_metrics": [
+      "multi_channel_sequence_depth",
+      "breakthrough_touch_distribution"
+    ],
+    "trace": "Touch-step shift from 4-5 to 7-8 indicates prospects need deeper sequencing to respond, concentrated where multi-channel is deployed."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "AE-accepted rate climbs to 84% with refined segment criteria",
+    "anchor": "26 of 31 meetings booked in April advanced past AE qualification, with the lift concentrated in segment criteria refined on April 12th.",
+    "connect": "Prior month accepted rate ran at 71%.",
+    "body": "26 of 31 meetings booked in April advanced past AE qualification, with the lift concentrated in segment criteria refined on April 12th. Prior month accepted rate ran at 71%.",
+    "grounded_metrics": [
+      "ae_accepted_rate",
+      "april_meetings_qualified"
+    ],
+    "trace": "Segment criteria refinement on April 12th appears to correlate with 13-point lift in AE acceptance of SDR-booked meetings."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Healthcare vertical holds meetings at 81% versus 64% baseline",
+    "anchor": "Healthcare demo-to-held-meeting conversion runs at 81% over the trailing four weeks, with average deal size on advanced opportunities at 2x the all-vertical average.",
+    "connect": "All-verticals rate sits at 64% over the same window.",
+    "body": "Healthcare demo-to-held-meeting conversion runs at 81% over the trailing four weeks, with average deal size on advanced opportunities at 2x the all-vertical average. All-verticals rate sits at 64% over the same window.",
+    "grounded_metrics": [
+      "healthcare_demo_conversion",
+      "vertical_deal_size"
+    ],
+    "trace": "Healthcare vertical showing both higher meeting-hold rates and 2x deal size, suggesting strong ICP fit in this segment."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Subject-line variant doubles reply rate at 4.7%",
+    "anchor": "The 'what changed at company' opener launched April 21st generated 4.7% reply rate across 320 sends, with 6 replies converting to booked meetings.",
+    "connect": "Prior opener reply rate was 1.9%.",
+    "body": "The 'what changed at company' opener launched April 21st generated 4.7% reply rate across 320 sends, with 6 replies converting to booked meetings. Prior opener reply rate was 1.9%.",
+    "grounded_metrics": [
+      "subject_line_test",
+      "variant_reply_lift"
+    ],
+    "trace": "Subject-line test showing 2.5x lift in reply rate with the 'what changed at company' variant versus the prior opener."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Morning call block connects at 11% versus 5% post-lunch",
+    "anchor": "8am to 9am connect rate sits at 11%, producing the majority of this week's discovery-meeting bookings.",
+    "connect": "Post-lunch window from 1pm to 3pm connects at 5%.",
+    "body": "8am to 9am connect rate sits at 11%, producing the majority of this week's discovery-meeting bookings. Post-lunch window from 1pm to 3pm connects at 5%.",
+    "grounded_metrics": [
+      "call_connect_rates",
+      "morning_discovery_bookings"
+    ],
+    "trace": "Time-of-day calling data shows 2x better connect rate in early morning versus afternoon blocks."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "17 of 18 inbound leads reached within 5-minute window",
+    "anchor": "Current week inbound demo requests reached within five minutes converted to meetings at 78%, with leads reached after 30 minutes converting at 26%.",
+    "connect": "18 total inbound demo requests arrived this week.",
+    "body": "Current week inbound demo requests reached within five minutes converted to meetings at 78%, with leads reached after 30 minutes converting at 26%. 18 total inbound demo requests arrived this week.",
+    "grounded_metrics": [
+      "inbound_speed_to_lead",
+      "within_window_conversion"
+    ],
+    "trace": "Speed-to-lead showing 3x conversion advantage when leads are reached within the five-minute window versus after 30 minutes."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "LinkedIn inbound flow triples from 4 to 13 per week",
+    "anchor": "LinkedIn ad-sourced demo requests climbed from 4 in early April to 13 in the week ending April 19th.",
+    "connect": "AE-accepted rate on LinkedIn inbound matches form-fill inbound performance.",
+    "body": "LinkedIn ad-sourced demo requests climbed from 4 in early April to 13 in the week ending April 19th. AE-accepted rate on LinkedIn inbound matches form-fill inbound performance.",
+    "grounded_metrics": [
+      "linkedin_inbound_volume",
+      "linkedin_ae_acceptance"
+    ],
+    "trace": "LinkedIn ad volume tripling with matching AE acceptance suggests this channel is scaling quality inbound flow."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "High-intent accounts reply on first touch 3 of 5 times",
+    "anchor": "5 accounts crossed 6sense high-intent threshold this week, with 3 replying on first touch and all 3 booking meetings within 48 hours.",
+    "connect": "First-touch response rate across high-intent accounts sits at 60%.",
+    "body": "5 accounts crossed 6sense high-intent threshold this week, with 3 replying on first touch and all 3 booking meetings within 48 hours. First-touch response rate across high-intent accounts sits at 60%.",
+    "grounded_metrics": [
+      "sixsense_intent_response",
+      "first_touch_meeting_rate"
+    ],
+    "trace": "6sense intent scoring showing 60% first-touch response rate with 100% meeting conversion when prospects do reply."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Personalized first lines lift reply rate to 5.1%",
+    "anchor": "Account-specific research in first lines produces 5.1% reply rate, with the lift concentrated in trigger-event-first-line sequences.",
+    "connect": "Generic openers reply at 2.3%.",
+    "body": "Account-specific research in first lines produces 5.1% reply rate, with the lift concentrated in trigger-event-first-line sequences. Generic openers reply at 2.3%.",
+    "grounded_metrics": [
+      "personalized_first_line",
+      "trigger_event_lift"
+    ],
+    "trace": "First-line personalization showing 2.2x reply rate advantage over generic openers, with trigger-event research driving the lift."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Mid Market Manufacturing opens with first-touch response signal",
+    "anchor": "Mid Market Manufacturing segment launched April 4th has generated 4 AE-accepted meetings, with 2 coming from accounts that responded on the first cold sequence touch.",
+    "connect": "Segment was opened 3 weeks ago.",
+    "body": "Mid Market Manufacturing segment launched April 4th has generated 4 AE-accepted meetings, with 2 coming from accounts that responded on the first cold sequence touch. Segment was opened 3 weeks ago.",
+    "grounded_metrics": [
+      "mid_market_manufacturing",
+      "first_touch_response"
+    ],
+    "trace": "New segment showing early signal with 50% of meetings coming from first-touch responders, suggesting strong ICP alignment."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Series B trigger events respond at 4x cold-list rate",
+    "anchor": "Outreach within 7 days of Series B announcements booked 5 meetings this month.",
+    "connect": "Response rate versus cold-list average runs at 4x.",
+    "body": "Outreach within 7 days of Series B announcements booked 5 meetings this month. Response rate versus cold-list average runs at 4x.",
+    "grounded_metrics": [
+      "series_b_trigger",
+      "trigger_response_rate"
+    ],
+    "trace": "Series B announcement timing showing 4x response lift over standard cold outreach within the 7-day window."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Weekend inbound coverage closes by Monday 9:15 AM",
+    "anchor": "All 11 weekend demo requests from April 18-20 were reached by 9:15 AM Monday, with 7 meetings booked same day.",
+    "connect": "Same-day meeting conversion rate sits at 64% on weekend-sourced leads.",
+    "body": "All 11 weekend demo requests from April 18-20 were reached by 9:15 AM Monday, with 7 meetings booked same day. Same-day meeting conversion rate sits at 64% on weekend-sourced leads.",
+    "grounded_metrics": [
+      "weekend_inbound_coverage",
+      "monday_booking_rate"
+    ],
+    "trace": "Weekend-to-Monday coverage showing complete reach with 64% same-day meeting conversion on off-hours leads."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Dormant account sequence produces 3 meetings from 6 replies",
+    "anchor": "The value-driven-reengagement sequence launched April 18th brought 6 accounts silent for over 90 days back into reply, with 3 booking meetings with their assigned AE.",
+    "connect": "50% meeting conversion rate on dormant account replies.",
+    "body": "The value-driven-reengagement sequence launched April 18th brought 6 accounts silent for over 90 days back into reply, with 3 booking meetings with their assigned AE. 50% meeting conversion rate on dormant account replies.",
+    "grounded_metrics": [
+      "dormant_reengagement",
+      "silent_account_replies"
+    ],
+    "trace": "Re-engagement sequence showing ability to revive 90+ day dormant accounts with 50% meeting conversion from replies."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Enterprise accounts build multi-contact penetration this week",
+    "anchor": "3 enterprise target accounts added a second responsive buying-committee contact this week, following the vp and director seniority pattern.",
+    "connect": "All 3 accounts are now in coordinated outreach motion with their assigned AE.",
+    "body": "3 enterprise target accounts added a second responsive buying-committee contact this week, following the vp and director seniority pattern. All 3 accounts are now in coordinated outreach motion with their assigned AE.",
+    "grounded_metrics": [
+      "enterprise_multi_contact",
+      "buying_committee_expansion"
+    ],
+    "trace": "Enterprise account development showing multi-contact breakthrough with VP and Director level engagement, now in AE coordination."
+  }
+]
