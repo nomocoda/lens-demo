@@ -1,1 +1,3 @@
 Faker>=20.0
+# Required for --source hubspot-composio (Phase 3.4+)
+composio-core>=0.7.0

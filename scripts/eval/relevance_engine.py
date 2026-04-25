@@ -1585,6 +1585,17 @@ def load_api_key() -> str:
     raise RuntimeError("ANTHROPIC_API_KEY not set in env or .env")
 
 
+def _load_env_key(name: str) -> Optional[str]:
+    """Read a named key from the .env file (returns None if not found)."""
+    env_file = ROOT / ".env"
+    if env_file.exists():
+        for line in env_file.read_text().splitlines():
+            line = line.strip()
+            if line.startswith(f"{name}="):
+                return line.split("=", 1)[1].strip().strip('"').strip("'") or None
+    return None
+
+
 def call_claude(system_blocks: List[Dict], user: str, model: str,
                 max_tokens: int, api_key: str) -> Tuple[str, Dict]:
     payload = {
@@ -1745,12 +1756,49 @@ def main(argv: Optional[List[str]] = None) -> int:
                     help="Max response tokens")
     ap.add_argument("--dry-run", action="store_true",
                     help="Print the assembled prompt and dataset summary, do not call the API")
+    ap.add_argument(
+        "--source", choices=["local-json", "hubspot-composio"],
+        default="local-json",
+        help=(
+            "Data source. local-json (default): load from --input directory of JSON files. "
+            "hubspot-composio: read from live HubSpot via Composio proxy. Requires "
+            "COMPOSIO_API_KEY in .env (from app.composio.dev/settings -> API Keys). "
+            "Optionally set COMPOSIO_ENTITY_ID (default travis@nomocoda.com) and "
+            "COMPOSIO_ACCOUNT_ID to skip connection discovery."
+        ),
+    )
     args = ap.parse_args(argv)
 
     archetype = args.archetype
     cfg = _ARCHETYPE_CONFIG[archetype]
 
-    ds = load_dataset(Path(args.input))
+    if args.source == "hubspot-composio":
+        api_key = os.environ.get("COMPOSIO_API_KEY") or _load_env_key("COMPOSIO_API_KEY")
+        if not api_key:
+            print(
+                "ERROR: COMPOSIO_API_KEY not set. Add it to .env "
+                "(from app.composio.dev/settings -> API Keys).",
+                file=sys.stderr,
+            )
+            return 1
+        entity_id = (
+            os.environ.get("COMPOSIO_ENTITY_ID")
+            or _load_env_key("COMPOSIO_ENTITY_ID")
+            or "travis@nomocoda.com"
+        )
+        account_id = (
+            os.environ.get("COMPOSIO_ACCOUNT_ID")
+            or _load_env_key("COMPOSIO_ACCOUNT_ID")
+            or None
+        )
+        from hubspot_adapter import load_hubspot_dataset  # noqa: E402
+        ds = load_hubspot_dataset(
+            api_key=api_key,
+            entity_id=entity_id,
+            connected_account_id=account_id,
+        )
+    else:
+        ds = load_dataset(Path(args.input))
     guards = load_worker_guards()
     persona = (DATA_DIR / "persona.md").read_text()
     archetype_brief = (DATA_DIR / cfg["brief_filename"]).read_text()
