@@ -1,0 +1,219 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "Health score model accuracy climbed to 0.81 this quarter",
+    "anchor": "AUC improved from 0.74 last quarter and 0.67 two quarters ago, marking three consecutive quarters of lift.",
+    "connect": "Override rate dropped to 11% across all tiers, down from 17% last quarter.",
+    "body": "AUC improved from 0.74 last quarter and 0.67 two quarters ago, marking three consecutive quarters of lift. Override rate dropped to 11% across all tiers, down from 17% last quarter.",
+    "grounded_metrics": [
+      "health_score_auc",
+      "override_rate"
+    ],
+    "trace": "Model performance shows sustained improvement with CSM trust increasing as override frequency declines."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Likelihood-to-renew model entered shadow production April 21",
+    "anchor": "The probabilistic layer runs alongside the composite score and produces its own pass-fail history for direct comparison.",
+    "connect": "Health score AUC sits at 0.81 currently with three quarters of consecutive improvement.",
+    "body": "The probabilistic layer runs alongside the composite score and produces its own pass-fail history for direct comparison. Health score AUC sits at 0.81 currently with three quarters of consecutive improvement.",
+    "grounded_metrics": [
+      "likelihood_model",
+      "health_score_auc"
+    ],
+    "trace": "Second model validation layer now running parallel to production composite scoring system."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "CSM trust in health scores shows in override patterns",
+    "anchor": "Override rate dropped to 11% from last quarter's 17% and a peak of 24%.",
+    "connect": "Health score AUC climbed to 0.81 over the same improvement window.",
+    "body": "Override rate dropped to 11% from last quarter's 17% and a peak of 24%. Health score AUC climbed to 0.81 over the same improvement window.",
+    "grounded_metrics": [
+      "override_rate",
+      "health_score_auc"
+    ],
+    "trace": "CSM confidence correlates with model accuracy improvements as override frequency declines."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "312 playbooks completed end-to-end in the last 30 days",
+    "anchor": "Completion-rate visibility became available for the first time with prior periods unmeasured.",
+    "connect": "Playbook completion attribution shipped April 18 in the latest CS platform release.",
+    "body": "Completion-rate visibility became available for the first time with prior periods unmeasured. Playbook completion attribution shipped April 18 in the latest CS platform release.",
+    "grounded_metrics": [
+      "playbook_completions",
+      "completion_attribution"
+    ],
+    "trace": "First measurement of playbook execution outcomes now possible with new platform capabilities."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Product telemetry moved to real-time on April 18",
+    "anchor": "Usage signals now reach the health model within minutes versus the prior 72-hour batch delay.",
+    "connect": "Health score AUC improvement accelerated to 0.81 this quarter from 0.74 last quarter.",
+    "body": "Usage signals now reach the health model within minutes versus the prior 72-hour batch delay. Health score AUC improvement accelerated to 0.81 this quarter from 0.74 last quarter.",
+    "grounded_metrics": [
+      "telemetry_sync",
+      "health_score_auc"
+    ],
+    "trace": "Real-time data integration correlates with model accuracy gains as signal latency eliminated."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "47 accounts moved from mid-touch to high-touch coverage",
+    "anchor": "Reclassification used 14 months of actual usage and renewal data versus original onboarding tier assignments.",
+    "connect": "New playbook routing begins Q3 2026 with the updated segmentation model.",
+    "body": "Reclassification used 14 months of actual usage and renewal data versus original onboarding tier assignments. New playbook routing begins Q3 2026 with the updated segmentation model.",
+    "grounded_metrics": [
+      "coverage_tier_refresh",
+      "segmentation"
+    ],
+    "trace": "Data-driven segmentation refresh moves accounts to coverage tiers matching their actual behavior patterns."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "CS platform tooling load reduced by 40% in Q1",
+    "anchor": "Three CS tools retired with connector maintenance eliminated across the integration layer.",
+    "connect": "Admin bandwidth freed for health score model improvement work.",
+    "body": "Three CS tools retired with connector maintenance eliminated across the integration layer. Admin bandwidth freed for health score model improvement work.",
+    "grounded_metrics": [
+      "tool_consolidation",
+      "connector_load"
+    ],
+    "trace": "Platform consolidation creates operational capacity for higher-value model development activities."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Handoff data completeness climbed to 84% across Q2 deals",
+    "anchor": "24 closed-won handoffs included stakeholder maps, buying reasons, and verbal commitments versus 41% in Q1.",
+    "connect": "Day-0 health score accuracy improves with richer handoff record quality.",
+    "body": "24 closed-won handoffs included stakeholder maps, buying reasons, and verbal commitments versus 41% in Q1. Day-0 health score accuracy improves with richer handoff record quality.",
+    "grounded_metrics": [
+      "handoff_completeness",
+      "health_score_inputs"
+    ],
+    "trace": "Sales-to-CS data quality improvement drives better initial health scoring accuracy."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "BigQuery feature-usage pipeline approved for Q2",
+    "anchor": "The pipeline replaces proxy login frequency signals in the health score model with actual feature engagement data.",
+    "connect": "Health score AUC reached 0.81 this quarter using current proxy signals.",
+    "body": "The pipeline replaces proxy login frequency signals in the health score model with actual feature engagement data. Health score AUC reached 0.81 this quarter using current proxy signals.",
+    "grounded_metrics": [
+      "bigquery_pipeline",
+      "health_score_signals"
+    ],
+    "trace": "Data warehouse integration scheduled to replace proxy signals with direct feature usage measurement."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Salesforce sync uptime held at 99.7% in March",
+    "anchor": "Performance stayed above the 99% threshold with nightly handoff freshness supporting health model reliability.",
+    "connect": "Override rate dropped to 11% as model accuracy improved to 0.81 AUC.",
+    "body": "Performance stayed above the 99% threshold with nightly handoff freshness supporting health model reliability. Override rate dropped to 11% as model accuracy improved to 0.81 AUC.",
+    "grounded_metrics": [
+      "salesforce_sync",
+      "health_model_reliability"
+    ],
+    "trace": "Integration uptime maintains data freshness required for accurate health scoring."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "2026 CS benchmark data arrives April 30",
+    "anchor": "Current segmentation model runs on 2025 baseline data with fresh industry ratios enabling coverage tier tuning.",
+    "connect": "47 accounts already reclassified from mid-touch to high-touch based on actual usage patterns.",
+    "body": "Current segmentation model runs on 2025 baseline data with fresh industry ratios enabling coverage tier tuning. 47 accounts already reclassified from mid-touch to high-touch based on actual usage patterns.",
+    "grounded_metrics": [
+      "cs_benchmark",
+      "segmentation_tuning"
+    ],
+    "trace": "Industry benchmark refresh provides updated calibration data for existing segmentation model."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Custom Permissions launch traces to Beacon Logistics renewal",
+    "anchor": "Feature released March 8, health score stayed green 21 consecutive days, early renewal conversation opened April 2, contract signed April 14.",
+    "connect": "Product telemetry moved to real-time April 18, enabling this level of attribution visibility.",
+    "body": "Feature released March 8, health score stayed green 21 consecutive days, early renewal conversation opened April 2, contract signed April 14. Product telemetry moved to real-time April 18, enabling this level of attribution visibility.",
+    "grounded_metrics": [
+      "feature_attribution",
+      "telemetry_sync"
+    ],
+    "trace": "End-to-end product event to renewal attribution demonstrates pipeline tracking capabilities."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Q1 onboarding completion reached 89% across 9 cohorts",
+    "anchor": "Activation milestones feed back as enriched signals into the health model scoring system.",
+    "connect": "Health score AUC improved to 0.81 this quarter with better signal quality from multiple sources.",
+    "body": "Activation milestones feed back as enriched signals into the health model scoring system. Health score AUC improved to 0.81 this quarter with better signal quality from multiple sources.",
+    "grounded_metrics": [
+      "onboarding_completion",
+      "health_score_inputs"
+    ],
+    "trace": "Onboarding success metrics contribute to health model signal quality and accuracy."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market NRR held at 117% for three consecutive quarters",
+    "anchor": "Performance stayed above the 110% benchmark through Q3 2025, Q4 2025, and Q1 2026.",
+    "connect": "Coverage tier refresh moved 47 accounts to high-touch based on renewal and usage patterns.",
+    "body": "Performance stayed above the 110% benchmark through Q3 2025, Q4 2025, and Q1 2026. Coverage tier refresh moved 47 accounts to high-touch based on renewal and usage patterns.",
+    "grounded_metrics": [
+      "nrr_midmarket",
+      "coverage_tier_performance"
+    ],
+    "trace": "Consistent NRR performance validates segmentation decisions and coverage model effectiveness."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Platform completion attribution enables outcome measurement",
+    "anchor": "Feature shipped April 18 allowing playbook execution tracking from trigger to finish for the first time.",
+    "connect": "312 playbooks completed end-to-end in the last 30 days with new measurement visibility.",
+    "body": "Feature shipped April 18 allowing playbook execution tracking from trigger to finish for the first time. 312 playbooks completed end-to-end in the last 30 days with new measurement visibility.",
+    "grounded_metrics": [
+      "completion_attribution",
+      "playbook_outcomes"
+    ],
+    "trace": "New platform capability creates visibility into playbook effectiveness and completion rates."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Model accuracy and CSM confidence move in parallel",
+    "anchor": "Health score AUC climbed from 0.67 to 0.81 over three quarters while override rate dropped from 24% to 11%.",
+    "connect": "Likelihood-to-renew model entered shadow production April 21 for parallel validation.",
+    "body": "Health score AUC climbed from 0.67 to 0.81 over three quarters while override rate dropped from 24% to 11%. Likelihood-to-renew model entered shadow production April 21 for parallel validation.",
+    "grounded_metrics": [
+      "model_accuracy",
+      "csr_trust",
+      "shadow_model"
+    ],
+    "trace": "Correlation between predictive accuracy and CSM adoption validates model improvement strategy."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Data infrastructure upgrades converged in April",
+    "anchor": "Real-time telemetry sync launched April 18, completion attribution shipped the same day, BigQuery pipeline approved April 22.",
+    "connect": "Health score override rate dropped to 11% as model accuracy reached 0.81 AUC.",
+    "body": "Real-time telemetry sync launched April 18, completion attribution shipped the same day, BigQuery pipeline approved April 22. Health score override rate dropped to 11% as model accuracy reached 0.81 AUC.",
+    "grounded_metrics": [
+      "infrastructure_upgrades",
+      "model_performance"
+    ],
+    "trace": "Infrastructure improvements cluster in single month with corresponding model performance gains."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Segmentation refresh uses behavioral data over assignment data",
+    "anchor": "47 accounts reclassified based on 14 months of actual usage and renewal patterns versus original onboarding tiers.",
+    "connect": "Mid-market NRR performance held at 117% for three consecutive quarters.",
+    "body": "47 accounts reclassified based on 14 months of actual usage and renewal patterns versus original onboarding tiers. Mid-market NRR performance held at 117% for three consecutive quarters.",
+    "grounded_metrics": [
+      "data_driven_segmentation",
+      "nrr_performance"
+    ],
+    "trace": "Behavioral segmentation approach replaces static assignment with performance-based tier placement."
+  }
+]

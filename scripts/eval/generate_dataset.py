@@ -3746,6 +3746,195 @@ def gen_ca_advocate_pipeline() -> List[Dict]:
 
 
 # ---------------------------------------------------------------------------
+# Customer Operator entities (Phase 2.26)
+# ---------------------------------------------------------------------------
+
+def gen_co_health_model() -> List[Dict]:
+    """Health score model quality, likelihood-to-renew model, and override rate.
+
+    Covers P-CO-01 (AUC improvement), P-CO-05 (shadow-production LTR model),
+    P-CO-10 (override rate as CSM trust signal).
+    """
+    return [{
+        "snapshot_date": "2026-04-24",
+        # P-CO-01: health score AUC
+        "health_score_auc_current_quarter": 0.81,
+        "health_score_auc_prior_quarter": 0.74,
+        "health_score_auc_two_quarters_ago": 0.67,
+        "auc_consecutive_quarters_of_lift": 3,
+        "renewal_correlation_lift_vs_prior_model": True,
+        # P-CO-05: likelihood-to-renew probabilistic layer (shadow production)
+        "ltr_model_status": "shadow_production",
+        "ltr_model_shadow_start_date": "2026-04-21",
+        "ltr_model_produces_pass_fail_history": True,
+        "ltr_model_runs_alongside_composite_score": True,
+        # P-CO-10: health score override rate
+        "override_rate_current": 0.11,
+        "override_rate_prior_quarter": 0.17,
+        "override_rate_peak": 0.24,
+        "override_rate_all_tiers": True,
+        "override_rate_trajectory": "declining",
+    }]
+
+
+def gen_co_playbook_ops() -> List[Dict]:
+    """Playbook execution volume and completion attribution.
+
+    Covers P-CO-02 (312 end-to-end completions in 30 days),
+    P-CO-11 (CS platform shipped playbook completion attribution feature).
+    """
+    return [{
+        "measurement_period_days": 30,
+        "measurement_period_end": "2026-04-24",
+        # P-CO-02: playbook execution completions
+        "playbook_executions_completed_end_to_end": 312,
+        "completion_rate_measurement_first_available": True,
+        "completion_rate_prior_periods_unmeasured": True,
+        # P-CO-11: CS platform feature release enabling attribution
+        "attribution_feature_released": True,
+        "attribution_feature_release_date": "2026-04-18",
+        "attribution_feature_exports_completion_events": True,
+        "completion_event_feed_into_reporting": True,
+    }]
+
+
+def gen_co_platform_integrations() -> List[Dict]:
+    """Integration health, tool consolidation, and data pipeline signals.
+
+    Covers P-CO-03 (real-time telemetry), P-CO-06 (SF sync uptime),
+    P-CO-08 (tool consolidation), P-CO-14 (BigQuery pipeline approved).
+    """
+    return [
+        {
+            # P-CO-03: product telemetry sync moved to real-time
+            "integration": "mixpanel_to_cs_platform",
+            "event": "sync_mode_changed_to_realtime",
+            "event_date": "2026-04-18",
+            "prior_sync_mode": "batch_nightly",
+            "prior_latency_days": 3,
+            "new_latency_minutes": "near_realtime",
+            "health_model_signal_freshness_improved": True,
+        },
+        {
+            # P-CO-06: Salesforce-to-CS-platform sync uptime
+            "integration": "salesforce_to_cs_platform",
+            "metric": "sync_uptime",
+            "measurement_month": "2026-03",
+            "uptime_pct": 0.997,
+            "uptime_threshold_pct": 0.99,
+            "nightly_handoff_freshness_holds": True,
+            "health_model_leans_on_nightly_handoff": True,
+        },
+        {
+            # P-CO-08: tech stack consolidation
+            "event": "cs_tool_consolidation_q1_2026",
+            "tools_retired": 3,
+            "tools_retired_quarter": "Q1_2026",
+            "connector_load_reduction_pct": 0.40,
+            "admin_bandwidth_freed": True,
+        },
+        {
+            # P-CO-14: data warehouse access pipeline approved
+            "event": "bigquery_pipeline_approved",
+            "approval_date": "2026-04-22",
+            "approved_for_quarter": "Q2_2026",
+            "replaces_proxy_signal": "login_frequency",
+            "new_signal_source": "bigquery_feature_usage_extracts",
+            "pipeline_status": "scheduled",
+        },
+    ]
+
+
+def gen_co_segmentation() -> List[Dict]:
+    """Coverage tier segmentation refresh.
+
+    Covers P-CO-04 (47 accounts reclassified Mid-Touch to High-Touch).
+    """
+    return [{
+        "event": "coverage_tier_refresh",
+        "refresh_date": "2026-04-20",
+        "data_history_months": 14,
+        "accounts_reclassified_mid_to_high_touch": 47,
+        "reclassification_basis": "actual_usage_and_renewal_data",
+        "reclassification_basis_prior": "onboarding_tier_assignment",
+        "new_playbook_routing_starts": "Q3_2026",
+    }]
+
+
+def gen_co_handoff_quality() -> List[Dict]:
+    """Sales-to-CS handoff field completeness (CO perspective).
+
+    Covers P-CO-07 (84% of fields populated at close on current cohort).
+    The CO reads this as a data-quality and model-input signal; the CA reads
+    it as an onboarding-speed signal. Different altitude, same data.
+    """
+    return [{
+        "measurement_period": "Q2_2026",
+        "closed_won_deals_total": 24,
+        "handoff_complete_pct": 0.84,
+        "fields_tracked": ["stakeholder_map", "real_buying_reason", "verbal_commitments",
+                           "champion_name", "deal_context_notes"],
+        "health_score_day0_accuracy_improved": True,
+        "prior_quarter_complete_pct": 0.41,
+    }]
+
+
+def gen_co_benchmark() -> List[Dict]:
+    """External benchmark data availability.
+
+    Covers P-CO-09 (2026 Annual CS Benchmark drops next week).
+    """
+    return [{
+        "benchmark_name": "2026_Annual_CS_Benchmark",
+        "publisher": "TSIA",
+        "expected_release_date": "2026-04-30",
+        "contains_coverage_tier_ratios": True,
+        "contains_csm_to_account_ratios": True,
+        "current_model_calibrated_on_year": 2025,
+        "tune_segmentation_model_against_fresh_data": True,
+    }]
+
+
+def gen_co_performance() -> List[Dict]:
+    """CS outcome metrics and cross-entity attribution.
+
+    Covers P-CO-12 (NRR 117% mid-market), P-CO-13 (onboarding completion 89%),
+    P-CO-15 (Custom Permissions launch traces to Beacon early renewal).
+    """
+    return [
+        {
+            # P-CO-12: NRR by tier
+            "metric": "nrr",
+            "segment": "mid-market",
+            "quarter": "Q1_2026",
+            "nrr": 1.17,
+            "benchmark_nrr_above": 1.10,
+            "consecutive_quarters_above_benchmark": 3,
+        },
+        {
+            # P-CO-13: onboarding completion rate
+            "metric": "onboarding_completion_rate",
+            "cohort_quarter": "Q1_2026",
+            "completion_rate": 0.89,
+            "total_onboardings": 9,
+            "day_90_health_score_reliability_improved": True,
+            "signals_fed_back_to_health_model": True,
+        },
+        {
+            # P-CO-15: cross-entity attribution (product launch to renewal)
+            "event": "custom_permissions_launch_to_beacon_renewal",
+            "product_feature": "Custom Permissions",
+            "feature_launch_date": "2026-03-08",
+            "account_name": "Beacon Logistics",
+            "health_score_green_days_consecutive": 21,
+            "early_renewal_conversation_date": "2026-04-02",
+            "renewal_signed_date": "2026-04-14",
+            "pipeline_attribution_type": "cross_entity_product_to_renewal",
+        },
+    ]
+
+
+# ---------------------------------------------------------------------------
 # Revenue Operator entities (Phase 2.20)
 # ---------------------------------------------------------------------------
 
@@ -4124,6 +4313,15 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     ca_onboarding = gen_ca_onboarding()
     ca_advocate_pipeline = gen_ca_advocate_pipeline()
 
+    # Customer Operator entities (Phase 2.26) — all deterministic
+    co_health_model = gen_co_health_model()
+    co_playbook_ops = gen_co_playbook_ops()
+    co_platform_integrations = gen_co_platform_integrations()
+    co_segmentation = gen_co_segmentation()
+    co_handoff_quality = gen_co_handoff_quality()
+    co_benchmark = gen_co_benchmark()
+    co_performance = gen_co_performance()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -4272,6 +4470,14 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "ca_qbr_log": ca_qbr_log,
         "ca_onboarding": ca_onboarding,
         "ca_advocate_pipeline": ca_advocate_pipeline,
+        # Customer Operator entities (Phase 2.26)
+        "co_health_model": co_health_model,
+        "co_playbook_ops": co_playbook_ops,
+        "co_platform_integrations": co_platform_integrations,
+        "co_segmentation": co_segmentation,
+        "co_handoff_quality": co_handoff_quality,
+        "co_benchmark": co_benchmark,
+        "co_performance": co_performance,
     }
 
 

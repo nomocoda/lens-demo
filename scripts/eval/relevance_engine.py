@@ -163,6 +163,9 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "ca_active_book", "ca_renewal_pipeline", "ca_early_renewals",
         "ca_segment_grr", "ca_lighthouse_qbr", "ca_qbr_log",
         "ca_onboarding", "ca_advocate_pipeline",
+        # Customer Operator entities (Phase 2.26)
+        "co_health_model", "co_playbook_ops", "co_platform_integrations",
+        "co_segmentation", "co_handoff_quality", "co_benchmark", "co_performance",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1665,6 +1668,202 @@ def build_customer_advocate_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_customer_operator_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Customer Operator (Director of CS Ops).
+
+    Covers all 15 P-CO patterns across three goal clusters:
+    Health Score Model Integrity (P-CO-01, P-CO-05, P-CO-10),
+    Playbook Governance and Adoption (P-CO-02, P-CO-11),
+    Data Infrastructure and Integration (P-CO-03, P-CO-06, P-CO-07, P-CO-08, P-CO-14),
+    Segmentation (P-CO-04),
+    Performance and Cross-entity Attribution (P-CO-09, P-CO-12, P-CO-13, P-CO-15).
+    """
+    health = ds.get("co_health_model", [{}])[0]
+    playbook = ds.get("co_playbook_ops", [{}])[0]
+    integrations = ds.get("co_platform_integrations", [])
+    segmentation = ds.get("co_segmentation", [{}])[0]
+    handoff = ds.get("co_handoff_quality", [{}])[0]
+    benchmark = ds.get("co_benchmark", [{}])[0]
+    performance = ds.get("co_performance", [])
+
+    telemetry = next((r for r in integrations if r.get("integration") == "mixpanel_to_cs_platform"), {})
+    sf_sync = next((r for r in integrations if r.get("integration") == "salesforce_to_cs_platform"), {})
+    tool_consol = next((r for r in integrations if r.get("event") == "cs_tool_consolidation_q1_2026"), {})
+    bq_pipeline = next((r for r in integrations if r.get("event") == "bigquery_pipeline_approved"), {})
+
+    nrr_row = next((r for r in performance if r.get("metric") == "nrr"), {})
+    onb_row = next((r for r in performance if r.get("metric") == "onboarding_completion_rate"), {})
+    xentity = next((r for r in performance if r.get("event") == "custom_permissions_launch_to_beacon_renewal"), {})
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — CUSTOMER OPERATOR DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Gainsight is the CS platform (health scores, playbooks, segmentation); Salesforce for CRM records, stakeholder maps, and renewal pipeline; Mixpanel for product engagement and usage signals; BigQuery as the data warehouse target for feature-usage extracts.")
+    L.append("")
+
+    # --- Goal 1: Health Score Model Integrity ---
+    L.append("# Health score model integrity")
+    _MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"]
+
+    def _hr_date(iso: str) -> str:
+        """Convert YYYY-MM-DD to 'Month Day, YYYY' for guardrail-friendly output."""
+        try:
+            y, m, d = iso.split("-")
+            return f"{_MONTH_NAMES[int(m)-1]} {int(d)}, {y}"
+        except Exception:
+            return iso
+
+    def _hr_quarter(q: str) -> str:
+        """Convert 'Q3_2026' or 'Q3 2026' to 'Q3 2026'."""
+        return q.replace("_", " ")
+
+    if health:
+        auc = health.get("health_score_auc_current_quarter", 0.81)
+        auc_prior = health.get("health_score_auc_prior_quarter", 0.74)
+        auc_2q = health.get("health_score_auc_two_quarters_ago", 0.67)
+        consec = health.get("auc_consecutive_quarters_of_lift", 3)
+        L.append(
+            f"- Health score AUC: {auc} this quarter, up from {auc_prior} last quarter and {auc_2q} two quarters ago. "
+            f"{consec} consecutive quarters of AUC lift. Renewal-correlation lift versus prior model confirmed."
+        )
+        ltr_status = health.get("ltr_model_status", "shadow_production").replace("_", " ")
+        ltr_start = _hr_date(health.get("ltr_model_shadow_start_date", "2026-04-21"))
+        L.append(
+            f"- Likelihood-to-renew probabilistic layer: status {ltr_status} (started {ltr_start}). "
+            f"Runs alongside the composite score and produces its own pass-fail history for direct comparison."
+        )
+        override_curr = health.get("override_rate_current", 0.11)
+        override_prior = health.get("override_rate_prior_quarter", 0.17)
+        override_peak = health.get("override_rate_peak", 0.24)
+        L.append(
+            f"- Health score override rate: {override_curr*100:.0f}% across all tiers, "
+            f"down from {override_prior*100:.0f}% last quarter (peak {override_peak*100:.0f}%). "
+            f"Trajectory: declining."
+        )
+    L.append("")
+
+    # --- Goal 2: Playbook Governance and Adoption ---
+    L.append("# Playbook governance and adoption")
+    if playbook:
+        completions = playbook.get("playbook_executions_completed_end_to_end", 312)
+        period_days = playbook.get("measurement_period_days", 30)
+        L.append(
+            f"- Playbook executions completed end-to-end in the last {period_days} days: {completions}. "
+            f"Completion-rate visibility is newly available -- prior periods not measured."
+        )
+        attr_date = _hr_date(playbook.get("attribution_feature_release_date", "2026-04-18"))
+        L.append(
+            f"- Playbook completion attribution feature released {attr_date} in the latest CS platform update. "
+            f"Platform now exports completion events, enabling outcome attribution at the playbook level for the first time."
+        )
+    L.append("")
+
+    # --- Goal 3: Data Infrastructure and Integration ---
+    L.append("# Data infrastructure and integration")
+    if telemetry:
+        event_date = _hr_date(telemetry.get("event_date", "2026-04-18"))
+        prior_latency = telemetry.get("prior_latency_days", 3)
+        L.append(
+            f"- Product telemetry sync (Mixpanel to CS platform): moved to real-time on {event_date}. "
+            f"Prior batch-nightly mode carried a {prior_latency}-day ({prior_latency * 24}-hour) latency; "
+            f"signals now reach the health model within minutes of the underlying event."
+        )
+    if sf_sync:
+        uptime = sf_sync.get("uptime_pct", 0.997)
+        month = sf_sync.get("measurement_month", "2026-03")
+        threshold = sf_sync.get("uptime_threshold_pct", 0.99)
+        L.append(
+            f"- Salesforce-to-CS-platform sync uptime: {uptime*100:.1f}% in March 2026, above the {threshold*100:.0f}% threshold. "
+            f"Nightly handoff freshness holds, supporting current health model signal reliability."
+        )
+    if tool_consol:
+        tools = tool_consol.get("tools_retired", 3)
+        quarter = _hr_quarter(tool_consol.get("tools_retired_quarter", "Q1_2026"))
+        load_drop = tool_consol.get("connector_load_reduction_pct", 0.40)
+        L.append(
+            f"- Tech stack consolidation: {tools} CS tools retired in {quarter}. "
+            f"Connector load reduced by {load_drop*100:.0f}%. Admin bandwidth freed for model improvement work."
+        )
+    if handoff:
+        complete_pct = handoff.get("handoff_complete_pct", 0.84)
+        deals_total = handoff.get("closed_won_deals_total", 24)
+        prior_pct = handoff.get("prior_quarter_complete_pct", 0.41)
+        fields = handoff.get("fields_tracked", [])
+        L.append(
+            f"- Handoff data completeness (closed-won to CS): {complete_pct*100:.0f}% of fields populated at close "
+            f"across {deals_total} Q2 deals ({', '.join(fields[:3])} tracked). "
+            f"Up from {prior_pct*100:.0f}% in Q1. Day-0 health score accuracy improves with richer handoff records."
+        )
+    if bq_pipeline:
+        approved_date = _hr_date(bq_pipeline.get("approval_date", "2026-04-22"))
+        approved_q = _hr_quarter(bq_pipeline.get("approved_for_quarter", "Q2_2026"))
+        replaces = bq_pipeline.get("replaces_proxy_signal", "login_frequency")
+        L.append(
+            f"- BigQuery feature-usage pipeline: approved {approved_date} for {approved_q}. "
+            f"Scheduled to replace proxy {replaces} signals in the health score model."
+        )
+    L.append("")
+
+    # --- Segmentation ---
+    L.append("# Segmentation")
+    if segmentation:
+        accts = segmentation.get("accounts_reclassified_mid_to_high_touch", 47)
+        history = segmentation.get("data_history_months", 14)
+        new_routing = _hr_quarter(segmentation.get("new_playbook_routing_starts", "Q3_2026"))
+        L.append(
+            f"- Coverage tier refresh: {accts} accounts reclassified from Mid-Touch to High-Touch "
+            f"based on {history} months of actual usage and renewal data (prior basis: onboarding tier assignment). "
+            f"New playbook routing begins {new_routing}."
+        )
+    L.append("")
+
+    # --- Performance and Cross-entity Attribution ---
+    L.append("# Performance and cross-entity attribution")
+    if benchmark:
+        bname = benchmark.get("benchmark_name", "2026_Annual_CS_Benchmark").replace("_", " ")
+        release = _hr_date(benchmark.get("expected_release_date", "2026-04-30"))
+        curr_year = benchmark.get("current_model_calibrated_on_year", 2025)
+        L.append(
+            f"- {bname} expected {release}. "
+            f"Current segmentation model calibrated on {curr_year} data; fresh ratio data enables tuning coverage tiers against updated industry baseline."
+        )
+    if nrr_row:
+        nrr = nrr_row.get("nrr", 1.17)
+        segment = nrr_row.get("segment", "mid-market")
+        quarter = _hr_quarter(nrr_row.get("quarter", "Q1_2026"))
+        bench = nrr_row.get("benchmark_nrr_above", 1.10)
+        consec = nrr_row.get("consecutive_quarters_above_benchmark", 3)
+        L.append(
+            f"- NRR ({segment}): {nrr*100:.0f}% for {quarter}, above the {bench*100:.0f}% benchmark for {consec} consecutive quarters "
+            f"(Q3 2025, Q4 2025, Q1 2026)."
+        )
+    if onb_row:
+        rate = onb_row.get("completion_rate", 0.89)
+        cohort = _hr_quarter(onb_row.get("cohort_quarter", "Q1_2026"))
+        total = onb_row.get("total_onboardings", 9)
+        L.append(
+            f"- Onboarding completion rate: {rate*100:.0f}% across the {cohort} cohort ({total} onboardings). "
+            f"Activation milestones feed back as enriched signals into the health model."
+        )
+    if xentity:
+        feature = xentity.get("product_feature", "Custom Permissions")
+        launch = _hr_date(xentity.get("feature_launch_date", "2026-03-08"))
+        account = xentity.get("account_name", "Beacon Logistics")
+        green_days = xentity.get("health_score_green_days_consecutive", 21)
+        renewal_signed = _hr_date(xentity.get("renewal_signed_date", "2026-04-14"))
+        early_conv = _hr_date(xentity.get("early_renewal_conversation_date", "2026-04-02"))
+        L.append(
+            f"- Cross-entity attribution: {feature} launch ({launch}) connects directly to {account} early renewal "
+            f"(conversation {early_conv}, contract signed {renewal_signed}). "
+            f"Health model pipeline traces: feature launch, {green_days} consecutive days green, "
+            f"early renewal conversation opened, contract signed. End-to-end product-event-to-renewal attribution."
+        )
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -1754,6 +1953,10 @@ _CUSTOMER_GOAL_CLUSTERS = (
 _CUSTOMER_ADVOCATE_GOAL_CLUSTERS = (
     "Account Health and Relationship Depth; Renewal Execution; "
     "Expansion Identification; Value Delivery and QBR"
+)
+_CUSTOMER_OPERATOR_GOAL_CLUSTERS = (
+    "Health Score Model Integrity; Playbook Governance and Adoption; "
+    "Data Infrastructure and Integration"
 )
 
 
@@ -1884,6 +2087,20 @@ _ARCHETYPE_CONFIG = {
         "brief_filename": "customer-advocate-brief.md",
         "user_prompt_subject": "Customer Success Management",
     },
+    "customer_operator": {
+        "intelligence_area": "customer",
+        "audience_label": "Director of CS Operations at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Customer Operator",
+        "goal_clusters": _CUSTOMER_OPERATOR_GOAL_CLUSTERS,
+        "snapshot_label": "CUSTOMER OPERATOR DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"health score AUC 0.81\", "
+            "your card says 0.81 or rounds honestly to 0.81, not 0.82."
+        ),
+        "brief_filename": "customer-operator-brief.md",
+        "user_prompt_subject": "Customer Success Operations",
+    },
 }
 
 
@@ -1998,6 +2215,7 @@ def build_user_message(archetype: str) -> str:
         "revenue_developer": "sales development data",
         "revenue_operator": "revenue operations data",
         "customer_advocate": "customer success management data",
+        "customer_operator": "customer success operations data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -2258,6 +2476,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_revenue_operator_summary(ds)
     elif archetype == "customer_advocate":
         summary = build_customer_advocate_summary(ds)
+    elif archetype == "customer_operator":
+        summary = build_customer_operator_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,
