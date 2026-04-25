@@ -136,6 +136,10 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "forecasts", "renewals", "expansion_opportunities",
         "forecast_log", "renewal_at_risk_log", "health_scores", "cohorts",
         "product_adoption", "coverage_tier", "executive_sponsor",
+        # Marketing Strategist entities (Phase 2.8)
+        "competitive_intel", "discovery_calls", "icp_analysis",
+        "messaging_performance", "launch_attribution", "launch_enablement",
+        "earned_media", "crm_hygiene", "cs_exit_interviews",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -872,6 +876,139 @@ def build_customer_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_marketing_strategist_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Marketing Strategist (PMM / Director of PMM).
+
+    Cuts tuned to the four Marketing Strategist Goal Clusters:
+    Messaging and Positioning, Sales Enablement, Launch and GTM Execution,
+    Generating Qualified Pipeline. Cross-functional bridges to Revenue
+    (competitive outcomes, pipeline attribution) and CS (exit interview themes)
+    are surfaced as their own sections.
+    """
+    ci = ds.get("competitive_intel", [])
+    dc = ds.get("discovery_calls", [])
+    icp = ds.get("icp_analysis", [])
+    mp = ds.get("messaging_performance", [])
+    la = ds.get("launch_attribution", [])
+    le = ds.get("launch_enablement", [])
+    em = ds.get("earned_media", [])
+    crm = ds.get("crm_hygiene", [])
+    csei = ds.get("cs_exit_interviews", [])
+    launches = ds.get("product_launches", [])
+
+    beacon = next((r for r in ci if r["competitor_id"] == "Beacon Systems" and r["period"] == "Q2_2026"), {})
+    northstar = next((r for r in ci if r["competitor_id"] == "Northstar Platform" and r["period"] == "Q2_2026"), {})
+    verge = next((r for r in ci if r["competitor_id"] == "Verge IO" and r["period"] == "Q2_2026"), {})
+    dc_apr = next((r for r in dc if r["period"] == "2026-04"), {})
+    q2_icp = next((r for r in icp if r["period"] == "Q2_2026"), {})
+    q1_icp = next((r for r in icp if r["period"] == "Q1_2026"), {})
+    mm_rp = next((r for r in mp if r["frame"] == "refreshed_positioning" and r["segment"] == "mid-market"), {})
+    ent_rp = next((r for r in mp if r["frame"] == "refreshed_positioning" and r["segment"] == "enterprise"), {})
+    ent_hook = next((r for r in mp if r["frame"] == "new_positioning_hook" and r["segment"] == "enterprise"), {})
+    la_apr8 = next((r for r in la if r.get("launch_id") == "PL-MS-001" and r.get("attribution_window") == "3_weeks"), {})
+    la_prior = next((r for r in la if r.get("launch_id") == "PL-000" and r.get("attribution_window") == "3_weeks"), {})
+    la_q2 = next((r for r in la if r.get("period") == "Q2_2026" and r.get("attribution_window") == "quarter"), {})
+    le_apr8 = next((r for r in le if r.get("launch_id") == "PL-MS-001"), {})
+    le_may15 = next((r for r in le if r.get("launch_id") == "PL-MS-002"), {})
+    em_apr8 = next((r for r in em if r.get("launch_id") == "PL-MS-001"), {})
+    q2_crm = next((r for r in crm if r["period"] == "Q2_2026"), {})
+    q1_crm = next((r for r in crm if r["period"] == "Q1_2026"), {})
+    cs_apr = next((r for r in csei if r["period"] == "2026-04"), {})
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — MARKETING STRATEGIST DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Gong for call analytics; Salesforce CRM for win/loss and deal records; Outreach for sales engagement; HubSpot for inbound tracking.")
+    L.append("")
+
+    L.append("# Messaging and positioning effectiveness")
+    if dc_apr:
+        frame_results = dc_apr.get("frame_results", [])
+        stv = next((f for f in frame_results if f["frame"] == "speed_to_value"), {})
+        pc = next((f for f in frame_results if f["frame"] == "platform_consolidation"), {})
+        if stv and pc:
+            L.append(f"- April 2026 Gong-sampled discovery calls: {dc_apr['calls_sampled']} calls sampled. Speed-to-value frame re-stated: {stv['resonance_rate']*100:.0f}% ({stv['count']} calls). Platform-consolidation frame re-stated: {pc['resonance_rate']*100:.0f}% ({pc['count']} calls).")
+            L.append(f"- Context: Speed-to-value was the dominant frame in Q1 of last year before the rebrand.")
+    if mm_rp and ent_rp:
+        L.append(f"- Refreshed positioning (speed-to-value hierarchy) Q2 2026 close rates: mid-market {mm_rp['close_rate']*100:.0f}%, enterprise {ent_rp['close_rate']*100:.0f}% on the same message hierarchy.")
+    if q2_icp and q1_icp:
+        L.append(f"- ICP match rate on new logos: Q2 2026 {q2_icp['icp_matched']}/{q2_icp['closed_won_total']} = {q2_icp['icp_match_rate']*100:.0f}%; Q1 2026 {q1_icp['icp_matched']}/{q1_icp['closed_won_total']} = {q1_icp['icp_match_rate']*100:.0f}%.")
+    if q2_icp.get("icp_cycle_advantage_days"):
+        L.append(f"- ICP-aligned wins close {q2_icp['icp_cycle_advantage_days']} days faster on average than non-ICP wins.")
+    L.append("")
+
+    L.append("# Competitive intelligence — Beacon Systems (Competitor A)")
+    if beacon:
+        L.append(f"- Q2 2026 Beacon Systems competitive opportunities: {beacon['total_competitive_opps']} total. Head-to-head deals: {beacon['h2h_deals']}. Wins: {beacon['wins']}. Losses: {beacon['losses']}. Win rate: {beacon['win_rate']*100:.1f}%.")
+        L.append(f"- Prior four-quarter average Beacon Systems win rate: {beacon['prior_4q_win_rate']*100:.0f}%.")
+        L.append(f"- Battlecard opens Q2 2026: {beacon['battlecard_opens']} of {beacon['total_competitive_opps']} competitive opportunities ({beacon['battlecard_util']*100:.0f}%). Q1 2026 battlecard utilization: {beacon['prior_q_battlecard_util']*100:.0f}%.")
+    L.append("")
+
+    L.append("# Competitive intelligence — Northstar Platform (Competitor B)")
+    if northstar:
+        L.append(f"- Northstar Platform objection-handling section added to battlecard on {northstar['event_date']}.")
+        L.append(f"- Win rate on Northstar head-to-heads: pre-April 8 {northstar['win_rate_pre_event']*100:.0f}%; post-April 8 {northstar['win_rate_post_event']*100:.0f}%.")
+        L.append(f"- Northstar mentions in Gong: {abs(northstar['gong_mentions_change_pct'])*100:.0f}% decrease in the four weeks following the objection section update.")
+    L.append("")
+
+    L.append("# Competitive intelligence — Verge IO (Competitor C)")
+    if verge:
+        L.append(f"- Verge IO appeared in {verge['h2h_deals']} of {verge['total_competitive_opps']} Q2 2026 competitive opportunities ({verge['appearance_pct']*100:.0f}%). Q1 2026: {verge['prior_q_appearance_pct']*100:.0f}%.")
+        L.append(f"- Segment concentration: highest in {verge['segment_concentration']}.")
+    if verge.get("series_b_date"):
+        L.append(f"- Verge IO external event: ${verge['series_b_amount_m']}M Series B raised {verge['series_b_date']}.")
+    L.append("")
+
+    L.append("# Sales enablement")
+    if q2_crm and q1_crm:
+        L.append(f"- Outcome reason capture rate in CRM: Q2 2026 {q2_crm['outcome_reason_captured']}/{q2_crm['closed_deals_total']} closed deals = {q2_crm['capture_rate']*100:.0f}%. Q1 2026: {q1_crm['capture_rate']*100:.0f}%.")
+    L.append("")
+
+    L.append("# Launch and GTM execution")
+    pl_apr8 = next((p for p in launches if p.get("id") == "PL-MS-001"), {})
+    pl_may15 = next((p for p in launches if p.get("id") == "PL-MS-002"), {})
+    if pl_apr8:
+        L.append(f"- {pl_apr8['name']} launched {pl_apr8['launch_date']} (status: {pl_apr8['status']}).")
+    if la_apr8:
+        L.append(f"- April 8 launch pipeline (first 3 weeks): {la_apr8['opportunities_created']} new opportunities, ${la_apr8['pipeline_usd']:,} total pipeline.")
+    if la_prior:
+        L.append(f"- Prior launch (October) first-3-week pipeline: ${la_prior['pipeline_usd']:,}.")
+    if le_apr8 and le_apr8.get("reps_total"):
+        L.append(f"- April 8 launch enablement asset adoption (first 14 days): {le_apr8['reps_opened_assets_14d']} of {le_apr8['reps_total']} reps opened battlecard or one-pager ({le_apr8['asset_adoption_rate_14d']*100:.0f}%). Prior launch adoption: {le_apr8['prior_launch_asset_adoption_rate']*100:.0f}%.")
+        L.append(f"- Pipeline from asset-opening reps: {le_apr8['pipeline_by_asset_openers_vs_nonopeners_multiple']}x the pipeline from non-opening reps.")
+    if pl_may15:
+        L.append(f"- {pl_may15['name']} planned launch {pl_may15['launch_date']} (status: {pl_may15['status']}).")
+    if le_may15 and le_may15.get("days_cleared_before_launch"):
+        L.append(f"- May 15 launch readiness: {le_may15['readiness_items_cleared']}/{le_may15['readiness_items_count']} items cleared (positioning brief, battlecard update, sales briefing). Signed off {le_may15['readiness_signoff_date']}, {le_may15['days_cleared_before_launch']} days before ship. Prior launch: positioning brief signed off {le_may15['prior_launch_days_cleared_before']} days before ship.")
+    L.append("")
+
+    L.append("# Pipeline and launch attribution")
+    if ent_hook:
+        L.append(f"- Enterprise inbound pipeline with new positioning hook Q2 2026: ${ent_hook['pipeline_usd']:,}. Inbound-to-meeting conversion lift: {ent_hook['inbound_conversion_lift_pct']} points.")
+    if la_q2:
+        L.append(f"- Q2 2026 total net new pipeline: ${la_q2['total_period_pipeline_usd']:,}. Launch-attributable: ${la_q2['pipeline_usd']:,} ({la_q2['launch_share_pct']*100:.0f}% of Q2 net new).")
+    L.append("")
+
+    L.append("# Earned media")
+    if em_apr8:
+        L.append(f"- April 8 launch earned media: {em_apr8['publications_picked_up']} of {em_apr8['publications_outreached']} outreached publications picked up the announcement ({em_apr8['pickup_rate']*100:.0f}%). Prior launch: {em_apr8['prior_launch_pickup_rate']*100:.0f}% pickup rate.")
+        L.append(f"- Launch-attributable pipeline in first 7 days: {em_apr8['pipeline_7d_vs_prior_multiple']}x the prior launch's first-7-day pipeline.")
+    L.append("")
+
+    L.append("# Cross-functional: CS exit interview themes")
+    if cs_apr:
+        L.append(f"- April 2026 customer exit interviews: {cs_apr['interviews_conducted']} interviews conducted, {cs_apr['themes_identified']} themes surfaced, {cs_apr['themes_feeding_positioning']} feeding the positioning revision.")
+        themes = cs_apr.get("positioning_themes", [])
+        if themes:
+            L.append(f"- Positioning themes: \"{themes[0]}\" and \"{themes[1]}\".")
+        if cs_apr.get("competitor_a_overlap_pct"):
+            comp_name = cs_apr.get("competitor_a_id", "Beacon Systems")
+            L.append(f"- Both themes appear in {comp_name} competitive deals {cs_apr['competitor_a_overlap_pct']*100:.0f}% of the time in Q2 2026.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -930,6 +1067,10 @@ _MARKETING_GOAL_CLUSTERS = (
     "Measurable Growth and ROI; Brand and Value Proposition; "
     "Alignment with Revenue and CS; Customer Centricity"
 )
+_MARKETING_STRATEGIST_GOAL_CLUSTERS = (
+    "Messaging and Positioning; Sales Enablement; "
+    "Launch and GTM Execution; Generating Qualified Pipeline"
+)
 _REVENUE_GOAL_CLUSTERS = (
     "Quarter Attainment and Forecast Reliability; Pipeline Coverage and Health; "
     "Win Rate and Competitive Position"
@@ -982,6 +1123,20 @@ _ARCHETYPE_CONFIG = {
         ),
         "brief_filename": "customer-leader-brief.md",
         "user_prompt_subject": "Customer Success",
+    },
+    "marketing_strategist": {
+        "intelligence_area": "marketing",
+        "audience_label": "Director of Product Marketing at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Marketing Strategist",
+        "goal_clusters": _MARKETING_STRATEGIST_GOAL_CLUSTERS,
+        "snapshot_label": "MARKETING STRATEGIST DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Beacon Systems Q2 h2h win rate 63.6%\", "
+            "your card says 63.6% or rounds honestly to 64%, not 65%."
+        ),
+        "brief_filename": "marketing-strategist-brief.md",
+        "user_prompt_subject": "Marketing Strategy",
     },
 }
 
@@ -1091,6 +1246,7 @@ def build_user_message(archetype: str) -> str:
         "marketing": "company data",
         "revenue": "revenue data",
         "customer": "customer data",
+        "marketing_strategist": "marketing strategy data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -1174,18 +1330,19 @@ def parse_cards(text: str) -> List[Dict]:
 #     when any are present.
 _USER_FACING_FIELDS = ("title", "anchor", "connect", "body")
 _AGAINST_RE = re.compile(r"\bagainst\b", re.IGNORECASE)
-# Wins/losses idiom rewrite (P-RL-10 etc.). Handles three model variants:
+# Wins/losses idiom rewrite (P-RL-10, P-MS-01 etc.). Handles model variants:
 #   "5 wins and 1 loss"      — digits + "and"
 #   "5 wins, 1 loss"         — digits + comma
+#   "5 wins versus 1 loss"   — digits + "versus" (P-MS-01 competitive patterns)
 #   "Five wins and one loss" — written-number forms 0-10
-# Connector matches "and" or comma (with optional surrounding whitespace).
+# Connector matches "and", comma, or "versus" (with optional surrounding whitespace).
 _WORD_TO_DIGIT = {
     "zero": "0", "one": "1", "two": "2", "three": "3", "four": "4",
     "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9", "ten": "10",
 }
 _NUM_TOKEN = r"\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten"
 _WINS_LOSSES_RE = re.compile(
-    rf"\b(?P<w>{_NUM_TOKEN})\s+wins?\s*(?:,\s*|\s+and\s+)(?P<l>{_NUM_TOKEN})\s+loss(?:es)?\b",
+    rf"\b(?P<w>{_NUM_TOKEN})\s+wins?\s*(?:,\s*|\s+and\s+|\s+versus\s+)(?P<l>{_NUM_TOKEN})\s+loss(?:es)?\b",
     re.IGNORECASE,
 )
 
@@ -1221,7 +1378,7 @@ def normalize_voice(
             if _WINS_LOSSES_RE.search(new_value):
                 rewritten = _WINS_LOSSES_RE.sub(_wins_losses_sub, new_value)
                 edits.append({"card_index": idx, "field": field,
-                              "rule": "X wins and/, Y loss(es)→X-Y record",
+                              "rule": "X wins and/,/versus Y loss(es)→X-Y record",
                               "before": new_value, "after": rewritten})
                 new_value = rewritten
             if _AGAINST_RE.search(new_value):
@@ -1279,6 +1436,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_revenue_summary(ds)
     elif archetype == "customer":
         summary = build_customer_summary(ds)
+    elif archetype == "marketing_strategist":
+        summary = build_marketing_strategist_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,

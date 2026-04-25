@@ -519,6 +519,9 @@ def gen_product_launches() -> List[Dict]:
         {"id": "PL-001", "name": "Atlas Assist", "launch_date": iso(date(2026, 5, 8)), "status": "ready"},
         {"id": "PL-000", "name": "Atlas Monitor GA", "launch_date": iso(date(2025, 11, 4)), "status": "shipped"},
         {"id": "PL-002", "name": "Custom Permissions and Audit Logs", "launch_date": iso(date(2026, 6, 15)), "status": "scheduled"},
+        # Marketing Strategist launches (Phase 2.8)
+        {"id": "PL-MS-001", "name": "Atlas CRM Sync", "launch_date": iso(date(2026, 4, 8)), "status": "shipped"},
+        {"id": "PL-MS-002", "name": "Atlas Forecast Pro", "launch_date": iso(date(2026, 5, 15)), "status": "ready"},
     ]
 
 
@@ -2351,6 +2354,315 @@ def seed_p_cl_15_launch_renewal_link() -> None:
     return
 
 
+# ----------------------------------------------------------------------------
+# Marketing Strategist entity generators (Phase 2.8)
+# ----------------------------------------------------------------------------
+
+def gen_competitive_intel() -> List[Dict]:
+    """Per-competitor intelligence records for Marketing Strategist eval.
+
+    P-MS-01: Beacon Systems Q2 h2h win rate 14/22 = 63.6%; prior 4Q avg 28%.
+    P-MS-05: Beacon Systems Q2 battlecard utilization 38/62 opps (61%); prior 22%.
+    P-MS-06: Northstar Platform win rate 42% pre Apr-8 → 51% post; Gong -22%.
+    P-MS-07: Verge IO appears in 18/75 Q2 competitive opps (24%); Q1 was 11%.
+              Series B $40M raised 2026-03-14.
+    """
+    return [
+        {
+            "competitor_id": "Beacon Systems",
+            "period": "Q2_2026",
+            "total_competitive_opps": 62,
+            "h2h_deals": 22,
+            "wins": 14,
+            "losses": 8,
+            "win_rate": round(14 / 22, 4),
+            "prior_4q_win_rate": 0.28,
+            "battlecard_opens": 38,
+            "battlecard_util": round(38 / 62, 4),
+            "prior_q_battlecard_util": 0.22,
+            "win_rate_pre_event": None,
+            "win_rate_post_event": None,
+            "gong_mentions_change_pct": None,
+            "event_date": None,
+            "appearance_pct": None,
+            "prior_q_appearance_pct": None,
+            "series_b_date": None,
+            "series_b_amount_m": None,
+            "segment_concentration": None,
+        },
+        {
+            "competitor_id": "Northstar Platform",
+            "period": "Q2_2026",
+            "total_competitive_opps": None,
+            "h2h_deals": None,
+            "wins": None,
+            "losses": None,
+            "win_rate": None,
+            "prior_4q_win_rate": 0.42,
+            "battlecard_opens": None,
+            "battlecard_util": None,
+            "prior_q_battlecard_util": None,
+            "win_rate_pre_event": 0.42,
+            "win_rate_post_event": 0.51,
+            "gong_mentions_change_pct": -0.22,
+            "event_date": "2026-04-08",
+            "appearance_pct": None,
+            "prior_q_appearance_pct": None,
+            "series_b_date": None,
+            "series_b_amount_m": None,
+            "segment_concentration": None,
+        },
+        {
+            "competitor_id": "Verge IO",
+            "period": "Q2_2026",
+            "total_competitive_opps": 75,
+            "h2h_deals": 18,
+            "wins": None,
+            "losses": None,
+            "win_rate": None,
+            "prior_4q_win_rate": None,
+            "battlecard_opens": None,
+            "battlecard_util": None,
+            "prior_q_battlecard_util": None,
+            "win_rate_pre_event": None,
+            "win_rate_post_event": None,
+            "gong_mentions_change_pct": None,
+            "event_date": None,
+            "appearance_pct": round(18 / 75, 4),
+            "prior_q_appearance_pct": 0.11,
+            "series_b_date": "2026-03-14",
+            "series_b_amount_m": 40,
+            "segment_concentration": "mid-market",
+        },
+    ]
+
+
+def gen_discovery_calls() -> List[Dict]:
+    """Gong-sampled discovery call message-frame resonance data.
+
+    P-MS-02: April 2026, 27 calls sampled, speed-to-value 62%, platform-
+             consolidation 19%. Speed-to-value was dominant before the rebrand.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "calls_sampled": 27,
+            "frame_results": [
+                {"frame": "speed_to_value", "resonance_rate": 0.62, "count": 17},
+                {"frame": "platform_consolidation", "resonance_rate": 0.19, "count": 5},
+            ],
+            "prior_dominant_frame": "speed_to_value",
+            "prior_period_note": "Speed-to-value was dominant in Q1 of last year before the rebrand",
+        },
+    ]
+
+
+def gen_icp_analysis() -> List[Dict]:
+    """ICP match rate on new logos per quarter.
+
+    P-MS-04: Q2 28/36 = 78%; Q1 23/36 = 64%. ICP-aligned wins close 12 days
+             faster on average.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "closed_won_total": 36,
+            "icp_matched": 28,
+            "icp_match_rate": round(28 / 36, 4),
+            "icp_cycle_advantage_days": 12,
+        },
+        {
+            "period": "Q1_2026",
+            "closed_won_total": 36,
+            "icp_matched": 23,
+            "icp_match_rate": round(23 / 36, 4),
+            "icp_cycle_advantage_days": None,
+        },
+    ]
+
+
+def gen_messaging_performance() -> List[Dict]:
+    """Message frame effectiveness by segment and period.
+
+    P-MS-03: Refreshed positioning (speed-to-value hierarchy). Mid-market 31%;
+             enterprise 13% on the same message frame.
+    P-MS-12: Enterprise inbound with new positioning hook: $290K Q2 pipeline;
+             inbound-to-meeting conversion up 8 points.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "frame": "refreshed_positioning",
+            "segment": "mid-market",
+            "close_rate": 0.31,
+            "pipeline_usd": None,
+            "inbound_conversion_lift_pct": None,
+        },
+        {
+            "period": "Q2_2026",
+            "frame": "refreshed_positioning",
+            "segment": "enterprise",
+            "close_rate": 0.13,
+            "pipeline_usd": None,
+            "inbound_conversion_lift_pct": None,
+        },
+        {
+            "period": "Q2_2026",
+            "frame": "new_positioning_hook",
+            "segment": "enterprise",
+            "close_rate": None,
+            "pipeline_usd": 290000,
+            "inbound_conversion_lift_pct": 8,
+        },
+    ]
+
+
+def gen_launch_attribution() -> List[Dict]:
+    """Pipeline attributed to product launches.
+
+    P-MS-09: April 8 launch (PL-MS-001), $420K from 14 opps in first 3 weeks.
+             Prior October launch (PL-000): $310K in same window.
+    P-MS-13: Q2 aggregate launch-attributable $620K of $3.4M net new (18.2%).
+    """
+    return [
+        {
+            "launch_id": "PL-MS-001",
+            "launch_date": "2026-04-08",
+            "attribution_window": "3_weeks",
+            "opportunities_created": 14,
+            "pipeline_usd": 420000,
+            "period": None,
+            "total_period_pipeline_usd": None,
+            "launch_share_pct": None,
+        },
+        {
+            "launch_id": "PL-000",
+            "launch_date": "2025-10-01",
+            "attribution_window": "3_weeks",
+            "opportunities_created": None,
+            "pipeline_usd": 310000,
+            "period": None,
+            "total_period_pipeline_usd": None,
+            "launch_share_pct": None,
+        },
+        {
+            "launch_id": None,
+            "launch_date": None,
+            "attribution_window": "quarter",
+            "opportunities_created": None,
+            "pipeline_usd": 620000,
+            "period": "Q2_2026",
+            "total_period_pipeline_usd": 3400000,
+            "launch_share_pct": round(620000 / 3400000, 4),
+        },
+    ]
+
+
+def gen_launch_enablement() -> List[Dict]:
+    """Launch readiness and enablement asset adoption per launch.
+
+    P-MS-10: May 15 launch (PL-MS-002), 3/3 readiness items cleared 10 days
+             before. Prior launch: positioning brief signed off 2 days before.
+    P-MS-11: April 8 launch (PL-MS-001), 27/38 reps opened assets in first
+             14 days (71%); prior launch adoption was 42%. Pipeline from
+             asset-opening reps ran 2.4x that from non-openers.
+    """
+    return [
+        {
+            "launch_id": "PL-MS-001",
+            "launch_date": "2026-04-08",
+            "status": "shipped",
+            "readiness_items_count": 3,
+            "readiness_items_cleared": 3,
+            "days_cleared_before_launch": None,
+            "readiness_signoff_date": None,
+            "reps_total": 38,
+            "reps_opened_assets_14d": 27,
+            "asset_adoption_rate_14d": round(27 / 38, 4),
+            "prior_launch_asset_adoption_rate": 0.42,
+            "pipeline_by_asset_openers_vs_nonopeners_multiple": 2.4,
+        },
+        {
+            "launch_id": "PL-MS-002",
+            "launch_date": "2026-05-15",
+            "status": "ready",
+            "readiness_items_count": 3,
+            "readiness_items_cleared": 3,
+            "days_cleared_before_launch": 10,
+            "readiness_signoff_date": "2026-05-05",
+            "prior_launch_days_cleared_before": 2,
+            "reps_total": None,
+            "reps_opened_assets_14d": None,
+            "asset_adoption_rate_14d": None,
+            "prior_launch_asset_adoption_rate": 0.42,
+            "pipeline_by_asset_openers_vs_nonopeners_multiple": None,
+        },
+    ]
+
+
+def gen_earned_media() -> List[Dict]:
+    """PR and earned-media pickup rates per launch.
+
+    P-MS-15: April 8 launch: 22/53 publications picked up (41%); prior was 28%.
+             Launch-attributable pipeline doubled in the same 7-day window.
+    """
+    return [
+        {
+            "launch_id": "PL-MS-001",
+            "launch_date": "2026-04-08",
+            "publications_outreached": 53,
+            "publications_picked_up": 22,
+            "pickup_rate": round(22 / 53, 4),
+            "prior_launch_pickup_rate": 0.28,
+            "pipeline_7d_vs_prior_multiple": 2.0,
+        },
+    ]
+
+
+def gen_crm_hygiene() -> List[Dict]:
+    """CRM data completeness metrics.
+
+    P-MS-08: Outcome reason capture 47/51 closed Q2 deals (92%); Q1 was 71%.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "closed_deals_total": 51,
+            "outcome_reason_captured": 47,
+            "capture_rate": round(47 / 51, 4),
+        },
+        {
+            "period": "Q1_2026",
+            "closed_deals_total": None,
+            "outcome_reason_captured": None,
+            "capture_rate": 0.71,
+        },
+    ]
+
+
+def gen_cs_exit_interviews() -> List[Dict]:
+    """CS exit interview themes surfaced to marketing for positioning work.
+
+    P-MS-14: April 2026, 14 interviews, 6 themes surfaced, 2 feeding the
+             positioning refresh. Both positioning themes appear in Beacon
+             Systems competitive deals 31% of the time.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "interviews_conducted": 14,
+            "themes_identified": 6,
+            "themes_feeding_positioning": 2,
+            "positioning_themes": [
+                "implementation timeline expectations",
+                "integration breadth",
+            ],
+            "competitor_a_id": "Beacon Systems",
+            "competitor_a_overlap_pct": 0.31,
+        },
+    ]
+
+
 def apply_deal_field_defaults(deals: List[Dict]) -> None:
     """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
 
@@ -2469,6 +2781,17 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     seed_p_cl_14_top20_at_risk(rng, renewal_at_risk_log, executive_sponsor)
     seed_p_cl_15_launch_renewal_link()
 
+    # Marketing Strategist entity generators (Phase 2.8) — all deterministic
+    competitive_intel = gen_competitive_intel()
+    discovery_calls = gen_discovery_calls()
+    icp_analysis = gen_icp_analysis()
+    messaging_performance = gen_messaging_performance()
+    launch_attribution = gen_launch_attribution()
+    launch_enablement = gen_launch_enablement()
+    earned_media = gen_earned_media()
+    crm_hygiene = gen_crm_hygiene()
+    cs_exit_interviews = gen_cs_exit_interviews()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -2554,6 +2877,16 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "product_adoption": product_adoption,
         "coverage_tier": coverage_tier,
         "executive_sponsor": executive_sponsor,
+        # Marketing Strategist entities (Phase 2.8)
+        "competitive_intel": competitive_intel,
+        "discovery_calls": discovery_calls,
+        "icp_analysis": icp_analysis,
+        "messaging_performance": messaging_performance,
+        "launch_attribution": launch_attribution,
+        "launch_enablement": launch_enablement,
+        "earned_media": earned_media,
+        "crm_hygiene": crm_hygiene,
+        "cs_exit_interviews": cs_exit_interviews,
     }
 
 
@@ -3004,6 +3337,203 @@ def validate_customer(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
     return results
 
 
+def validate_marketing_strategist(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
+    """15 Marketing Strategist pattern checks (P-MS-01..P-MS-15)."""
+    results: List[CheckResult] = []
+    ci = ds.get("competitive_intel", [])
+    dc = ds.get("discovery_calls", [])
+    icp = ds.get("icp_analysis", [])
+    mp = ds.get("messaging_performance", [])
+    la = ds.get("launch_attribution", [])
+    le = ds.get("launch_enablement", [])
+    em = ds.get("earned_media", [])
+    crm = ds.get("crm_hygiene", [])
+    csei = ds.get("cs_exit_interviews", [])
+
+    beacon = next((r for r in ci if r["competitor_id"] == "Beacon Systems" and r["period"] == "Q2_2026"), None)
+    northstar = next((r for r in ci if r["competitor_id"] == "Northstar Platform" and r["period"] == "Q2_2026"), None)
+    verge = next((r for r in ci if r["competitor_id"] == "Verge IO" and r["period"] == "Q2_2026"), None)
+
+    # P-MS-01: Beacon Systems Q2 h2h: 14 wins, 22 deals, prior 4Q avg 28%
+    passed = (
+        bool(beacon)
+        and beacon["wins"] == 14
+        and beacon["h2h_deals"] == 22
+        and _in_range(beacon["prior_4q_win_rate"], 0.26, 0.30)
+    )
+    results.append(CheckResult(0, "Beacon Systems Q2 h2h win rate", "p_ms_01_beacon_winrate", passed,
+                               f"wins={beacon['wins'] if beacon else None} deals={beacon['h2h_deals'] if beacon else None}"))
+
+    # P-MS-02: 27 calls sampled, speed_to_value 62%
+    dc_apr = next((r for r in dc if r["period"] == "2026-04"), None)
+    stv = next((f for f in (dc_apr["frame_results"] if dc_apr else []) if f["frame"] == "speed_to_value"), None)
+    passed = (
+        bool(dc_apr)
+        and dc_apr["calls_sampled"] == 27
+        and bool(stv)
+        and _in_range(stv["resonance_rate"], 0.60, 0.64)
+    )
+    results.append(CheckResult(1, "Discovery call speed-to-value resonance", "p_ms_02_discovery_frame", passed,
+                               f"sampled={dc_apr['calls_sampled'] if dc_apr else None} stv={stv['resonance_rate'] if stv else None}"))
+
+    # P-MS-03: MM 31%, enterprise 13% on refreshed positioning
+    mm_rp = next((r for r in mp if r["frame"] == "refreshed_positioning" and r["segment"] == "mid-market"), None)
+    ent_rp = next((r for r in mp if r["frame"] == "refreshed_positioning" and r["segment"] == "enterprise"), None)
+    passed = (
+        bool(mm_rp) and bool(ent_rp)
+        and _in_range(mm_rp["close_rate"], 0.29, 0.33)
+        and _in_range(ent_rp["close_rate"], 0.11, 0.15)
+    )
+    results.append(CheckResult(2, "Refreshed positioning close rate by segment", "p_ms_03_positioning_wr", passed,
+                               f"MM={mm_rp['close_rate'] if mm_rp else None} ENT={ent_rp['close_rate'] if ent_rp else None}"))
+
+    # P-MS-04: Q2 28/36 = 78%; Q1 23/36 = 64%; 12d cycle advantage
+    q2_icp = next((r for r in icp if r["period"] == "Q2_2026"), None)
+    q1_icp = next((r for r in icp if r["period"] == "Q1_2026"), None)
+    passed = (
+        bool(q2_icp) and bool(q1_icp)
+        and q2_icp["icp_matched"] == 28
+        and q2_icp["closed_won_total"] == 36
+        and q1_icp["icp_matched"] == 23
+        and q2_icp["icp_cycle_advantage_days"] == 12
+    )
+    results.append(CheckResult(3, "ICP match rate Q2 vs Q1", "p_ms_04_icp_match", passed,
+                               f"Q2 {q2_icp['icp_matched'] if q2_icp else None}/{q2_icp['closed_won_total'] if q2_icp else None}; Q1 {q1_icp['icp_matched'] if q1_icp else None}"))
+
+    # P-MS-05: Beacon battlecard utilization 38/62 (61%), prior 22%
+    passed = (
+        bool(beacon)
+        and beacon["battlecard_opens"] == 38
+        and beacon["total_competitive_opps"] == 62
+        and _in_range(beacon["battlecard_util"], 0.60, 0.63)
+        and _in_range(beacon["prior_q_battlecard_util"], 0.20, 0.24)
+    )
+    results.append(CheckResult(4, "Beacon battlecard utilization Q2 vs Q1", "p_ms_05_battlecard_util", passed,
+                               f"opens={beacon['battlecard_opens'] if beacon else None} opps={beacon['total_competitive_opps'] if beacon else None}"))
+
+    # P-MS-06: Northstar win rate 42%→51% post Apr-8; Gong mentions -22%
+    passed = (
+        bool(northstar)
+        and northstar["event_date"] == "2026-04-08"
+        and _in_range(northstar["win_rate_pre_event"], 0.40, 0.44)
+        and _in_range(northstar["win_rate_post_event"], 0.49, 0.53)
+        and northstar["gong_mentions_change_pct"] is not None
+        and northstar["gong_mentions_change_pct"] < 0
+    )
+    results.append(CheckResult(5, "Northstar objection section win rate lift", "p_ms_06_northstar_objection", passed,
+                               f"pre={northstar['win_rate_pre_event'] if northstar else None} post={northstar['win_rate_post_event'] if northstar else None}"))
+
+    # P-MS-07: Verge IO 18/75 opps (24%), prior 11%, Series B $40M Mar 14
+    passed = (
+        bool(verge)
+        and verge["h2h_deals"] == 18
+        and verge["total_competitive_opps"] == 75
+        and _in_range(verge["appearance_pct"], 0.23, 0.25)
+        and _in_range(verge["prior_q_appearance_pct"], 0.09, 0.13)
+        and verge["series_b_date"] == "2026-03-14"
+        and verge["series_b_amount_m"] == 40
+    )
+    results.append(CheckResult(6, "Verge IO emergence + Series B", "p_ms_07_verge_emergence", passed,
+                               f"appearances={verge['h2h_deals'] if verge else None}/{verge['total_competitive_opps'] if verge else None} series_b={verge['series_b_date'] if verge else None}"))
+
+    # P-MS-08: Outcome reason capture 47/51 = 92%, Q1 71%
+    q2_crm = next((r for r in crm if r["period"] == "Q2_2026"), None)
+    q1_crm = next((r for r in crm if r["period"] == "Q1_2026"), None)
+    passed = (
+        bool(q2_crm) and bool(q1_crm)
+        and q2_crm["outcome_reason_captured"] == 47
+        and q2_crm["closed_deals_total"] == 51
+        and _in_range(q2_crm["capture_rate"], 0.90, 0.94)
+        and _in_range(q1_crm["capture_rate"], 0.69, 0.73)
+    )
+    results.append(CheckResult(7, "Outcome reason capture rate Q2 vs Q1", "p_ms_08_outcome_capture", passed,
+                               f"Q2 {q2_crm['outcome_reason_captured'] if q2_crm else None}/{q2_crm['closed_deals_total'] if q2_crm else None}; Q1 rate={q1_crm['capture_rate'] if q1_crm else None}"))
+
+    # P-MS-09: Apr-8 launch $420K / 14 opps; prior $310K
+    la_apr8 = next((r for r in la if r["launch_id"] == "PL-MS-001" and r["attribution_window"] == "3_weeks"), None)
+    la_prior = next((r for r in la if r["launch_id"] == "PL-000" and r["attribution_window"] == "3_weeks"), None)
+    passed = (
+        bool(la_apr8)
+        and la_apr8["opportunities_created"] == 14
+        and la_apr8["pipeline_usd"] == 420_000
+        and bool(la_prior)
+        and la_prior["pipeline_usd"] == 310_000
+    )
+    results.append(CheckResult(8, "April 8 launch pipeline vs prior", "p_ms_09_launch_pipeline", passed,
+                               f"apr8 opps={la_apr8['opportunities_created'] if la_apr8 else None} ${la_apr8['pipeline_usd'] if la_apr8 else None:,}"))
+
+    # P-MS-10: May-15 launch 3/3 items cleared 10 days before
+    le_may15 = next((r for r in le if r["launch_id"] == "PL-MS-002"), None)
+    passed = (
+        bool(le_may15)
+        and le_may15["readiness_items_cleared"] == 3
+        and le_may15["readiness_items_count"] == 3
+        and le_may15["days_cleared_before_launch"] == 10
+    )
+    results.append(CheckResult(9, "May-15 launch readiness 3/3 cleared 10 days prior", "p_ms_10_launch_readiness", passed,
+                               f"cleared={le_may15['readiness_items_cleared'] if le_may15 else None}/{le_may15['readiness_items_count'] if le_may15 else None} days={le_may15['days_cleared_before_launch'] if le_may15 else None}"))
+
+    # P-MS-11: Apr-8 launch asset adoption 27/38 (71%), prior 42%, 2.4x multiple
+    le_apr8 = next((r for r in le if r["launch_id"] == "PL-MS-001"), None)
+    passed = (
+        bool(le_apr8)
+        and le_apr8["reps_opened_assets_14d"] == 27
+        and le_apr8["reps_total"] == 38
+        and _in_range(le_apr8["asset_adoption_rate_14d"], 0.69, 0.73)
+        and _in_range(le_apr8["prior_launch_asset_adoption_rate"], 0.40, 0.44)
+        and le_apr8["pipeline_by_asset_openers_vs_nonopeners_multiple"] == 2.4
+    )
+    results.append(CheckResult(10, "Apr-8 launch enablement asset adoption", "p_ms_11_asset_adoption", passed,
+                               f"reps={le_apr8['reps_opened_assets_14d'] if le_apr8 else None}/{le_apr8['reps_total'] if le_apr8 else None}"))
+
+    # P-MS-12: Enterprise inbound new-positioning-hook pipeline $290K
+    ent_hook = next((r for r in mp if r["frame"] == "new_positioning_hook" and r["segment"] == "enterprise"), None)
+    passed = (
+        bool(ent_hook)
+        and ent_hook["pipeline_usd"] == 290_000
+        and ent_hook["inbound_conversion_lift_pct"] == 8
+    )
+    results.append(CheckResult(11, "Enterprise inbound new-positioning pipeline", "p_ms_12_positioning_pipeline", passed,
+                               f"pipeline=${ent_hook['pipeline_usd'] if ent_hook else None:,} lift={ent_hook['inbound_conversion_lift_pct'] if ent_hook else None}%"))
+
+    # P-MS-13: Q2 launch-attributable $620K of $3.4M net new (18%)
+    la_q2 = next((r for r in la if r.get("period") == "Q2_2026" and r["attribution_window"] == "quarter"), None)
+    passed = (
+        bool(la_q2)
+        and la_q2["pipeline_usd"] == 620_000
+        and la_q2["total_period_pipeline_usd"] == 3_400_000
+        and _in_range(la_q2["launch_share_pct"], 0.17, 0.19)
+    )
+    results.append(CheckResult(12, "Q2 launch-attributable pipeline share", "p_ms_13_launch_share", passed,
+                               f"launch=${la_q2['pipeline_usd'] if la_q2 else None:,} total=${la_q2['total_period_pipeline_usd'] if la_q2 else None:,}"))
+
+    # P-MS-14: April CS exit interviews: 14, 6 themes, 2 feeding positioning, Beacon 31%
+    cs_apr = next((r for r in csei if r["period"] == "2026-04"), None)
+    passed = (
+        bool(cs_apr)
+        and cs_apr["interviews_conducted"] == 14
+        and cs_apr["themes_identified"] == 6
+        and cs_apr["themes_feeding_positioning"] == 2
+        and _in_range(cs_apr["competitor_a_overlap_pct"], 0.29, 0.33)
+    )
+    results.append(CheckResult(13, "CS exit interview themes feeding positioning", "p_ms_14_exit_interviews", passed,
+                               f"interviews={cs_apr['interviews_conducted'] if cs_apr else None} themes={cs_apr['themes_identified'] if cs_apr else None} positioning={cs_apr['themes_feeding_positioning'] if cs_apr else None}"))
+
+    # P-MS-15: Apr-8 launch 22/53 earned media (41%), prior 28%
+    em_apr8 = next((r for r in em if r["launch_id"] == "PL-MS-001"), None)
+    passed = (
+        bool(em_apr8)
+        and em_apr8["publications_picked_up"] == 22
+        and em_apr8["publications_outreached"] == 53
+        and _in_range(em_apr8["pickup_rate"], 0.40, 0.43)
+        and _in_range(em_apr8["prior_launch_pickup_rate"], 0.26, 0.30)
+    )
+    results.append(CheckResult(14, "Earned media pickup rate April launch", "p_ms_15_earned_media", passed,
+                               f"pickup={em_apr8['publications_picked_up'] if em_apr8 else None}/{em_apr8['publications_outreached'] if em_apr8 else None}"))
+
+    return results
+
+
 def validate(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
     results: List[CheckResult] = []
     deals = ds["deals"]
@@ -3364,8 +3894,18 @@ def main():
             cust_passed += 1
     print(f"  -> {cust_passed}/{len(cust_results)} customer checks passed.")
 
-    total_passed = mkt_passed + rev_passed + cust_passed
-    total = len(mkt_results) + len(rev_results) + len(cust_results)
+    ms_results = validate_marketing_strategist(ds)
+    print("\nMarketing Strategist validation (15 card patterns):")
+    ms_passed = 0
+    for r in sorted(ms_results, key=lambda x: x.card_idx):
+        mark = "PASS" if r.passed else "FAIL"
+        print(f"  [{mark}] card {r.card_idx:2d}  {r.pattern:40s}  {r.detail}")
+        if r.passed:
+            ms_passed += 1
+    print(f"  -> {ms_passed}/{len(ms_results)} marketing strategist checks passed.")
+
+    total_passed = mkt_passed + rev_passed + cust_passed + ms_passed
+    total = len(mkt_results) + len(rev_results) + len(cust_results) + len(ms_results)
     print(f"\nTOTAL: {total_passed}/{total} pattern checks passed.")
     sys.exit(0 if total_passed == total else 1)
 
