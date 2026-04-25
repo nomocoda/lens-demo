@@ -1,0 +1,266 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "48-hour integration accounts retain at 2.3x the 90-day rate",
+    "anchor": "26 of 47 Q1 implementations connected their first integration within 48 hours of kickoff.",
+    "connect": "Accounts that integrated after the first week showed weaker 90-day retention across the same cohort.",
+    "body": "26 of 47 Q1 implementations connected their first integration within 48 hours of kickoff. Accounts that integrated after the first week showed weaker 90-day retention across the same cohort.",
+    "grounded_metrics": [
+      "ttfv_48hr_cohort",
+      "q1_integration_retention"
+    ],
+    "trace": "TTFV cohort signal from Q1 2026 showing early integration speed correlates with retention outcomes months later."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Tier-2 activation jumps from 54% to 78% inside 14 days",
+    "anchor": "78% of Tier-2 implementations reached first value inside 14 days this quarter.",
+    "connect": "Q4 ran at 54% for the same complexity segment.",
+    "body": "78% of Tier-2 implementations reached first value inside 14 days this quarter. Q4 ran at 54% for the same complexity segment.",
+    "grounded_metrics": [
+      "tier2_activation_q1",
+      "tier2_activation_q4"
+    ],
+    "trace": "Tier-2 complexity tier showing significant quarter-over-quarter activation improvement."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market implementations clear go-live 6 days ahead of plan",
+    "anchor": "22 completed implementations moved from Day 51 plan to Day 45 actual.",
+    "connect": "Healthcare vertical runs fastest at 38-day median across 11 go-lives.",
+    "body": "22 completed implementations moved from Day 51 plan to Day 45 actual. Healthcare vertical runs fastest at 38-day median across 11 go-lives.",
+    "grounded_metrics": [
+      "midmarket_golive_velocity",
+      "healthcare_vertical_median"
+    ],
+    "trace": "Mid-market segment execution ahead of timeline with healthcare as the fastest vertical segment."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Configuration template moves enterprise sign-off from Day 18 to Day 11",
+    "anchor": "14 enterprise implementations median sign-off compressed after the March 1 template launch.",
+    "connect": "Pre-kickoff configuration template launched March 1, 2026.",
+    "body": "14 enterprise implementations median sign-off compressed after the March 1 template launch. Pre-kickoff configuration template launched March 1, 2026.",
+    "grounded_metrics": [
+      "enterprise_signoff_velocity",
+      "config_template_launch"
+    ],
+    "trace": "Enterprise configuration sign-off acceleration tied to March 1 template release."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "71% clear integration milestone inside 10 days this quarter",
+    "anchor": "71% of 38 active implementations cleared the integration milestone inside 10 days of kickoff.",
+    "connect": "Q4 ran at 58% for the same milestone completion window.",
+    "body": "71% of 38 active implementations cleared the integration milestone inside 10 days of kickoff. Q4 ran at 58% for the same milestone completion window.",
+    "grounded_metrics": [
+      "integration_milestone_q1",
+      "integration_milestone_q4"
+    ],
+    "trace": "Data integration milestone completion rate showing quarter-over-quarter improvement."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "3-user activation by Day 30 drives 3.0x retention strength",
+    "anchor": "31 of 47 Q1 implementations crossed the 3-user threshold by Day 30.",
+    "connect": "Single-user activations showed weaker 90-day retention in the same cohort.",
+    "body": "31 of 47 Q1 implementations crossed the 3-user threshold by Day 30. Single-user activations showed weaker 90-day retention in the same cohort.",
+    "grounded_metrics": [
+      "multiuser_activation_day30",
+      "retention_comparison"
+    ],
+    "trace": "Multi-stakeholder activation signal from Q1 showing retention correlation with user breadth."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Onboarding checklist completion rises to 34% after template launch",
+    "anchor": "Completion rate moved from 22% to 34% after the March 1 configuration template.",
+    "connect": "UserGuiding industry baseline sits at 19.2% for onboarding checklist completion.",
+    "body": "Completion rate moved from 22% to 34% after the March 1 configuration template. UserGuiding industry baseline sits at 19.2% for onboarding checklist completion.",
+    "grounded_metrics": [
+      "checklist_completion",
+      "userguiding_baseline"
+    ],
+    "trace": "Onboarding checklist completion improvement following configuration template launch with industry context."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "64% of kickoffs list 3 or more named stakeholders this quarter",
+    "anchor": "64% of 51 kickoffs this quarter listed 3 or more named stakeholders on the project plan.",
+    "connect": "Prior quarter ran at 39% for the same stakeholder breadth metric.",
+    "body": "64% of 51 kickoffs this quarter listed 3 or more named stakeholders on the project plan. Prior quarter ran at 39% for the same stakeholder breadth metric.",
+    "grounded_metrics": [
+      "stakeholder_breadth_q1",
+      "stakeholder_breadth_prior"
+    ],
+    "trace": "Stakeholder breadth at kickoff showing significant quarter-over-quarter improvement in project planning."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Self-serve sandbox lifts Tier-1 activation from 62% to 81%",
+    "anchor": "81% of Tier-1 implementations reached first value inside 14 days after the March 12 sandbox launch.",
+    "connect": "Prior to launch, 36 Tier-1 accounts ran at 62% for the same activation window.",
+    "body": "81% of Tier-1 implementations reached first value inside 14 days after the March 12 sandbox launch. Prior to launch, 36 Tier-1 accounts ran at 62% for the same activation window.",
+    "grounded_metrics": [
+      "sandbox_tier1_lift",
+      "tier1_pre_sandbox"
+    ],
+    "trace": "Self-serve sandbox launch on March 12 showing direct impact on Tier-1 activation rates."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Complete use-case capture accelerates go-live by 12 days",
+    "anchor": "Accounts with complete pre-close use-case documentation reached go-live 12 days earlier across 34 Q1 implementations.",
+    "connect": "Accounts without documentation required scope reconstruction during the first implementation week.",
+    "body": "Accounts with complete pre-close use-case documentation reached go-live 12 days earlier across 34 Q1 implementations. Accounts without documentation required scope reconstruction during the first implementation week.",
+    "grounded_metrics": [
+      "usecase_capture_velocity",
+      "q1_implementation_cohort"
+    ],
+    "trace": "Sales-to-implementation handoff quality showing direct impact on go-live velocity across Q1 cohort."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market implementation NPS jumps 18 points to 59",
+    "anchor": "Implementation NPS moved from 41 to 59 across 28 surveyed mid-market go-lives this quarter.",
+    "connect": "This represents the largest segment-level NPS jump on record for implementations.",
+    "body": "Implementation NPS moved from 41 to 59 across 28 surveyed mid-market go-lives this quarter. This represents the largest segment-level NPS jump on record for implementations.",
+    "grounded_metrics": [
+      "midmarket_implementation_nps",
+      "nps_historical_record"
+    ],
+    "trace": "Mid-market implementation satisfaction showing record-level improvement in Q1."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Product-blocker resolution tightens from 9 days to 4 days",
+    "anchor": "Median resolution time compressed across 17 implementation-tagged Engineering issues this quarter.",
+    "connect": "Implementation support first-response moved from 6 hours to 2.4 hours over the same window.",
+    "body": "Median resolution time compressed across 17 implementation-tagged Engineering issues this quarter. Implementation support first-response moved from 6 hours to 2.4 hours over the same window.",
+    "grounded_metrics": [
+      "product_blocker_resolution",
+      "implementation_support_response"
+    ],
+    "trace": "Cross-functional responsiveness improvement in both Engineering blockers and support queue."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "92% of enterprise handoff briefs acknowledged inside 48 hours",
+    "anchor": "92% of 26 enterprise go-lives had the structured handoff brief acknowledged by the receiving CSM inside 48 hours.",
+    "connect": "Enterprise implementations require the most detailed handoff documentation at go-live.",
+    "body": "92% of 26 enterprise go-lives had the structured handoff brief acknowledged by the receiving CSM inside 48 hours. Enterprise implementations require the most detailed handoff documentation at go-live.",
+    "grounded_metrics": [
+      "enterprise_handoff_acknowledgment",
+      "enterprise_golives_q1"
+    ],
+    "trace": "Implementation-to-CSM handoff quality metric for enterprise tier showing strong acknowledgment rate."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Healthcare vertical runs 38-day median across 11 implementations",
+    "anchor": "Healthcare implementations cleared go-live at a 38-day kickoff-to-go-live median this quarter.",
+    "connect": "This represents the fastest segment median in the implementation portfolio.",
+    "body": "Healthcare implementations cleared go-live at a 38-day kickoff-to-go-live median this quarter. This represents the fastest segment median in the implementation portfolio.",
+    "grounded_metrics": [
+      "healthcare_vertical_median",
+      "portfolio_segment_comparison"
+    ],
+    "trace": "Healthcare vertical showing fastest go-live velocity across all vertical segments in the portfolio."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Implementation support queue drops response time to 2.4 hours",
+    "anchor": "First-response median tightened from 6 hours to 2.4 hours across 142 implementation-tagged tickets.",
+    "connect": "Dedicated implementation support queue launched this quarter to separate implementation from general support.",
+    "body": "First-response median tightened from 6 hours to 2.4 hours across 142 implementation-tagged tickets. Dedicated implementation support queue launched this quarter to separate implementation from general support.",
+    "grounded_metrics": [
+      "implementation_support_response",
+      "dedicated_queue_launch"
+    ],
+    "trace": "Implementation support responsiveness improvement following dedicated queue launch."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Configuration template drives checklist completion above industry baseline",
+    "anchor": "34% completion rate sits 15 percentage points above the UserGuiding industry baseline of 19.2%.",
+    "connect": "Completion rate moved from 22% to 34% after the March 1 template launch.",
+    "body": "34% completion rate sits 15 percentage points above the UserGuiding industry baseline of 19.2%. Completion rate moved from 22% to 34% after the March 1 template launch.",
+    "grounded_metrics": [
+      "checklist_completion_vs_baseline",
+      "template_launch_impact"
+    ],
+    "trace": "Onboarding checklist performance relative to industry standard with template impact measurement."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Early integration speed correlates with long-term retention patterns",
+    "anchor": "Accounts integrating within 48 hours of kickoff retained at 2.3x the rate at the 90-day mark.",
+    "connect": "26 of 47 Q1 implementations achieved the 48-hour integration threshold.",
+    "body": "Accounts integrating within 48 hours of kickoff retained at 2.3x the rate at the 90-day mark. 26 of 47 Q1 implementations achieved the 48-hour integration threshold.",
+    "grounded_metrics": [
+      "integration_speed_retention",
+      "q1_cohort_analysis"
+    ],
+    "trace": "Integration timing correlation with retention outcomes showing predictive value for long-term success."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Multi-stakeholder implementations show 3x retention advantage",
+    "anchor": "Implementations reaching 3+ user activation by Day 30 showed 90-day retention 3.0x stronger.",
+    "connect": "31 of 47 Q1 implementations crossed the multi-user activation threshold.",
+    "body": "Implementations reaching 3+ user activation by Day 30 showed 90-day retention 3.0x stronger. 31 of 47 Q1 implementations crossed the multi-user activation threshold.",
+    "grounded_metrics": [
+      "multiuser_retention_advantage",
+      "day30_activation_rate"
+    ],
+    "trace": "Stakeholder activation breadth showing strong correlation with retention outcomes in Q1 cohort."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Tier-1 sandbox adoption drives 19-point activation lift",
+    "anchor": "Self-serve sandbox launched March 12 moved Tier-1 activation from 62% to 81% inside 14 days.",
+    "connect": "36 Tier-1 accounts provided the pre-launch baseline for activation comparison.",
+    "body": "Self-serve sandbox launched March 12 moved Tier-1 activation from 62% to 81% inside 14 days. 36 Tier-1 accounts provided the pre-launch baseline for activation comparison.",
+    "grounded_metrics": [
+      "sandbox_activation_lift",
+      "tier1_baseline_cohort"
+    ],
+    "trace": "Product feature launch impact on simplest complexity tier showing significant activation improvement."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Enterprise configuration acceleration follows template deployment",
+    "anchor": "Configuration sign-off compressed from Day 18 to Day 11 median across 14 enterprise implementations.",
+    "connect": "Pre-kickoff configuration template launched March 1, 2026 targeting enterprise complexity.",
+    "body": "Configuration sign-off compressed from Day 18 to Day 11 median across 14 enterprise implementations. Pre-kickoff configuration template launched March 1, 2026 targeting enterprise complexity.",
+    "grounded_metrics": [
+      "enterprise_config_acceleration",
+      "march_template_deployment"
+    ],
+    "trace": "Enterprise implementation velocity improvement directly following configuration template release."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Cross-functional response velocity tightens across Engineering and support",
+    "anchor": "Product-blocker resolution moved from 9 days to 4 days while support response moved from 6 hours to 2.4 hours.",
+    "connect": "17 implementation-tagged Engineering issues and 142 support tickets tracked this quarter.",
+    "body": "Product-blocker resolution moved from 9 days to 4 days while support response moved from 6 hours to 2.4 hours. 17 implementation-tagged Engineering issues and 142 support tickets tracked this quarter.",
+    "grounded_metrics": [
+      "cross_functional_response",
+      "engineering_support_volume"
+    ],
+    "trace": "Implementation support infrastructure showing coordinated improvement across Engineering and support functions."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Use-case documentation quality drives 12-day go-live acceleration",
+    "anchor": "Complete pre-close use-case capture accelerates go-live by 12 days across 34 Q1 implementations.",
+    "connect": "Implementations without documentation require scope reconstruction in the first implementation week.",
+    "body": "Complete pre-close use-case capture accelerates go-live by 12 days across 34 Q1 implementations. Implementations without documentation require scope reconstruction in the first implementation week.",
+    "grounded_metrics": [
+      "usecase_documentation_impact",
+      "scope_reconstruction_delay"
+    ],
+    "trace": "Sales-to-implementation handoff quality showing measurable impact on implementation velocity and scope clarity."
+  }
+]

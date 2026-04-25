@@ -2527,6 +2527,7 @@ def parse_cards(text: str) -> List[Dict]:
 #     when any are present.
 _USER_FACING_FIELDS = ("title", "anchor", "connect", "body")
 _AGAINST_RE = re.compile(r"\bagainst\b", re.IGNORECASE)
+_EM_DASH_RE = re.compile(r"\s*\u2014\s*")
 # Wins/losses idiom rewrite (P-RL-10, P-MS-01 etc.). Handles model variants:
 #   "5 wins and 1 loss"      — digits + "and"
 #   "5 wins, 1 loss"         — digits + comma
@@ -2587,6 +2588,12 @@ def normalize_voice(
                 rewritten = _CLOSING_GAP_RE.sub(_gap_sub, new_value)
                 edits.append({"card_index": idx, "field": field,
                               "rule": "closing/closes the gap→narrowing/narrows the distance",
+                              "before": new_value, "after": rewritten})
+                new_value = rewritten
+            if _EM_DASH_RE.search(new_value):
+                rewritten = _EM_DASH_RE.sub(", ", new_value)
+                edits.append({"card_index": idx, "field": field,
+                              "rule": "em-dash→comma",
                               "before": new_value, "after": rewritten})
                 new_value = rewritten
             if _AGAINST_RE.search(new_value):
