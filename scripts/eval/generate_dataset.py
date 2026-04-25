@@ -63,7 +63,9 @@ WINDOW_START = date(2025, 4, 24)
 CURRENT_WEEK = (date(2026, 4, 20), date(2026, 4, 26))
 PRIOR_11_WEEKS = (date(2026, 2, 2), date(2026, 4, 19))
 LAST_60_DAYS = (date(2026, 2, 23), date(2026, 4, 24))
+LAST_30_DAYS = (date(2026, 3, 25), date(2026, 4, 24))
 
+Q3_2026 = (date(2026, 7, 1), date(2026, 9, 30))
 Q2_2026 = (date(2026, 4, 1), date(2026, 6, 30))
 Q1_2026 = (date(2026, 1, 1), date(2026, 3, 31))
 Q4_2025 = (date(2025, 10, 1), date(2025, 12, 31))
@@ -536,6 +538,136 @@ def gen_sdr_capacity(rng: random.Random) -> List[Dict]:
 
 
 # ----------------------------------------------------------------------------
+# Revenue Leader entities (Phase 2.3)
+# ----------------------------------------------------------------------------
+
+def gen_forecasts() -> List[Dict]:
+    """Per-quarter commit, weighted pipeline at 80% confidence, plan, pacing.
+
+    Static seeded rows feed RL patterns 01, 03, 14. Validators read these
+    directly rather than recomputing them from deals — these are leadership
+    artefacts produced by the forecast process, not derived sums.
+    """
+    return [
+        {
+            "quarter": "Q2_2026",
+            "commit": 1_400_000,
+            "weighted_pipeline_80pct": 1_600_000,
+            "plan_total": 5_000_000,
+            "plan_pacing_target_through_apr24": 840_000,
+            "bookings_actual_through_apr24": 880_000,
+            "enterprise_plan": 2_400_000,
+        },
+        {
+            "quarter": "Q3_2026",
+            "commit": 1_600_000,
+            "weighted_pipeline_80pct": 1_750_000,
+            "plan_total": 5_400_000,
+            "plan_pacing_target_through_apr24": 0,
+            "bookings_actual_through_apr24": 0,
+            "enterprise_plan": 1_200_000,
+        },
+        {
+            "quarter": "Q1_2026",
+            "commit": 1_300_000,
+            "weighted_pipeline_80pct": 1_350_000,
+            "plan_total": 4_600_000,
+            "plan_pacing_target_through_apr24": 0,
+            "bookings_actual_through_apr24": 0,
+            "enterprise_plan": 1_100_000,
+        },
+    ]
+
+
+def gen_renewals(rng: random.Random, companies: List[Dict]) -> List[Dict]:
+    """Renewal events with ARR by segment + computed NRR. RL P15 seeds Q2 MM."""
+    rows: List[Dict] = []
+    customers = [c for c in companies if c["is_customer"]]
+    by_seg = defaultdict(list)
+    for c in customers:
+        by_seg[c["segment"]].append(c)
+
+    # Quarter target ARR (renewed) per segment.
+    targets = {
+        ("Q2_2026", "mid-market"): 620_000,
+        ("Q1_2026", "mid-market"): 540_000,
+        ("Q4_2025", "mid-market"): 555_000,
+        ("Q3_2025", "mid-market"): 568_000,
+        ("Q2_2025", "mid-market"): 550_000,
+        ("Q2_2026", "enterprise"): 380_000,
+        ("Q1_2026", "enterprise"): 390_000,
+        ("Q4_2025", "enterprise"): 420_000,
+        ("Q3_2025", "enterprise"): 405_000,
+        ("Q2_2025", "enterprise"): 395_000,
+        ("Q2_2026", "small-business"): 210_000,
+        ("Q1_2026", "small-business"): 220_000,
+        ("Q4_2025", "small-business"): 215_000,
+        ("Q3_2025", "small-business"): 205_000,
+        ("Q2_2025", "small-business"): 200_000,
+    }
+    # Quarter NRR (renewed_arr / starting_arr) per segment-quarter.
+    nrr_map = {
+        ("Q2_2026", "mid-market"): 1.12,
+        ("Q1_2026", "mid-market"): 1.10,
+        ("Q4_2025", "mid-market"): 1.16,
+        ("Q3_2025", "mid-market"): 1.18,
+        ("Q2_2025", "mid-market"): 1.14,
+        ("Q2_2026", "enterprise"): 1.06,
+        ("Q1_2026", "enterprise"): 1.08,
+        ("Q4_2025", "enterprise"): 1.11,
+        ("Q3_2025", "enterprise"): 1.10,
+        ("Q2_2025", "enterprise"): 1.09,
+        ("Q2_2026", "small-business"): 1.02,
+        ("Q1_2026", "small-business"): 1.03,
+        ("Q4_2025", "small-business"): 1.04,
+        ("Q3_2025", "small-business"): 1.02,
+        ("Q2_2025", "small-business"): 1.01,
+    }
+
+    def q_bounds(q: str) -> Tuple[date, date]:
+        name, year = q.split("_")
+        year = int(year)
+        idx = int(name[1:])
+        start = date(year, (idx - 1) * 3 + 1, 1)
+        end_month = idx * 3
+        end_day = {3: 31, 6: 30, 9: 30, 12: 31}[end_month]
+        return start, date(year, end_month, end_day)
+
+    rid = 1
+    for (q, seg), target_arr in targets.items():
+        qs, qe = q_bounds(q)
+        # Q2_2026 is the active quarter — events through TODAY only
+        effective_end = min(qe, TODAY)
+        if qs > TODAY:
+            continue
+        # Spread the target across 4-9 renewal events
+        n_events = rng.randint(4, 9)
+        amounts = _split_total(rng, target_arr, n_events)
+        seg_pool = by_seg.get(seg, [])
+        if not seg_pool:
+            continue
+        for amt in amounts:
+            co = rng.choice(seg_pool)
+            d = qs + timedelta(days=rng.randint(0, (effective_end - qs).days))
+            rows.append({
+                "id": f"RN-{rid:05d}",
+                "company_id": co["id"],
+                "quarter": q,
+                "segment": seg,
+                "renewal_date": iso(d),
+                "renewed_arr": amt,
+                "nrr": nrr_map[(q, seg)],
+            })
+            rid += 1
+    return rows
+
+
+def gen_expansion_opportunities() -> List[Dict]:
+    """Default empty list. Pattern P-RL-11 seeds 8 in last 30 days."""
+    return []
+
+
+# ----------------------------------------------------------------------------
 # Pattern seeders (mutate generated dataset to plant signal patterns)
 # ----------------------------------------------------------------------------
 
@@ -559,9 +691,12 @@ def seed_p01_marketing_velocity(rng: random.Random, deals: List[Dict], companies
     cw_segments = ["mid-market"] * 7 + ["small-business", "small-business"]
     rng.shuffle(cw_segments)
     cw_dtcs = [35, 36, 37, 38, 38, 39, 40, 41, 38]  # mean 38
+    # Cap close-date at TODAY so all cw wins land inside LAST_60_DAYS (which
+    # ends at TODAY); p11's MM-60d count depends on this.
+    cw_close_cap_days = (TODAY - cw_start).days  # 4 → close in {Apr 20..24}
     for seg, dtc in zip(cw_segments, cw_dtcs):
         co = _pick_company_by_segment(rng, companies, seg)
-        close = cw_start + timedelta(days=rng.randint(0, cw_span - 1))
+        close = cw_start + timedelta(days=rng.randint(0, cw_close_cap_days))
         create = close - timedelta(days=dtc)
         deals.append({
             "id": _new_deal_id(deals),
@@ -665,18 +800,51 @@ def _amounts_at_mean(rng: random.Random, n: int, mean: int, spread: int) -> List
 
 
 def seed_p03_enterprise_winrate(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
-    """Card 12 — enterprise WR 31% Q2 vs 22% trailing-4Q; avg won $187K vs $142K."""
+    """Marketing card 12 — enterprise WR 31% Q2 vs 22% trailing-4Q; avg won $187K vs $142K.
+
+    Phase 2.3 expansion: source-stratify Q2 enterprise so RL-12's MS-vs-outbound
+    win-rate split is grounded (14 MS / 7 outbound / 5 partner-or-referral, with
+    4/1/3 wins respectively → 8/26 = 30.8% aggregate). Also pin Q1_2026
+    enterprise wins to avg ~$145K so RL-08 (Q2 vs Q1 won-deal size delta)
+    reads cleanly.
+    """
     q2_start = Q2_2026[0]
     q2_effective_end = min(Q2_2026[1], TODAY)
     span_q2 = (q2_effective_end - q2_start).days
     q2_win_amounts = _amounts_at_mean(rng, 8, 187000, 15000)
-    for i in range(26):
+
+    # Q2 enterprise breakdown by source (RL-12):
+    #   MS-sourced (14): 4 wins, 10 lost. lead_source from
+    #     {content, email, webinar, nurture} — paid_social/paid_search reserved
+    #     for p04, events for p06.
+    #   Outbound (7): 1 win, 6 lost.
+    #   Partner / referral / direct (5): 3 wins, 2 lost.
+    # Won amounts come from q2_win_amounts (sequence stable across runs).
+    ms_ent_sources = ["content", "email", "webinar", "nurture"]
+    q2_strata = (
+        [("ms", True)] * 4 + [("ms", False)] * 10
+        + [("outbound", True)] * 1 + [("outbound", False)] * 6
+        + [("partner", True)] * 3 + [("partner", False)] * 2
+    )
+    win_amount_iter = iter(q2_win_amounts)
+    for stratum, is_won in q2_strata:
         co = _pick_company_by_segment(rng, companies, "enterprise")
-        is_won = i < 8
-        close = q2_start + timedelta(days=rng.randint(0, span_q2))
-        amount = q2_win_amounts[i] if is_won else int(rng.gauss(160000, 25000))
+        # MS-sourced enterprise wins must close BEFORE Apr 20 so they don't
+        # leak into p01's current-week MS-velocity cohort.
+        if stratum == "ms" and is_won:
+            cw_floor_offset = (CURRENT_WEEK[0] - q2_start).days  # 19
+            close = q2_start + timedelta(days=rng.randint(0, max(0, cw_floor_offset - 1)))
+        else:
+            close = q2_start + timedelta(days=rng.randint(0, span_q2))
+        amount = next(win_amount_iter) if is_won else int(rng.gauss(160000, 25000))
         amount = max(60000, amount)
         dtc = rng.randint(45, 95)
+        if stratum == "ms":
+            lead_source = rng.choice(ms_ent_sources)
+        elif stratum == "outbound":
+            lead_source = "outbound"
+        else:
+            lead_source = rng.choice(["partner", "referral", "direct"])
         deals.append({
             "id": _new_deal_id(deals),
             "company_id": co["id"],
@@ -686,37 +854,83 @@ def seed_p03_enterprise_winrate(rng: random.Random, deals: List[Dict], companies
             "close_date": iso(close),
             "is_closed": True,
             "is_won": is_won,
+            "lead_source": lead_source,
+            "campaign_source_id": None,
+            "segment": "enterprise",
+            "_pattern": f"p03_q2_{stratum}",
+        })
+
+    # Trailing 4Q enterprise closed (Apr 1, 2025 - Mar 31, 2026): 180 deals,
+    # 40 wins. Pin 3 of those wins inside Q1_2026 with avg $145K (RL-08); the
+    # remaining 37 wins distribute across Q2_2025-Q4_2025 with avg ~$141.8K so
+    # the four-quarter trailing average lands at $142K.
+    trailing_start = date(2025, 4, 1)
+    trailing_end = date(2026, 3, 31)
+    pre_q1_2026_end = date(2025, 12, 31)
+    pre_q1_span = (pre_q1_2026_end - trailing_start).days
+    q1_2026_span = (trailing_end - Q1_2026[0]).days
+
+    # 3 Q1_2026 wins: avg $145K (RL-08).
+    q1_win_amounts = _amounts_at_mean(rng, 3, 145000, 8000)
+    for amt in q1_win_amounts:
+        co = _pick_company_by_segment(rng, companies, "enterprise")
+        close = Q1_2026[0] + timedelta(days=rng.randint(0, q1_2026_span))
+        dtc = rng.randint(50, 110)
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": amt,
+            "stage": DEAL_STAGE_WON,
+            "create_date": iso(close - timedelta(days=dtc)),
+            "close_date": iso(close),
+            "is_closed": True,
+            "is_won": True,
             "lead_source": rng.choice(NON_MARKETING_SOURCES),
             "campaign_source_id": None,
             "segment": "enterprise",
-            "_pattern": "p03_q2",
+            "_pattern": "p03_trailing_q1won",
         })
 
-    # Trailing 4Q enterprise closed (ending Q1 2026): 180 deals, 40 wins (22.2%)
-    trailing_start = date(2025, 4, 1)  # rolling 4 quarters before Q2 2026
-    trailing_end = date(2026, 3, 31)
-    span_tr = (trailing_end - trailing_start).days
-    trailing_win_amounts = _amounts_at_mean(rng, 40, 142000, 20000)
-    for i in range(180):
+    # 37 trailing wins outside Q1_2026 (avg ~$141.8K so 4Q trailing holds at $142K).
+    other_trailing_amounts = _amounts_at_mean(rng, 37, 141800, 20000)
+    for amt in other_trailing_amounts:
         co = _pick_company_by_segment(rng, companies, "enterprise")
-        is_won = i < 40
-        close = trailing_start + timedelta(days=rng.randint(0, span_tr))
-        amount = trailing_win_amounts[i] if is_won else int(rng.gauss(150000, 25000))
-        amount = max(50000, amount)
+        close = trailing_start + timedelta(days=rng.randint(0, pre_q1_span))
+        dtc = rng.randint(50, 110)
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": amt,
+            "stage": DEAL_STAGE_WON,
+            "create_date": iso(close - timedelta(days=dtc)),
+            "close_date": iso(close),
+            "is_closed": True,
+            "is_won": True,
+            "lead_source": rng.choice(NON_MARKETING_SOURCES),
+            "campaign_source_id": None,
+            "segment": "enterprise",
+            "_pattern": "p03_trailing_otherwon",
+        })
+
+    # 140 trailing losses to fill out the 180-deal cohort.
+    for _ in range(140):
+        co = _pick_company_by_segment(rng, companies, "enterprise")
+        close = trailing_start + timedelta(days=rng.randint(0, (trailing_end - trailing_start).days))
+        amount = max(50000, int(rng.gauss(150000, 25000)))
         dtc = rng.randint(50, 110)
         deals.append({
             "id": _new_deal_id(deals),
             "company_id": co["id"],
             "amount": amount,
-            "stage": DEAL_STAGE_WON if is_won else DEAL_STAGE_LOST,
+            "stage": DEAL_STAGE_LOST,
             "create_date": iso(close - timedelta(days=dtc)),
             "close_date": iso(close),
             "is_closed": True,
-            "is_won": is_won,
+            "is_won": False,
             "lead_source": rng.choice(NON_MARKETING_SOURCES),
             "campaign_source_id": None,
             "segment": "enterprise",
-            "_pattern": "p03_trailing",
+            "_pattern": "p03_trailing_loss",
         })
 
 
@@ -1222,6 +1436,380 @@ def seed_p15_sdr_capacity(sdr_capacity: List[Dict]) -> None:
 
 
 # ----------------------------------------------------------------------------
+# Revenue Leader pattern seeders (Phase 2.3) — P-RL-01..P-RL-15
+# ----------------------------------------------------------------------------
+#
+# Card → seeder map (Phase 2.1 placeholder cards 1..15):
+#   1  Q2 forecast tracking $200K above commit         → seed_p_rl_01_q2_forecast (forecasts.json static)
+#   2  MM proposal stage 10 days faster                → seed_p_rl_02_proposal_speed
+#   3  Q3 enterprise pipeline coverage 4.1x            → seed_p_rl_03_q3_ent_coverage
+#   4  Q2 marketing-sourced share crossed 40%          → seed_p_rl_04_q2_ms_share
+#   5  Three enterprise deals through procurement      → seed_p_rl_05_proc_review
+#   6  18 MM opps in last 30 days totaling $890K       → seed_p_rl_06_mm_30d
+#   7  Q2 enterprise WR 31% vs trailing 22%            → reuses p03 (validator only)
+#   8  Q1 vs Q2 enterprise won-deal size delta         → reuses p03 (validator only, p03 pinned Q1)
+#   9  Q2 MM sales cycle compressed                    → seed_p_rl_09_mm_cycle
+#  10  H2H deals vs Beacon: Q2 5/6, Q1 3/3             → seed_p_rl_10_h2h
+#  11  8 expansion opps from health reviews            → seed_p_rl_11_expansion
+#  12  Q2 enterprise WR by source (MS 28% / OB 14%)    → reuses p03 (validator only, p03 source-split)
+#  13  4 deals close-date moved Q2→Q3 this week        → seed_p_rl_13_close_date_slips
+#  14  Q2 bookings pacing 105% of plan                 → seed_p_rl_14_q2_pacing (forecasts.json static)
+#  15  Q2 MM renewal ARR / NRR                         → reuses gen_renewals (validator only)
+
+
+def seed_p_rl_01_q2_forecast() -> None:
+    """RL-01 / RL-14 — already seeded statically in gen_forecasts; no-op."""
+    return
+
+
+def seed_p_rl_02_proposal_speed(rng: random.Random, deals: List[Dict]) -> None:
+    """RL-02 — Q2 mid-market avg time-in-proposal-stage 12 days, trailing 4Q 22 days.
+
+    Add `time_in_proposal` field to MM closed deals. Q2 MM (close_date in Q2)
+    get values around 12 days; trailing 4Q MM get values around 22 days.
+    """
+    for d in deals:
+        if d["segment"] != "mid-market" or not d["is_closed"]:
+            continue
+        close = date.fromisoformat(d["close_date"])
+        if Q2_2026[0] <= close <= Q2_2026[1]:
+            d["time_in_proposal"] = max(7, int(rng.gauss(12, 2)))
+        elif date(2025, 4, 1) <= close <= date(2026, 3, 31):
+            d["time_in_proposal"] = max(15, int(rng.gauss(22, 3)))
+
+
+def seed_p_rl_03_q3_ent_coverage(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
+    """RL-03 — Q3 enterprise pipeline coverage 4.1x of $1.2M plan.
+
+    Seed open enterprise deals with close_date in Q3_2026 totaling ~$4.92M.
+    Coverage = (sum open Q3 enterprise pipeline) / (Q3 enterprise plan in
+    forecasts.json). Plan is $1.2M; target pipeline $4.92M.
+    """
+    target = 4_920_000
+    n = 22
+    amounts = _split_total(rng, target, n)
+    q3_start, q3_end = Q3_2026
+    span = (q3_end - q3_start).days
+    today_to_q3 = (q3_start - TODAY).days
+    for amt in amounts:
+        co = _pick_company_by_segment(rng, companies, "enterprise")
+        close = q3_start + timedelta(days=rng.randint(0, span))
+        # create_date between 30-90 days before TODAY (open pipeline being worked)
+        create = TODAY - timedelta(days=rng.randint(20, 90))
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": amt,
+            "stage": rng.choice(DEAL_STAGES_OPEN),
+            "create_date": iso(create),
+            "close_date": iso(close),
+            "is_closed": False,
+            "is_won": False,
+            "lead_source": rng.choice(NON_MARKETING_SOURCES + ["content", "email"]),
+            "campaign_source_id": None,
+            "segment": "enterprise",
+            "_pattern": "p_rl_03_q3_ent",
+        })
+
+
+def seed_p_rl_04_q2_ms_share(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
+    """RL-04 — Q2 marketing-sourced share of net new pipeline crossed 40%.
+
+    p04 already seeds $1M of paid_social/paid_search Q2 pipeline. Add another
+    ~$500K of MS pipeline (content/email/webinar/nurture) so MS share lands
+    cleanly above 40%. All open MM/SMB pipeline (won deals would conflict
+    with p01 cw and p11 mm_60d).
+    """
+    target = 500_000
+    n = 12
+    amounts = _split_total(rng, target, n)
+    ms_sources = ["content", "email", "webinar", "nurture"]
+    q2_start = Q2_2026[0]
+    q2_eff = min(Q2_2026[1], TODAY)
+    span = max(0, (q2_eff - q2_start).days)
+    for amt in amounts:
+        seg = rng.choice(["mid-market", "small-business"])
+        co = _pick_company_by_segment(rng, companies, seg)
+        create = q2_start + timedelta(days=rng.randint(0, span))
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": amt,
+            "stage": rng.choice(DEAL_STAGES_OPEN),
+            "create_date": iso(create),
+            "close_date": None,
+            "is_closed": False,
+            "is_won": False,
+            "lead_source": rng.choice(ms_sources),
+            "campaign_source_id": None,
+            "segment": seg,
+            "_pattern": "p_rl_04_q2_ms",
+        })
+
+
+def seed_p_rl_05_proc_review(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
+    """RL-05 — 3 enterprise deals cleared procurement review this week.
+
+    All three open enterprise deals in stage_proposal/contractsent with
+    contract_revisions=true and procurement_signoff=true, close in Q2.
+    """
+    cw_start, cw_end = CURRENT_WEEK
+    cw_span = (cw_end - cw_start).days
+    for i in range(3):
+        co = _pick_company_by_segment(rng, companies, "enterprise")
+        # Close target: 30-60 days from now within Q2
+        close = TODAY + timedelta(days=rng.randint(20, 60))
+        if close > Q2_2026[1]:
+            close = Q2_2026[1]
+        create = TODAY - timedelta(days=rng.randint(40, 90))
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": rng.randint(120_000, 240_000),
+            "stage": "contractsent",
+            "create_date": iso(create),
+            "close_date": iso(close),
+            "is_closed": False,
+            "is_won": False,
+            "lead_source": rng.choice(["outbound", "referral", "partner"]),
+            "campaign_source_id": None,
+            "segment": "enterprise",
+            "contract_revisions": True,
+            "procurement_signoff": True,
+            "procurement_cleared_date": iso(cw_start + timedelta(days=rng.randint(0, cw_span))),
+            "_pattern": "p_rl_05_proc",
+        })
+
+
+def seed_p_rl_06_mm_30d(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
+    """RL-06 — 18 mid-market opportunities created Mar 25 - Apr 24 totaling $890K.
+
+    Top up to 18 NEW MM opps in last 30d, total ~$890K, avg ~$49K. Existing
+    seeders may already create some MM opps in this window; this seeder adds
+    enough new ones to hit the count and total. Open opps only — closed-won
+    MM in last 30d would conflict with p11.
+    """
+    last30_start, last30_end = LAST_30_DAYS
+    span = (last30_end - last30_start).days
+    target_total = 890_000
+    target_count = 18
+    # All 18 are this seeder's; previous seeders' MM opps in this window
+    # remain in the dataset but don't inflate this count (validator looks at
+    # MM opps tagged with this seeder's _pattern OR uses dataset-wide cuts).
+    amounts = _split_total(rng, target_total, target_count)
+    for amt in amounts:
+        co = _pick_company_by_segment(rng, companies, "mid-market")
+        create = last30_start + timedelta(days=rng.randint(0, span))
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": amt,
+            "stage": rng.choice(DEAL_STAGES_OPEN),
+            "create_date": iso(create),
+            "close_date": None,
+            "is_closed": False,
+            "is_won": False,
+            "lead_source": rng.choice(["outbound", "referral", "content", "email"]),
+            "campaign_source_id": None,
+            "segment": "mid-market",
+            "_pattern": "p_rl_06_mm_30d",
+        })
+
+
+def seed_p_rl_09_mm_cycle(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
+    """RL-09 — Q2 MM avg sales cycle 67d, Q1 MM avg sales cycle 85d.
+
+    Sales cycle = create→close days for closed MM deals. p01/p11 seeded short
+    Q2 MM cycles (38-50d). To pull the Q2 MM aggregate average to ~67d, add
+    20 Q2 MM closed-LOST deals at avg ~80d. For Q1, add 18 MM closed deals
+    (mix of won/lost) at avg ~85d.
+    """
+    # Q2 MM closed-lost (avg 80d) — pull Q2 MM aggregate to ~67d.
+    q2_start = Q2_2026[0]
+    q2_eff = min(Q2_2026[1], TODAY)
+    for _ in range(20):
+        co = _pick_company_by_segment(rng, companies, "mid-market")
+        close = q2_start + timedelta(days=rng.randint(0, (q2_eff - q2_start).days))
+        dtc = max(70, int(rng.gauss(82, 5)))
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": rng.randint(15_000, 80_000),
+            "stage": DEAL_STAGE_LOST,
+            "create_date": iso(close - timedelta(days=dtc)),
+            "close_date": iso(close),
+            "is_closed": True,
+            "is_won": False,
+            "lead_source": rng.choice(NON_MARKETING_SOURCES + ["content", "email"]),
+            "campaign_source_id": None,
+            "segment": "mid-market",
+            "_pattern": "p_rl_09_q2_mm_lost",
+        })
+
+    # Q1 MM closed deals (avg ~100d) — small mix of won and lost. Pushed up
+    # vs. the headline 85d target so filler MM Q1 closeds (avg ~55d) don't
+    # dilute the aggregate below the validator floor.
+    q1_start, q1_end = Q1_2026
+    for i in range(28):
+        co = _pick_company_by_segment(rng, companies, "mid-market")
+        close = q1_start + timedelta(days=rng.randint(0, (q1_end - q1_start).days))
+        dtc = max(85, int(rng.gauss(100, 5)))
+        is_won = i < 7  # ~39% WR
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": rng.randint(15_000, 85_000),
+            "stage": DEAL_STAGE_WON if is_won else DEAL_STAGE_LOST,
+            "create_date": iso(close - timedelta(days=dtc)),
+            "close_date": iso(close),
+            "is_closed": True,
+            "is_won": is_won,
+            "lead_source": rng.choice(NON_MARKETING_SOURCES + ["content", "email"]),
+            "campaign_source_id": None,
+            "segment": "mid-market",
+            "_pattern": "p_rl_09_q1_mm",
+        })
+
+
+def seed_p_rl_10_h2h(rng: random.Random, deals: List[Dict]) -> None:
+    """RL-10 — Q2 h2h vs Beacon: 5W/1L; Q1 h2h vs Beacon: 3W/3L.
+
+    Tag existing p03 enterprise deals with competitor_id and head_to_head=True.
+    Q2: take 5 of the 8 Q2 enterprise wins + 1 of the Q2 enterprise losses.
+    Q1: take 3 of the Q1_2026 trailing wins + 3 trailing Q1_2026 losses.
+    """
+    beacon = "Beacon Systems"
+
+    # Q2 enterprise from p03 (any q2_<stratum> _pattern)
+    q2_ent_won = [d for d in deals if d.get("_pattern", "").startswith("p03_q2_") and d["is_won"]]
+    q2_ent_lost = [d for d in deals if d.get("_pattern", "").startswith("p03_q2_") and not d["is_won"]]
+
+    # Stable-sort by id for determinism (rng.sample re-orders unstably otherwise).
+    q2_ent_won.sort(key=lambda d: d["id"])
+    q2_ent_lost.sort(key=lambda d: d["id"])
+    for d in q2_ent_won[:5]:
+        d["head_to_head"] = True
+        d["competitor_id"] = beacon
+        d["_h2h_quarter"] = "Q2_2026"
+    for d in q2_ent_lost[:1]:
+        d["head_to_head"] = True
+        d["competitor_id"] = beacon
+        d["_h2h_quarter"] = "Q2_2026"
+
+    # Q1_2026 trailing wins/losses
+    q1_2026_won = [d for d in deals if d.get("_pattern") == "p03_trailing_q1won" and d["is_won"]]
+    q1_2026_lost = [d for d in deals
+                    if d.get("_pattern") == "p03_trailing_loss"
+                    and Q1_2026[0] <= date.fromisoformat(d["close_date"]) <= Q1_2026[1]]
+    q1_2026_won.sort(key=lambda d: d["id"])
+    q1_2026_lost.sort(key=lambda d: d["id"])
+    for d in q1_2026_won[:3]:
+        d["head_to_head"] = True
+        d["competitor_id"] = beacon
+        d["_h2h_quarter"] = "Q1_2026"
+    for d in q1_2026_lost[:3]:
+        d["head_to_head"] = True
+        d["competitor_id"] = beacon
+        d["_h2h_quarter"] = "Q1_2026"
+
+
+def seed_p_rl_11_expansion(rng: random.Random, expansion_opportunities: List[Dict], companies: List[Dict]) -> None:
+    """RL-11 — 8 expansion opportunities from customer health reviews, last 30 days, total $340K, avg $42K."""
+    customers = [c for c in companies if c["is_customer"]]
+    last30_start, last30_end = LAST_30_DAYS
+    span = (last30_end - last30_start).days
+    target_total = 340_000
+    n = 8
+    amounts = _amounts_at_mean(rng, n, 42_500, 8_000)
+    # Adjust to hit exact total (drift from rounding).
+    diff = target_total - sum(amounts)
+    amounts[0] += diff
+    for i, amt in enumerate(amounts):
+        co = rng.choice(customers)
+        d = last30_start + timedelta(days=rng.randint(0, span))
+        expansion_opportunities.append({
+            "id": f"EX-{i+1:04d}",
+            "company_id": co["id"],
+            "create_date": iso(d),
+            "amount": amt,
+            "source": "customer_health_review",
+            "stage": rng.choice(["qualifiedtobuy", "presentationscheduled"]),
+        })
+
+
+def seed_p_rl_13_close_date_slips(rng: random.Random, deals: List[Dict], companies: List[Dict]) -> None:
+    """RL-13 — 4 deals stage-changed (close_date moved from Q2 to Q3) week of Apr 20-26, total $180K.
+
+    Open MM/SMB deals (avoid p03 enterprise + p11 MM cw conflicts). Each
+    carries a stage_change_history entry showing close_date moved Q2→Q3.
+    """
+    cw_start, cw_end = CURRENT_WEEK
+    cw_span = (cw_end - cw_start).days
+    target_total = 180_000
+    n = 4
+    amounts = _split_total(rng, target_total, n)
+    for amt in amounts:
+        seg = rng.choice(["mid-market", "small-business"])
+        co = _pick_company_by_segment(rng, companies, seg)
+        old_close = Q2_2026[0] + timedelta(days=rng.randint(15, 65))  # Q2
+        new_close = Q3_2026[0] + timedelta(days=rng.randint(0, 60))    # Q3
+        change_date = cw_start + timedelta(days=rng.randint(0, cw_span))
+        create = TODAY - timedelta(days=rng.randint(35, 90))
+        deals.append({
+            "id": _new_deal_id(deals),
+            "company_id": co["id"],
+            "amount": amt,
+            "stage": rng.choice(DEAL_STAGES_OPEN),
+            "create_date": iso(create),
+            "close_date": iso(new_close),
+            "is_closed": False,
+            "is_won": False,
+            "lead_source": rng.choice(NON_MARKETING_SOURCES + ["content", "email"]),
+            "campaign_source_id": None,
+            "segment": seg,
+            "stage_change_history": [
+                {
+                    "change_date": iso(change_date),
+                    "field": "close_date",
+                    "from_value": iso(old_close),
+                    "to_value": iso(new_close),
+                    "from_quarter": "Q2_2026",
+                    "to_quarter": "Q3_2026",
+                }
+            ],
+            "_pattern": "p_rl_13_slip",
+        })
+
+
+def seed_p_rl_14_q2_pacing() -> None:
+    """RL-14 — Q2 bookings pacing — already in gen_forecasts as static row."""
+    return
+
+
+def seed_p_rl_15_renewals() -> None:
+    """RL-15 — Q2 MM renewals — already in gen_renewals as targeted distribution."""
+    return
+
+
+def apply_deal_field_defaults(deals: List[Dict]) -> None:
+    """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
+
+    Earlier seeders (p01/p04/p06/p11/filler/etc.) wrote deals without the
+    Revenue Leader fields. Apply defaults so downstream validators and the
+    relevance engine never have to do `.get("competitor_id", None)` style
+    fallbacks. A handful of deals (p03 h2h-tagged, p_rl_05 procurement, p_rl_13
+    slipped) already carry real values — leave those alone.
+    """
+    for d in deals:
+        d.setdefault("competitor_id", None)
+        d.setdefault("head_to_head", False)
+        d.setdefault("contract_revisions", False)
+        d.setdefault("procurement_signoff", False)
+        d.setdefault("time_in_proposal", None)
+        d.setdefault("stage_change_history", [])
+
+
+# ----------------------------------------------------------------------------
 # Top-level build
 # ----------------------------------------------------------------------------
 
@@ -1250,11 +1838,14 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     customer_reference_optins = gen_customer_reference_optins(rng, companies)
     product_launches = gen_product_launches()
     sdr_capacity = gen_sdr_capacity(rng)
+    forecasts = gen_forecasts()
+    renewals = gen_renewals(rng, companies)
+    expansion_opportunities = gen_expansion_opportunities()
 
     # Deals start empty — all deals come from pattern seeders + background filler.
     deals: List[Dict] = []
 
-    # Pattern seeders
+    # Marketing pattern seeders
     seed_p01_marketing_velocity(rng, deals, companies)
     seed_p11_mm_wins_concentration(rng, deals, companies)
     seed_p03_enterprise_winrate(rng, deals, companies)
@@ -1268,6 +1859,23 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     seed_p13_target_account_intent(rng, companies, contacts, engagement_events)
     seed_p02_mm_sql_abm(rng, companies, contacts)
     # p12, p14, p15 already seeded above
+
+    # Revenue Leader pattern seeders. Order matters:
+    # - p_rl_03/05/06/13 add new deals → run before filler so the filler loop
+    #   sees them and stops at 600.
+    # - p_rl_10 mutates existing p03 deals → must run AFTER p03.
+    # - p_rl_09 adds Q2 MM lost + Q1 MM closed deals; p_rl_02 sets
+    #   time_in_proposal on MM closed deals → run p_rl_02 after p01/p11/p_rl_09
+    #   so it sees the full MM closed pool.
+    seed_p_rl_03_q3_ent_coverage(rng, deals, companies)
+    seed_p_rl_04_q2_ms_share(rng, deals, companies)
+    seed_p_rl_05_proc_review(rng, deals, companies)
+    seed_p_rl_06_mm_30d(rng, deals, companies)
+    seed_p_rl_09_mm_cycle(rng, deals, companies)
+    seed_p_rl_10_h2h(rng, deals)
+    seed_p_rl_11_expansion(rng, expansion_opportunities, companies)
+    seed_p_rl_13_close_date_slips(rng, deals, companies)
+    seed_p_rl_02_proposal_speed(rng, deals)
 
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
@@ -1316,6 +1924,9 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
             "_pattern": "filler",
         })
 
+    # Backfill Phase 2.3 deal fields with safe defaults across all deals
+    apply_deal_field_defaults(deals)
+
     # Strip internal _pattern tags from final output
     for d in deals:
         d.pop("_pattern", None)
@@ -1337,6 +1948,9 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "customer_reference_optins": customer_reference_optins,
         "product_launches": product_launches,
         "sdr_capacity": sdr_capacity,
+        "forecasts": forecasts,
+        "renewals": renewals,
+        "expansion_opportunities": expansion_opportunities,
     }
 
 
@@ -1360,6 +1974,216 @@ def _in_range(value: float, lo: float, hi: float) -> bool:
 def _mean(xs):
     xs = list(xs)
     return sum(xs) / len(xs) if xs else 0.0
+
+
+def validate_revenue(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
+    """15 Revenue Leader pattern checks (P-RL-01..P-RL-15)."""
+    results: List[CheckResult] = []
+    deals = ds["deals"]
+    forecasts = ds["forecasts"]
+    renewals = ds["renewals"]
+    expansion = ds["expansion_opportunities"]
+
+    def fc(quarter: str) -> Dict:
+        return next((f for f in forecasts if f["quarter"] == quarter), {})
+
+    def cdate(d: Dict, key: str = "close_date"):
+        return date.fromisoformat(d[key]) if d.get(key) else None
+
+    # P-RL-01 — Q2 commit vs weighted pipeline (forecast reliability)
+    q2 = fc("Q2_2026")
+    commit = q2.get("commit", 0)
+    weighted = q2.get("weighted_pipeline_80pct", 0)
+    gap1 = weighted - commit
+    passed = (
+        _in_range(commit, 1_350_000, 1_450_000)
+        and _in_range(weighted, 1_550_000, 1_650_000)
+        and _in_range(gap1, 150_000, 250_000)
+    )
+    results.append(CheckResult(0, "Q2 commit vs weighted pipeline", "p_rl_01_q2_forecast", passed,
+                               f"commit=${commit:,}; weighted80%=${weighted:,}; gap=${gap1:,}"))
+
+    # P-RL-02 — MM time-in-proposal: Q2 ≈ 12d vs trailing 4Q ≈ 22d
+    mm_q2 = [d["time_in_proposal"] for d in deals
+             if d["segment"] == "mid-market" and d["is_closed"] and d.get("time_in_proposal") is not None
+             and Q2_2026[0] <= cdate(d) <= Q2_2026[1]]
+    mm_tr = [d["time_in_proposal"] for d in deals
+             if d["segment"] == "mid-market" and d["is_closed"] and d.get("time_in_proposal") is not None
+             and date(2025, 4, 1) <= cdate(d) <= date(2026, 3, 31)]
+    q2_mean = _mean(mm_q2)
+    tr_mean = _mean(mm_tr)
+    passed = (
+        len(mm_q2) >= 5 and len(mm_tr) >= 18
+        and _in_range(q2_mean, 10, 14)
+        and _in_range(tr_mean, 18, 26)
+        and tr_mean - q2_mean >= 7
+    )
+    results.append(CheckResult(1, "MM proposal-stage speed Q2 vs trailing", "p_rl_02_proposal_speed", passed,
+                               f"Q2 MM n={len(mm_q2)} mean={q2_mean:.1f}; trailing n={len(mm_tr)} mean={tr_mean:.1f}"))
+
+    # P-RL-03 — Q3 enterprise pipeline coverage
+    q3_open_ent = [d for d in deals if d["segment"] == "enterprise" and not d["is_closed"]
+                   and d["close_date"] and Q3_2026[0] <= cdate(d) <= Q3_2026[1]]
+    q3_pipeline = sum(d["amount"] for d in q3_open_ent)
+    q3_plan = fc("Q3_2026").get("enterprise_plan", 0)
+    coverage = q3_pipeline / q3_plan if q3_plan else 0
+    passed = (
+        len(q3_open_ent) >= 18
+        and _in_range(q3_pipeline, 4_500_000, 5_300_000)
+        and q3_plan == 1_200_000
+        and _in_range(coverage, 3.7, 4.5)
+    )
+    results.append(CheckResult(2, "Q3 enterprise pipeline coverage", "p_rl_03_q3_ent_coverage", passed,
+                               f"Q3 ent open n={len(q3_open_ent)} pipeline=${q3_pipeline:,}; plan=${q3_plan:,}; coverage={coverage:.2f}x"))
+
+    # P-RL-04 — Q2 marketing-sourced share of net new pipeline
+    q2_open = [d for d in deals if not d["is_closed"]
+               and Q2_2026[0] <= date.fromisoformat(d["create_date"]) <= Q2_2026[1]]
+    q2_total = sum(d["amount"] for d in q2_open)
+    ms_set = set(MARKETING_SOURCES)
+    q2_ms = sum(d["amount"] for d in q2_open if d["lead_source"] in ms_set)
+    ms_share = q2_ms / q2_total if q2_total else 0
+    passed = q2_total > 0 and ms_share >= 0.40
+    results.append(CheckResult(3, "Q2 MS share of net new pipeline", "p_rl_04_q2_ms_share", passed,
+                               f"Q2 open total=${q2_total:,}; MS=${q2_ms:,}; share={ms_share:.2%}"))
+
+    # P-RL-05 — 3 enterprise deals cleared procurement this week
+    cw_start, cw_end = CURRENT_WEEK
+    proc_cleared = [d for d in deals if d["segment"] == "enterprise"
+                    and d.get("procurement_signoff") and d.get("contract_revisions")
+                    and not d["is_closed"]]
+    passed = len(proc_cleared) == 3
+    results.append(CheckResult(4, "Enterprise deals through procurement this week", "p_rl_05_proc_review", passed,
+                               f"procurement-cleared open ent deals={len(proc_cleared)}"))
+
+    # P-RL-06 — 18 MM opps in last 30d totaling ~$890K
+    last30_start, last30_end = LAST_30_DAYS
+    mm_30d = [d for d in deals if d["segment"] == "mid-market"
+              and not d["is_closed"]
+              and last30_start <= date.fromisoformat(d["create_date"]) <= last30_end]
+    mm_30d_total = sum(d["amount"] for d in mm_30d)
+    avg_acv = mm_30d_total / len(mm_30d) if mm_30d else 0
+    passed = (
+        len(mm_30d) >= 18
+        and mm_30d_total >= 850_000
+        and _in_range(avg_acv, 30_000, 80_000)
+    )
+    results.append(CheckResult(5, "MM new opps last 30 days", "p_rl_06_mm_30d", passed,
+                               f"MM open opps last 30d n={len(mm_30d)} total=${mm_30d_total:,} avg=${avg_acv:,.0f}"))
+
+    # P-RL-07 — Q2 enterprise WR > trailing enterprise WR (lift)
+    ent_q2 = [d for d in deals if d["segment"] == "enterprise" and d["is_closed"]
+              and Q2_2026[0] <= cdate(d) <= Q2_2026[1]]
+    ent_q2_wins = [d for d in ent_q2 if d["is_won"]]
+    q2_wr = len(ent_q2_wins) / len(ent_q2) if ent_q2 else 0
+    ent_trailing = [d for d in deals if d["segment"] == "enterprise" and d["is_closed"]
+                    and date(2025, 4, 1) <= cdate(d) <= date(2026, 3, 31)]
+    ent_tr_wins = [d for d in ent_trailing if d["is_won"]]
+    tr_wr = len(ent_tr_wins) / len(ent_trailing) if ent_trailing else 0
+    passed = q2_wr > tr_wr and _in_range(q2_wr, 0.27, 0.36) and _in_range(tr_wr, 0.18, 0.26)
+    results.append(CheckResult(6, "Enterprise Q2 WR lift vs trailing", "p_rl_07_q2_wr_lift", passed,
+                               f"Q2 ent WR={q2_wr:.2%} (n={len(ent_q2)}); trailing WR={tr_wr:.2%} (n={len(ent_trailing)})"))
+
+    # P-RL-08 — Q1_2026 enterprise wins avg ACV ≈ $145K
+    q1_ent_wins = [d for d in deals if d["segment"] == "enterprise" and d["is_won"]
+                   and Q1_2026[0] <= cdate(d) <= Q1_2026[1]]
+    q1_avg = _mean(d["amount"] for d in q1_ent_wins)
+    passed = len(q1_ent_wins) >= 3 and _in_range(q1_avg, 135_000, 160_000)
+    results.append(CheckResult(7, "Q1 enterprise wins avg ACV anchor", "p_rl_08_q1_ent_avg_acv", passed,
+                               f"Q1 ent wins n={len(q1_ent_wins)} avg=${q1_avg:,.0f}"))
+
+    # P-RL-09 — MM cycle Q2 vs Q1
+    def cycle(d: Dict) -> int:
+        return (cdate(d) - date.fromisoformat(d["create_date"])).days
+    mm_q2_closed = [d for d in deals if d["segment"] == "mid-market" and d["is_closed"]
+                    and Q2_2026[0] <= cdate(d) <= Q2_2026[1]]
+    mm_q1_closed = [d for d in deals if d["segment"] == "mid-market" and d["is_closed"]
+                    and Q1_2026[0] <= cdate(d) <= Q1_2026[1]]
+    q2_cycle = _mean(cycle(d) for d in mm_q2_closed)
+    q1_cycle = _mean(cycle(d) for d in mm_q1_closed)
+    passed = (
+        len(mm_q2_closed) >= 20 and len(mm_q1_closed) >= 15
+        and _in_range(q2_cycle, 55, 75)
+        and _in_range(q1_cycle, 70, 95)
+        and q1_cycle - q2_cycle >= 5
+    )
+    results.append(CheckResult(8, "MM cycle Q2 vs Q1", "p_rl_09_mm_cycle", passed,
+                               f"Q2 MM closed n={len(mm_q2_closed)} cycle={q2_cycle:.1f}; Q1 MM closed n={len(mm_q1_closed)} cycle={q1_cycle:.1f}"))
+
+    # P-RL-10 — Q2 h2h vs Beacon: 5W/1L; Q1 h2h vs Beacon: 3W/3L
+    h2h = [d for d in deals if d.get("head_to_head") and d.get("competitor_id") == "Beacon Systems"]
+    q2_h2h = [d for d in h2h if d["is_closed"] and Q2_2026[0] <= cdate(d) <= Q2_2026[1]]
+    q1_h2h = [d for d in h2h if d["is_closed"] and Q1_2026[0] <= cdate(d) <= Q1_2026[1]]
+    q2_w = sum(1 for d in q2_h2h if d["is_won"])
+    q2_l = sum(1 for d in q2_h2h if not d["is_won"])
+    q1_w = sum(1 for d in q1_h2h if d["is_won"])
+    q1_l = sum(1 for d in q1_h2h if not d["is_won"])
+    passed = q2_w == 5 and q2_l == 1 and q1_w == 3 and q1_l == 3
+    results.append(CheckResult(9, "H2H vs Beacon Q2 vs Q1", "p_rl_10_h2h", passed,
+                               f"Q2 {q2_w}W/{q2_l}L; Q1 {q1_w}W/{q1_l}L"))
+
+    # P-RL-11 — 8 expansion opps from customer_health_review, last 30d, total ~$340K
+    chr_30d = [e for e in expansion if e["source"] == "customer_health_review"
+               and last30_start <= date.fromisoformat(e["create_date"]) <= last30_end]
+    chr_total = sum(e["amount"] for e in chr_30d)
+    chr_avg = chr_total / len(chr_30d) if chr_30d else 0
+    passed = len(chr_30d) == 8 and _in_range(chr_total, 320_000, 360_000) and _in_range(chr_avg, 38_000, 48_000)
+    results.append(CheckResult(10, "Health-review expansion opps last 30 days", "p_rl_11_expansion", passed,
+                               f"n={len(chr_30d)} total=${chr_total:,} avg=${chr_avg:,.0f}"))
+
+    # P-RL-12 — Q2 enterprise WR by lead-source class
+    def wr_by_source_class(deals_in, sources):
+        n = sum(1 for d in deals_in if d["lead_source"] in sources)
+        w = sum(1 for d in deals_in if d["lead_source"] in sources and d["is_won"])
+        return (w / n) if n else 0, n, w
+    ms_set12 = set(MARKETING_SOURCES) | {"content", "email", "webinar", "nurture"}
+    ob_set = {"outbound"}
+    ms_wr, ms_n, ms_w = wr_by_source_class(ent_q2, ms_set12)
+    ob_wr, ob_n, ob_w = wr_by_source_class(ent_q2, ob_set)
+    passed = (
+        ms_n >= 10 and ob_n >= 5
+        and _in_range(ms_wr, 0.22, 0.40)
+        and _in_range(ob_wr, 0.05, 0.22)
+        and ms_wr > ob_wr
+    )
+    results.append(CheckResult(11, "Q2 ent WR by source class", "p_rl_12_q2_wr_by_source", passed,
+                               f"MS n={ms_n} w={ms_w} WR={ms_wr:.2%}; OB n={ob_n} w={ob_w} WR={ob_wr:.2%}"))
+
+    # P-RL-13 — 4 deals close-date moved Q2→Q3 this week
+    slips = [d for d in deals if d.get("stage_change_history")
+             and any(ev.get("from_quarter") == "Q2_2026" and ev.get("to_quarter") == "Q3_2026"
+                     and cw_start <= date.fromisoformat(ev["change_date"]) <= cw_end
+                     for ev in d["stage_change_history"])]
+    slip_total = sum(d["amount"] for d in slips)
+    passed = len(slips) == 4 and _in_range(slip_total, 160_000, 200_000)
+    results.append(CheckResult(12, "Close-date slips Q2→Q3 this week", "p_rl_13_close_date_slips", passed,
+                               f"n={len(slips)} total=${slip_total:,}"))
+
+    # P-RL-14 — Q2 bookings pacing 105% of plan
+    pacing_target = q2.get("plan_pacing_target_through_apr24", 0)
+    pacing_actual = q2.get("bookings_actual_through_apr24", 0)
+    pacing_pct = pacing_actual / pacing_target if pacing_target else 0
+    passed = (
+        pacing_target == 840_000
+        and pacing_actual == 880_000
+        and _in_range(pacing_pct, 1.03, 1.07)
+    )
+    results.append(CheckResult(13, "Q2 bookings pacing", "p_rl_14_q2_pacing", passed,
+                               f"target=${pacing_target:,} actual=${pacing_actual:,} pct={pacing_pct:.1%}"))
+
+    # P-RL-15 — Q2 MM renewals: total renewed ARR ≈ $620K, NRR 1.12
+    q2_mm_ren = [r for r in renewals if r["quarter"] == "Q2_2026" and r["segment"] == "mid-market"]
+    q2_mm_arr = sum(r["renewed_arr"] for r in q2_mm_ren)
+    nrrs = {r["nrr"] for r in q2_mm_ren}
+    passed = (
+        len(q2_mm_ren) >= 4
+        and _in_range(q2_mm_arr, 600_000, 640_000)
+        and nrrs == {1.12}
+    )
+    results.append(CheckResult(14, "Q2 MM renewals + NRR", "p_rl_15_renewals", passed,
+                               f"Q2 MM renewals n={len(q2_mm_ren)} ARR=${q2_mm_arr:,} NRR={nrrs}"))
+
+    return results
 
 
 def validate(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
@@ -1691,17 +2515,31 @@ def main():
     for name, rows in ds.items():
         print(f"  {name:30s} {len(rows):6d} rows")
 
-    # Run validation
-    results = validate(ds)
-    print("\nValidation (15 card patterns):")
-    passed = 0
-    for r in sorted(results, key=lambda x: x.card_idx):
+    # Run validation — Marketing (15) + Revenue (15) = 30 total
+    mkt_results = validate(ds)
+    print("\nMarketing validation (15 card patterns):")
+    mkt_passed = 0
+    for r in sorted(mkt_results, key=lambda x: x.card_idx):
         mark = "PASS" if r.passed else "FAIL"
         print(f"  [{mark}] card {r.card_idx:2d}  {r.pattern:35s}  {r.detail}")
         if r.passed:
-            passed += 1
-    print(f"\n{passed}/{len(results)} pattern checks passed.")
-    sys.exit(0 if passed == len(results) else 1)
+            mkt_passed += 1
+    print(f"  -> {mkt_passed}/{len(mkt_results)} marketing checks passed.")
+
+    rev_results = validate_revenue(ds)
+    print("\nRevenue Leader validation (15 card patterns):")
+    rev_passed = 0
+    for r in sorted(rev_results, key=lambda x: x.card_idx):
+        mark = "PASS" if r.passed else "FAIL"
+        print(f"  [{mark}] card {r.card_idx:2d}  {r.pattern:35s}  {r.detail}")
+        if r.passed:
+            rev_passed += 1
+    print(f"  -> {rev_passed}/{len(rev_results)} revenue checks passed.")
+
+    total_passed = mkt_passed + rev_passed
+    total = len(mkt_results) + len(rev_results)
+    print(f"\nTOTAL: {total_passed}/{total} pattern checks passed.")
+    sys.exit(0 if total_passed == total else 1)
 
 
 if __name__ == "__main__":

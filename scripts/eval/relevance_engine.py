@@ -126,18 +126,22 @@ def load_worker_guards() -> Dict[str, str]:
 # ---------------------------------------------------------------------------
 
 def load_dataset(output_dir: Path) -> Dict[str, list]:
-    entities = [
+    required = [
         "companies", "contacts", "deals", "campaigns", "campaign_performance",
         "budget", "actual_spend", "engagement_events", "branded_search",
         "web_analytics", "mentions", "competitors", "analyst_mentions",
         "customer_reference_optins", "product_launches", "sdr_capacity",
     ]
+    optional = ["forecasts", "renewals", "expansion_opportunities"]
     data: Dict[str, list] = {}
-    for e in entities:
+    for e in required:
         p = output_dir / f"{e}.json"
         if not p.exists():
             raise FileNotFoundError(f"Missing dataset file: {p}")
         data[e] = json.loads(p.read_text())
+    for e in optional:
+        p = output_dir / f"{e}.json"
+        data[e] = json.loads(p.read_text()) if p.exists() else []
     return data
 
 
@@ -451,16 +455,194 @@ def build_summary(ds: Dict[str, list]) -> str:
     return "\n".join(lines)
 
 
+def build_revenue_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot oriented for the Revenue Leader (CRO/VP Sales).
+
+    Same Atlas SaaS dataset as build_summary, but the cuts are tuned to the
+    Revenue Leader Goal Clusters: Quarter Attainment & Forecast Reliability,
+    Pipeline Coverage & Health, Win Rate & Competitive Position. Cross-
+    functional bridges to Marketing (lead conversion) and CS (renewals,
+    expansion) are surfaced as their own sections.
+    """
+    deals = ds["deals"]
+    companies = ds["companies"]
+    by_co = {c["id"]: c for c in companies}
+    forecasts = ds.get("forecasts", [])
+    renewals = ds.get("renewals", [])
+    expansion = ds.get("expansion_opportunities", [])
+
+    def fc(q: str) -> Dict:
+        return next((f for f in forecasts if f["quarter"] == q), {})
+
+    def cd(d: Dict, key: str = "close_date"):
+        return date.fromisoformat(d[key]) if d.get(key) else None
+
+    cw = (date(2026, 4, 20), date(2026, 4, 26))
+    last_30d = (date(2026, 3, 25), date(2026, 4, 24))
+    q1 = (date(2026, 1, 1), date(2026, 3, 31))
+    q2 = (date(2026, 4, 1), date(2026, 6, 30))
+    q3 = (date(2026, 7, 1), date(2026, 9, 30))
+    ms_sources = {"paid_social", "paid_search", "content", "email", "events", "webinar", "nurture"}
+
+    # Forecast / commit / pacing (RL-01, RL-14)
+    f_q2 = fc("Q2_2026")
+    f_q3 = fc("Q3_2026")
+    f_q1 = fc("Q1_2026")
+
+    # Q3 enterprise pipeline coverage (RL-03)
+    q3_open_ent = [d for d in deals if d["segment"] == "enterprise" and not d["is_closed"]
+                   and d["close_date"] and q3[0] <= cd(d) <= q3[1]]
+    q3_pipeline = sum(d["amount"] for d in q3_open_ent)
+    q3_plan = f_q3.get("enterprise_plan", 0)
+    q3_coverage = q3_pipeline / q3_plan if q3_plan else 0
+
+    # Q2 net new pipeline + MS share (RL-04)
+    q2_open = [d for d in deals if not d["is_closed"]
+               and q2[0] <= date.fromisoformat(d["create_date"]) <= q2[1]]
+    q2_total = sum(d["amount"] for d in q2_open)
+    q2_ms = sum(d["amount"] for d in q2_open if d["lead_source"] in ms_sources)
+    ms_share = q2_ms / q2_total if q2_total else 0
+
+    # Procurement-cleared deals (RL-05)
+    proc_cleared = [d for d in deals if d["segment"] == "enterprise"
+                    and d.get("procurement_signoff") and d.get("contract_revisions")
+                    and not d["is_closed"]]
+
+    # Last-30d MM opps (RL-06)
+    mm_30d = [d for d in deals if d["segment"] == "mid-market" and not d["is_closed"]
+              and last_30d[0] <= date.fromisoformat(d["create_date"]) <= last_30d[1]]
+    mm_30d_total = sum(d["amount"] for d in mm_30d)
+    mm_30d_avg = mm_30d_total / len(mm_30d) if mm_30d else 0
+
+    # Enterprise WR — Q2 vs trailing 4Q (RL-07)
+    ent_q2 = [d for d in deals if d["segment"] == "enterprise" and d["is_closed"]
+              and q2[0] <= cd(d) <= q2[1]]
+    ent_q2_wins = [d for d in ent_q2 if d["is_won"]]
+    q2_wr = len(ent_q2_wins) / len(ent_q2) if ent_q2 else 0
+    ent_trail = [d for d in deals if d["segment"] == "enterprise" and d["is_closed"]
+                 and date(2025, 4, 1) <= cd(d) <= date(2026, 3, 31)]
+    ent_trail_wins = [d for d in ent_trail if d["is_won"]]
+    trail_wr = len(ent_trail_wins) / len(ent_trail) if ent_trail else 0
+    q2_avg_won = _mean(d["amount"] for d in ent_q2_wins)
+    trail_avg_won = _mean(d["amount"] for d in ent_trail_wins)
+
+    # Q1 enterprise wins anchor (RL-08)
+    q1_ent_wins = [d for d in deals if d["segment"] == "enterprise" and d["is_won"]
+                   and q1[0] <= cd(d) <= q1[1]]
+    q1_ent_avg = _mean(d["amount"] for d in q1_ent_wins)
+
+    # MM cycle (RL-09)
+    def cycle(d: Dict) -> int:
+        return (cd(d) - date.fromisoformat(d["create_date"])).days
+    mm_q2_closed = [d for d in deals if d["segment"] == "mid-market" and d["is_closed"]
+                    and q2[0] <= cd(d) <= q2[1]]
+    mm_q1_closed = [d for d in deals if d["segment"] == "mid-market" and d["is_closed"]
+                    and q1[0] <= cd(d) <= q1[1]]
+    q2_cycle = _mean(cycle(d) for d in mm_q2_closed)
+    q1_cycle = _mean(cycle(d) for d in mm_q1_closed)
+
+    # H2H vs Beacon (RL-10)
+    h2h = [d for d in deals if d.get("head_to_head") and d.get("competitor_id") == "Beacon Systems"]
+    q2_h2h = [d for d in h2h if d["is_closed"] and q2[0] <= cd(d) <= q2[1]]
+    q1_h2h = [d for d in h2h if d["is_closed"] and q1[0] <= cd(d) <= q1[1]]
+    q2_h2h_w = sum(1 for d in q2_h2h if d["is_won"])
+    q2_h2h_l = sum(1 for d in q2_h2h if not d["is_won"])
+    q1_h2h_w = sum(1 for d in q1_h2h if d["is_won"])
+    q1_h2h_l = sum(1 for d in q1_h2h if not d["is_won"])
+
+    # Expansion from health reviews (RL-11)
+    chr_30d = [e for e in expansion if e.get("source") == "customer_health_review"
+               and last_30d[0] <= date.fromisoformat(e["create_date"]) <= last_30d[1]]
+    chr_total = sum(e["amount"] for e in chr_30d)
+    chr_avg = chr_total / len(chr_30d) if chr_30d else 0
+
+    # Q2 enterprise WR by source class (RL-12)
+    ms_set12 = ms_sources
+    ob_set = {"outbound"}
+    def wr(deals_in, sources):
+        n = sum(1 for d in deals_in if d["lead_source"] in sources)
+        w = sum(1 for d in deals_in if d["lead_source"] in sources and d["is_won"])
+        return (w / n if n else 0), n, w
+    ms_wr, ms_n, ms_w = wr(ent_q2, ms_set12)
+    ob_wr, ob_n, ob_w = wr(ent_q2, ob_set)
+
+    # Close-date slips Q2→Q3 this week (RL-13)
+    cw_start, cw_end = cw
+    slips = [d for d in deals if d.get("stage_change_history")
+             and any(ev.get("from_quarter") == "Q2_2026" and ev.get("to_quarter") == "Q3_2026"
+                     and cw_start <= date.fromisoformat(ev["change_date"]) <= cw_end
+                     for ev in d["stage_change_history"])]
+    slip_total = sum(d["amount"] for d in slips)
+
+    # Q2 MM renewals (RL-15)
+    q2_mm_ren = [r for r in renewals if r["quarter"] == "Q2_2026" and r["segment"] == "mid-market"]
+    q2_mm_arr = sum(r["renewed_arr"] for r in q2_mm_ren)
+    q2_mm_nrr = next((r["nrr"] for r in q2_mm_ren), None)
+    q1_mm_ren = [r for r in renewals if r["quarter"] == "Q1_2026" and r["segment"] == "mid-market"]
+    q1_mm_arr = sum(r["renewed_arr"] for r in q1_mm_ren)
+    q1_mm_nrr = next((r["nrr"] for r in q1_mm_ren), None)
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — REVENUE DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Salesforce is the system of record for pipeline; HubSpot for marketing; Gainsight for renewals; Mixpanel for product engagement.")
+    L.append("")
+
+    L.append("# Forecast and quarter pacing")
+    if f_q2:
+        L.append(f"- Q2 2026 commit: ${f_q2.get('commit', 0):,}. Q2 weighted pipeline at 80% confidence: ${f_q2.get('weighted_pipeline_80pct', 0):,}. Q2 plan total: ${f_q2.get('plan_total', 0):,}.")
+        L.append(f"- Q2 plan-pacing target through Apr 24: ${f_q2.get('plan_pacing_target_through_apr24', 0):,}. Q2 bookings closed-won through Apr 24: ${f_q2.get('bookings_actual_through_apr24', 0):,}.")
+    if f_q3:
+        L.append(f"- Q3 2026 commit: ${f_q3.get('commit', 0):,}. Q3 weighted pipeline at 80% confidence: ${f_q3.get('weighted_pipeline_80pct', 0):,}. Q3 plan total: ${f_q3.get('plan_total', 0):,}.")
+        L.append(f"- Q3 enterprise plan: ${f_q3.get('enterprise_plan', 0):,}.")
+    if f_q1:
+        L.append(f"- Q1 2026 final commit: ${f_q1.get('commit', 0):,}. Q1 plan total: ${f_q1.get('plan_total', 0):,}.")
+    L.append("")
+
+    L.append("# Pipeline coverage and shape")
+    L.append(f"- Q3 enterprise open pipeline: ${q3_pipeline:,} across {len(q3_open_ent)} deals. Q3 enterprise plan: ${q3_plan:,}. Coverage ratio: {q3_coverage:.2f}x.")
+    L.append(f"- Q2 net new pipeline created (open opportunities, by create_date): ${q2_total:,} across {len(q2_open)} deals. Marketing-sourced share: {ms_share*100:.1f}% (${q2_ms:,}).")
+    L.append(f"- Mid-market opportunities created in last 30 days (Mar 25 - Apr 24): n={len(mm_30d)}, total ${mm_30d_total:,}, average ACV ${mm_30d_avg:,.0f}.")
+    L.append(f"- Enterprise deals through procurement review with signoff and contract revisions, currently open: n={len(proc_cleared)}, total amount ${sum(d['amount'] for d in proc_cleared):,}.")
+    L.append(f"- Close-date slips this week (Apr 20-26), Q2 → Q3 movement: n={len(slips)}, total deal amount ${slip_total:,}.")
+    L.append("")
+
+    L.append("# Win rate and deal cycle")
+    L.append(f"- Q2 enterprise win rate: {q2_wr*100:.2f}% ({len(ent_q2_wins)}/{len(ent_q2)} deals). Average won amount: ${q2_avg_won:,.0f}.")
+    L.append(f"- Trailing four quarters enterprise win rate: {trail_wr*100:.2f}% ({len(ent_trail_wins)}/{len(ent_trail)} deals). Average won amount: ${trail_avg_won:,.0f}.")
+    L.append(f"- Q2 enterprise win rate by source class: marketing-sourced {ms_wr*100:.1f}% ({ms_w}/{ms_n}); outbound {ob_wr*100:.1f}% ({ob_w}/{ob_n}).")
+    L.append(f"- Q1 2026 enterprise wins: n={len(q1_ent_wins)}, average won amount ${q1_ent_avg:,.0f}.")
+    L.append(f"- Mid-market sales cycle: Q2 closed deals n={len(mm_q2_closed)} mean cycle {q2_cycle:.1f} days; Q1 closed deals n={len(mm_q1_closed)} mean cycle {q1_cycle:.1f} days.")
+    L.append("")
+
+    L.append("# Competitive position")
+    L.append(f"- Head-to-head deals tagged versus Beacon Systems, Q2 2026: {q2_h2h_w}W/{q2_h2h_l}L (n={len(q2_h2h)}). Q1 2026: {q1_h2h_w}W/{q1_h2h_l}L (n={len(q1_h2h)}).")
+    competitors = ds.get("competitors", [])
+    if competitors:
+        L.append(f"- Named competitive set: {', '.join(c['name'] for c in competitors)}.")
+    L.append("")
+
+    L.append("# Renewals and expansion (Customer Success bridge)")
+    if q2_mm_ren:
+        L.append(f"- Q2 2026 mid-market renewals to date: n={len(q2_mm_ren)}, renewed ARR ${q2_mm_arr:,}, segment NRR {q2_mm_nrr}.")
+    if q1_mm_ren:
+        L.append(f"- Q1 2026 mid-market renewals: n={len(q1_mm_ren)}, renewed ARR ${q1_mm_arr:,}, segment NRR {q1_mm_nrr}.")
+    L.append(f"- Expansion opportunities sourced from customer health reviews in last 30 days: n={len(chr_30d)}, total ${chr_total:,}, average ${chr_avg:,.0f}.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
 
-EVAL_COMPOSITION_RULES = """COMPOSITION — EVAL OUTPUT SCHEMA
+EVAL_COMPOSITION_RULES_TEMPLATE = """COMPOSITION — EVAL OUTPUT SCHEMA
 
 This run emits cards in an eval schema that makes the internal composition
 explicit. Each card object has seven keys, in this order:
 
-  "intelligence_area"  — always the string "marketing"
+  "intelligence_area"  — always the string "{intelligence_area}"
   "title"              — the headline, one sentence. Plain English, forward framing, per the Voice Spine. 6-14 words.
   "anchor"             — one sentence. Adds specificity INTERNAL to the title's primary signal (when, where it concentrates, what correlates inside the same surface).
   "connect"            — one sentence. Widens OUTWARD to a CONCRETE data point (Shape A/B/C/D from SIGNAL VS REPORT). Must not explain the title's movement or decompose it into sub-populations.
@@ -476,6 +658,10 @@ HARD RULES ON FIELD CONTENT:
 - "trace" is internal — it may name patterns and dataset windows. It must still not violate the forward-framing or people-naming rules.
 - All composition guards above (FORWARD FRAMING, SIGNAL VS REPORT, PEOPLE NAMING) apply to "title", "anchor", "connect", and "body". They do NOT apply to "trace" or "grounded_metrics".
 """
+
+
+def render_composition_rules(intelligence_area: str) -> str:
+    return EVAL_COMPOSITION_RULES_TEMPLATE.format(intelligence_area=intelligence_area)
 
 
 EVAL_OUTPUT_HYGIENE = """OUTPUT HYGIENE — PURE JSON ARRAY, EVAL SCHEMA, ZERO META-COMMENTARY
@@ -501,30 +687,71 @@ The output is the cards. Nothing else is the output.
 """
 
 
-EVAL_CARD_INSTRUCTIONS = """# Card Generation Instructions (Eval Run)
+_MARKETING_GOAL_CLUSTERS = (
+    "Measurable Growth and ROI; Brand and Value Proposition; "
+    "Alignment with Revenue and CS; Customer Centricity"
+)
+_REVENUE_GOAL_CLUSTERS = (
+    "Quarter Attainment and Forecast Reliability; Pipeline Coverage and Health; "
+    "Win Rate and Competitive Position"
+)
 
-You are Lens, generating Data Stories for the marketing intelligence area.
-The reader is the VP of Marketing at Atlas SaaS. Scope is defined in ROLE
-SCOPING above. Voice is defined in the VP Marketing Voice Brief above.
+
+_ARCHETYPE_CONFIG = {
+    "marketing": {
+        "intelligence_area": "marketing",
+        "audience_label": "VP of Marketing at Atlas SaaS",
+        "voice_brief_label": "VP Marketing Voice Brief",
+        "leader_label": "Marketing Leader",
+        "goal_clusters": _MARKETING_GOAL_CLUSTERS,
+        "snapshot_label": "COMPANY DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Atlas Insights reference opt-in 76.9%\", "
+            "your card says 76.9% or rounds honestly to 77%, not 78%."
+        ),
+        "brief_filename": "marketing-leader-brief.md",
+        "user_prompt_subject": "Marketing",
+    },
+    "revenue": {
+        "intelligence_area": "revenue",
+        "audience_label": "Chief Revenue Officer at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Revenue Leader",
+        "goal_clusters": _REVENUE_GOAL_CLUSTERS,
+        "snapshot_label": "REVENUE DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Q2 enterprise win rate 30.77%\", your card "
+            "says 30.77% or rounds honestly to 31%, not 32%."
+        ),
+        "brief_filename": "revenue-leader-brief.md",
+        "user_prompt_subject": "Revenue",
+    },
+}
+
+
+def render_card_instructions(archetype: str) -> str:
+    cfg = _ARCHETYPE_CONFIG[archetype]
+    return f"""# Card Generation Instructions (Eval Run)
+
+You are Lens, generating Data Stories for the {cfg['intelligence_area']} intelligence area.
+The reader is the {cfg['audience_label']}. Scope is defined in ROLE
+SCOPING above. Voice is defined in the {cfg['voice_brief_label']} above.
 
 ## What the data in front of you represents
 
-The COMPANY DATA SNAPSHOT above is the complete set of numbers you may
+The {cfg['snapshot_label']} above is the complete set of numbers you may
 ground in. Every figure in every card must be citable to one of those
 lines. Do not invent adjacent figures. Do not extrapolate to a metric that
-isn't in the snapshot. If the snapshot says "Atlas Insights reference
-opt-in 76.9%", your card says 76.9% or rounds honestly to 77%, not 78%.
+isn't in the snapshot. {cfg['snapshot_example']}
 
 ## Card set shape
 
 Produce 15-25 cards. Do not pad and do not artificially cap. Let the set
 match what the data supports.
 
-Aim for coverage across the Marketing Leader's goal clusters (Measurable
-Growth and ROI; Brand and Value Proposition; Alignment with Revenue and CS;
-Customer Centricity). Cross-domain connections where two unrelated cuts
-line up are the highest-value cards. Vary time horizon (current week,
-30-day, quarterly).
+Aim for coverage across the {cfg['leader_label']}'s goal clusters ({cfg['goal_clusters']}).
+Cross-domain connections where two unrelated cuts line up are the highest-
+value cards. Vary time horizon (current week, 30-day, quarterly).
 
 ## Card structure
 
@@ -561,8 +788,9 @@ words above. If any appear, rewrite that field before emitting.
 """
 
 
-def build_stable_prefix(persona: str, marketing_leader_brief: str,
-                        voice_brief: str, guards: Dict[str, str]) -> str:
+def build_stable_prefix(persona: str, archetype_brief: str,
+                        voice_brief: str, guards: Dict[str, str],
+                        archetype: str) -> str:
     """Everything in the system prompt that does NOT vary across seeds.
 
     Kept first so it caches as a single prefix across every run. The dataset
@@ -573,9 +801,12 @@ def build_stable_prefix(persona: str, marketing_leader_brief: str,
     guard context before the data; only the ordering within the system prompt
     is batched for cache efficiency.
     """
+    cfg = _ARCHETYPE_CONFIG[archetype]
+    composition_rules = render_composition_rules(cfg["intelligence_area"])
+    card_instructions = render_card_instructions(archetype)
     return (
         f"{persona}\n\n---\n\n"
-        f"{marketing_leader_brief}\n\n---\n\n"
+        f"{archetype_brief}\n\n---\n\n"
         f"{guards['IDENTITY_GUARDRAIL']}\n\n---\n\n"
         f"{guards['FABRICATION_GUARD']}\n\n---\n\n"
         f"{guards['ROLE_SCOPING']}\n\n---\n\n"
@@ -585,8 +816,8 @@ def build_stable_prefix(persona: str, marketing_leader_brief: str,
         f"{guards['FORWARD_FRAMING_GUARD']}\n\n---\n\n"
         f"{guards['PEOPLE_NAMING_GUARD']}\n\n---\n\n"
         f"{voice_brief}\n\n---\n\n"
-        f"{EVAL_COMPOSITION_RULES}\n\n---\n\n"
-        f"{EVAL_CARD_INSTRUCTIONS}\n\n---\n\n"
+        f"{composition_rules}\n\n---\n\n"
+        f"{card_instructions}\n\n---\n\n"
         f"{EVAL_OUTPUT_HYGIENE}"
     )
 
@@ -597,10 +828,12 @@ def build_dataset_block(data_boundary: str, dataset_summary: str) -> str:
     return f"{data_boundary}\n\n{dataset_summary}"
 
 
-def build_user_message() -> str:
+def build_user_message(archetype: str) -> str:
+    cfg = _ARCHETYPE_CONFIG[archetype]
+    snapshot_word = "company data" if archetype == "marketing" else "revenue data"
     return (
-        "Generate Data Stories for the Marketing intelligence area based on "
-        "the Atlas SaaS company data snapshot above. Produce 15-25 cards in "
+        f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
+        f"the Atlas SaaS {snapshot_word} snapshot above. Produce 15-25 cards in "
         "the eval schema. Return only the JSON array."
     )
 
@@ -722,10 +955,15 @@ def normalize_voice(
 
 def main(argv: Optional[List[str]] = None) -> int:
     ap = argparse.ArgumentParser(description="Relevance Engine MVP (Stage 1 eval)")
+    ap.add_argument("--archetype", choices=sorted(_ARCHETYPE_CONFIG.keys()),
+                    default="marketing",
+                    help="Which archetype's intelligence brief and dataset summary to use (default marketing)")
     ap.add_argument("--input", default=str(EVAL_DIR / "output"),
                     help="Dataset directory (default scripts/eval/output)")
-    ap.add_argument("--output", default=str(EVAL_DIR / "generated_cards.json"),
-                    help="Output card file (default scripts/eval/generated_cards.json)")
+    ap.add_argument("--output", default=None,
+                    help="Output card file (default generated_cards_<archetype>_seed<N>.json or generated_cards.json for marketing)")
+    ap.add_argument("--seed", type=int, default=None,
+                    help="Seed label for the output filename — does not regenerate the dataset.")
     ap.add_argument("--model", default=DEFAULT_MODEL,
                     help=f"Anthropic model id (default {DEFAULT_MODEL})")
     ap.add_argument("--max-tokens", type=int, default=8192,
@@ -734,15 +972,18 @@ def main(argv: Optional[List[str]] = None) -> int:
                     help="Print the assembled prompt and dataset summary, do not call the API")
     args = ap.parse_args(argv)
 
+    archetype = args.archetype
+    cfg = _ARCHETYPE_CONFIG[archetype]
+
     ds = load_dataset(Path(args.input))
     guards = load_worker_guards()
     persona = (DATA_DIR / "persona.md").read_text()
-    marketing_leader_brief = (DATA_DIR / "marketing-leader-brief.md").read_text()
+    archetype_brief = (DATA_DIR / cfg["brief_filename"]).read_text()
     voice_brief = (DATA_DIR / "voice-brief.md").read_text()
 
-    summary = build_summary(ds)
-    stable_prefix = build_stable_prefix(persona, marketing_leader_brief,
-                                        voice_brief, guards)
+    summary = build_revenue_summary(ds) if archetype == "revenue" else build_summary(ds)
+    stable_prefix = build_stable_prefix(persona, archetype_brief,
+                                        voice_brief, guards, archetype)
     dataset_block = build_dataset_block(guards["DATA_BOUNDARY"], summary)
     # Two system blocks: stable prefix is cached (cache_control breakpoint),
     # dataset block varies per seed.
@@ -751,7 +992,7 @@ def main(argv: Optional[List[str]] = None) -> int:
          "cache_control": {"type": "ephemeral"}},
         {"type": "text", "text": dataset_block},
     ]
-    user_message = build_user_message()
+    user_message = build_user_message(archetype)
 
     if args.dry_run:
         print("=== DATASET SUMMARY ===")
@@ -838,7 +1079,14 @@ def main(argv: Optional[List[str]] = None) -> int:
                   file=sys.stderr)
     cards = kept
 
-    out_path = Path(args.output)
+    if args.output:
+        out_path = Path(args.output)
+    else:
+        if archetype == "marketing" and args.seed is None:
+            out_path = EVAL_DIR / "generated_cards.json"
+        else:
+            seed_tag = f"_seed{args.seed}" if args.seed is not None else ""
+            out_path = EVAL_DIR / f"generated_cards_{archetype}{seed_tag}.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(cards, indent=2) + "\n")
     print(f"Wrote {len(cards)} cards to {out_path}", file=sys.stderr)
