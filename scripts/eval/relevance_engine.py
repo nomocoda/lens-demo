@@ -132,7 +132,11 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "web_analytics", "mentions", "competitors", "analyst_mentions",
         "customer_reference_optins", "product_launches", "sdr_capacity",
     ]
-    optional = ["forecasts", "renewals", "expansion_opportunities"]
+    optional = [
+        "forecasts", "renewals", "expansion_opportunities",
+        "forecast_log", "renewal_at_risk_log", "health_scores", "cohorts",
+        "product_adoption", "coverage_tier", "executive_sponsor",
+    ]
     data: Dict[str, list] = {}
     for e in required:
         p = output_dir / f"{e}.json"
@@ -649,6 +653,225 @@ def build_revenue_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_customer_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot oriented for the Customer Leader (VP CS / CCO).
+
+    Same Atlas SaaS dataset, cuts tuned to the Customer Leader Goal Clusters:
+    Retained Revenue Landing to Forecast, Expansion Revenue Compounding NRR,
+    Portfolio-Level Retention Risk Surfacing Ahead of Churn. Cross-functional
+    bridges to Revenue (renewals/expansion) and Product (launches) are surfaced
+    as their own sections.
+    """
+    companies = ds["companies"]
+    by_co = {c["id"]: c for c in companies}
+    forecast_log = ds.get("forecast_log", [])
+    risk_log = ds.get("renewal_at_risk_log", [])
+    health = ds.get("health_scores", [])
+    cohorts = ds.get("cohorts", [])
+    adoption = ds.get("product_adoption", [])
+    coverage = ds.get("coverage_tier", [])
+    sponsor = ds.get("executive_sponsor", [])
+    renewals = ds.get("renewals", [])
+    expansion = ds.get("expansion_opportunities", [])
+    launches = ds.get("product_launches", [])
+    sponsor_by_co = {s["company_id"]: s for s in sponsor}
+
+    cw = (date(2026, 4, 20), date(2026, 4, 26))
+
+    # CL-01 forecast accuracy
+    fl_q2_all = next((r for r in forecast_log if r["quarter"] == "Q2_2026" and r["segment"] == "all"), {})
+    trailing_q = ["Q1_2026", "Q4_2025", "Q3_2025", "Q2_2025"]
+    trailing_var = [r["variance_pct"] for r in forecast_log
+                    if r["quarter"] in trailing_q and r["segment"] == "all"
+                    and r.get("variance_pct") is not None]
+    trailing_var_avg = sum(trailing_var) / len(trailing_var) if trailing_var else 0
+
+    # CL-02 / CL-14 — risk pool snapshots
+    mar = [r for r in risk_log if r["snapshot_month"] == "2026-03"]
+    apr = [r for r in risk_log if r["snapshot_month"] == "2026-04"]
+    mar_total = sum(r["arr_at_risk"] for r in mar)
+    apr_total = sum(r["arr_at_risk"] for r in apr)
+    mar_top20 = [r for r in mar if r["in_top_20_arr"]]
+    apr_top20 = [r for r in apr if r["in_top_20_arr"]]
+    mar_ids = {r["company_id"] for r in mar}
+    apr_ids = {r["company_id"] for r in apr}
+    dropped_off = mar_ids - apr_ids
+    added = apr_ids - mar_ids
+    cw_review_count = 0
+    for r in apr_top20:
+        s = sponsor_by_co.get(r["company_id"])
+        if s and s.get("next_review_date"):
+            d = date.fromisoformat(s["next_review_date"])
+            if cw[0] <= d <= cw[1]:
+                cw_review_count += 1
+
+    # CL-03 — April ENT renewals + sponsor depth
+    apr_ent_renewals = [r for r in renewals if r["segment"] == "enterprise"
+                        and r.get("renewal_signed_date", "").startswith("2026-04")]
+    apr_ent_deepened = [r for r in apr_ent_renewals
+                        if sponsor_by_co.get(r["company_id"], {}).get("depth_change_q1_2026") == "deepened"]
+
+    # CL-04 — Q2 segment GRR + renewing book
+    fl_q2_mm = next((r for r in forecast_log if r["quarter"] == "Q2_2026" and r["segment"] == "mid-market"), {})
+    fl_q2_ent = next((r for r in forecast_log if r["quarter"] == "Q2_2026" and r["segment"] == "enterprise"), {})
+    fl_q2_smb = next((r for r in forecast_log if r["quarter"] == "Q2_2026" and r["segment"] == "small-business"), {})
+
+    # CL-05 / CL-15 — Beacon renewal + product launch
+    beacon = next((c for c in companies if c.get("name") == "Beacon Logistics"), None)
+    beacon_renewal = next((r for r in renewals
+                           if beacon and r["company_id"] == beacon["id"]
+                           and r.get("original_renewal_date") == "2026-07-15"), None)
+    pl_002 = next((p for p in launches if p["id"] == "PL-002"), None)
+
+    # CL-06 — Q2 MM NRR vs trailing + Atlas Insights MM expansion
+    q2_mm_ren = [r for r in renewals if r["quarter"] == "Q2_2026" and r["segment"] == "mid-market"]
+    q2_mm_nrr = q2_mm_ren[0]["nrr"] if q2_mm_ren else 0
+    trailing_mm_nrrs = [r["nrr"] for r in renewals if r["quarter"] in ("Q1_2026", "Q4_2025", "Q3_2025") and r["segment"] == "mid-market"]
+    trailing_mm_nrr = (sum(trailing_mm_nrrs) / len(trailing_mm_nrrs)) if trailing_mm_nrrs else 0
+    insights_mm = [r for r in adoption
+                   if "atlas-insights" in r["products"]
+                   and by_co.get(r["company_id"], {}).get("segment") == "mid-market"]
+    insights_mm_expanded = sum(1 for r in insights_mm if r.get("expanded_q2_2026"))
+
+    # CL-07 — multi-product NRR
+    multi = [r for r in adoption if r["is_multi_product"]]
+    single = [r for r in adoption if not r["is_multi_product"]]
+    multi_q2_nrr = (sum(r["nrr_q2_2026"] for r in multi) / len(multi)) if multi else 0
+    single_q2_nrr = (sum(r["nrr_q2_2026"] for r in single) / len(single)) if single else 0
+    multi_q1_nrr = (sum(r["nrr_q1_2026"] for r in multi) / len(multi)) if multi else 0
+    single_q1_nrr = (sum(r["nrr_q1_2026"] for r in single) / len(single)) if single else 0
+    multi_share = (len(multi) / len(adoption)) if adoption else 0
+
+    # CL-08 — MM TTFV cohorts
+    mm_q2_co = next((c for c in cohorts if c["cohort_quarter"] == "Q2_2026" and c["segment"] == "mid-market"), {})
+    mm_q1_co = next((c for c in cohorts if c["cohort_quarter"] == "Q1_2026" and c["segment"] == "mid-market"), {})
+
+    # CL-09 — expansion source mix
+    apr_cs = [e for e in expansion if e["source"] == "customer_health_review" and e.get("month") == "2026-04"]
+    apr_cs_total = sum(e["amount"] for e in apr_cs)
+    mar_cs = [e for e in expansion if e["source"] == "customer_health_review" and e.get("month") == "2026-03"]
+    mar_cs_acc = sum(1 for e in mar_cs if e.get("sales_accepted"))
+    mar_ob = [e for e in expansion if e["source"] == "outbound" and e.get("month") == "2026-03"]
+    mar_ob_acc = sum(1 for e in mar_ob if e.get("sales_accepted"))
+
+    # CL-10 — MM license utilization
+    mm_adopt = [r for r in adoption if by_co.get(r["company_id"], {}).get("segment") == "mid-market"]
+    q2_high = sum(1 for r in mm_adopt if r["license_util_q2_2026"] >= 0.80)
+    q1_high = sum(1 for r in mm_adopt if r["license_util_q1_2026"] >= 0.80)
+
+    # CL-11 — health score distribution + retention by color
+    q2_h = [h for h in health if h["quarter"] == "Q2_2026"]
+    q1_h = [h for h in health if h["quarter"] == "Q1_2026"]
+    q2_green = sum(1 for h in q2_h if h["color"] == "green")
+    q1_green = sum(1 for h in q1_h if h["color"] == "green")
+    q1_yellow = [h for h in q1_h if h["color"] == "yellow"]
+    q1_green_rows = [h for h in q1_h if h["color"] == "green"]
+    green_renewed = sum(1 for h in q1_green_rows if h.get("renewed"))
+    yellow_renewed = sum(1 for h in q1_yellow if h.get("renewed"))
+
+    # CL-12 — cohort retention all-segments
+    q1_all_co = next((c for c in cohorts if c["cohort_quarter"] == "Q1_2026" and c["segment"] == "all"), {})
+    q4_all_co = next((c for c in cohorts if c["cohort_quarter"] == "Q4_2025" and c["segment"] == "all"), {})
+
+    # CL-13 — coverage tier
+    high_tier = [r for r in coverage if r["tier"] == "high-touch"]
+    tech_tier = [r for r in coverage if r["tier"] == "tech-touch"]
+    high_grr = high_tier[0]["grr_q2_2026"] if high_tier else 0
+    tech_grr = tech_tier[0]["grr_q2_2026"] if tech_tier else 0
+    high_grr_q1 = high_tier[0]["grr_q1_2026"] if high_tier else 0
+    tech_grr_q1 = tech_tier[0]["grr_q1_2026"] if tech_tier else 0
+    high_share = (len(high_tier) / len(coverage)) if coverage else 0
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — CUSTOMER DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Gainsight is the system of record for renewals and health; Salesforce for renewal events; Mixpanel for product engagement; Pendo for license utilization.")
+    L.append("")
+
+    L.append("# Forecast and renewal accuracy")
+    if fl_q2_all:
+        var_pct = fl_q2_all.get("variance_pct", 0) * 100
+        L.append(f"- Q2 2026 renewing book ARR: ${fl_q2_all.get('renewing_book_arr', 0):,}. Forecast ARR: ${fl_q2_all.get('forecast_arr', 0):,}. Actual ARR: ${fl_q2_all.get('actual_arr', 0):,}. Variance: {var_pct:.1f}%.")
+    L.append(f"- Trailing four quarter forecast variance average: {trailing_var_avg*100:.1f}%.")
+    if fl_q2_mm:
+        L.append(f"- Q2 2026 mid-market renewing book: ${fl_q2_mm.get('renewing_book_arr', 0):,}. GRR: {fl_q2_mm.get('grr', 0)*100:.0f}%. NRR: {fl_q2_mm.get('nrr', 0)*100:.0f}%.")
+    if fl_q2_ent:
+        L.append(f"- Q2 2026 enterprise renewing book: ${fl_q2_ent.get('renewing_book_arr', 0):,}. GRR: {fl_q2_ent.get('grr', 0)*100:.0f}%. NRR: {fl_q2_ent.get('nrr', 0)*100:.0f}%.")
+    if fl_q2_smb:
+        L.append(f"- Q2 2026 small-business renewing book: ${fl_q2_smb.get('renewing_book_arr', 0):,}. GRR: {fl_q2_smb.get('grr', 0)*100:.0f}%. NRR: {fl_q2_smb.get('nrr', 0)*100:.0f}%.")
+    L.append("")
+
+    L.append("# At-risk pipeline and portfolio")
+    L.append(f"- April 2026 at-risk pool: ${apr_total:,} ARR across {len(apr)} accounts. Of which top-20-ARR accounts: {len(apr_top20)}.")
+    L.append(f"- March 2026 at-risk pool: ${mar_total:,} ARR across {len(mar)} accounts. Of which top-20-ARR accounts: {len(mar_top20)}.")
+    L.append(f"- Net change month over month: {len(dropped_off)} dropped off; {len(added)} added.")
+    L.append(f"- Top-20 at-risk accounts with executive sponsor review on the calendar this week (Apr 20-26): {cw_review_count}.")
+    L.append("")
+
+    L.append("# Renewal sentiment and signing")
+    L.append(f"- April 2026 enterprise renewals signed: {len(apr_ent_renewals)}. Of those, {len(apr_ent_deepened)} have an executive sponsor whose depth deepened during Q1 2026.")
+    if beacon and beacon_renewal:
+        L.append(f"- Beacon Logistics: ${beacon_renewal['renewed_arr']:,} renewal signed {beacon_renewal['renewal_signed_date']}; original contract end date {beacon_renewal['original_renewal_date']}.")
+    L.append("")
+
+    L.append("# NRR composition and product breadth")
+    L.append(f"- Q2 2026 mid-market NRR: {q2_mm_nrr*100:.0f}%. Trailing three-quarter mid-market NRR average: {trailing_mm_nrr*100:.1f}%.")
+    L.append(f"- Mid-market customers running Atlas Insights: {len(insights_mm)}. Of those, {insights_mm_expanded} expanded ARR during Q2 2026.")
+    L.append(f"- Multi-product customers Q2 2026 NRR: {multi_q2_nrr*100:.0f}% across {len(multi)} accounts. Single-product customers Q2 2026 NRR: {single_q2_nrr*100:.0f}% across {len(single)} accounts.")
+    L.append(f"- Multi-product customers Q1 2026 NRR: {multi_q1_nrr*100:.0f}%. Single-product customers Q1 2026 NRR: {single_q1_nrr*100:.0f}%.")
+    L.append(f"- Multi-product share of customer base: {multi_share*100:.1f}%.")
+    L.append("")
+
+    L.append("# Time to first value and cohorts")
+    if mm_q2_co:
+        L.append(f"- Q2 2026 mid-market new-customer cohort time to first value: {mm_q2_co.get('ttfv_days')} days across {mm_q2_co.get('n_accounts')} accounts.")
+    if mm_q1_co:
+        L.append(f"- Q1 2026 mid-market new-customer cohort time to first value: {mm_q1_co.get('ttfv_days')} days across {mm_q1_co.get('n_accounts')} accounts.")
+        L.append(f"- Q1 2026 mid-market cohort renewal rate by TTFV: under 30 days {mm_q1_co.get('renewal_rate_under_30d_ttfv', 0)*100:.0f}%; over 60 days {mm_q1_co.get('renewal_rate_over_60d_ttfv', 0)*100:.0f}%.")
+    if q1_all_co:
+        L.append(f"- Q1 2026 all-segments new-customer cohort 90-day retention: {q1_all_co.get('retention_90d', 0)*100:.0f}% across {q1_all_co.get('n_accounts')} accounts. TTFV: {q1_all_co.get('ttfv_days')} days.")
+    if q4_all_co:
+        L.append(f"- Q4 2025 all-segments new-customer cohort 90-day retention: {q4_all_co.get('retention_90d', 0)*100:.0f}% across {q4_all_co.get('n_accounts')} accounts. TTFV: {q4_all_co.get('ttfv_days')} days.")
+    L.append("")
+
+    L.append("# Expansion sources")
+    L.append(f"- April 2026 expansion opportunities sourced from customer health reviews: {len(apr_cs)}, total ${apr_cs_total:,}.")
+    if mar_cs:
+        L.append(f"- March 2026 customer-health-review expansion opportunities: {len(mar_cs)}, sales accepted {mar_cs_acc} ({(mar_cs_acc/len(mar_cs))*100:.0f}%).")
+    if mar_ob:
+        L.append(f"- March 2026 outbound expansion opportunities: {len(mar_ob)}, sales accepted {mar_ob_acc} ({(mar_ob_acc/len(mar_ob))*100:.0f}%).")
+    L.append("")
+
+    L.append("# License utilization (mid-market)")
+    L.append(f"- Mid-market customers above 80% license utilization in Q2 2026: {q2_high}.")
+    L.append(f"- Mid-market customers above 80% license utilization in Q1 2026: {q1_high}.")
+    L.append("")
+
+    L.append("# Health score distribution and retention")
+    if q2_h:
+        L.append(f"- Q2 2026 mid-market health distribution: {(q2_green/len(q2_h))*100:.0f}% green ({q2_green}/{len(q2_h)}).")
+    if q1_h:
+        L.append(f"- Q1 2026 mid-market health distribution: {(q1_green/len(q1_h))*100:.0f}% green ({q1_green}/{len(q1_h)}).")
+    if q1_green_rows:
+        L.append(f"- Q1 2026 green-health customers renewed: {(green_renewed/len(q1_green_rows))*100:.0f}% ({green_renewed}/{len(q1_green_rows)}).")
+    if q1_yellow:
+        L.append(f"- Q1 2026 yellow-health customers renewed: {(yellow_renewed/len(q1_yellow))*100:.0f}% ({yellow_renewed}/{len(q1_yellow)}).")
+    L.append("")
+
+    L.append("# Coverage model")
+    L.append(f"- High-touch coverage Q2 2026 GRR: {high_grr*100:.0f}% across {len(high_tier)} accounts ({high_share*100:.1f}% of customer base, top by ARR).")
+    L.append(f"- Tech-touch coverage Q2 2026 GRR: {tech_grr*100:.0f}% across {len(tech_tier)} accounts.")
+    L.append(f"- Q1 2026 GRR by tier: high-touch {high_grr_q1*100:.0f}%; tech-touch {tech_grr_q1*100:.0f}%.")
+    L.append("")
+
+    L.append("# Product launches (downstream signal)")
+    if pl_002:
+        L.append(f"- {pl_002['name']} ships {pl_002['launch_date']}.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -711,6 +934,10 @@ _REVENUE_GOAL_CLUSTERS = (
     "Quarter Attainment and Forecast Reliability; Pipeline Coverage and Health; "
     "Win Rate and Competitive Position"
 )
+_CUSTOMER_GOAL_CLUSTERS = (
+    "Retained Revenue Landing to Forecast; Expansion Revenue Compounding NRR; "
+    "Portfolio-Level Retention Risk Surfacing Ahead of Churn"
+)
 
 
 _ARCHETYPE_CONFIG = {
@@ -741,6 +968,20 @@ _ARCHETYPE_CONFIG = {
         ),
         "brief_filename": "revenue-leader-brief.md",
         "user_prompt_subject": "Revenue",
+    },
+    "customer": {
+        "intelligence_area": "customer",
+        "audience_label": "VP of Customer Success at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Customer Leader",
+        "goal_clusters": _CUSTOMER_GOAL_CLUSTERS,
+        "snapshot_label": "CUSTOMER DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Q2 mid-market GRR 91%\", your card says "
+            "91% or rounds honestly to 91%, not 92%."
+        ),
+        "brief_filename": "customer-leader-brief.md",
+        "user_prompt_subject": "Customer Success",
     },
 }
 
@@ -846,7 +1087,11 @@ def build_dataset_block(data_boundary: str, dataset_summary: str) -> str:
 
 def build_user_message(archetype: str) -> str:
     cfg = _ARCHETYPE_CONFIG[archetype]
-    snapshot_word = "company data" if archetype == "marketing" else "revenue data"
+    snapshot_word = {
+        "marketing": "company data",
+        "revenue": "revenue data",
+        "customer": "customer data",
+    }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
         f"the Atlas SaaS {snapshot_word} snapshot above. Produce 15-25 cards in "
@@ -1030,7 +1275,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     archetype_brief = (DATA_DIR / cfg["brief_filename"]).read_text()
     voice_brief = (DATA_DIR / "voice-brief.md").read_text()
 
-    summary = build_revenue_summary(ds) if archetype == "revenue" else build_summary(ds)
+    if archetype == "revenue":
+        summary = build_revenue_summary(ds)
+    elif archetype == "customer":
+        summary = build_customer_summary(ds)
+    else:
+        summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,
                                         voice_brief, guards, archetype)
     dataset_block = build_dataset_block(guards["DATA_BOUNDARY"], summary)

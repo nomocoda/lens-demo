@@ -518,6 +518,7 @@ def gen_product_launches() -> List[Dict]:
     return [
         {"id": "PL-001", "name": "Atlas Assist", "launch_date": iso(date(2026, 5, 8)), "status": "ready"},
         {"id": "PL-000", "name": "Atlas Monitor GA", "launch_date": iso(date(2025, 11, 4)), "status": "shipped"},
+        {"id": "PL-002", "name": "Custom Permissions and Audit Logs", "launch_date": iso(date(2026, 6, 15)), "status": "scheduled"},
     ]
 
 
@@ -606,12 +607,13 @@ def gen_renewals(rng: random.Random, companies: List[Dict]) -> List[Dict]:
         ("Q2_2025", "small-business"): 200_000,
     }
     # Quarter NRR (renewed_arr / starting_arr) per segment-quarter.
+    # Trailing MM NRR avg ~1.05 supports CL-06 (Q2 lift to 1.12 against trailing 1.05).
     nrr_map = {
         ("Q2_2026", "mid-market"): 1.12,
-        ("Q1_2026", "mid-market"): 1.10,
-        ("Q4_2025", "mid-market"): 1.16,
-        ("Q3_2025", "mid-market"): 1.18,
-        ("Q2_2025", "mid-market"): 1.14,
+        ("Q1_2026", "mid-market"): 1.04,
+        ("Q4_2025", "mid-market"): 1.06,
+        ("Q3_2025", "mid-market"): 1.05,
+        ("Q2_2025", "mid-market"): 1.05,
         ("Q2_2026", "enterprise"): 1.06,
         ("Q1_2026", "enterprise"): 1.08,
         ("Q4_2025", "enterprise"): 1.11,
@@ -655,6 +657,8 @@ def gen_renewals(rng: random.Random, companies: List[Dict]) -> List[Dict]:
                 "quarter": q,
                 "segment": seg,
                 "renewal_date": iso(d),
+                "renewal_signed_date": iso(d),
+                "original_renewal_date": iso(d),
                 "renewed_arr": amt,
                 "nrr": nrr_map[(q, seg)],
             })
@@ -665,6 +669,319 @@ def gen_renewals(rng: random.Random, companies: List[Dict]) -> List[Dict]:
 def gen_expansion_opportunities() -> List[Dict]:
     """Default empty list. Pattern P-RL-11 seeds 8 in last 30 days."""
     return []
+
+
+# ----------------------------------------------------------------------------
+# Customer Leader entity generators
+# ----------------------------------------------------------------------------
+
+def gen_forecast_log() -> List[Dict]:
+    """Quarterly renewal-forecast aggregate (Customer Leader leadership ledger).
+
+    P-CL-01: Q2_2026 actual within 1.7% of plan on $1.8M renewing book; trailing
+    4 quarters variance avg ~8%. P-CL-04 reads renewing_book_arr ($1.8M) and
+    Q2 MM GRR (91%); the per-event renewals.json sums stay at the RL-15
+    Q2 MM target ($620K) since CL-04 reads forecast aggregates, not events.
+    """
+    return [
+        # Active quarter (Q2_2026)
+        {
+            "quarter": "Q2_2026",
+            "segment": "all",
+            "renewing_book_arr": 1_800_000,
+            "forecast_arr": 1_800_000,
+            "actual_arr": 1_770_000,  # variance 1.7%
+            "variance_pct": 0.017,
+            "grr": None,
+            "nrr": None,
+        },
+        {"quarter": "Q2_2026", "segment": "mid-market", "renewing_book_arr": 1_116_000, "forecast_arr": None, "actual_arr": None, "variance_pct": None, "grr": 0.91, "nrr": 1.12},
+        {"quarter": "Q2_2026", "segment": "enterprise", "renewing_book_arr": 432_000, "forecast_arr": None, "actual_arr": None, "variance_pct": None, "grr": 0.94, "nrr": 1.06},
+        {"quarter": "Q2_2026", "segment": "small-business", "renewing_book_arr": 252_000, "forecast_arr": None, "actual_arr": None, "variance_pct": None, "grr": 0.86, "nrr": 1.02},
+        # Trailing 4 quarters (variance avg ~8%)
+        {"quarter": "Q1_2026", "segment": "all", "renewing_book_arr": 1_650_000, "forecast_arr": 1_650_000, "actual_arr": 1_525_000, "variance_pct": 0.076, "grr": None, "nrr": None},
+        {"quarter": "Q4_2025", "segment": "all", "renewing_book_arr": 1_580_000, "forecast_arr": 1_580_000, "actual_arr": 1_440_000, "variance_pct": 0.089, "grr": None, "nrr": None},
+        {"quarter": "Q3_2025", "segment": "all", "renewing_book_arr": 1_510_000, "forecast_arr": 1_510_000, "actual_arr": 1_390_000, "variance_pct": 0.079, "grr": None, "nrr": None},
+        {"quarter": "Q2_2025", "segment": "all", "renewing_book_arr": 1_460_000, "forecast_arr": 1_460_000, "actual_arr": 1_340_000, "variance_pct": 0.082, "grr": None, "nrr": None},
+    ]
+
+
+def gen_renewal_at_risk_log(rng: random.Random, customers: List[Dict]) -> List[Dict]:
+    """At-risk pool snapshots for current and prior month (P-CL-02, P-CL-14).
+
+    Current month (April 2026): pool = $220K, 2 of top-20 ARR on early-warning.
+    Prior month (March 2026): pool = $310K, 5 of top-20 ARR on early-warning.
+    Net delta: 3 dropped off, 1 added.
+    """
+    rows: List[Dict] = []
+    if not customers:
+        return rows
+
+    # Sort customers by current_arr desc; top 20.
+    ranked = sorted(customers, key=lambda c: c.get("current_arr", 0), reverse=True)
+    top20 = ranked[:20]
+
+    # March 2026: 5 top-20 + several non-top-20 totaling $310K
+    # April 2026: 2 top-20 (subset) + 1 new mid-tier; total $220K
+    march_top20 = top20[:5]
+    april_top20 = top20[:2]  # 2 of march's 5 carry over
+    # Add 1 new entry in april that wasn't in march (next ranked customer beyond top 20)
+    april_new_entry = ranked[20] if len(ranked) > 20 else top20[5]
+
+    # Distribute amounts so totals match
+    # March: $310K across 5 top-20 (avg $50K) + $60K spread on 2 non-top customers = $310K
+    march_amounts_top = [80_000, 70_000, 50_000, 30_000, 20_000]  # sum 250K
+    for c, amt in zip(march_top20, march_amounts_top):
+        rows.append({
+            "company_id": c["id"],
+            "snapshot_month": "2026-03",
+            "arr_at_risk": amt,
+            "in_top_20_arr": True,
+            "status": "early-warning",
+        })
+    # 2 mid-tier risk entries to bring March to $310K
+    mid_pool_march = ranked[20:30] if len(ranked) > 30 else top20[5:7]
+    for c, amt in zip(mid_pool_march[:2], [35_000, 25_000]):
+        rows.append({
+            "company_id": c["id"],
+            "snapshot_month": "2026-03",
+            "arr_at_risk": amt,
+            "in_top_20_arr": False,
+            "status": "early-warning",
+        })
+
+    # April: $220K total, 2 top-20 + 1 new ranked customer
+    april_amounts_top = [85_000, 75_000]  # sum 160K
+    for c, amt in zip(april_top20, april_amounts_top):
+        rows.append({
+            "company_id": c["id"],
+            "snapshot_month": "2026-04",
+            "arr_at_risk": amt,
+            "in_top_20_arr": True,
+            "status": "early-warning",
+        })
+    rows.append({
+        "company_id": april_new_entry["id"],
+        "snapshot_month": "2026-04",
+        "arr_at_risk": 60_000,
+        "in_top_20_arr": False,
+        "status": "early-warning",
+    })
+    return rows
+
+
+def gen_health_scores(rng: random.Random, customers: List[Dict]) -> List[Dict]:
+    """Quarterly health score distribution (P-CL-11).
+
+    Q2_2026 mid-market: 78% green, retention by color: green 96%, yellow 73%.
+    Q1_2026 mid-market: 71% green.
+    """
+    rows: List[Dict] = []
+    mm_customers = [c for c in customers if c.get("segment") == "mid-market"]
+    if not mm_customers:
+        return rows
+
+    # Q2 distribution: 78% green, 17% yellow, 5% red
+    n = len(mm_customers)
+    n_green = int(round(n * 0.78))
+    n_yellow = int(round(n * 0.17))
+    n_red = n - n_green - n_yellow
+    rng.shuffle(mm_customers)
+    for i, c in enumerate(mm_customers):
+        if i < n_green:
+            color = "green"
+        elif i < n_green + n_yellow:
+            color = "yellow"
+        else:
+            color = "red"
+        rows.append({
+            "company_id": c["id"],
+            "quarter": "Q2_2026",
+            "segment": "mid-market",
+            "color": color,
+            "score": rng.randint(75, 95) if color == "green" else (rng.randint(55, 74) if color == "yellow" else rng.randint(20, 54)),
+        })
+
+    # Q1 distribution: 71% green, 21% yellow, 8% red
+    n_green_q1 = int(round(n * 0.71))
+    n_yellow_q1 = int(round(n * 0.21))
+    n_red_q1 = n - n_green_q1 - n_yellow_q1
+    rng.shuffle(mm_customers)
+    for i, c in enumerate(mm_customers):
+        if i < n_green_q1:
+            color = "green"
+        elif i < n_green_q1 + n_yellow_q1:
+            color = "yellow"
+        else:
+            color = "red"
+        rows.append({
+            "company_id": c["id"],
+            "quarter": "Q1_2026",
+            "segment": "mid-market",
+            "color": color,
+            "score": rng.randint(75, 95) if color == "green" else (rng.randint(55, 74) if color == "yellow" else rng.randint(20, 54)),
+        })
+
+    return rows
+
+
+def gen_cohorts() -> List[Dict]:
+    """Cohort retention + TTFV (P-CL-08, P-CL-12).
+
+    P-CL-08 MM TTFV: Q2 MM 23d, Q1 MM 38d; renew rate gap by TTFV bucket.
+    P-CL-12 all-segments cohort: Q1 26d, Q4 38d; 90d retention Q1 88%, Q4 83%.
+
+    Reconciled by scoping: CL-08 reads MM-only; CL-12 reads all-segments.
+    Q1 all-segments 26d is reachable when Q1 SMB+ENT cohorts have fast TTFV
+    pulling the avg below the MM 38d.
+    """
+    return [
+        # MM-only TTFV (P-CL-08)
+        {"cohort_quarter": "Q2_2026", "segment": "mid-market", "n_accounts": 24, "ttfv_days": 23, "retention_90d": None, "renewal_rate_under_30d_ttfv": 0.94, "renewal_rate_over_60d_ttfv": 0.76},
+        {"cohort_quarter": "Q1_2026", "segment": "mid-market", "n_accounts": 22, "ttfv_days": 38, "retention_90d": None, "renewal_rate_under_30d_ttfv": 0.91, "renewal_rate_over_60d_ttfv": 0.74},
+        {"cohort_quarter": "Q4_2025", "segment": "mid-market", "n_accounts": 20, "ttfv_days": 41, "retention_90d": None, "renewal_rate_under_30d_ttfv": 0.89, "renewal_rate_over_60d_ttfv": 0.72},
+        # All-segments cohorts (P-CL-12)
+        {"cohort_quarter": "Q1_2026", "segment": "all", "n_accounts": 60, "ttfv_days": 26, "retention_90d": 0.88, "renewal_rate_under_30d_ttfv": None, "renewal_rate_over_60d_ttfv": None},
+        {"cohort_quarter": "Q4_2025", "segment": "all", "n_accounts": 55, "ttfv_days": 38, "retention_90d": 0.83, "renewal_rate_under_30d_ttfv": None, "renewal_rate_over_60d_ttfv": None},
+        {"cohort_quarter": "Q3_2025", "segment": "all", "n_accounts": 50, "ttfv_days": 36, "retention_90d": 0.84, "renewal_rate_under_30d_ttfv": None, "renewal_rate_over_60d_ttfv": None},
+        # SMB / ENT Q1 cohorts contributing to the 26d Q1 all avg
+        {"cohort_quarter": "Q1_2026", "segment": "small-business", "n_accounts": 25, "ttfv_days": 14, "retention_90d": 0.85, "renewal_rate_under_30d_ttfv": None, "renewal_rate_over_60d_ttfv": None},
+        {"cohort_quarter": "Q1_2026", "segment": "enterprise", "n_accounts": 13, "ttfv_days": 28, "retention_90d": 0.92, "renewal_rate_under_30d_ttfv": None, "renewal_rate_over_60d_ttfv": None},
+    ]
+
+
+def gen_product_adoption(rng: random.Random, customers: List[Dict]) -> List[Dict]:
+    """Per-customer product mix and license utilization (P-CL-07, P-CL-10).
+
+    P-CL-07: multi-product Q2 NRR 124%, single 102%, gap 14→22 vs Q1; multi-product
+    share up from 31% → 38% over the quarter (seeded to 38% by construction).
+    P-CL-10: 22 MM customers crossed 80% license utilization in Q2 (14 in Q1).
+
+    Construction: seed 24 MM customers as Atlas Insights multi-product (P-CL-06),
+    then top up the multi-product pool from non-MM customers to land at 38%
+    of all customers. This makes the multi-share locked across seeds and
+    removes the need for downstream seeders to promote.
+    """
+    rows: List[Dict] = []
+    if not customers:
+        return rows
+
+    mm = [c for c in customers if c["segment"] == "mid-market"]
+    non_mm = [c for c in customers if c["segment"] != "mid-market"]
+    rng.shuffle(mm)
+    rng.shuffle(non_mm)
+
+    n_total = len(customers)
+    target_multi = int(round(n_total * 0.38))
+    mm_multi_target = min(24, len(mm))
+    extra_multi = max(0, target_multi - mm_multi_target)
+    non_mm_multi = non_mm[:extra_multi]
+    non_mm_single = non_mm[extra_multi:]
+
+    def emit(c: Dict, multi: bool, mix: List[str]) -> Dict:
+        return {
+            "company_id": c["id"],
+            "products": mix,
+            "is_multi_product": multi,
+            "license_util_q2_2026": 0.0,
+            "license_util_q1_2026": 0.0,
+        }
+
+    # MM: first 24 multi (with atlas-insights), rest single
+    for i, c in enumerate(mm):
+        if i < mm_multi_target:
+            mix = ["atlas-core", "atlas-insights"]
+            if rng.random() < 0.4:
+                mix.append("atlas-collaborate")
+            rows.append(emit(c, True, mix))
+        else:
+            rows.append(emit(c, False, ["atlas-core"]))
+
+    # Non-MM multi: split between insights/collaborate
+    for c in non_mm_multi:
+        mix = rng.choice([
+            ["atlas-core", "atlas-insights"],
+            ["atlas-core", "atlas-collaborate"],
+        ])
+        rows.append(emit(c, True, mix))
+
+    for c in non_mm_single:
+        rows.append(emit(c, False, ["atlas-core"]))
+
+    # Force MM bucketing to hit the target counts (22 Q2, 14 Q1)
+    by_co_seg = {c["id"]: c["segment"] for c in customers}
+    mm_rows = [r for r in rows if by_co_seg.get(r["company_id"]) == "mid-market"]
+    rng.shuffle(mm_rows)
+    for i, r in enumerate(mm_rows):
+        if i < 22:
+            r["license_util_q2_2026"] = round(rng.uniform(0.81, 0.95), 3)
+        else:
+            r["license_util_q2_2026"] = round(rng.uniform(0.40, 0.79), 3)
+        if i < 14:
+            r["license_util_q1_2026"] = round(rng.uniform(0.81, 0.95), 3)
+        else:
+            r["license_util_q1_2026"] = round(rng.uniform(0.30, 0.79), 3)
+
+    # Non-MM utilization (default fill)
+    for r in rows:
+        if r["license_util_q2_2026"] == 0.0:
+            r["license_util_q2_2026"] = round(rng.uniform(0.30, 0.78), 3)
+            r["license_util_q1_2026"] = round(rng.uniform(0.25, 0.75), 3)
+
+    return rows
+
+
+def gen_coverage_tier(rng: random.Random, customers: List[Dict]) -> List[Dict]:
+    """High-touch vs tech-touch coverage tiering (P-CL-13).
+
+    Q2_2026: high-touch GRR 96%, tech-touch GRR 82% (gap 8→14 vs Q1).
+    High-touch covers top 18% by ARR.
+    """
+    rows: List[Dict] = []
+    if not customers:
+        return rows
+    ranked = sorted(customers, key=lambda c: c.get("current_arr", 0), reverse=True)
+    n = len(ranked)
+    cutoff = int(round(n * 0.18))
+    for i, c in enumerate(ranked):
+        tier = "high-touch" if i < cutoff else "tech-touch"
+        rows.append({
+            "company_id": c["id"],
+            "tier": tier,
+            "grr_q2_2026": 0.96 if tier == "high-touch" else 0.82,
+            "grr_q1_2026": 0.94 if tier == "high-touch" else 0.86,
+        })
+    return rows
+
+
+def gen_executive_sponsor(rng: random.Random, customers: List[Dict]) -> List[Dict]:
+    """Executive sponsor depth (P-CL-03, P-CL-14).
+
+    P-CL-03 needs 3 enterprise renewals signed in April with sponsor depth_change=deepened
+    in the prior quarter (Q1_2026). Plant a broader pool so seeders pick deterministically.
+    P-CL-14: 2 of top-20 ARR on early-warning have sponsor review in current week.
+    """
+    rows: List[Dict] = []
+    if not customers:
+        return rows
+
+    LEVELS = ["VP", "C-suite", "Director"]
+    for c in customers:
+        depth = rng.choice(LEVELS)
+        depth_change = rng.choices(
+            ["deepened", "stable", "shallowed", "none"],
+            weights=[0.25, 0.55, 0.10, 0.10],
+        )[0]
+        last_review = None
+        next_review = None
+        rows.append({
+            "company_id": c["id"],
+            "sponsor_level": depth,
+            "depth_change_q1_2026": depth_change,
+            "last_review_date": last_review,
+            "next_review_date": next_review,
+        })
+    return rows
 
 
 # ----------------------------------------------------------------------------
@@ -1714,10 +2031,14 @@ def seed_p_rl_10_h2h(rng: random.Random, deals: List[Dict]) -> None:
 
 
 def seed_p_rl_11_expansion(rng: random.Random, expansion_opportunities: List[Dict], companies: List[Dict]) -> None:
-    """RL-11 — 8 expansion opportunities from customer health reviews, last 30 days, total $340K, avg $42K."""
+    """RL-11 — 8 expansion opportunities from customer health reviews, last 30 days, total $340K, avg $42K.
+
+    Pinned to April 1..TODAY (inclusive) so P-CL-09's "this month" framing
+    aligns with RL-11's "last 30 days" — all 8 events fall in both windows.
+    """
     customers = [c for c in companies if c["is_customer"]]
-    last30_start, last30_end = LAST_30_DAYS
-    span = (last30_end - last30_start).days
+    apr_start = date(2026, 4, 1)
+    span = (TODAY - apr_start).days
     target_total = 340_000
     n = 8
     amounts = _amounts_at_mean(rng, n, 42_500, 8_000)
@@ -1726,7 +2047,7 @@ def seed_p_rl_11_expansion(rng: random.Random, expansion_opportunities: List[Dic
     amounts[0] += diff
     for i, amt in enumerate(amounts):
         co = rng.choice(customers)
-        d = last30_start + timedelta(days=rng.randint(0, span))
+        d = apr_start + timedelta(days=rng.randint(0, span))
         expansion_opportunities.append({
             "id": f"EX-{i+1:04d}",
             "company_id": co["id"],
@@ -1791,6 +2112,245 @@ def seed_p_rl_15_renewals() -> None:
     return
 
 
+# ----------------------------------------------------------------------------
+# Customer Leader pattern seeders (P-CL-01..15)
+# ----------------------------------------------------------------------------
+
+def plant_customer_arr(rng: random.Random, companies: List[Dict]) -> None:
+    """Plant `current_arr` on every customer. Top-20 ranking is the input to
+    P-CL-02 / P-CL-14 risk-pool checks and P-CL-13 high-touch tiering.
+    """
+    for c in companies:
+        if not c["is_customer"]:
+            c["current_arr"] = 0
+            continue
+        if c["segment"] == "enterprise":
+            c["current_arr"] = rng.randint(200_000, 500_000)
+        elif c["segment"] == "mid-market":
+            c["current_arr"] = rng.randint(40_000, 150_000)
+        else:
+            c["current_arr"] = rng.randint(5_000, 25_000)
+
+
+def plant_beacon_logistics(companies: List[Dict]) -> None:
+    """Force Beacon Logistics into the customer roster (P-CL-05 + P-CL-15).
+
+    Replaces the first enterprise customer's identity with Beacon, locked at
+    $280K ARR. Preserves all other fields so seeders that selected the row by
+    segment continue to behave.
+    """
+    for c in companies:
+        if c["is_customer"] and c["segment"] == "enterprise":
+            c["name"] = "Beacon Logistics"
+            c["industry"] = "logistics"
+            c["current_arr"] = 280_000
+            c["_beacon"] = True
+            return
+
+
+def seed_p_cl_01_forecast_accuracy() -> None:
+    """CL-01 — Q2 forecast within 1.7% of plan on $1.8M renewing book.
+    Static row in gen_forecast_log; no additional planting needed."""
+    return
+
+
+def seed_p_cl_02_risk_pool() -> None:
+    """CL-02 — March $310K → April $220K at-risk pool. Static rows in
+    gen_renewal_at_risk_log; no additional planting needed."""
+    return
+
+
+def seed_p_cl_03_april_ent_renewals(rng: random.Random, renewals: List[Dict], executive_sponsor: List[Dict]) -> None:
+    """CL-03 — 3 enterprise renewals signed in April with sponsor depth_change=deepened in Q1."""
+    apr_ent = [r for r in renewals
+               if r["segment"] == "enterprise"
+               and r["renewal_signed_date"]
+               and r["renewal_signed_date"].startswith("2026-04")]
+    rng.shuffle(apr_ent)
+    chosen = apr_ent[:3]
+    if len(chosen) < 3:
+        # Augment by promoting Q2 ENT renewals to April-signed if needed.
+        q2_ent = [r for r in renewals if r["segment"] == "enterprise" and r["quarter"] == "Q2_2026"]
+        for r in q2_ent:
+            if r in chosen:
+                continue
+            r["renewal_signed_date"] = iso(date(2026, 4, rng.randint(1, 24)))
+            chosen.append(r)
+            if len(chosen) >= 3:
+                break
+    sponsor_by_co = {s["company_id"]: s for s in executive_sponsor}
+    for r in chosen:
+        s = sponsor_by_co.get(r["company_id"])
+        if s:
+            s["depth_change_q1_2026"] = "deepened"
+            s["sponsor_level"] = "C-suite"
+
+
+def seed_p_cl_04_mm_grr() -> None:
+    """CL-04 — Q2 MM GRR 91% on $1.8M renewing. Already in gen_forecast_log."""
+    return
+
+
+def seed_p_cl_05_beacon_renewal(rng: random.Random, renewals: List[Dict], companies: List[Dict]) -> None:
+    """CL-05 — Beacon Logistics $280K renewal signed 2026-04-21, original 2026-07-15."""
+    beacon = next((c for c in companies if c.get("_beacon")), None)
+    if not beacon:
+        return
+    rid = max([int(r["id"].split("-")[1]) for r in renewals], default=0) + 1
+    renewals.append({
+        "id": f"RN-{rid:05d}",
+        "company_id": beacon["id"],
+        "quarter": "Q3_2026",
+        "segment": "enterprise",
+        "renewal_date": "2026-07-15",
+        "renewal_signed_date": "2026-04-21",
+        "original_renewal_date": "2026-07-15",
+        "renewed_arr": 280_000,
+        "nrr": 1.0,
+    })
+
+
+def seed_p_cl_06_mm_nrr_lift(product_adoption: List[Dict], companies: List[Dict]) -> None:
+    """CL-06 — Q2 MM NRR 1.12 (already in nrr_map), 18 of 24 Atlas Insights MM expanded.
+
+    Tags MM customers running Atlas Insights with `expanded_q2_2026` so the
+    validator can read 18/24 directly.
+    """
+    by_co = {c["id"]: c for c in companies}
+    insights_mm = [r for r in product_adoption
+                   if "atlas-insights" in r["products"]
+                   and by_co.get(r["company_id"], {}).get("segment") == "mid-market"]
+    # Force exactly 24 MM Atlas Insights customers.
+    if len(insights_mm) < 24:
+        # Promote single-product MM customers to also include atlas-insights.
+        candidates = [r for r in product_adoption
+                      if by_co.get(r["company_id"], {}).get("segment") == "mid-market"
+                      and "atlas-insights" not in r["products"]]
+        for r in candidates:
+            r["products"] = list(set(r["products"]) | {"atlas-insights"})
+            r["is_multi_product"] = len(r["products"]) > 1
+            insights_mm.append(r)
+            if len(insights_mm) >= 24:
+                break
+    # Trim to exactly 24
+    insights_mm = insights_mm[:24]
+    for i, r in enumerate(insights_mm):
+        r["expanded_q2_2026"] = i < 18
+
+
+def seed_p_cl_07_multiproduct_nrr(product_adoption: List[Dict]) -> None:
+    """CL-07 — multi-product Q2 NRR 124%, single 102%, gap 14→22; multi share 31→38."""
+    for r in product_adoption:
+        if r["is_multi_product"]:
+            r["nrr_q2_2026"] = 1.24
+            r["nrr_q1_2026"] = 1.16
+        else:
+            r["nrr_q2_2026"] = 1.02
+            r["nrr_q1_2026"] = 1.02
+
+
+def seed_p_cl_08_mm_ttfv() -> None:
+    """CL-08 — Q2 MM TTFV 23d, Q1 MM 38d. Already in gen_cohorts."""
+    return
+
+
+def seed_p_cl_09_cs_sourced_expansion(rng: random.Random, expansion_opportunities: List[Dict], companies: List[Dict]) -> None:
+    """CL-09 — 8 CS-sourced this month $340K (already from RL-11), 6 prior-month CS-sourced
+    sales-accepted 5 (83%), 17 outbound prior-month sales-accepted 7 (41%).
+    """
+    customers = [c for c in companies if c["is_customer"]]
+    if not customers:
+        return
+    # Tag the 8 CS-sourced this month (from RL-11) with sales_accepted=None (decision pending).
+    for o in expansion_opportunities:
+        o.setdefault("month", o["create_date"][:7])
+        o.setdefault("sales_accepted", None)
+    # Add 6 prior-month CS-sourced expansions (March 1-24, before last-30d window),
+    # 5 accepted. Stays out of RL-11's last-30d count.
+    base_id = max([int(o["id"].split("-")[1]) for o in expansion_opportunities], default=0) + 1
+    for i in range(6):
+        co = rng.choice(customers)
+        d = date(2026, 3, rng.randint(1, 24))
+        expansion_opportunities.append({
+            "id": f"EX-{base_id + i:04d}",
+            "company_id": co["id"],
+            "create_date": iso(d),
+            "amount": rng.randint(20_000, 80_000),
+            "source": "customer_health_review",
+            "stage": "closedwon",
+            "month": "2026-03",
+            "sales_accepted": i < 5,
+        })
+    base_id += 6
+    # Add 17 prior-month outbound expansions (March 1-24), 7 accepted (~41%).
+    for i in range(17):
+        co = rng.choice(customers)
+        d = date(2026, 3, rng.randint(1, 24))
+        expansion_opportunities.append({
+            "id": f"EX-{base_id + i:04d}",
+            "company_id": co["id"],
+            "create_date": iso(d),
+            "amount": rng.randint(15_000, 60_000),
+            "source": "outbound",
+            "stage": "presentationscheduled",
+            "month": "2026-03",
+            "sales_accepted": i < 7,
+        })
+
+
+def seed_p_cl_10_license_util() -> None:
+    """CL-10 — 22 MM crossed 80% util Q2 (14 in Q1). Already in gen_product_adoption."""
+    return
+
+
+def seed_p_cl_11_health_score_renewal_link(rng: random.Random, health_scores: List[Dict]) -> None:
+    """CL-11 — Q1 health green renewed 96%, yellow 73%, red ~30%. Sets `renewed` per row."""
+    q1 = [h for h in health_scores if h["quarter"] == "Q1_2026"]
+    by_color = defaultdict(list)
+    for h in q1:
+        by_color[h["color"]].append(h)
+    for color, rows in by_color.items():
+        if color == "green":
+            rate = 0.96
+        elif color == "yellow":
+            rate = 0.73
+        else:
+            rate = 0.30
+        n_renewed = int(round(len(rows) * rate))
+        rng.shuffle(rows)
+        for i, h in enumerate(rows):
+            h["renewed"] = i < n_renewed
+
+
+def seed_p_cl_12_cohort_retention() -> None:
+    """CL-12 — Q1 88% 90d retention, Q4 83%, Q1 TTFV 12d faster. Already in gen_cohorts."""
+    return
+
+
+def seed_p_cl_13_coverage_tier() -> None:
+    """CL-13 — High-touch Q2 GRR 96%, tech-touch 82%, gap 8→14. Already in gen_coverage_tier."""
+    return
+
+
+def seed_p_cl_14_top20_at_risk(rng: random.Random, renewal_at_risk_log: List[Dict], executive_sponsor: List[Dict]) -> None:
+    """CL-14 — 2 top-20 at-risk in April both have sponsor review in current week."""
+    apr_top20 = [r for r in renewal_at_risk_log
+                 if r["snapshot_month"] == "2026-04" and r["in_top_20_arr"]]
+    sponsor_by_co = {s["company_id"]: s for s in executive_sponsor}
+    cw_start, cw_end = CURRENT_WEEK
+    for r in apr_top20[:2]:
+        s = sponsor_by_co.get(r["company_id"])
+        if s:
+            review_d = cw_start + timedelta(days=rng.randint(0, (cw_end - cw_start).days))
+            s["next_review_date"] = iso(review_d)
+
+
+def seed_p_cl_15_launch_renewal_link() -> None:
+    """CL-15 — PL-002 ships 6/15 (already in gen_product_launches), Beacon
+    renewal signed 4/21 (already in seed_p_cl_05_beacon_renewal). No-op."""
+    return
+
+
 def apply_deal_field_defaults(deals: List[Dict]) -> None:
     """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
 
@@ -1821,6 +2381,11 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
 
     competitors = gen_competitors()
     companies = gen_companies(rng, fake)
+    # Phase 2.4 — plant per-customer ARR and Beacon Logistics before any
+    # downstream entity generator reads `current_arr` for top-20 ranking.
+    plant_customer_arr(rng, companies)
+    plant_beacon_logistics(companies)
+
     contacts = gen_contacts(rng, fake, companies)
     campaigns = gen_campaigns(rng, fake)
 
@@ -1841,6 +2406,16 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     forecasts = gen_forecasts()
     renewals = gen_renewals(rng, companies)
     expansion_opportunities = gen_expansion_opportunities()
+
+    # Phase 2.4 — Customer Leader entities
+    customers_only = [c for c in companies if c["is_customer"]]
+    forecast_log = gen_forecast_log()
+    renewal_at_risk_log = gen_renewal_at_risk_log(rng, customers_only)
+    health_scores = gen_health_scores(rng, customers_only)
+    cohorts = gen_cohorts()
+    product_adoption = gen_product_adoption(rng, customers_only)
+    coverage_tier = gen_coverage_tier(rng, customers_only)
+    executive_sponsor = gen_executive_sponsor(rng, customers_only)
 
     # Deals start empty — all deals come from pattern seeders + background filler.
     deals: List[Dict] = []
@@ -1876,6 +2451,23 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     seed_p_rl_11_expansion(rng, expansion_opportunities, companies)
     seed_p_rl_13_close_date_slips(rng, deals, companies)
     seed_p_rl_02_proposal_speed(rng, deals)
+
+    # Customer Leader pattern seeders (P-CL-01..15)
+    seed_p_cl_01_forecast_accuracy()
+    seed_p_cl_02_risk_pool()
+    seed_p_cl_05_beacon_renewal(rng, renewals, companies)
+    seed_p_cl_03_april_ent_renewals(rng, renewals, executive_sponsor)
+    seed_p_cl_04_mm_grr()
+    seed_p_cl_06_mm_nrr_lift(product_adoption, companies)
+    seed_p_cl_07_multiproduct_nrr(product_adoption)
+    seed_p_cl_08_mm_ttfv()
+    seed_p_cl_09_cs_sourced_expansion(rng, expansion_opportunities, companies)
+    seed_p_cl_10_license_util()
+    seed_p_cl_11_health_score_renewal_link(rng, health_scores)
+    seed_p_cl_12_cohort_retention()
+    seed_p_cl_13_coverage_tier()
+    seed_p_cl_14_top20_at_risk(rng, renewal_at_risk_log, executive_sponsor)
+    seed_p_cl_15_launch_renewal_link()
 
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
@@ -1931,6 +2523,10 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     for d in deals:
         d.pop("_pattern", None)
 
+    # Strip internal _beacon tag from companies
+    for c in companies:
+        c.pop("_beacon", None)
+
     return {
         "companies": companies,
         "contacts": contacts,
@@ -1951,6 +2547,13 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "forecasts": forecasts,
         "renewals": renewals,
         "expansion_opportunities": expansion_opportunities,
+        "forecast_log": forecast_log,
+        "renewal_at_risk_log": renewal_at_risk_log,
+        "health_scores": health_scores,
+        "cohorts": cohorts,
+        "product_adoption": product_adoption,
+        "coverage_tier": coverage_tier,
+        "executive_sponsor": executive_sponsor,
     }
 
 
@@ -2182,6 +2785,221 @@ def validate_revenue(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
     )
     results.append(CheckResult(14, "Q2 MM renewals + NRR", "p_rl_15_renewals", passed,
                                f"Q2 MM renewals n={len(q2_mm_ren)} ARR=${q2_mm_arr:,} NRR={nrrs}"))
+
+    return results
+
+
+def validate_customer(ds: Dict[str, List[Dict]]) -> List[CheckResult]:
+    """15 Customer Leader pattern checks (P-CL-01..P-CL-15)."""
+    results: List[CheckResult] = []
+    companies = ds["companies"]
+    by_co = {c["id"]: c for c in companies}
+    forecast_log = ds.get("forecast_log", [])
+    risk_log = ds.get("renewal_at_risk_log", [])
+    health = ds.get("health_scores", [])
+    cohorts = ds.get("cohorts", [])
+    adoption = ds.get("product_adoption", [])
+    coverage = ds.get("coverage_tier", [])
+    sponsor = ds.get("executive_sponsor", [])
+    renewals = ds.get("renewals", [])
+    expansion = ds.get("expansion_opportunities", [])
+    launches = ds.get("product_launches", [])
+    sponsor_by_co = {s["company_id"]: s for s in sponsor}
+
+    # P-CL-01 — Q2_2026 forecast within 1.7% of plan on $1.8M renewing book
+    q2_all = next((r for r in forecast_log if r["quarter"] == "Q2_2026" and r["segment"] == "all"), None)
+    passed = bool(q2_all) and q2_all["renewing_book_arr"] == 1_800_000 and _in_range(q2_all["variance_pct"], 0.013, 0.022)
+    results.append(CheckResult(0, "Q2 forecast on $1.8M renewing book", "p_cl_01_forecast_accuracy", passed,
+                               f"Q2 all={q2_all}"))
+
+    # P-CL-02 — Apr risk pool $220K, Mar $310K, top-20 movement
+    mar = [r for r in risk_log if r["snapshot_month"] == "2026-03"]
+    apr = [r for r in risk_log if r["snapshot_month"] == "2026-04"]
+    mar_total = sum(r["arr_at_risk"] for r in mar)
+    apr_total = sum(r["arr_at_risk"] for r in apr)
+    mar_top20 = {r["company_id"] for r in mar if r["in_top_20_arr"]}
+    apr_top20 = {r["company_id"] for r in apr if r["in_top_20_arr"]}
+    passed = (
+        _in_range(mar_total, 290_000, 330_000)
+        and _in_range(apr_total, 200_000, 240_000)
+        and len(mar_top20) >= 5
+        and len(apr_top20) >= 2
+    )
+    results.append(CheckResult(1, "At-risk pool drop with top-20 movement", "p_cl_02_risk_pool", passed,
+                               f"Mar=${mar_total:,} top20={len(mar_top20)}; Apr=${apr_total:,} top20={len(apr_top20)}"))
+
+    # P-CL-03 — 3 enterprise renewals signed in April with sponsor depth_change=deepened
+    apr_ent = [r for r in renewals if r["segment"] == "enterprise"
+               and r.get("renewal_signed_date", "").startswith("2026-04")]
+    deepened = [r for r in apr_ent
+                if sponsor_by_co.get(r["company_id"], {}).get("depth_change_q1_2026") == "deepened"]
+    passed = len(deepened) >= 3
+    results.append(CheckResult(2, "April ENT renewals with deepened sponsor", "p_cl_03_april_ent_renewals", passed,
+                               f"Apr ENT signed={len(apr_ent)}; deepened={len(deepened)}"))
+
+    # P-CL-04 — Q2 MM GRR 91%
+    q2_mm = next((r for r in forecast_log if r["quarter"] == "Q2_2026" and r["segment"] == "mid-market"), None)
+    passed = bool(q2_mm) and _in_range(q2_mm["grr"], 0.89, 0.93)
+    results.append(CheckResult(3, "Q2 MM GRR 91%", "p_cl_04_mm_grr", passed,
+                               f"Q2 MM={q2_mm}"))
+
+    # P-CL-05 — Beacon Logistics renewal: signed 4/21, originally 7/15, $280K
+    beacon = next((c for c in companies if c.get("name") == "Beacon Logistics"), None)
+    beacon_renewal = next((r for r in renewals
+                           if beacon and r["company_id"] == beacon["id"]
+                           and r.get("original_renewal_date") == "2026-07-15"), None)
+    passed = (
+        bool(beacon)
+        and bool(beacon_renewal)
+        and beacon_renewal["renewal_signed_date"] == "2026-04-21"
+        and beacon_renewal["renewed_arr"] == 280_000
+    )
+    results.append(CheckResult(4, "Beacon Logistics renewal signed early", "p_cl_05_beacon_renewal", passed,
+                               f"beacon={beacon['id'] if beacon else None}; renewal={beacon_renewal}"))
+
+    # P-CL-06 — Q2 MM NRR 1.12, trailing ~1.05, 18 of 24 Atlas Insights MM expanded
+    q2_mm_ren = [r for r in renewals if r["quarter"] == "Q2_2026" and r["segment"] == "mid-market"]
+    q2_mm_nrr = q2_mm_ren[0]["nrr"] if q2_mm_ren else 0
+    trailing_qs = ["Q1_2026", "Q4_2025", "Q3_2025"]
+    trailing_nrrs = [r["nrr"] for r in renewals if r["quarter"] in trailing_qs and r["segment"] == "mid-market"]
+    trailing_avg = _mean(trailing_nrrs) if trailing_nrrs else 0
+    insights_mm = [r for r in adoption
+                   if "atlas-insights" in r["products"]
+                   and by_co.get(r["company_id"], {}).get("segment") == "mid-market"]
+    expanded = sum(1 for r in insights_mm if r.get("expanded_q2_2026"))
+    passed = (
+        q2_mm_nrr == 1.12
+        and _in_range(trailing_avg, 1.03, 1.07)
+        and len(insights_mm) >= 24
+        and expanded >= 18
+    )
+    results.append(CheckResult(5, "Q2 MM NRR lift + Insights expansion", "p_cl_06_mm_nrr_lift", passed,
+                               f"Q2 NRR={q2_mm_nrr} trailing={trailing_avg:.3f}; Insights MM={len(insights_mm)} expanded={expanded}"))
+
+    # P-CL-07 — multi-product Q2 NRR 124% vs single 102%
+    multi = [r for r in adoption if r["is_multi_product"]]
+    single = [r for r in adoption if not r["is_multi_product"]]
+    multi_q2 = _mean(r["nrr_q2_2026"] for r in multi) if multi else 0
+    single_q2 = _mean(r["nrr_q2_2026"] for r in single) if single else 0
+    multi_share = (len(multi) / len(adoption)) if adoption else 0
+    passed = (
+        _in_range(multi_q2, 1.22, 1.26)
+        and _in_range(single_q2, 1.00, 1.04)
+        and _in_range(multi_share, 0.34, 0.42)
+    )
+    results.append(CheckResult(6, "Multi-product NRR gap", "p_cl_07_multiproduct_nrr", passed,
+                               f"multi NRR={multi_q2:.3f} single={single_q2:.3f} share={multi_share:.2%}"))
+
+    # P-CL-08 — Q2 MM TTFV 23d vs Q1 MM 38d
+    mm_q2 = next((c for c in cohorts if c["cohort_quarter"] == "Q2_2026" and c["segment"] == "mid-market"), None)
+    mm_q1 = next((c for c in cohorts if c["cohort_quarter"] == "Q1_2026" and c["segment"] == "mid-market"), None)
+    passed = (
+        bool(mm_q2) and bool(mm_q1)
+        and _in_range(mm_q2["ttfv_days"], 21, 25)
+        and _in_range(mm_q1["ttfv_days"], 36, 40)
+        and (mm_q1["renewal_rate_under_30d_ttfv"] - mm_q1["renewal_rate_over_60d_ttfv"]) >= 0.15
+    )
+    results.append(CheckResult(7, "MM TTFV Q2 vs Q1", "p_cl_08_mm_ttfv", passed,
+                               f"Q2 MM TTFV={mm_q2['ttfv_days'] if mm_q2 else None}; Q1 MM TTFV={mm_q1['ttfv_days'] if mm_q1 else None}"))
+
+    # P-CL-09 — 8 CS-sourced this month $340K, prior month CS 5/6 (83%) vs outbound ~41%
+    apr_cs = [e for e in expansion
+              if e["source"] == "customer_health_review" and e.get("month") == "2026-04"]
+    apr_cs_total = sum(e["amount"] for e in apr_cs)
+    mar_cs = [e for e in expansion
+              if e["source"] == "customer_health_review" and e.get("month") == "2026-03"]
+    mar_cs_acc = sum(1 for e in mar_cs if e.get("sales_accepted"))
+    mar_cs_rate = (mar_cs_acc / len(mar_cs)) if mar_cs else 0
+    mar_ob = [e for e in expansion if e["source"] == "outbound" and e.get("month") == "2026-03"]
+    mar_ob_acc = sum(1 for e in mar_ob if e.get("sales_accepted"))
+    mar_ob_rate = (mar_ob_acc / len(mar_ob)) if mar_ob else 0
+    passed = (
+        len(apr_cs) >= 8
+        and _in_range(apr_cs_total, 320_000, 360_000)
+        and _in_range(mar_cs_rate, 0.78, 0.88)
+        and _in_range(mar_ob_rate, 0.36, 0.46)
+    )
+    results.append(CheckResult(8, "CS-sourced expansion acceptance edge", "p_cl_09_cs_sourced_expansion", passed,
+                               f"AprCS n={len(apr_cs)} ${apr_cs_total:,}; MarCS {mar_cs_acc}/{len(mar_cs)}={mar_cs_rate:.2%}; MarOB={mar_ob_rate:.2%}"))
+
+    # P-CL-10 — 22 MM crossed 80% util Q2, 14 in Q1
+    mm_adopt = [r for r in adoption if by_co.get(r["company_id"], {}).get("segment") == "mid-market"]
+    q2_high = sum(1 for r in mm_adopt if r["license_util_q2_2026"] >= 0.80)
+    q1_high = sum(1 for r in mm_adopt if r["license_util_q1_2026"] >= 0.80)
+    passed = q2_high == 22 and q1_high == 14
+    results.append(CheckResult(9, "MM license util crossings Q2 vs Q1", "p_cl_10_license_util", passed,
+                               f"Q2 high={q2_high}; Q1 high={q1_high}"))
+
+    # P-CL-11 — Q2 78% green, Q1 71% green, Q1 green renewed 96%, yellow 73%
+    q1_h = [h for h in health if h["quarter"] == "Q1_2026"]
+    q2_h = [h for h in health if h["quarter"] == "Q2_2026"]
+    q1_green_share = sum(1 for h in q1_h if h["color"] == "green") / len(q1_h) if q1_h else 0
+    q2_green_share = sum(1 for h in q2_h if h["color"] == "green") / len(q2_h) if q2_h else 0
+    q1_green = [h for h in q1_h if h["color"] == "green"]
+    q1_yellow = [h for h in q1_h if h["color"] == "yellow"]
+    green_renewed = (sum(1 for h in q1_green if h.get("renewed")) / len(q1_green)) if q1_green else 0
+    yellow_renewed = (sum(1 for h in q1_yellow if h.get("renewed")) / len(q1_yellow)) if q1_yellow else 0
+    passed = (
+        _in_range(q2_green_share, 0.74, 0.82)
+        and _in_range(q1_green_share, 0.67, 0.75)
+        and _in_range(green_renewed, 0.92, 0.98)
+        and _in_range(yellow_renewed, 0.68, 0.78)
+    )
+    results.append(CheckResult(10, "Health distribution + retention by color", "p_cl_11_health_renewal_link", passed,
+                               f"Q2 green={q2_green_share:.2%} Q1 green={q1_green_share:.2%}; green ren={green_renewed:.2%} yellow ren={yellow_renewed:.2%}"))
+
+    # P-CL-12 — Q1 cohort 88% retention, Q4 83%, Q1 TTFV 12d faster than Q4
+    q1_all = next((c for c in cohorts if c["cohort_quarter"] == "Q1_2026" and c["segment"] == "all"), None)
+    q4_all = next((c for c in cohorts if c["cohort_quarter"] == "Q4_2025" and c["segment"] == "all"), None)
+    passed = (
+        bool(q1_all) and bool(q4_all)
+        and _in_range(q1_all["retention_90d"], 0.86, 0.90)
+        and _in_range(q4_all["retention_90d"], 0.81, 0.85)
+        and (q4_all["ttfv_days"] - q1_all["ttfv_days"]) >= 10
+    )
+    results.append(CheckResult(11, "Cohort 90d retention Q1 vs Q4", "p_cl_12_cohort_retention", passed,
+                               f"Q1 all={q1_all}; Q4 all={q4_all}"))
+
+    # P-CL-13 — high-touch GRR 96%, tech-touch 82%, gap 14, top 18% by ARR
+    high = [r for r in coverage if r["tier"] == "high-touch"]
+    tech = [r for r in coverage if r["tier"] == "tech-touch"]
+    high_grr = high[0]["grr_q2_2026"] if high else 0
+    tech_grr = tech[0]["grr_q2_2026"] if tech else 0
+    high_share = (len(high) / len(coverage)) if coverage else 0
+    passed = (
+        _in_range(high_grr, 0.94, 0.98)
+        and _in_range(tech_grr, 0.80, 0.84)
+        and (high_grr - tech_grr) >= 0.12
+        and _in_range(high_share, 0.16, 0.20)
+    )
+    results.append(CheckResult(12, "High-touch vs tech-touch GRR", "p_cl_13_coverage_tier", passed,
+                               f"high GRR={high_grr:.2%} tech GRR={tech_grr:.2%} high share={high_share:.2%}"))
+
+    # P-CL-14 — 2 top-20 ARR on Apr early-warning + sponsor review in current week
+    apr_top20_rows = [r for r in risk_log if r["snapshot_month"] == "2026-04" and r["in_top_20_arr"]]
+    cw_start, cw_end = CURRENT_WEEK
+    in_cw = 0
+    for r in apr_top20_rows:
+        s = sponsor_by_co.get(r["company_id"])
+        if s and s.get("next_review_date"):
+            d = date.fromisoformat(s["next_review_date"])
+            if cw_start <= d <= cw_end:
+                in_cw += 1
+    mar_top20 = sum(1 for r in risk_log if r["snapshot_month"] == "2026-03" and r["in_top_20_arr"])
+    passed = len(apr_top20_rows) >= 2 and in_cw >= 2 and mar_top20 >= 5
+    results.append(CheckResult(13, "Top-20 at-risk + sponsor review in CW", "p_cl_14_top20_at_risk", passed,
+                               f"Apr top20={len(apr_top20_rows)} in CW={in_cw}; Mar top20={mar_top20}"))
+
+    # P-CL-15 — Custom Permissions launch 6/15 + Beacon renewal signed 4/21
+    pl = next((p for p in launches if p["id"] == "PL-002"), None)
+    beacon_signed = beacon_renewal["renewal_signed_date"] if beacon_renewal else None
+    passed = (
+        bool(pl)
+        and pl["launch_date"] == "2026-06-15"
+        and beacon_signed == "2026-04-21"
+    )
+    results.append(CheckResult(14, "Launch ahead of Beacon renewal", "p_cl_15_launch_renewal_link", passed,
+                               f"launch={pl['name'] if pl else None}; beacon signed={beacon_signed}"))
 
     return results
 
@@ -2515,7 +3333,7 @@ def main():
     for name, rows in ds.items():
         print(f"  {name:30s} {len(rows):6d} rows")
 
-    # Run validation — Marketing (15) + Revenue (15) = 30 total
+    # Run validation — Marketing (15) + Revenue (15) + Customer (15) = 45 total
     mkt_results = validate(ds)
     print("\nMarketing validation (15 card patterns):")
     mkt_passed = 0
@@ -2536,8 +3354,18 @@ def main():
             rev_passed += 1
     print(f"  -> {rev_passed}/{len(rev_results)} revenue checks passed.")
 
-    total_passed = mkt_passed + rev_passed
-    total = len(mkt_results) + len(rev_results)
+    cust_results = validate_customer(ds)
+    print("\nCustomer Leader validation (15 card patterns):")
+    cust_passed = 0
+    for r in sorted(cust_results, key=lambda x: x.card_idx):
+        mark = "PASS" if r.passed else "FAIL"
+        print(f"  [{mark}] card {r.card_idx:2d}  {r.pattern:38s}  {r.detail}")
+        if r.passed:
+            cust_passed += 1
+    print(f"  -> {cust_passed}/{len(cust_results)} customer checks passed.")
+
+    total_passed = mkt_passed + rev_passed + cust_passed
+    total = len(mkt_results) + len(rev_results) + len(cust_results)
     print(f"\nTOTAL: {total_passed}/{total} pattern checks passed.")
     sys.exit(0 if total_passed == total else 1)
 
