@@ -3575,6 +3575,198 @@ def gen_rd_enterprise_committee() -> List[Dict]:
     ]
 
 
+# ---------------------------------------------------------------------------
+# Revenue Operator entities (Phase 2.20)
+# ---------------------------------------------------------------------------
+
+def gen_ro_forecast_metrics() -> List[Dict]:
+    """Forecast accuracy lift (P-RO-01) and forecast call duration (P-RO-13)."""
+    return [
+        {
+            "metric": "forecast_accuracy_after_validation_rule",
+            "validation_rule": "stage_4_close_date_refresh",
+            "rule_deployed_date": "2026-04-17",
+            "forecast_windows_measured": 3,
+            "prior_forecast_accuracy": 0.58,
+            "current_forecast_accuracy": 0.76,
+            "strongest_segment": "commit_tier",
+        },
+        {
+            "metric": "forecast_call_duration",
+            "automation_deployed": "tuesday_pipeline_health_prep",
+            "automation_deployed_date": "2026-04-21",
+            "prior_avg_call_minutes": 90,
+            "current_call_minutes": 28,
+            "prior_period_calls_in_sample": 8,
+        },
+    ]
+
+
+def gen_ro_pipeline_governance() -> List[Dict]:
+    """Pipeline definition lock (P-RO-02) and coverage ratio (P-RO-04)."""
+    return [
+        {
+            "metric": "pipeline_definition_lock",
+            "lock_date": "2026-04-14",
+            "teams_aligned": ["Sales", "Marketing", "Finance"],
+            "reports_now_matching": 3,
+            "reconciliation_tolerance_pct": 0.02,
+            "prior_misalignment": True,
+        },
+        {
+            "metric": "pipeline_coverage_ratio",
+            "quarter": "Q3_2026",
+            "coverage_ratio": 4.1,
+            "target_band_low": 3.0,
+            "target_band_high": 5.0,
+            "strongest_segment": "mid_market",
+            "mid_market_reliable_progression_weeks": 6,
+        },
+    ]
+
+
+def gen_ro_data_quality() -> List[Dict]:
+    """Stale close-date auto-flag (P-RO-03) and Stage 4 field completion (P-RO-10)."""
+    return [
+        {
+            "metric": "stale_close_date_autoflag",
+            "rule_deployed_date": "2026-04-17",
+            "deals_flagged_at_entry": 247,
+            "close_date_staleness_threshold_days": 30,
+            "stage_gate_applied": "Stage_3_and_above",
+            "pct_cleared_at_gate": 0.92,
+            "manual_triage_minutes_per_week_replaced": 90,
+        },
+        {
+            "metric": "stage_4_mandatory_field_completion",
+            "required_fields": ["competitor", "decision_maker", "signed_map"],
+            "deals_through_stage_4_gate": 60,
+            "pct_full_completion": 1.00,
+            "gate_deployed_date": "2026-04-17",
+        },
+    ]
+
+
+def gen_ro_tool_sync() -> List[Dict]:
+    """Clari/SFDC sync integrity (P-RO-06) and dashboard consolidation (P-RO-08)."""
+    return [
+        {
+            "metric": "crm_sync_integrity",
+            "sync_pair": "Clari_Salesforce",
+            "sync_deployed_date": "2026-04-22",
+            "active_deals_synced": 1840,
+            "match_rate": 0.994,
+            "forecast_call_source": "single_reconciled_view",
+        },
+        {
+            "metric": "dashboard_consolidation",
+            "audit_completed_date": "2026-04-21",
+            "dashboards_retired": 6,
+            "dashboards_remaining": 4,
+            "tools_consolidated": ["Salesforce", "Clari", "Marketing_Ops_Looker"],
+            "admin_hours_cleared_weekly": 11,
+        },
+    ]
+
+
+def gen_ro_stage_gate() -> List[Dict]:
+    """Stage-3 to Stage-4 conversion lift under refined gate definition (P-RO-07)."""
+    return [
+        {
+            "metric": "stage_3_to_4_conversion",
+            "gate_refresh_deployed_date": "2026-04-04",
+            "new_gate_requirements": ["confirmed_champion", "mutual_action_plan"],
+            "deals_through_new_gate": 96,
+            "prior_conversion_rate": 0.32,
+            "current_conversion_rate": 0.47,
+        },
+    ]
+
+
+def gen_ro_lead_routing() -> List[Dict]:
+    """Lead routing exception rate drop (P-RO-09) and MQL-to-SQL governance (P-RO-15)."""
+    return [
+        {
+            "metric": "lead_routing_exception_rate",
+            "simplification_deployed_date": "2026-04-19",
+            "leads_processed_since_deployment": 1420,
+            "prior_exception_rate": 0.12,
+            "current_exception_rate": 0.018,
+            "largest_improvement_segment": "mid_market_territory_carve",
+            "rules_collapsed_from": 4,
+            "rules_collapsed_to": 1,
+        },
+        {
+            "metric": "mql_to_sql_lifecycle_governance",
+            "governance_refresh_date": "2026-04-21",
+            "leads_through_new_framework": 980,
+            "pct_under_validated_rules": 0.73,
+            "median_handoff_days": 1.4,
+        },
+    ]
+
+
+def gen_ro_attribution() -> List[Dict]:
+    """Multi-touch attribution model lock and QBR dispute resolution (P-RO-05)."""
+    return [
+        {
+            "metric": "attribution_model_lock",
+            "model_locked_date": "2026-04-12",
+            "governance_event": "quarterly_business_review",
+            "disputes_from_prior_qbr": 24,
+            "disputes_resolved_first_pass": 18,
+            "alignment_surfaces": ["Marketing_Ops_Looker", "Salesforce"],
+        },
+    ]
+
+
+def gen_ro_qbr_changes() -> List[Dict]:
+    """Q2 QBR process changes locked ahead of schedule (P-RO-14)."""
+    return [
+        {
+            "metric": "qbr_process_changes",
+            "qbr_completed_date": "2026-04-24",
+            "changes_proposed": 7,
+            "changes_locked": 5,
+            "changes_locked_names": [
+                "stage_gate_enforcement",
+                "mql_definition_refresh",
+                "attribution_model_lock",
+                "clari_sfdc_sync_configuration",
+                "routing_rule_simplification",
+            ],
+            "all_locked_changes_in_production": True,
+        },
+    ]
+
+
+def gen_ro_account_dedup() -> List[Dict]:
+    """Account dedup rule results (P-RO-12)."""
+    return [
+        {
+            "metric": "account_dedup",
+            "rule_deployed_date": "2026-04-21",
+            "duplicate_records_merged": 30,
+            "prior_active_account_count": 1320,
+            "current_active_account_count": 1290,
+        },
+    ]
+
+
+def gen_ro_deal_review_presence() -> List[Dict]:
+    """RevOps in all deal review calls (P-RO-11)."""
+    return [
+        {
+            "metric": "revops_deal_review_presence",
+            "forecast_cycle": "current_Q2_2026",
+            "deal_review_calls_total": 14,
+            "revops_attended": 14,
+            "prior_cycle_revops_attended": 4,
+            "commit_forecast_accuracy_lift_pct": 0.23,
+        },
+    ]
+
+
 def apply_deal_field_defaults(deals: List[Dict]) -> None:
     """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
 
@@ -3740,6 +3932,18 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     rd_dormant_reengagement = gen_rd_dormant_reengagement()
     rd_enterprise_committee = gen_rd_enterprise_committee()
 
+    # Revenue Operator entities (Phase 2.20)
+    ro_forecast_metrics = gen_ro_forecast_metrics()
+    ro_pipeline_governance = gen_ro_pipeline_governance()
+    ro_data_quality = gen_ro_data_quality()
+    ro_tool_sync = gen_ro_tool_sync()
+    ro_stage_gate = gen_ro_stage_gate()
+    ro_lead_routing = gen_ro_lead_routing()
+    ro_attribution = gen_ro_attribution()
+    ro_qbr_changes = gen_ro_qbr_changes()
+    ro_account_dedup = gen_ro_account_dedup()
+    ro_deal_review_presence = gen_ro_deal_review_presence()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -3868,6 +4072,17 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "rd_call_timing": rd_call_timing,
         "rd_dormant_reengagement": rd_dormant_reengagement,
         "rd_enterprise_committee": rd_enterprise_committee,
+        # Revenue Operator entities (Phase 2.20)
+        "ro_forecast_metrics": ro_forecast_metrics,
+        "ro_pipeline_governance": ro_pipeline_governance,
+        "ro_data_quality": ro_data_quality,
+        "ro_tool_sync": ro_tool_sync,
+        "ro_stage_gate": ro_stage_gate,
+        "ro_lead_routing": ro_lead_routing,
+        "ro_attribution": ro_attribution,
+        "ro_qbr_changes": ro_qbr_changes,
+        "ro_account_dedup": ro_account_dedup,
+        "ro_deal_review_presence": ro_deal_review_presence,
     }
 
 

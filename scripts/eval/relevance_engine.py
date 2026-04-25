@@ -155,6 +155,10 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "rd_segment_penetration", "rd_intent_outreach", "rd_ae_handoff",
         "rd_linkedin_inbound", "rd_call_timing", "rd_dormant_reengagement",
         "rd_enterprise_committee",
+        # Revenue Operator entities (Phase 2.20)
+        "ro_forecast_metrics", "ro_pipeline_governance", "ro_data_quality",
+        "ro_tool_sync", "ro_stage_gate", "ro_lead_routing", "ro_attribution",
+        "ro_qbr_changes", "ro_account_dedup", "ro_deal_review_presence",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1378,6 +1382,93 @@ def build_revenue_developer_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_revenue_operator_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Revenue Operator (RevOps / Sales Ops Director)."""
+    forecast_metrics = ds.get("ro_forecast_metrics", [])
+    pipeline_governance = ds.get("ro_pipeline_governance", [])
+    data_quality = ds.get("ro_data_quality", [])
+    tool_sync = ds.get("ro_tool_sync", [])
+    stage_gate = ds.get("ro_stage_gate", [])
+    lead_routing = ds.get("ro_lead_routing", [])
+    attribution = ds.get("ro_attribution", [])
+    qbr_changes = ds.get("ro_qbr_changes", [])
+    account_dedup = ds.get("ro_account_dedup", [])
+    deal_review_presence = ds.get("ro_deal_review_presence", [])
+
+    def _get(lst, key, val):
+        return next((r for r in lst if r.get(key) == val), {})
+
+    fa = _get(forecast_metrics, "metric", "forecast_accuracy_after_validation_rule")
+    fd = _get(forecast_metrics, "metric", "forecast_call_duration")
+    pdl = _get(pipeline_governance, "metric", "pipeline_definition_lock")
+    pcr = _get(pipeline_governance, "metric", "pipeline_coverage_ratio")
+    scdf = _get(data_quality, "metric", "stale_close_date_autoflag")
+    s4fc = _get(data_quality, "metric", "stage_4_mandatory_field_completion")
+    sync = _get(tool_sync, "metric", "crm_sync_integrity")
+    dash = _get(tool_sync, "metric", "dashboard_consolidation")
+    sg = stage_gate[0] if stage_gate else {}
+    lr = _get(lead_routing, "metric", "lead_routing_exception_rate")
+    mql = _get(lead_routing, "metric", "mql_to_sql_lifecycle_governance")
+    attr = attribution[0] if attribution else {}
+    qbr = qbr_changes[0] if qbr_changes else {}
+    dedup = account_dedup[0] if account_dedup else {}
+    drp = deal_review_presence[0] if deal_review_presence else {}
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — REVENUE OPERATOR DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Salesforce is the CRM system of record; Clari for forecasting; HubSpot for marketing handoff; Outreach for sequencing; Looker for reporting.")
+    L.append("")
+
+    L.append("# Forecast accuracy and data quality")
+    if fa:
+        L.append(f"- Stage 4 close-date validation rule deployed {fa['rule_deployed_date']}. Forecast-to-actual accuracy across {fa['forecast_windows_measured']} forecast windows: {fa['prior_forecast_accuracy']*100:.0f}% before deployment to {fa['current_forecast_accuracy']*100:.0f}% after. Strongest improvement on {fa['strongest_segment'].replace('_', ' ')} deals.")
+    if fd:
+        L.append(f"- Tuesday pipeline health report prep moved from manual to automated ({fd['automation_deployed'].replace('_', ' ')}, deployed {fd['automation_deployed_date']}). Wednesday forecast call duration: {fd['current_call_minutes']} minutes this week versus {fd['prior_avg_call_minutes']}-minute average across prior {fd['prior_period_calls_in_sample']} weeks.")
+    if scdf:
+        L.append(f"- Stale close-date auto-flag rule (deployed {scdf['rule_deployed_date']}): surfaces deals with close dates older than {scdf['close_date_staleness_threshold_days']} days at {scdf['stage_gate_applied'].replace('_', ' ')} entry. Deals flagged since deployment: {scdf['deals_flagged_at_entry']}. Cleared at the entry gate: {scdf['pct_cleared_at_gate']*100:.0f}%. Replaces {scdf['manual_triage_minutes_per_week_replaced']}-minute weekly manual triage.")
+    if s4fc:
+        L.append(f"- Stage 4 mandatory-field validation (required: {', '.join(s4fc['required_fields'])}): {s4fc['deals_through_stage_4_gate']} deals moved through Stage 4 since gate deployed {s4fc['gate_deployed_date']}. Field completion: {s4fc['pct_full_completion']*100:.0f}% across all three required fields.")
+    if drp:
+        L.append(f"- RevOps deal review attendance this forecast cycle: {drp['revops_attended']} of {drp['deal_review_calls_total']} calls. Prior cycle: {drp['prior_cycle_revops_attended']} of {drp['deal_review_calls_total']}. Commit-tier forecast accuracy lift on reviewed deals: {drp['commit_forecast_accuracy_lift_pct']*100:.0f}% versus prior cycle.")
+    L.append("")
+
+    L.append("# Pipeline governance and definitional alignment")
+    if pdl:
+        teams = ', '.join(pdl['teams_aligned'])
+        L.append(f"- Pipeline definition adopted by {teams} on {pdl['lock_date']}. All {pdl['reports_now_matching']} weekly reports now produce one matching number. Marketing-influenced and pipeline-sourced figures reconcile within {pdl['reconciliation_tolerance_pct']*100:.0f}%.")
+    if pcr:
+        L.append(f"- Q3 pipeline coverage ratio: {pcr['coverage_ratio']}x against plan. Target band: {pcr['target_band_low']:.0f}-{pcr['target_band_high']:.0f}x. Strongest concentration in {pcr['strongest_segment'].replace('_', ' ')} segment where stage progression has been reliable across the last {pcr['mid_market_reliable_progression_weeks']} weeks.")
+    if attr:
+        L.append(f"- Multi-touch attribution model locked at {attr['governance_event'].replace('_', ' ')} ({attr['model_locked_date']}). Attribution disputes from prior QBR: {attr['disputes_from_prior_qbr']}. Resolved on first pass: {attr['disputes_resolved_first_pass']}. Marketing-sourced and influenced pipeline now matching across {' and '.join(attr['alignment_surfaces'])}.")
+    if dedup:
+        L.append(f"- Account dedup rule deployed {dedup['rule_deployed_date']}: {dedup['duplicate_records_merged']} duplicate company records merged. Active account count tightened from {dedup['prior_active_account_count']} to {dedup['current_active_account_count']}.")
+    L.append("")
+
+    L.append("# Process and tooling efficiency")
+    if sync:
+        L.append(f"- {sync['sync_pair'].replace('_', '/')} bidirectional sync deployed {sync['sync_deployed_date']}: {sync['match_rate']*100:.1f}% deal-state match across {sync['active_deals_synced']:,} active records. Wednesday forecast call opens from {sync['forecast_call_source'].replace('_', ' ')}.")
+    if dash:
+        tools = ', '.join(dash['tools_consolidated'])
+        L.append(f"- Dashboard consolidation audit completed {dash['audit_completed_date']}: {dash['dashboards_retired']} redundant dashboards retired across {tools}. Reporting consolidated into {dash['dashboards_remaining']} dashboards. Admin hours cleared weekly: {dash['admin_hours_cleared_weekly']}.")
+    if sg:
+        reqs = ' and '.join(sg['new_gate_requirements'])
+        L.append(f"- Stage 3 gate definition refresh deployed {sg['gate_refresh_deployed_date']} (requires {reqs}): {sg['deals_through_new_gate']} deals processed under new gate. Stage 3-to-Stage 4 conversion: {sg['prior_conversion_rate']*100:.0f}% before versus {sg['current_conversion_rate']*100:.0f}% after.")
+    if qbr:
+        locked = ', '.join(qbr['changes_locked_names']).replace('_', ' ')
+        L.append(f"- Q2 QBR completed {qbr['qbr_completed_date']}: {qbr['changes_locked']} of {qbr['changes_proposed']} proposed process changes locked ({locked}). All {qbr['changes_locked']} now in production.")
+    L.append("")
+
+    L.append("# Lifecycle governance")
+    if lr:
+        L.append(f"- Lead routing rule simplification deployed {lr['simplification_deployed_date']}: {lr['leads_processed_since_deployment']:,} leads processed since deployment. Manual routing exception rate: {lr['prior_exception_rate']*100:.0f}% before versus {lr['current_exception_rate']*100:.1f}% after. Largest improvement in {lr['largest_improvement_segment'].replace('_', ' ')} ({lr['rules_collapsed_from']} overlapping rules collapsed to {lr['rules_collapsed_to']}).")
+    if mql:
+        L.append(f"- Lead lifecycle governance refresh ({mql['governance_refresh_date']}): {mql['leads_through_new_framework']:,} leads processed. {mql['pct_under_validated_rules']*100:.0f}% of MQL-to-SQL transitions now under validated automation rules. Median handoff timing: {mql['median_handoff_days']} days.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -1455,6 +1546,10 @@ _REVENUE_GENERATOR_GOAL_CLUSTERS = (
 _REVENUE_DEVELOPER_GOAL_CLUSTERS = (
     "Pipeline Creation and Inbound Response; Sequence and Outreach Effectiveness; "
     "ICP Targeting and Segment Penetration; AE Handoff Quality"
+)
+_REVENUE_OPERATOR_GOAL_CLUSTERS = (
+    "Forecast Accuracy and Data Quality; Pipeline Governance and Definitional Alignment; "
+    "Process and Tooling Efficiency; Lifecycle Governance"
 )
 _CUSTOMER_GOAL_CLUSTERS = (
     "Retained Revenue Landing to Forecast; Expansion Revenue Compounding NRR; "
@@ -1560,6 +1655,20 @@ _ARCHETYPE_CONFIG = {
         ),
         "brief_filename": "revenue-developer-brief.md",
         "user_prompt_subject": "Sales Development",
+    },
+    "revenue_operator": {
+        "intelligence_area": "revenue",
+        "audience_label": "Director of Revenue Operations at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Revenue Operator",
+        "goal_clusters": _REVENUE_OPERATOR_GOAL_CLUSTERS,
+        "snapshot_label": "REVENUE OPERATOR DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Stage 3-to-4 conversion 47%\", "
+            "your card says 47% or rounds honestly to 47%, not 48%."
+        ),
+        "brief_filename": "revenue-operator-brief.md",
+        "user_prompt_subject": "Revenue Operations",
     },
 }
 
@@ -1673,6 +1782,7 @@ def build_user_message(archetype: str) -> str:
         "marketing_builder": "marketing execution data",
         "revenue_generator": "account executive data",
         "revenue_developer": "sales development data",
+        "revenue_operator": "revenue operations data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -1929,6 +2039,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_revenue_generator_summary(ds)
     elif archetype == "revenue_developer":
         summary = build_revenue_developer_summary(ds)
+    elif archetype == "revenue_operator":
+        summary = build_revenue_operator_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,
