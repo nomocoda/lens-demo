@@ -1,0 +1,182 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Forecast accuracy jumps 18 points after Stage 4 validation",
+    "anchor": "Forecast-to-actual accuracy climbed from 58% to 76% across three forecast windows since the close-date validation rule went live April 17th.",
+    "connect": "Commit tier deals show the strongest improvement in the new accuracy range.",
+    "body": "Forecast-to-actual accuracy climbed from 58% to 76% across three forecast windows since the close-date validation rule went live April 17th. Commit tier deals show the strongest improvement in the new accuracy range.",
+    "grounded_metrics": [
+      "stage_4_close_date_validation",
+      "forecast_accuracy_commit_tier"
+    ],
+    "trace": "Stage 4 close-date validation rule deployment correlates with forecast accuracy improvement, particularly on commit-category deals."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Wednesday forecast call runs 62 minutes shorter",
+    "anchor": "This week's call clocked 28 minutes versus the 90-minute average across the prior 8 weeks.",
+    "connect": "Tuesday pipeline health report prep moved from manual to automated on April 21st.",
+    "body": "This week's call clocked 28 minutes versus the 90-minute average across the prior 8 weeks. Tuesday pipeline health report prep moved from manual to automated on April 21st.",
+    "grounded_metrics": [
+      "forecast_call_duration",
+      "tuesday_pipeline_prep_automation"
+    ],
+    "trace": "Automated pipeline health report prep deployed April 21st correlates with dramatic forecast call efficiency gain."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Pipeline definition lock eliminates three-source variance",
+    "anchor": "Sales, Marketing, and Finance reports now produce one matching number since the definition was adopted April 14th.",
+    "connect": "Marketing-influenced and pipeline-sourced figures reconcile within 2%.",
+    "body": "Sales, Marketing, and Finance reports now produce one matching number since the definition was adopted April 14th. Marketing-influenced and pipeline-sourced figures reconcile within 2%.",
+    "grounded_metrics": [
+      "pipeline_definition_alignment",
+      "marketing_pipeline_reconciliation"
+    ],
+    "trace": "Pipeline definition governance event resolved cross-functional reporting variance that was creating QBR disputes."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stage 3 conversion rate climbs 15 points under new gate",
+    "anchor": "Stage 3-to-Stage 4 conversion runs at 47% since the gate refresh deployed April 4th, up from 32%.",
+    "connect": "The new gate requires confirmed champion and mutual action plan before deals advance.",
+    "body": "Stage 3-to-Stage 4 conversion runs at 47% since the gate refresh deployed April 4th, up from 32%. The new gate requires confirmed champion and mutual action plan before deals advance.",
+    "grounded_metrics": [
+      "stage_3_gate_conversion",
+      "stage_gate_requirements"
+    ],
+    "trace": "Stage 3 gate definition refresh with champion and action plan requirements shows material conversion improvement."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Lead routing exception rate drops to 1.8%",
+    "anchor": "Manual routing exceptions hit 1.8% since the rule simplification deployed April 19th, down from 12%.",
+    "connect": "Mid-market territory carve saw the largest improvement where four overlapping rules collapsed to one.",
+    "body": "Manual routing exceptions hit 1.8% since the rule simplification deployed April 19th, down from 12%. Mid-market territory carve saw the largest improvement where four overlapping rules collapsed to one.",
+    "grounded_metrics": [
+      "lead_routing_exceptions",
+      "territory_rule_simplification"
+    ],
+    "trace": "Lead routing rule simplification in mid-market territory eliminated overlapping logic that was causing manual override volume."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Six redundant dashboards retired in consolidation audit",
+    "anchor": "The April 21st audit cleared dashboards across Salesforce, Clari, and Marketing Ops Looker.",
+    "connect": "Reporting now consolidates into 4 dashboards, clearing 11 admin hours weekly.",
+    "body": "The April 21st audit cleared dashboards across Salesforce, Clari, and Marketing Ops Looker. Reporting now consolidates into 4 dashboards, clearing 11 admin hours weekly.",
+    "grounded_metrics": [
+      "dashboard_consolidation",
+      "admin_hours_reclaimed"
+    ],
+    "trace": "Dashboard rationalization project removed redundant reporting infrastructure and reclaimed admin capacity."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Q2 QBR locks 5 of 7 proposed process changes",
+    "anchor": "Stage gate enforcement, MQL definition refresh, attribution model lock, Clari-SFDC sync configuration, and routing rule simplification all moved to production.",
+    "connect": "The April 24th QBR completed with all locked changes now live in the system.",
+    "body": "Stage gate enforcement, MQL definition refresh, attribution model lock, Clari-SFDC sync configuration, and routing rule simplification all moved to production. The April 24th QBR completed with all locked changes now live in the system.",
+    "grounded_metrics": [
+      "qbr_process_locks",
+      "production_deployment_status"
+    ],
+    "trace": "Q2 QBR governance event successfully locked and deployed the majority of proposed process changes."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stale close-date flag clears 92% of deals at entry gate",
+    "anchor": "247 deals flagged since the auto-flag rule deployed April 17th for close dates older than 30 days at Stage 3 and above.",
+    "connect": "The rule replaces 90 minutes of weekly manual triage work.",
+    "body": "247 deals flagged since the auto-flag rule deployed April 17th for close dates older than 30 days at Stage 3 and above. The rule replaces 90 minutes of weekly manual triage work.",
+    "grounded_metrics": [
+      "stale_close_date_flags",
+      "manual_triage_elimination"
+    ],
+    "trace": "Automated stale close-date detection eliminated manual weekly triage while maintaining high clearance rate."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Multi-touch attribution model resolves 18 of 24 prior disputes",
+    "anchor": "Attribution disputes from the prior QBR resolved on first pass after the model locked April 12th.",
+    "connect": "Marketing-sourced and influenced pipeline now match across Marketing Ops Looker and Salesforce.",
+    "body": "Attribution disputes from the prior QBR resolved on first pass after the model locked April 12th. Marketing-sourced and influenced pipeline now match across Marketing Ops Looker and Salesforce.",
+    "grounded_metrics": [
+      "attribution_dispute_resolution",
+      "marketing_pipeline_system_match"
+    ],
+    "trace": "Attribution model governance lock resolved most outstanding disputes and aligned cross-system pipeline figures."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Pipeline coverage sits at 4.1x in target band",
+    "anchor": "Q3 coverage runs at 4.1x versus the 3-5x target band, with strongest concentration in mid-market segment.",
+    "connect": "Stage progression in mid-market has been reliable across the last 6 weeks.",
+    "body": "Q3 coverage runs at 4.1x versus the 3-5x target band, with strongest concentration in mid-market segment. Stage progression in mid-market has been reliable across the last 6 weeks.",
+    "grounded_metrics": [
+      "q3_pipeline_coverage",
+      "midmarket_stage_progression"
+    ],
+    "trace": "Q3 pipeline coverage ratio sits within target band with mid-market segment showing consistent progression patterns."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Account dedup tightens active count to 1,290",
+    "anchor": "30 duplicate company records merged when the dedup rule deployed April 21st.",
+    "connect": "Active account count moved from 1,320 to 1,290 after the consolidation.",
+    "body": "30 duplicate company records merged when the dedup rule deployed April 21st. Active account count moved from 1,320 to 1,290 after the consolidation.",
+    "grounded_metrics": [
+      "account_dedup_results",
+      "active_account_count"
+    ],
+    "trace": "Account deduplication rule deployment cleaned duplicate records and corrected active account count baseline."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Clari-Salesforce sync achieves 99.4% deal-state match",
+    "anchor": "Bidirectional sync deployed April 22nd shows 99.4% match across 1,840 active records.",
+    "connect": "Wednesday forecast call now opens from a single reconciled view.",
+    "body": "Bidirectional sync deployed April 22nd shows 99.4% match across 1,840 active records. Wednesday forecast call now opens from a single reconciled view.",
+    "grounded_metrics": [
+      "clari_sfdc_sync_match",
+      "forecast_call_reconciled_view"
+    ],
+    "trace": "Clari-Salesforce bidirectional sync deployment achieved near-perfect deal state alignment for forecast calls."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stage 4 mandatory fields hit 100% completion",
+    "anchor": "60 deals moved through Stage 4 since the validation gate deployed April 17th requiring competitor, decision maker, and signed map.",
+    "connect": "Field completion runs at 100% across all three required fields.",
+    "body": "60 deals moved through Stage 4 since the validation gate deployed April 17th requiring competitor, decision maker, and signed map. Field completion runs at 100% across all three required fields.",
+    "grounded_metrics": [
+      "stage_4_mandatory_fields",
+      "field_completion_rate"
+    ],
+    "trace": "Stage 4 mandatory field validation ensures complete data capture on competitor, decision maker, and signed map fields."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "RevOps deal review attendance jumps to 100%",
+    "anchor": "14 of 14 forecast calls attended this cycle versus 4 of 14 in the prior cycle.",
+    "connect": "Commit-tier forecast accuracy shows 23% lift on reviewed deals versus prior cycle.",
+    "body": "14 of 14 forecast calls attended this cycle versus 4 of 14 in the prior cycle. Commit-tier forecast accuracy shows 23% lift on reviewed deals versus prior cycle.",
+    "grounded_metrics": [
+      "revops_attendance_rate",
+      "reviewed_deal_accuracy"
+    ],
+    "trace": "RevOps deal review attendance improvement correlates with forecast accuracy gains on commit-tier deals."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "MQL-to-SQL lifecycle governance reaches 73% automation",
+    "anchor": "980 leads processed since the lifecycle refresh deployed April 21st, with 73% of MQL-to-SQL transitions under validated automation rules.",
+    "connect": "Median handoff timing runs at 1.4 days.",
+    "body": "980 leads processed since the lifecycle refresh deployed April 21st, with 73% of MQL-to-SQL transitions under validated automation rules. Median handoff timing runs at 1.4 days.",
+    "grounded_metrics": [
+      "mql_sql_automation_rate",
+      "handoff_timing_median"
+    ],
+    "trace": "Lead lifecycle governance refresh automated majority of MQL-to-SQL transitions with consistent handoff timing."
+  }
+]

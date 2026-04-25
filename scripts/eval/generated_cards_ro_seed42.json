@@ -1,0 +1,182 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Forecast accuracy jumped 18 points after close-date validation",
+    "anchor": "Stage 4 close-date validation rule deployed April 17th moved forecast-to-actual from 58% to 76% across three forecast windows.",
+    "connect": "Commit tier deals show the strongest accuracy improvement in the period.",
+    "body": "Stage 4 close-date validation rule deployed April 17th moved forecast-to-actual from 58% to 76% across three forecast windows. Commit tier deals show the strongest accuracy improvement in the period.",
+    "grounded_metrics": [
+      "stage_4_validation",
+      "forecast_accuracy"
+    ],
+    "trace": "Close-date staleness was breaking forecast reliability. Gate enforcement fixed it upstream."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Wednesday forecast call runs at 28 minutes versus 90-minute baseline",
+    "anchor": "Pipeline health report prep automation deployed April 21st cut meeting duration by two-thirds this week.",
+    "connect": "Eight-week prior average ran at 90 minutes per forecast call.",
+    "body": "Pipeline health report prep automation deployed April 21st cut meeting duration by two-thirds this week. Eight-week prior average ran at 90 minutes per forecast call.",
+    "grounded_metrics": [
+      "forecast_call_duration",
+      "pipeline_prep_automation"
+    ],
+    "trace": "Manual prep work was consuming meeting time. Automation freed it up."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Pipeline definition lock produces one matching number across three teams",
+    "anchor": "Sales, Marketing, and Finance adopted shared pipeline definition April 14th.",
+    "connect": "Marketing-influenced and pipeline-sourced figures now reconcile within 2%.",
+    "body": "Sales, Marketing, and Finance adopted shared pipeline definition April 14th. Marketing-influenced and pipeline-sourced figures now reconcile within 2%.",
+    "grounded_metrics": [
+      "pipeline_definition",
+      "cross_team_alignment"
+    ],
+    "trace": "Three different definitions were producing three different pipeline numbers. Governance event fixed it."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stage 3 conversion rate climbs from 32% to 47% after gate refresh",
+    "anchor": "New Stage 3 gate requires confirmed champion and mutual action plan since April 4th.",
+    "connect": "96 deals have processed under the refined gate definition.",
+    "body": "New Stage 3 gate requires confirmed champion and mutual action plan since April 4th. 96 deals have processed under the refined gate definition.",
+    "grounded_metrics": [
+      "stage_3_conversion",
+      "gate_refresh"
+    ],
+    "trace": "Loose gate definition was letting unqualified deals advance. Tighter criteria improved conversion."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stale close-date flags surface 247 deals since April 17th",
+    "anchor": "Auto-flag rule targets deals with close dates older than 30 days at Stage 3 and above.",
+    "connect": "92% cleared at entry gate, replacing 90-minute weekly manual triage.",
+    "body": "Auto-flag rule targets deals with close dates older than 30 days at Stage 3 and above. 92% cleared at entry gate, replacing 90-minute weekly manual triage.",
+    "grounded_metrics": [
+      "stale_close_dates",
+      "auto_flag_rule"
+    ],
+    "trace": "Close-date drift was happening invisibly. Automation surfaced it systematically."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Lead routing exception rate drops from 12% to 1.8%",
+    "anchor": "Rule simplification deployed April 19th processed 1,420 leads since launch.",
+    "connect": "Mid-market territory carved from four overlapping rules to one.",
+    "body": "Rule simplification deployed April 19th processed 1,420 leads since launch. Mid-market territory carved from four overlapping rules to one.",
+    "grounded_metrics": [
+      "lead_routing",
+      "exception_rate"
+    ],
+    "trace": "Overlapping territory rules were creating assignment conflicts. Consolidation fixed it."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Pipeline coverage sits at 4.1x versus plan in Q3",
+    "anchor": "Coverage lands within the 3-5x target band with strongest concentration in mid-market segment.",
+    "connect": "Mid-market stage progression has been reliable across six weeks.",
+    "body": "Coverage lands within the 3-5x target band with strongest concentration in mid-market segment. Mid-market stage progression has been reliable across six weeks.",
+    "grounded_metrics": [
+      "pipeline_coverage",
+      "q3_plan"
+    ],
+    "trace": "Coverage ratio is healthy and concentrated where stage movement is most predictable."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Multi-touch attribution disputes resolved on first pass",
+    "anchor": "Attribution model locked at April 12th QBR addressed 24 disputes from prior quarter.",
+    "connect": "18 of 24 resolved immediately; Marketing-sourced and influenced pipeline now match across systems.",
+    "body": "Attribution model locked at April 12th QBR addressed 24 disputes from prior quarter. 18 of 24 resolved immediately; Marketing-sourced and influenced pipeline now match across systems.",
+    "grounded_metrics": [
+      "attribution_model",
+      "qbr_resolution"
+    ],
+    "trace": "Attribution disagreements were recurring at every QBR. Model lock fixed the majority."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stage 4 mandatory fields show 100% completion across 60 deals",
+    "anchor": "Required fields competitor, decision_maker, and signed_map deployed April 17th.",
+    "connect": "All deals advancing through Stage 4 since deployment carry complete structured data.",
+    "body": "Required fields competitor, decision_maker, and signed_map deployed April 17th. All deals advancing through Stage 4 since deployment carry complete structured data.",
+    "grounded_metrics": [
+      "stage_4_fields",
+      "data_completion"
+    ],
+    "trace": "Missing battlecard data was making deal review less effective. Gate enforcement fixed it."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Account deduplication tightens active count from 1,320 to 1,290",
+    "anchor": "Dedup rule deployed April 21st merged 30 duplicate company records.",
+    "connect": "Active account count now reflects actual prospect universe size.",
+    "body": "Dedup rule deployed April 21st merged 30 duplicate company records. Active account count now reflects actual prospect universe size.",
+    "grounded_metrics": [
+      "account_dedup",
+      "active_count"
+    ],
+    "trace": "Duplicate records were inflating prospect pool size. Cleanup corrected the baseline."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Clari-Salesforce sync reaches 99.4% deal-state match",
+    "anchor": "Bidirectional sync deployed April 22nd across 1,840 active records.",
+    "connect": "Wednesday forecast call now opens from single reconciled view.",
+    "body": "Bidirectional sync deployed April 22nd across 1,840 active records. Wednesday forecast call now opens from single reconciled view.",
+    "grounded_metrics": [
+      "clari_sync",
+      "deal_state_match"
+    ],
+    "trace": "System mismatch was creating forecast prep overhead. Sync eliminated the reconciliation step."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Six redundant dashboards retired across three systems",
+    "anchor": "Dashboard consolidation audit completed April 21st cleared 11 admin hours weekly.",
+    "connect": "Reporting consolidated into four dashboards across Salesforce, Clari, and Marketing Ops Looker.",
+    "body": "Dashboard consolidation audit completed April 21st cleared 11 admin hours weekly. Reporting consolidated into four dashboards across Salesforce, Clari, and Marketing Ops Looker.",
+    "grounded_metrics": [
+      "dashboard_consolidation",
+      "admin_hours"
+    ],
+    "trace": "Redundant reporting infrastructure was consuming maintenance time. Rationalization freed it up."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "MQL-to-SQL transitions run 73% under validated automation",
+    "anchor": "Lifecycle governance refresh April 21st processed 980 leads since deployment.",
+    "connect": "Median handoff timing sits at 1.4 days.",
+    "body": "Lifecycle governance refresh April 21st processed 980 leads since deployment. Median handoff timing sits at 1.4 days.",
+    "grounded_metrics": [
+      "mql_sql_automation",
+      "handoff_timing"
+    ],
+    "trace": "Manual handoffs were creating timing variance. Automation standardized the transition."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "RevOps deal review attendance climbs to 14 of 14 calls",
+    "anchor": "Full attendance this forecast cycle versus 4 of 14 prior cycle.",
+    "connect": "Commit-tier forecast accuracy shows 23% lift on reviewed deals.",
+    "body": "Full attendance this forecast cycle versus 4 of 14 prior cycle. Commit-tier forecast accuracy shows 23% lift on reviewed deals.",
+    "grounded_metrics": [
+      "deal_review_attendance",
+      "forecast_accuracy_lift"
+    ],
+    "trace": "Inconsistent review coverage was leaving forecast quality uneven. Full attendance fixed it."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Q2 QBR locks 5 of 7 proposed process changes",
+    "anchor": "Stage gate enforcement, MQL definition refresh, attribution model lock, Clari-SFDC sync, and routing rule simplification now in production.",
+    "connect": "Two remaining proposals deferred to Q3 planning cycle.",
+    "body": "Stage gate enforcement, MQL definition refresh, attribution model lock, Clari-SFDC sync, and routing rule simplification now in production. Two remaining proposals deferred to Q3 planning cycle.",
+    "grounded_metrics": [
+      "qbr_process_changes",
+      "production_deployment"
+    ],
+    "trace": "QBR governance delivered concrete process improvements rather than leaving them as discussion items."
+  }
+]

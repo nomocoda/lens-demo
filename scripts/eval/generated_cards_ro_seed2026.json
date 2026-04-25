@@ -1,0 +1,254 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Forecast accuracy jumps 18 points after close-date validation",
+    "anchor": "Stage 4 close-date validation rule deployed April 17 lifts forecast-to-actual accuracy from 58% to 76% across three forecast windows.",
+    "connect": "Commit tier deals show the strongest improvement in accuracy.",
+    "body": "Stage 4 close-date validation rule deployed April 17 lifts forecast-to-actual accuracy from 58% to 76% across three forecast windows. Commit tier deals show the strongest improvement in accuracy.",
+    "grounded_metrics": [
+      "stage_4_validation",
+      "forecast_accuracy"
+    ],
+    "trace": "Stage 4 close-date validation produces the 18-point accuracy lift, with commit tier showing strongest gains."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Wednesday forecast call runs 28 minutes versus 90-minute baseline",
+    "anchor": "Tuesday pipeline health report prep moved to automation April 21.",
+    "connect": "Prior 8 weeks averaged 90 minutes per call.",
+    "body": "Tuesday pipeline health report prep moved to automation April 21. Prior 8 weeks averaged 90 minutes per call.",
+    "grounded_metrics": [
+      "forecast_call_duration",
+      "pipeline_health_automation"
+    ],
+    "trace": "Automated Tuesday prep work drops Wednesday call duration from 90-minute average to 28 minutes."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stage 3 to Stage 4 conversion climbs from 32% to 47%",
+    "anchor": "Stage 3 gate definition refresh deployed April 4 requires confirmed champion and mutual action plan.",
+    "connect": "96 deals have processed under the new gate.",
+    "body": "Stage 3 gate definition refresh deployed April 4 requires confirmed champion and mutual action plan. 96 deals have processed under the new gate.",
+    "grounded_metrics": [
+      "stage_3_conversion",
+      "gate_definition"
+    ],
+    "trace": "Stage 3 gate definition requiring champion and MAP produces 15-point conversion lift."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Lead routing exception rate drops to 1.8% from 12%",
+    "anchor": "Lead routing rule simplification deployed April 19 collapses 4 overlapping mid-market territory rules to 1.",
+    "connect": "1,420 leads have processed since deployment.",
+    "body": "Lead routing rule simplification deployed April 19 collapses 4 overlapping mid-market territory rules to 1. 1,420 leads have processed since deployment.",
+    "grounded_metrics": [
+      "routing_exception_rate",
+      "territory_rules"
+    ],
+    "trace": "Mid-market territory rule simplification produces 10-point drop in routing exceptions."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Pipeline coverage sits at 4.1x versus plan",
+    "anchor": "Q3 pipeline coverage lands in target band of 3-5x.",
+    "connect": "Strongest concentration in mid-market segment where stage progression has been reliable across 6 weeks.",
+    "body": "Q3 pipeline coverage lands in target band of 3-5x. Strongest concentration in mid-market segment where stage progression has been reliable across 6 weeks.",
+    "grounded_metrics": [
+      "pipeline_coverage",
+      "mid_market_progression"
+    ],
+    "trace": "Q3 pipeline coverage at 4.1x sits well within target range, with mid-market showing reliable progression."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Pipeline definition locks across Sales, Marketing, Finance",
+    "anchor": "Definition adopted April 14 produces one matching number across all 3 weekly reports.",
+    "connect": "Marketing-influenced and pipeline-sourced figures reconcile within 2%.",
+    "body": "Definition adopted April 14 produces one matching number across all 3 weekly reports. Marketing-influenced and pipeline-sourced figures reconcile within 2%.",
+    "grounded_metrics": [
+      "pipeline_definition",
+      "cross_function_alignment"
+    ],
+    "trace": "Pipeline definition alignment eliminates discrepancies between Sales, Marketing, and Finance weekly reports."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Multi-touch attribution model locks at QBR",
+    "anchor": "Attribution model locked April 12 resolves 18 of 24 prior-QBR disputes on first pass.",
+    "connect": "Marketing-sourced and influenced pipeline now matching across Marketing Ops Looker and Salesforce.",
+    "body": "Attribution model locked April 12 resolves 18 of 24 prior-QBR disputes on first pass. Marketing-sourced and influenced pipeline now matching across Marketing Ops Looker and Salesforce.",
+    "grounded_metrics": [
+      "attribution_model",
+      "marketing_pipeline_reconcile"
+    ],
+    "trace": "Locked attribution model eliminates most QBR disputes and aligns marketing pipeline figures."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "5 of 7 QBR process changes locked and in production",
+    "anchor": "Q2 QBR completed April 24 locks stage gate enforcement, MQL definition refresh, attribution model, Clari sync, and routing simplification.",
+    "connect": "All 5 locked changes now deployed in production systems.",
+    "body": "Q2 QBR completed April 24 locks stage gate enforcement, MQL definition refresh, attribution model, Clari sync, and routing simplification. All 5 locked changes now deployed in production systems.",
+    "grounded_metrics": [
+      "qbr_process_changes",
+      "production_deployment"
+    ],
+    "trace": "High QBR execution rate with 5 of 7 proposed changes locked and live."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stale close-date auto-flag replaces 90-minute manual triage",
+    "anchor": "Auto-flag rule deployed April 17 surfaces deals with close dates older than 30 days at Stage 3 and above.",
+    "connect": "247 deals flagged since deployment; 92% cleared at the entry gate.",
+    "body": "Auto-flag rule deployed April 17 surfaces deals with close dates older than 30 days at Stage 3 and above. 247 deals flagged since deployment; 92% cleared at the entry gate.",
+    "grounded_metrics": [
+      "stale_date_automation",
+      "deal_hygiene"
+    ],
+    "trace": "Automated stale close-date flagging eliminates weekly manual triage and clears most issues at entry."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Stage 4 mandatory fields achieve 100% completion",
+    "anchor": "60 deals moved through Stage 4 since gate deployed April 17.",
+    "connect": "Required fields competitor, decision maker, and signed MAP complete across all deals.",
+    "body": "60 deals moved through Stage 4 since gate deployed April 17. Required fields competitor, decision maker, and signed MAP complete across all deals.",
+    "grounded_metrics": [
+      "stage_4_fields",
+      "data_completeness"
+    ],
+    "trace": "Stage 4 mandatory field validation produces perfect completion rate on critical forecast fields."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Clari Salesforce sync achieves 99.4% deal-state match",
+    "anchor": "Bidirectional sync deployed April 22 across 1,840 active records.",
+    "connect": "Wednesday forecast call now opens from single reconciled view.",
+    "body": "Bidirectional sync deployed April 22 across 1,840 active records. Wednesday forecast call now opens from single reconciled view.",
+    "grounded_metrics": [
+      "clari_sfdc_sync",
+      "deal_state_match"
+    ],
+    "trace": "Clari Salesforce sync eliminates forecast discrepancies and enables single-source forecast calls."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "6 redundant dashboards retired across reporting stack",
+    "anchor": "Dashboard consolidation audit completed April 21 spans Salesforce, Clari, and Marketing Ops Looker.",
+    "connect": "Reporting consolidated into 4 dashboards; 11 admin hours cleared weekly.",
+    "body": "Dashboard consolidation audit completed April 21 spans Salesforce, Clari, and Marketing Ops Looker. Reporting consolidated into 4 dashboards; 11 admin hours cleared weekly.",
+    "grounded_metrics": [
+      "dashboard_consolidation",
+      "admin_hours"
+    ],
+    "trace": "Dashboard rationalization clears administrative overhead and simplifies reporting infrastructure."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Account dedup tightens active count to 1,290",
+    "anchor": "Account dedup rule deployed April 21 merges 30 duplicate company records.",
+    "connect": "Active account count drops from 1,320 to 1,290.",
+    "body": "Account dedup rule deployed April 21 merges 30 duplicate company records. Active account count drops from 1,320 to 1,290.",
+    "grounded_metrics": [
+      "account_dedup",
+      "active_account_count"
+    ],
+    "trace": "Account deduplication removes inflated record counts and improves data accuracy."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "73% of MQL-to-SQL transitions under validated automation",
+    "anchor": "Lead lifecycle governance refresh deployed April 21 processes 980 leads.",
+    "connect": "Median handoff timing sits at 1.4 days.",
+    "body": "Lead lifecycle governance refresh deployed April 21 processes 980 leads. Median handoff timing sits at 1.4 days.",
+    "grounded_metrics": [
+      "mql_sql_automation",
+      "handoff_timing"
+    ],
+    "trace": "Lifecycle governance puts most MQL-SQL transitions under automated rules with fast handoffs."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "RevOps forecast call attendance climbs to 14 of 14",
+    "anchor": "Current forecast cycle shows perfect attendance versus 4 of 14 in prior cycle.",
+    "connect": "Commit-tier forecast accuracy lifts 23% on reviewed deals.",
+    "body": "Current forecast cycle shows perfect attendance versus 4 of 14 in prior cycle. Commit-tier forecast accuracy lifts 23% on reviewed deals.",
+    "grounded_metrics": [
+      "forecast_call_attendance",
+      "commit_tier_accuracy"
+    ],
+    "trace": "RevOps forecast call attendance correlates with improved accuracy on commit-tier deals."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Mid-market territory shows 6-week stage progression reliability",
+    "anchor": "Mid-market segment concentration drives Q3 pipeline coverage strength.",
+    "connect": "Pipeline coverage ratio sits at 4.1x versus plan in this segment.",
+    "body": "Mid-market segment concentration drives Q3 pipeline coverage strength. Pipeline coverage ratio sits at 4.1x versus plan in this segment.",
+    "grounded_metrics": [
+      "mid_market_progression",
+      "pipeline_coverage"
+    ],
+    "trace": "Mid-market segment shows consistent stage progression and strong pipeline coverage contribution."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Marketing pipeline reconciliation within 2% variance",
+    "anchor": "Marketing-influenced and pipeline-sourced figures align after definition lock.",
+    "connect": "Sales, Marketing, Finance weekly reports produce matching pipeline numbers.",
+    "body": "Marketing-influenced and pipeline-sourced figures align after definition lock. Sales, Marketing, Finance weekly reports produce matching pipeline numbers.",
+    "grounded_metrics": [
+      "marketing_pipeline_reconcile",
+      "pipeline_definition"
+    ],
+    "trace": "Pipeline definition alignment produces tight variance between marketing attribution methods."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Gate enforcement lifts data quality across validation points",
+    "anchor": "Stage 3 gate requires confirmed champion and mutual action plan; Stage 4 gate mandates competitor, decision maker, and signed MAP fields.",
+    "connect": "156 deals processed under both gates show 100% field completion and 47% Stage 3-4 conversion.",
+    "body": "Stage 3 gate requires confirmed champion and mutual action plan; Stage 4 gate mandates competitor, decision maker, and signed MAP fields. 156 deals processed under both gates show 100% field completion and 47% Stage 3-4 conversion.",
+    "grounded_metrics": [
+      "gate_enforcement",
+      "data_quality_lift"
+    ],
+    "trace": "Combined gate enforcement produces complete data quality and improved stage progression."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Automation stack eliminates 101 weekly admin minutes",
+    "anchor": "Tuesday pipeline prep automation saves 90 minutes weekly; stale close-date auto-flag saves 11 minutes.",
+    "connect": "Dashboard consolidation clears additional 11 admin hours weekly.",
+    "body": "Tuesday pipeline prep automation saves 90 minutes weekly; stale close-date auto-flag saves 11 minutes. Dashboard consolidation clears additional 11 admin hours weekly.",
+    "grounded_metrics": [
+      "automation_time_savings",
+      "admin_efficiency"
+    ],
+    "trace": "Multiple automation deployments compound to clear substantial weekly administrative overhead."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Territory rule simplification concentrates improvement in mid-market",
+    "anchor": "4 overlapping mid-market territory rules collapsed to 1 drives routing exception rate drop.",
+    "connect": "Exception rate moves from 12% to 1.8% across 1,420 processed leads.",
+    "body": "4 overlapping mid-market territory rules collapsed to 1 drives routing exception rate drop. Exception rate moves from 12% to 1.8% across 1,420 processed leads.",
+    "grounded_metrics": [
+      "territory_rule_consolidation",
+      "mid_market_routing"
+    ],
+    "trace": "Mid-market territory rule consolidation produces the largest routing accuracy improvement."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Single reconciled view enables faster forecast calls",
+    "anchor": "Clari Salesforce sync at 99.4% match eliminates Wednesday forecast prep reconciliation.",
+    "connect": "Forecast call duration drops to 28 minutes from 90-minute baseline.",
+    "body": "Clari Salesforce sync at 99.4% match eliminates Wednesday forecast prep reconciliation. Forecast call duration drops to 28 minutes from 90-minute baseline.",
+    "grounded_metrics": [
+      "single_reconciled_view",
+      "forecast_efficiency"
+    ],
+    "trace": "Perfect system sync enables forecast calls to start from reconciled data and run faster."
+  }
+]
