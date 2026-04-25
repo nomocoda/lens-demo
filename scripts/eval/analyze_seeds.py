@@ -63,8 +63,12 @@ PATTERNS = [
         r"\d\d (mid[- ]market )?(deals|opportunities) created",
         r"mid[- ]market creation", r"\$41K average", r"\$890K.*mid[- ]market",
         r"\$42K average", r"\$2\.0\dM (across|total).*mid[- ]market",
+        r"mid[- ]market opportunit(y|ies) (creation|averages)",
+        r"\d\d recent (mid[- ]market )?deals",
+        r"\$4[0-2](\.\d)?K across \d\d",
     ], ["recent_mm", "mm_30d", "mm_creation", "mid_market_creation",
-        "mid_market_deal_volume", "mm_30day", "mid_market_acv"]),
+        "mid_market_deal_volume", "mm_30day", "mid_market_acv",
+        "mm_recent", "mm_pipeline_creation", "mm_recent_acv"]),
 
     ("P-RL-07", "Enterprise Q2 WR lift vs trailing", [
         r"enterprise win rate", r"3[01]% .*enterprise", r"22\.22%", r"30\.77%",

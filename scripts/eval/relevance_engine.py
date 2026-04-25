@@ -541,6 +541,21 @@ def build_revenue_summary(ds: Dict[str, list]) -> str:
     q2_cycle = _mean(cycle(d) for d in mm_q2_closed)
     q1_cycle = _mean(cycle(d) for d in mm_q1_closed)
 
+    # MM proposal-stage time, Q2 vs trailing 4Q (RL-02)
+    # Distinct from full-cycle: this isolates time spent in the proposal stage
+    # specifically, which surfaces procurement / pricing-conversation dynamics
+    # that whole-cycle compression numbers blur out.
+    mm_q2_prop = [d["time_in_proposal"] for d in deals
+                  if d["segment"] == "mid-market" and d["is_closed"]
+                  and q2[0] <= cd(d) <= q2[1]
+                  and d.get("time_in_proposal") is not None]
+    mm_trail_prop = [d["time_in_proposal"] for d in deals
+                     if d["segment"] == "mid-market" and d["is_closed"]
+                     and date(2025, 4, 1) <= cd(d) <= date(2026, 3, 31)
+                     and d.get("time_in_proposal") is not None]
+    q2_prop_mean = _mean(mm_q2_prop)
+    trail_prop_mean = _mean(mm_trail_prop)
+
     # H2H vs Beacon (RL-10)
     h2h = [d for d in deals if d.get("head_to_head") and d.get("competitor_id") == "Beacon Systems"]
     q2_h2h = [d for d in h2h if d["is_closed"] and q2[0] <= cd(d) <= q2[1]]
@@ -612,7 +627,8 @@ def build_revenue_summary(ds: Dict[str, list]) -> str:
     L.append(f"- Trailing four quarters enterprise win rate: {trail_wr*100:.2f}% ({len(ent_trail_wins)}/{len(ent_trail)} deals). Average won amount: ${trail_avg_won:,.0f}.")
     L.append(f"- Q2 enterprise win rate by source class: marketing-sourced {ms_wr*100:.1f}% ({ms_w}/{ms_n}); outbound {ob_wr*100:.1f}% ({ob_w}/{ob_n}).")
     L.append(f"- Q1 2026 enterprise wins: n={len(q1_ent_wins)}, average won amount ${q1_ent_avg:,.0f}.")
-    L.append(f"- Mid-market sales cycle: Q2 closed deals n={len(mm_q2_closed)} mean cycle {q2_cycle:.1f} days; Q1 closed deals n={len(mm_q1_closed)} mean cycle {q1_cycle:.1f} days.")
+    L.append(f"- Mid-market sales cycle (full create-to-close): Q2 closed deals n={len(mm_q2_closed)} mean cycle {q2_cycle:.1f} days; Q1 closed deals n={len(mm_q1_closed)} mean cycle {q1_cycle:.1f} days.")
+    L.append(f"- Mid-market time-in-proposal (proposal stage only, distinct from full cycle): Q2 closed deals n={len(mm_q2_prop)} mean {q2_prop_mean:.1f} days; trailing four quarters n={len(mm_trail_prop)} mean {trail_prop_mean:.1f} days.")
     L.append("")
 
     L.append("# Competitive position")
@@ -897,16 +913,43 @@ def parse_cards(text: str) -> List[Dict]:
 # Trace is internal commentary and is intentionally NOT normalized.
 #
 # Two-tier strategy:
-#   Tier 1 (mechanical rewrite): "against" → "versus" is a clean lexical swap
-#     in comparison contexts, so we apply it automatically.
+#   Tier 1 (mechanical rewrite): swaps that preserve meaning AND clear voice.
+#     - "against" → "versus" in comparison contexts.
+#     - "X wins and Y loss(es)" → "X-Y record" (Phase 2.5b). The model reliably
+#       reaches for "wins and losses" framing on competitive-record patterns
+#       (P-RL-10 etc.); the rewrite drops the loss-as-noun problem framing
+#       without losing the underlying numbers and is a structural translation,
+#       not a lexical swap.
 #   Tier 2 (fail-and-regenerate): problem-framing words (loss/gap/miss/failure)
-#     have no clean single-word substitute that preserves meaning. Forcing a
-#     swap (e.g. gap→shift) produces semantically off copy ("freed up the
-#     shift", "Q1 shift ran $310K"). Story Cards surface forward signal only,
-#     so the right move is to surface unresolved hits and let the caller
-#     regenerate the seed. The CLI exits non-zero when any are present.
+#     that survive Tier 1 rewrites have no clean single-word substitute that
+#     preserves meaning. Forcing a swap (e.g. gap→shift) produces semantically
+#     off copy ("freed up the shift", "Q1 shift ran $310K"). Story Cards
+#     surface forward signal only, so the right move is to surface unresolved
+#     hits and let the caller regenerate the seed. The CLI exits non-zero
+#     when any are present.
 _USER_FACING_FIELDS = ("title", "anchor", "connect", "body")
 _AGAINST_RE = re.compile(r"\bagainst\b", re.IGNORECASE)
+# Wins/losses idiom rewrite (P-RL-10 etc.). Handles three model variants:
+#   "5 wins and 1 loss"      — digits + "and"
+#   "5 wins, 1 loss"         — digits + comma
+#   "Five wins and one loss" — written-number forms 0-10
+# Connector matches "and" or comma (with optional surrounding whitespace).
+_WORD_TO_DIGIT = {
+    "zero": "0", "one": "1", "two": "2", "three": "3", "four": "4",
+    "five": "5", "six": "6", "seven": "7", "eight": "8", "nine": "9", "ten": "10",
+}
+_NUM_TOKEN = r"\d+|zero|one|two|three|four|five|six|seven|eight|nine|ten"
+_WINS_LOSSES_RE = re.compile(
+    rf"\b(?P<w>{_NUM_TOKEN})\s+wins?\s*(?:,\s*|\s+and\s+)(?P<l>{_NUM_TOKEN})\s+loss(?:es)?\b",
+    re.IGNORECASE,
+)
+
+
+def _wins_losses_sub(match: "re.Match") -> str:
+    def to_digit(token: str) -> str:
+        t = token.lower()
+        return _WORD_TO_DIGIT.get(t, token)
+    return f"{to_digit(match.group('w'))}-{to_digit(match.group('l'))} record"
 _PROBLEM_WORDS_RE = re.compile(
     r"\b(?:loss|losses|gap|gaps|miss|missed|misses|failure|failures)\b",
     re.IGNORECASE,
@@ -930,6 +973,12 @@ def normalize_voice(
             if not isinstance(value, str):
                 continue
             new_value = value
+            if _WINS_LOSSES_RE.search(new_value):
+                rewritten = _WINS_LOSSES_RE.sub(_wins_losses_sub, new_value)
+                edits.append({"card_index": idx, "field": field,
+                              "rule": "X wins and/, Y loss(es)→X-Y record",
+                              "before": new_value, "after": rewritten})
+                new_value = rewritten
             if _AGAINST_RE.search(new_value):
                 rewritten = _AGAINST_RE.sub("versus", new_value)
                 edits.append({"card_index": idx, "field": field,

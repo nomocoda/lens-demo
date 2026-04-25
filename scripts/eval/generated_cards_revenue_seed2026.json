@@ -1,194 +1,218 @@
 [
   {
     "intelligence_area": "revenue",
-    "title": "Q2 bookings pace 5% ahead of target through April",
-    "anchor": "$880K closed-won versus $840K plan-pacing target through April 24.",
-    "connect": "Q2 weighted pipeline sits at $1.6M versus the $1.4M commit.",
-    "body": "$880K closed-won versus $840K plan-pacing target through April 24. Q2 weighted pipeline sits at $1.6M versus the $1.4M commit.",
+    "title": "Q2 bookings pace ahead of plan target by $40K through April",
+    "anchor": "Closed-won revenue sits at $880K versus the $840K plan-pacing milestone for April 24.",
+    "connect": "Q2 commit coverage runs at 1.14x with $1.6M weighted pipeline versus the $1.4M forecast.",
+    "body": "Closed-won revenue sits at $880K versus the $840K plan-pacing milestone for April 24. Q2 commit coverage runs at 1.14x with $1.6M weighted pipeline versus the $1.4M forecast.",
     "grounded_metrics": [
-      "q2_bookings_pacing",
-      "q2_weighted_pipeline"
+      "q2_bookings_pace",
+      "q2_commit_coverage"
     ],
-    "trace": "Q2 actual bookings $880K versus plan-pacing target $840K shows 5% ahead. Weighted pipeline provides $200K buffer above commit."
+    "trace": "Q2 pace tracking $40K ahead of milestone with solid commit coverage buffer."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Enterprise win rate jumps to 31% in Q2",
-    "anchor": "8 of 26 enterprise deals closed-won this quarter, average amount $187K.",
-    "connect": "Trailing four quarters ran at 22% win rate across 180 deals.",
-    "body": "8 of 26 enterprise deals closed-won this quarter, average amount $187K. Trailing four quarters ran at 22% win rate across 180 deals.",
-    "grounded_metrics": [
-      "q2_enterprise_win_rate",
-      "enterprise_win_rate_trailing"
-    ],
-    "trace": "Q2 enterprise win rate 30.77% significantly above trailing four quarters at 22.22%. Deal size also higher."
-  },
-  {
-    "intelligence_area": "revenue",
-    "title": "Q3 enterprise pipeline coverage sits at 4.1x",
-    "anchor": "$4.9M open pipeline across 22 deals versus $1.2M enterprise plan.",
-    "connect": "22 deals averages $224K each in the enterprise queue.",
-    "body": "$4.9M open pipeline across 22 deals versus $1.2M enterprise plan. 22 deals averages $224K each in the enterprise queue.",
+    "title": "Enterprise Q3 pipeline coverage sits at 4.1x versus plan",
+    "anchor": "Enterprise open pipeline totals $4.92M across 22 deals versus the $1.2M Q3 enterprise plan target.",
+    "connect": "Coverage concentration shows $224K average deal size in the enterprise segment.",
+    "body": "Enterprise open pipeline totals $4.92M across 22 deals versus the $1.2M Q3 enterprise plan target. Coverage concentration shows $224K average deal size in the enterprise segment.",
     "grounded_metrics": [
       "q3_enterprise_coverage",
-      "q3_enterprise_pipeline"
+      "enterprise_deal_sizing"
     ],
-    "trace": "Q3 enterprise coverage at 4.10x ($4.92M pipeline / $1.2M plan) shows healthy coverage above standard thresholds."
+    "trace": "Strong enterprise coverage ratio with solid deal size concentration."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Marketing sources 84% of Q2 net new pipeline",
-    "anchor": "$2.5M of $3.0M total pipeline created carries marketing attribution.",
-    "connect": "Marketing-sourced enterprise deals win at 29% versus outbound at 14%.",
-    "body": "$2.5M of $3.0M total pipeline created carries marketing attribution. Marketing-sourced enterprise deals win at 29% versus outbound at 14%.",
+    "title": "Q2 enterprise win rate jumps to 31% from 22% trailing baseline",
+    "anchor": "Enterprise conversion runs at 30.77% in Q2 with 8 wins from 26 deals.",
+    "connect": "Trailing four quarters enterprise win rate averaged 22.22% across 180 deals.",
+    "body": "Enterprise conversion runs at 30.77% in Q2 with 8 wins from 26 deals. Trailing four quarters enterprise win rate averaged 22.22% across 180 deals.",
     "grounded_metrics": [
-      "marketing_sourced_pipeline",
-      "win_rate_by_source"
+      "q2_enterprise_win_rate",
+      "enterprise_win_trend"
     ],
-    "trace": "Marketing-sourced share at 83.9% of Q2 pipeline creation. Win rate differential shows 2x performance advantage for marketing-sourced enterprise deals."
+    "trace": "Significant enterprise win rate improvement over historical baseline."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Beacon Systems head-to-head record flips to 5W-1L",
-    "anchor": "6 competitive deals this quarter versus 6 in Q1.",
-    "connect": "Q1 record sat at 3W-3L versus the same competitor.",
-    "body": "6 competitive deals this quarter versus 6 in Q1. Q1 record sat at 3W-3L versus the same competitor.",
+    "title": "Marketing-sourced enterprise deals convert at 29% versus 14% outbound",
+    "anchor": "Marketing-sourced enterprise opportunities close at 28.6% win rate in Q2 with 4 wins from 14 deals.",
+    "connect": "Outbound enterprise opportunities convert at 14.3% with 1 win from 7 deals.",
+    "body": "Marketing-sourced enterprise opportunities close at 28.6% win rate in Q2 with 4 wins from 14 deals. Outbound enterprise opportunities convert at 14.3% with 1 win from 7 deals.",
     "grounded_metrics": [
-      "beacon_competitive_record",
-      "q1_beacon_record"
+      "enterprise_source_conversion",
+      "marketing_vs_outbound"
     ],
-    "trace": "Head-to-head versus Beacon Systems improved from 50% win rate (Q1) to 83% win rate (Q2)."
+    "trace": "Clear source performance divergence in enterprise segment conversion."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Q3 commit builds $150K buffer above current pipeline",
-    "anchor": "$1.75M weighted at 80% confidence versus $1.6M commit.",
-    "connect": "Q2 weighted pipeline runs $200K above commit at the same confidence.",
-    "body": "$1.75M weighted at 80% confidence versus $1.6M commit. Q2 weighted pipeline runs $200K above commit at the same confidence.",
+    "title": "Mid-market cycles compress 14 days from Q1 to Q2",
+    "anchor": "Q2 mid-market deals close at 68.5 days mean cycle versus Q1's 82.0 days across 30 deals.",
+    "connect": "Mid-market opportunity creation volume sits at 42 deals worth $1.9M in the last 30 days.",
+    "body": "Q2 mid-market deals close at 68.5 days mean cycle versus Q1's 82.0 days across 30 deals. Mid-market opportunity creation volume sits at 42 deals worth $1.9M in the last 30 days.",
     "grounded_metrics": [
-      "q3_weighted_pipeline",
-      "q2_weighted_buffer"
+      "mm_cycle_compression",
+      "mm_creation_volume"
     ],
-    "trace": "Q3 weighted pipeline $1.75M provides $150K buffer above $1.6M commit, similar to Q2 pattern."
+    "trace": "Significant mid-market velocity improvement with sustained creation volume."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Mid-market renewals pace at 112% NRR through Q2",
-    "anchor": "9 renewals totaling $620K versus $540K in Q1.",
-    "connect": "Q1 mid-market NRR ran at 110% across 8 renewals.",
-    "body": "9 renewals totaling $620K versus $540K in Q1. Q1 mid-market NRR ran at 110% across 8 renewals.",
+    "title": "Proposal stage time cuts in half for mid-market deals",
+    "anchor": "Mid-market proposal stage averages 11.4 days in Q2 closed deals versus 21.6 days trailing four quarters.",
+    "connect": "Stage compression concentrates in the mid-market segment with 29 Q2 deals tracked.",
+    "body": "Mid-market proposal stage averages 11.4 days in Q2 closed deals versus 21.6 days trailing four quarters. Stage compression concentrates in the mid-market segment with 29 Q2 deals tracked.",
     "grounded_metrics": [
-      "q2_mid_market_nrr",
-      "q1_mid_market_renewals"
+      "mm_proposal_compression",
+      "mm_stage_velocity"
     ],
-    "trace": "Q2 mid-market NRR at 1.12 shows slight improvement from Q1 at 1.1, with higher renewal volume."
+    "trace": "Dramatic proposal stage acceleration specifically in mid-market segment."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Enterprise deal size jumps $42K quarter-over-quarter",
-    "anchor": "Q2 enterprise wins average $187K versus Q1 at $145K.",
-    "connect": "Q2 enterprise pipeline averages $224K per open deal.",
-    "body": "Q2 enterprise wins average $187K versus Q1 at $145K. Q2 enterprise pipeline averages $224K per open deal.",
+    "title": "Beacon Systems head-to-head record flips from 50% to 83%",
+    "anchor": "Atlas wins 5 of 6 head-to-head deals versus Beacon Systems in Q2.",
+    "connect": "Q1 head-to-head record versus Beacon ran at 50% with 3 wins from 6 deals.",
+    "body": "Atlas wins 5 of 6 head-to-head deals versus Beacon Systems in Q2. Q1 head-to-head record versus Beacon ran at 50% with 3 wins from 6 deals.",
     "grounded_metrics": [
-      "enterprise_deal_size",
-      "q3_enterprise_deal_avg"
+      "beacon_competitive_trend",
+      "q2_vs_q1_beacon"
     ],
-    "trace": "Enterprise ASP improvement from $145K (Q1) to $187K (Q2) with Q3 pipeline showing continued size growth."
+    "trace": "Major competitive position improvement against primary competitor Beacon."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Close-date slips total $180K this week",
-    "anchor": "4 deals moved from Q2 to Q3 between April 20-26.",
-    "connect": "3 enterprise deals sit in procurement with $617K total amount.",
-    "body": "4 deals moved from Q2 to Q3 between April 20-26. 3 enterprise deals sit in procurement with $617K total amount.",
+    "title": "Enterprise ASP climbs $42K from Q1 to Q2 wins",
+    "anchor": "Q2 enterprise wins average $187K deal size versus Q1 enterprise wins at $145K average.",
+    "connect": "Enterprise win volume sits at 8 deals in Q2 versus 3 deals in Q1.",
+    "body": "Q2 enterprise wins average $187K deal size versus Q1 enterprise wins at $145K average. Enterprise win volume sits at 8 deals in Q2 versus 3 deals in Q1.",
     "grounded_metrics": [
-      "close_date_slips",
-      "procurement_deals"
+      "enterprise_asp_trend",
+      "enterprise_win_volume"
     ],
-    "trace": "Weekly close-date movement of $180K across 4 deals, with separate procurement queue holding larger amounts."
+    "trace": "Enterprise deal value and volume both increasing quarter over quarter."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Mid-market creation pace holds at 42 deals monthly",
-    "anchor": "42 opportunities created March 25 through April 24, total $1.9M.",
-    "connect": "Average mid-market ACV runs at $45K per opportunity.",
-    "body": "42 opportunities created March 25 through April 24, total $1.9M. Average mid-market ACV runs at $45K per opportunity.",
+    "title": "Marketing sources 84% of Q2 net new pipeline creation",
+    "anchor": "Marketing-sourced opportunities total $2.52M of the $3.00M Q2 net new pipeline across 70 deals.",
+    "connect": "Pipeline creation concentrates in the last 30 days with $1.9M mid-market volume tracked.",
+    "body": "Marketing-sourced opportunities total $2.52M of the $3.00M Q2 net new pipeline across 70 deals. Pipeline creation concentrates in the last 30 days with $1.9M mid-market volume tracked.",
     "grounded_metrics": [
-      "mid_market_creation",
-      "mid_market_acv"
+      "marketing_pipeline_share",
+      "q2_creation_volume"
     ],
-    "trace": "30-day mid-market pipeline creation at 42 deals with $45,180 average ACV shows consistent generation."
+    "trace": "Marketing dominates pipeline creation with strong recent volume."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Expansion opportunities surface $340K in 30 days",
-    "anchor": "8 expansion deals from customer health reviews, average $42.5K each.",
-    "connect": "Customer Success pipeline feeds from existing account base.",
-    "body": "8 expansion deals from customer health reviews, average $42.5K each. Customer Success pipeline feeds from existing account base.",
+    "title": "Three enterprise deals sit in procurement with $617K total value",
+    "anchor": "Enterprise opportunities through procurement review total $617K across 3 deals with signoff and contract revisions complete.",
+    "connect": "Enterprise pipeline concentration shows $206K average deal size in the procurement stage.",
+    "body": "Enterprise opportunities through procurement review total $617K across 3 deals with signoff and contract revisions complete. Enterprise pipeline concentration shows $206K average deal size in the procurement stage.",
     "grounded_metrics": [
-      "expansion_opportunities",
-      "expansion_avg_size"
+      "enterprise_procurement_stage",
+      "procurement_deal_sizing"
     ],
-    "trace": "30-day expansion pipeline creation of $340K across 8 opportunities sourced from customer health reviews."
+    "trace": "Enterprise deals concentrated in final procurement stage with solid deal sizes."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Q2 net new pipeline totals $3M across 70 opportunities",
-    "anchor": "Pipeline creation spans enterprise and mid-market segments.",
-    "connect": "Average opportunity size runs at $43K across all segments.",
-    "body": "Pipeline creation spans enterprise and mid-market segments. Average opportunity size runs at $43K across all segments.",
+    "title": "Q2 to Q3 slip volume totals $180K across four deals",
+    "anchor": "Close-date movement from Q2 to Q3 affects 4 opportunities worth $180K combined this week.",
+    "connect": "Average slip amount sits at $45K per moved deal in the April 20-26 window.",
+    "body": "Close-date movement from Q2 to Q3 affects 4 opportunities worth $180K combined this week. Average slip amount sits at $45K per moved deal in the April 20-26 window.",
     "grounded_metrics": [
-      "q2_pipeline_creation",
-      "average_opp_size"
+      "q2_q3_slippage",
+      "slip_volume_concentration"
     ],
-    "trace": "Q2 net new pipeline $3,003,132 across 70 deals shows $42,902 average opportunity size."
+    "trace": "Moderate slip volume with deals moving from current to next quarter."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Enterprise pipeline concentrates in 22 Q3 opportunities",
-    "anchor": "$4.9M total amount averaging $224K per deal.",
-    "connect": "Enterprise plan needs $1.2M from this pipeline base.",
-    "body": "$4.9M total amount averaging $224K per deal. Enterprise plan needs $1.2M from this pipeline base.",
+    "title": "Mid-market renewal NRR holds at 112% in Q2",
+    "anchor": "Mid-market renewals total $620K ARR across 9 accounts with 1.12 segment NRR.",
+    "connect": "Q1 mid-market renewals ran at 1.1 NRR with $540K ARR across 8 accounts.",
+    "body": "Mid-market renewals total $620K ARR across 9 accounts with 1.12 segment NRR. Q1 mid-market renewals ran at 1.1 NRR with $540K ARR across 8 accounts.",
     "grounded_metrics": [
-      "q3_enterprise_concentration",
-      "enterprise_deal_count"
+      "mm_nrr_stability",
+      "mm_renewal_volume"
     ],
-    "trace": "Q3 enterprise pipeline concentration in 22 deals with high average deal size supports coverage ratio."
+    "trace": "Mid-market segment showing consistent expansion behavior quarter over quarter."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Outbound enterprise conversion trails marketing by half",
-    "anchor": "Outbound enterprise win rate at 14% versus marketing-sourced at 29%.",
-    "connect": "Marketing attribution covers 84% of total pipeline creation.",
-    "body": "Outbound enterprise win rate at 14% versus marketing-sourced at 29%. Marketing attribution covers 84% of total pipeline creation.",
+    "title": "Health review expansion pipeline creates $340K in 30 days",
+    "anchor": "Customer health reviews source 8 expansion opportunities totaling $340K in the last 30 days.",
+    "connect": "Average expansion opportunity size sits at $42.5K from health review conversion.",
+    "body": "Customer health reviews source 8 expansion opportunities totaling $340K in the last 30 days. Average expansion opportunity size sits at $42.5K from health review conversion.",
     "grounded_metrics": [
-      "outbound_enterprise_conversion",
-      "marketing_attribution_share"
+      "health_review_expansion",
+      "expansion_opportunity_sizing"
     ],
-    "trace": "Enterprise win rate gap between outbound (14.3%) and marketing-sourced (28.6%) shows channel performance differential."
+    "trace": "Customer Success generating consistent expansion pipeline from health reviews."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Procurement queue holds $617K across 3 enterprise deals",
-    "anchor": "Deals cleared signoff and contract revisions, awaiting final approval.",
-    "connect": "Average procurement deal size runs at $206K.",
-    "body": "Deals cleared signoff and contract revisions, awaiting final approval. Average procurement deal size runs at $206K.",
+    "title": "Q3 commit coverage sits at 1.1x with $150K buffer",
+    "anchor": "Q3 weighted pipeline runs at $1.75M versus the $1.6M commit forecast.",
+    "connect": "Q3 commit represents 30% of the $5.4M quarterly plan total.",
+    "body": "Q3 weighted pipeline runs at $1.75M versus the $1.6M commit forecast. Q3 commit represents 30% of the $5.4M quarterly plan total.",
     "grounded_metrics": [
-      "procurement_queue_value",
-      "procurement_deal_avg"
+      "q3_commit_coverage",
+      "q3_commit_vs_plan"
     ],
-    "trace": "3 enterprise deals totaling $617,117 in final procurement stage, average $205,706 each."
+    "trace": "Q3 forecast showing modest coverage buffer with commit at 30% of plan."
   },
   {
     "intelligence_area": "revenue",
-    "title": "Q1 final commit landed at $1.3M versus $4.6M plan",
-    "anchor": "Q1 commit represents 28% of total quarterly plan.",
-    "connect": "Q2 commit at $1.4M versus $5M plan runs similar percentage.",
-    "body": "Q1 commit represents 28% of total quarterly plan. Q2 commit at $1.4M versus $5M plan runs similar percentage.",
+    "title": "Mid-market creation pace runs at $45K average deal size",
+    "anchor": "Mid-market opportunities created in the last 30 days average $45.18K across 42 deals.",
+    "connect": "Mid-market creation volume totals $1.9M with consistent deal sizing patterns.",
+    "body": "Mid-market opportunities created in the last 30 days average $45.18K across 42 deals. Mid-market creation volume totals $1.9M with consistent deal sizing patterns.",
     "grounded_metrics": [
-      "q1_commit_ratio",
-      "q2_commit_ratio"
+      "mm_creation_asp",
+      "mm_deal_consistency"
     ],
-    "trace": "Q1 commit-to-plan ratio at 28% ($1.3M/$4.6M) consistent with Q2 at 28% ($1.4M/$5M)."
+    "trace": "Mid-market showing strong creation volume with stable average deal sizes."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Enterprise segment carries 67% of Q2 commit versus 24% of plan",
+    "anchor": "Q2 enterprise commit implications show enterprise weight in forecast composition.",
+    "connect": "Q2 enterprise plan total represents $1.2M of the $5M quarterly target.",
+    "body": "Q2 enterprise commit implications show enterprise weight in forecast composition. Q2 enterprise plan total represents $1.2M of the $5M quarterly target.",
+    "grounded_metrics": [
+      "enterprise_commit_weight",
+      "enterprise_plan_share"
+    ],
+    "trace": "Enterprise segment concentration analysis in commit versus plan distribution."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Marketing conversion strength shows in enterprise source performance",
+    "anchor": "Marketing-sourced enterprise deals outperform outbound by 14 percentage points in Q2.",
+    "connect": "Enterprise ASP climbs with marketing-sourced deals driving the $187K Q2 average.",
+    "body": "Marketing-sourced enterprise deals outperform outbound by 14 percentage points in Q2. Enterprise ASP climbs with marketing-sourced deals driving the $187K Q2 average.",
+    "grounded_metrics": [
+      "marketing_enterprise_conversion",
+      "source_asp_correlation"
+    ],
+    "trace": "Marketing source quality correlating with both conversion and deal size in enterprise."
+  },
+  {
+    "intelligence_area": "revenue",
+    "title": "Renewal base expansion shows $80K ARR increase Q1 to Q2",
+    "anchor": "Mid-market renewal ARR grows from $540K in Q1 to $620K in Q2.",
+    "connect": "Account expansion rate holds steady with NRR moving from 1.1 to 1.12.",
+    "body": "Mid-market renewal ARR grows from $540K in Q1 to $620K in Q2. Account expansion rate holds steady with NRR moving from 1.1 to 1.12.",
+    "grounded_metrics": [
+      "renewal_arr_growth",
+      "nrr_consistency"
+    ],
+    "trace": "Mid-market base growing with stable expansion behavior across quarters."
   }
 ]

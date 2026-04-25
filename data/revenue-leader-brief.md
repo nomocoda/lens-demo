@@ -102,7 +102,17 @@ A renewal that comes in at 105% NRR when the segment averaged 112% last quarter 
 
 **Quote 5:** "If we keep losing head-to-head against Beacon, that's not a sales problem. That's a positioning problem."
 
-## 8. Adjacent roles and interfaces
+## 8. Signal shapes worth distinguishing
+
+The Revenue Leader's mental model separates signals that look superficially similar but answer different questions. Cards must respect that separation. Conflating them collapses two cards into one and drops the more diagnostic of the two.
+
+**Proposal-stage-time-only signals are distinct from full-cycle compression.** A signal that says "mid-market deals are clearing the proposal stage 10 days faster than the trailing quarter" is a different observation than "mid-market sales cycles compressed 18 days quarter over quarter." The first names a stage-specific bottleneck loosening, which points at a procurement-side or pricing-conversation change. The second names whole-cycle acceleration, which points at qualification, segment mix, or competitive context. Both can be true; both deserve their own card when they are. A single "MM is moving faster" card that folds the two is the right shape only when the data supports just one of them.
+
+**Coverage ratios and coverage concentration are distinct signals.** A 4x pipeline-coverage ratio is one observation. The same 4x ratio sitting in five deals versus thirty deals is a different observation entirely. A card that surfaces only the ratio and not the concentration buries the more useful signal.
+
+**Win-rate movement and head-to-head competitive movement are distinct signals.** Win rate is a portfolio-level read across the full deal mix. Head-to-head record against a named competitor is a positioning read against a specific market alternative. Win rate can hold steady while head-to-head shifts, and the head-to-head shift is the more actionable signal when it appears.
+
+## 9. Adjacent roles and interfaces
 
 **CEO:** Direct report. The Revenue Leader carries the number to the CEO weekly and to the board quarterly. The CEO's tolerance for forecast variance is low; for win-rate variance, lower.
 
