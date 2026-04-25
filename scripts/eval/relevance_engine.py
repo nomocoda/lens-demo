@@ -150,6 +150,11 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "rg_pipeline_coverage", "rg_win_rates", "rg_deal_hygiene",
         "rg_outbound_sequences", "rg_competitive_coverage",
         "rg_battlecard_usage", "rg_expansion_flags",
+        # Revenue Developer entities (Phase 2.17)
+        "rd_inbound_speed", "rd_sequence_perf", "rd_subject_test",
+        "rd_segment_penetration", "rd_intent_outreach", "rd_ae_handoff",
+        "rd_linkedin_inbound", "rd_call_timing", "rd_dormant_reengagement",
+        "rd_enterprise_committee",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1284,6 +1289,95 @@ def build_revenue_generator_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_revenue_developer_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Revenue Developer (SDR / BDR).
+
+    Cuts tuned to the four Revenue Developer Goal Clusters: Pipeline Creation
+    and Inbound Response, Sequence and Outreach Effectiveness, ICP Targeting
+    and Segment Penetration, AE Handoff Quality.
+    """
+    inbound_speed = ds.get("rd_inbound_speed", [])
+    sequence_perf = ds.get("rd_sequence_perf", [])
+    subject_test = ds.get("rd_subject_test", [])
+    segment_penetration = ds.get("rd_segment_penetration", [])
+    intent_outreach = ds.get("rd_intent_outreach", [])
+    ae_handoff = ds.get("rd_ae_handoff", [])
+    linkedin_inbound = ds.get("rd_linkedin_inbound", [])
+    call_timing = ds.get("rd_call_timing", [])
+    dormant_reengagement = ds.get("rd_dormant_reengagement", [])
+    enterprise_committee = ds.get("rd_enterprise_committee", [])
+
+    def _get(lst, key, val):
+        return next((r for r in lst if r.get(key) == val), {})
+
+    stl = _get(inbound_speed, "metric", "current_week_speed_to_lead")
+    wkd = _get(inbound_speed, "metric", "weekend_inbound_coverage")
+    ch_cmp = _get(sequence_perf, "metric", "channel_comparison")
+    touch_dist = _get(sequence_perf, "metric", "touch_step_distribution")
+    subj = _get(subject_test, "metric", "subject_line_variant_test")
+    first_ln = _get(subject_test, "metric", "first_line_personalization_lift")
+    new_vert = _get(segment_penetration, "metric", "new_vertical_penetration")
+    vert_conv = _get(segment_penetration, "metric", "vertical_conversion_comparison")
+    intent = _get(intent_outreach, "metric", "intent_platform_first_touch")
+    trigger = _get(intent_outreach, "metric", "trigger_event_outreach")
+    handoff_apr = _get(ae_handoff, "metric", "ae_accepted_rate")
+    morning_block = _get(call_timing, "time_window", "8am_to_9am")
+    afternoon_block = _get(call_timing, "time_window", "post_lunch_1pm_to_3pm")
+    dormant = dormant_reengagement[0] if dormant_reengagement else {}
+    committee = enterprise_committee[0] if enterprise_committee else {}
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — SDR / REVENUE DEVELOPER DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Salesforce is the system of record for leads and meetings; Outreach for sequencing; 6sense for intent scoring; HubSpot for inbound demo routing.")
+    L.append("")
+
+    L.append("# Pipeline creation and inbound response")
+    if stl:
+        L.append(f"- Current week inbound demo requests: {stl['total_inbound_leads']}. Reached within {stl['sla_window_minutes']}-minute window: {stl['reached_within_5min']} of {stl['total_inbound_leads']}. Within-window meeting rate: {stl['within_5min_meeting_rate']*100:.0f}%. Meeting rate for leads reached after 30 minutes: {stl['over_30min_meeting_rate']*100:.0f}%.")
+    if wkd:
+        L.append(f"- Weekend inbound demo requests ({wkd['period'].replace('_to_', ' to ')}): {wkd['total_weekend_requests']}. All {wkd['reached_by_monday_915am']} reached by 9:15 AM Monday. Meetings booked same day: {wkd['booked_same_day']} of {wkd['total_weekend_requests']}.")
+    if intent:
+        L.append(f"- {intent['platform']} high-intent accounts crossing threshold this week: {intent['accounts_above_threshold']}. Replied on first touch: {intent['first_touch_replies']} of {intent['accounts_above_threshold']}. Booked meetings within 48 hours: {intent['booked_within_48h']}.")
+    if trigger:
+        L.append(f"- Trigger-event outreach (Series B announcement, within {trigger['outreach_window_days']} days of announcement): {trigger['booked_meetings']} booked meetings this month. Response rate versus cold-list average: {trigger['response_rate_vs_cold_multiplier']:.0f}x.")
+    if linkedin_inbound:
+        weeks = linkedin_inbound
+        L.append(f"- LinkedIn ad-sourced inbound demo requests per week: {weeks[0]['linkedin_inbound_demos_per_week']} ({weeks[0]['period']}) → {weeks[1]['linkedin_inbound_demos_per_week']} ({weeks[1]['period']}) → {weeks[2]['linkedin_inbound_demos_per_week']} ({weeks[2]['period']}). AE-accepted rate on LinkedIn inbound matches form-fill inbound.")
+    L.append("")
+
+    L.append("# Sequence and outreach effectiveness")
+    if ch_cmp:
+        L.append(f"- Multi-channel sequence meeting rate versus email-only: {ch_cmp['multi_channel_meeting_rate_multiplier']}x across {ch_cmp['active_prospects']} active prospects this month. Breakthrough touch in multi-channel sequences: step {ch_cmp['multi_channel_breakthrough_touch_range']}.")
+    if touch_dist:
+        L.append(f"- Touch-step distribution on {touch_dist['active_sequences']} active sequences: {touch_dist['pct_replies_at_touch_7_or_8']*100:.0f}% of meeting-producing replies land on touch 7 or 8. Prior quarter breakthrough step: touch {touch_dist['prior_quarter_breakthrough_step']}.")
+    if subj:
+        L.append(f"- Subject-line variant test ('{subj['variant_name'].replace('_', ' ')}', launched {subj['launch_date']}): {subj['sends']} sends. Variant reply rate: {subj['variant_reply_rate']*100:.1f}%. Prior opener reply rate: {subj['prior_reply_rate']*100:.1f}%. Replies converted to booked meetings: {subj['replies_to_booked_meetings']}.")
+    if first_ln:
+        L.append(f"- Personalized first-line reply rate (account-specific research): {first_ln['personalized_reply_rate']*100:.1f}% versus {first_ln['generic_reply_rate']*100:.1f}% on generic openers. Lift concentrated in {first_ln['lift_mechanism'].replace('_', '-')} first lines.")
+    if morning_block and afternoon_block:
+        L.append(f"- Call connect rate by time window: {morning_block['time_window'].replace('_', ' ')} {morning_block['connect_rate']*100:.0f}%, {afternoon_block['time_window'].replace('_', ' ')} {afternoon_block['connect_rate']*100:.0f}%. Morning block producing the majority of this week's discovery-meeting bookings.")
+    if dormant:
+        L.append(f"- Dormant account re-engagement sequence '{dormant['sequence_name'].replace('_', '-')}' (launched {dormant['launch_date']}): {dormant['accounts_replied']} accounts silent for >{dormant['dormancy_threshold_days']} days replied. Meetings booked with assigned AE: {dormant['meetings_booked']}.")
+    L.append("")
+
+    L.append("# ICP targeting and segment penetration")
+    if new_vert:
+        L.append(f"- {new_vert['segment'].replace('_', ' ').title()} segment opened {new_vert['opened_weeks_ago']} weeks ago ({new_vert['open_date']}). AE-accepted meetings booked: {new_vert['ae_accepted_meetings']}. Of those, {new_vert['first_touch_responses']} came from accounts that responded on the first cold sequence touch.")
+    if vert_conv:
+        L.append(f"- {vert_conv['vertical'].title()} vertical demo-to-held-meeting conversion: {vert_conv['healthcare_demo_to_held_rate']*100:.0f}% (trailing {vert_conv['period'].replace('_', ' ')}). All-verticals rate: {vert_conv['all_verticals_demo_to_held_rate']*100:.0f}%. Average deal size on meetings advanced to opportunity: {vert_conv['healthcare_avg_deal_size_multiplier']:.0f}x all-vertical average.")
+    if committee:
+        L.append(f"- Enterprise target accounts with a second responsive buying-committee contact this week: {committee['accounts_with_second_contact']}. Seniority pattern: {committee['second_contact_seniority_combo'].replace('_', ' ')}. All {committee['in_coordinated_ae_motion']} in coordinated outreach motion with their assigned AE.")
+    L.append("")
+
+    L.append("# AE handoff quality")
+    if handoff_apr:
+        L.append(f"- AE-accepted rate on booked meetings (April 2026): {handoff_apr['ae_accepted']} of {handoff_apr['meetings_booked']} meetings advanced past AE qualification ({handoff_apr['accepted_rate']*100:.0f}%). Prior month accepted rate: {handoff_apr['prior_month_accepted_rate']*100:.0f}%. Lift concentrated in segment criteria refined {handoff_apr['segment_criteria_refined_date']}.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -1357,6 +1451,10 @@ _REVENUE_GOAL_CLUSTERS = (
 _REVENUE_GENERATOR_GOAL_CLUSTERS = (
     "Closing Deals in Flight; Pipeline Quality and Coverage; "
     "Deal Execution Efficiency; Competitive Winning"
+)
+_REVENUE_DEVELOPER_GOAL_CLUSTERS = (
+    "Pipeline Creation and Inbound Response; Sequence and Outreach Effectiveness; "
+    "ICP Targeting and Segment Penetration; AE Handoff Quality"
 )
 _CUSTOMER_GOAL_CLUSTERS = (
     "Retained Revenue Landing to Forecast; Expansion Revenue Compounding NRR; "
@@ -1448,6 +1546,20 @@ _ARCHETYPE_CONFIG = {
         ),
         "brief_filename": "revenue-generator-brief.md",
         "user_prompt_subject": "Account Executive",
+    },
+    "revenue_developer": {
+        "intelligence_area": "revenue",
+        "audience_label": "Sales Development Representative at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Revenue Developer",
+        "goal_clusters": _REVENUE_DEVELOPER_GOAL_CLUSTERS,
+        "snapshot_label": "SDR / REVENUE DEVELOPER DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Healthcare demo-to-held rate 81%\", "
+            "your card says 81% or rounds honestly to 81%, not 82%."
+        ),
+        "brief_filename": "revenue-developer-brief.md",
+        "user_prompt_subject": "Sales Development",
     },
 }
 
@@ -1560,6 +1672,7 @@ def build_user_message(archetype: str) -> str:
         "marketing_strategist": "marketing strategy data",
         "marketing_builder": "marketing execution data",
         "revenue_generator": "account executive data",
+        "revenue_developer": "sales development data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -1814,6 +1927,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_marketing_builder_summary(ds)
     elif archetype == "revenue_generator":
         summary = build_revenue_generator_summary(ds)
+    elif archetype == "revenue_developer":
+        summary = build_revenue_developer_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,

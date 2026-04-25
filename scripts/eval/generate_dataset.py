@@ -3326,6 +3326,255 @@ def gen_rg_expansion_flags() -> List[Dict]:
     ]
 
 
+# ----------------------------------------------------------------------------
+# Revenue Developer entity generators (Phase 2.17)
+# All deterministic — no random seed dependency.
+# ----------------------------------------------------------------------------
+
+def gen_rd_inbound_speed() -> List[Dict]:
+    """Speed-to-lead on demo requests (inbound window + weekend coverage).
+
+    P-RD-01: 17 of 18 inbound leads reached within 5-minute window this week.
+             Within-5min meeting rate 78% vs 26% for leads reached after 30min.
+    P-RD-11: All 11 weekend demo requests (Fri evening–Sun) reached by 9:15 Monday.
+             7 of 11 booked meetings same day.
+    """
+    return [
+        {
+            "metric": "current_week_speed_to_lead",
+            "period": "2026-04-21_to_2026-04-24",
+            "total_inbound_leads": 18,
+            "reached_within_5min": 17,
+            "within_5min_meeting_rate": 0.78,
+            "over_30min_meeting_rate": 0.26,
+            "sla_window_minutes": 5,
+        },
+        {
+            "metric": "weekend_inbound_coverage",
+            "period": "2026-04-18_to_2026-04-20",
+            "total_weekend_requests": 11,
+            "reached_by_monday_915am": 11,
+            "booked_same_day": 7,
+            "coverage_rate": 1.0,
+        },
+    ]
+
+
+def gen_rd_sequence_perf() -> List[Dict]:
+    """Multi-channel vs email-only meeting rate and touch-step distribution.
+
+    P-RD-02: Multi-channel sequences produce 2.3x the meeting rate of email-only
+             across 240 active prospects this month. Breakthrough touch at step 7-8.
+    P-RD-09: 41% of meeting-producing replies land on touch 7 or 8 across 18 active
+             sequences. Prior quarter breakthrough step was touch 4-5.
+    """
+    return [
+        {
+            "metric": "channel_comparison",
+            "period": "2026-04",
+            "active_prospects": 240,
+            "multi_channel_meeting_rate_multiplier": 2.3,
+            "multi_channel_breakthrough_touch_range": "7-8",
+            "email_only_meeting_rate_multiplier": 1.0,
+        },
+        {
+            "metric": "touch_step_distribution",
+            "period": "2026-04",
+            "active_sequences": 18,
+            "pct_replies_at_touch_7_or_8": 0.41,
+            "prior_quarter_breakthrough_step": "4-5",
+            "current_breakthrough_step": "7-8",
+        },
+    ]
+
+
+def gen_rd_subject_test() -> List[Dict]:
+    """Subject-line variant and personalized first-line reply rate lift.
+
+    P-RD-04: "what changed at [Company]" subject variant at 4.7% reply rate
+             vs 1.9% prior opener across 320 sends. 6 replies converted to booked meetings.
+    P-RD-10: Sequences with account-specific research in first line at 5.1% reply rate
+             vs 2.3% generic. Lift concentrated in trigger-event first lines.
+    """
+    return [
+        {
+            "metric": "subject_line_variant_test",
+            "variant_name": "what_changed_at_company",
+            "launch_date": "2026-04-21",
+            "sends": 320,
+            "variant_reply_rate": 0.047,
+            "prior_reply_rate": 0.019,
+            "replies_to_booked_meetings": 6,
+        },
+        {
+            "metric": "first_line_personalization_lift",
+            "period": "2026-04",
+            "personalized_reply_rate": 0.051,
+            "generic_reply_rate": 0.023,
+            "lift_mechanism": "trigger_event_first_line",
+        },
+    ]
+
+
+def gen_rd_segment_penetration() -> List[Dict]:
+    """New vertical opening and healthcare segment conversion rate.
+
+    P-RD-03: Mid-market manufacturing segment opened 3 weeks ago. 4 AE-accepted
+             meetings booked, 2 from first-touch responses.
+    P-RD-12: Healthcare vertical demo-to-held-meeting conversion 81% vs 64% all
+             verticals. 2x avg deal size on meetings advanced to opportunity.
+    """
+    return [
+        {
+            "metric": "new_vertical_penetration",
+            "segment": "mid_market_manufacturing",
+            "opened_weeks_ago": 3,
+            "ae_accepted_meetings": 4,
+            "first_touch_responses": 2,
+            "open_date": "2026-04-04",
+        },
+        {
+            "metric": "vertical_conversion_comparison",
+            "vertical": "healthcare",
+            "period": "trailing_4_weeks",
+            "healthcare_demo_to_held_rate": 0.81,
+            "all_verticals_demo_to_held_rate": 0.64,
+            "healthcare_avg_deal_size_multiplier": 2.0,
+        },
+    ]
+
+
+def gen_rd_intent_outreach() -> List[Dict]:
+    """6sense high-intent account first-touch response and Series B trigger-event results.
+
+    P-RD-05: 3 of 5 accounts that crossed high-intent threshold in 6sense this week
+             replied on first cold touch. All 3 booked within 48 hours.
+    P-RD-07: 5 booked meetings from accounts where outreach landed within 7 days of
+             Series B announcement. Response rate 4x cold-list average.
+    """
+    return [
+        {
+            "metric": "intent_platform_first_touch",
+            "platform": "6sense",
+            "period": "2026-04-21_to_2026-04-24",
+            "accounts_above_threshold": 5,
+            "first_touch_replies": 3,
+            "booked_within_48h": 3,
+            "first_touch_reply_rate": 0.60,
+        },
+        {
+            "metric": "trigger_event_outreach",
+            "trigger_type": "series_b_announcement",
+            "period": "2026-04",
+            "outreach_window_days": 7,
+            "booked_meetings": 5,
+            "response_rate_vs_cold_multiplier": 4.0,
+        },
+    ]
+
+
+def gen_rd_ae_handoff() -> List[Dict]:
+    """AE-accepted rate on booked meetings this month vs prior month.
+
+    P-RD-06: 26 of 31 meetings advanced past AE qualification (84% accepted rate)
+             vs 71% prior month. Concentrated in refined segment criteria from April 12.
+    """
+    return [
+        {
+            "metric": "ae_accepted_rate",
+            "period": "2026-04",
+            "meetings_booked": 31,
+            "ae_accepted": 26,
+            "accepted_rate": 0.84,
+            "prior_month_accepted_rate": 0.71,
+            "segment_criteria_refined_date": "2026-04-12",
+        },
+        {
+            "metric": "ae_accepted_rate",
+            "period": "2026-03",
+            "meetings_booked": None,
+            "ae_accepted": None,
+            "accepted_rate": 0.71,
+            "prior_month_accepted_rate": None,
+            "segment_criteria_refined_date": None,
+        },
+    ]
+
+
+def gen_rd_linkedin_inbound() -> List[Dict]:
+    """LinkedIn ad-sourced inbound demo request growth trajectory.
+
+    P-RD-08: LinkedIn inbound demos moved from 4/week to 13/week over 3 reporting
+             periods. Converting to AE-accepted at same rate as form-fill requests.
+    """
+    return [
+        {"period": "2026-03-30_to_2026-04-05", "linkedin_inbound_demos_per_week": 4},
+        {"period": "2026-04-06_to_2026-04-12", "linkedin_inbound_demos_per_week": 8},
+        {"period": "2026-04-13_to_2026-04-19", "linkedin_inbound_demos_per_week": 13,
+         "ae_accepted_rate_parity_with_form_fill": True},
+    ]
+
+
+def gen_rd_call_timing() -> List[Dict]:
+    """Connect rate by time-of-day call block.
+
+    P-RD-13: 8-9 AM call block produces 11% connect rate vs 5% post-lunch.
+             Majority of this week's discovery-meeting bookings traced to morning block.
+    """
+    return [
+        {
+            "time_window": "8am_to_9am",
+            "connect_rate": 0.11,
+            "is_primary_booking_block": True,
+            "period": "2026-04-21_to_2026-04-24",
+        },
+        {
+            "time_window": "post_lunch_1pm_to_3pm",
+            "connect_rate": 0.05,
+            "is_primary_booking_block": False,
+            "period": "2026-04-21_to_2026-04-24",
+        },
+    ]
+
+
+def gen_rd_dormant_reengagement() -> List[Dict]:
+    """Dormant account re-engagement via new value-driven sequence.
+
+    P-RD-14: 6 accounts (>90 days quiet) replied to new re-engagement sequence
+             launched April 18. 3 booked meetings with their assigned AE.
+    """
+    return [
+        {
+            "metric": "dormant_reengagement",
+            "sequence_name": "value_driven_reengagement",
+            "launch_date": "2026-04-18",
+            "dormancy_threshold_days": 90,
+            "accounts_targeted": None,
+            "accounts_replied": 6,
+            "meetings_booked": 3,
+            "period": "2026-04-18_to_2026-04-24",
+        },
+    ]
+
+
+def gen_rd_enterprise_committee() -> List[Dict]:
+    """Enterprise target account buying committee expansion to a second contact.
+
+    P-RD-15: 3 enterprise accounts produced a 2nd responsive buying committee
+             contact this week. VP-level + director-level engagement. All 3 in
+             coordinated outreach motion with their assigned AE.
+    """
+    return [
+        {
+            "metric": "enterprise_committee_expansion",
+            "period": "2026-04-21_to_2026-04-24",
+            "accounts_with_second_contact": 3,
+            "second_contact_seniority_combo": "vp_and_director",
+            "in_coordinated_ae_motion": 3,
+        },
+    ]
+
+
 def apply_deal_field_defaults(deals: List[Dict]) -> None:
     """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
 
@@ -3479,6 +3728,18 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     rg_battlecard_usage = gen_rg_battlecard_usage()
     rg_expansion_flags = gen_rg_expansion_flags()
 
+    # Revenue Developer entity generators (Phase 2.17) — all deterministic
+    rd_inbound_speed = gen_rd_inbound_speed()
+    rd_sequence_perf = gen_rd_sequence_perf()
+    rd_subject_test = gen_rd_subject_test()
+    rd_segment_penetration = gen_rd_segment_penetration()
+    rd_intent_outreach = gen_rd_intent_outreach()
+    rd_ae_handoff = gen_rd_ae_handoff()
+    rd_linkedin_inbound = gen_rd_linkedin_inbound()
+    rd_call_timing = gen_rd_call_timing()
+    rd_dormant_reengagement = gen_rd_dormant_reengagement()
+    rd_enterprise_committee = gen_rd_enterprise_committee()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -3596,6 +3857,17 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "rg_competitive_coverage": rg_competitive_coverage,
         "rg_battlecard_usage": rg_battlecard_usage,
         "rg_expansion_flags": rg_expansion_flags,
+        # Revenue Developer entities (Phase 2.17)
+        "rd_inbound_speed": rd_inbound_speed,
+        "rd_sequence_perf": rd_sequence_perf,
+        "rd_subject_test": rd_subject_test,
+        "rd_segment_penetration": rd_segment_penetration,
+        "rd_intent_outreach": rd_intent_outreach,
+        "rd_ae_handoff": rd_ae_handoff,
+        "rd_linkedin_inbound": rd_linkedin_inbound,
+        "rd_call_timing": rd_call_timing,
+        "rd_dormant_reengagement": rd_dormant_reengagement,
+        "rd_enterprise_committee": rd_enterprise_committee,
     }
 
 
