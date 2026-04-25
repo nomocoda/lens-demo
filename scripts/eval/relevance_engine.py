@@ -960,6 +960,8 @@ def build_marketing_strategist_summary(ds: Dict[str, list]) -> str:
     L.append("")
 
     L.append("# Sales enablement")
+    if le_apr8 and le_apr8.get("pipeline_by_asset_openers_vs_nonopeners_multiple"):
+        L.append(f"- Reps who opened launch assets produced {le_apr8['pipeline_by_asset_openers_vs_nonopeners_multiple']}x the pipeline of those who did not (April 8 launch, first 14 days).")
     if q2_crm and q1_crm:
         L.append(f"- Outcome reason capture rate in CRM: Q2 2026 {q2_crm['outcome_reason_captured']}/{q2_crm['closed_deals_total']} closed deals = {q2_crm['capture_rate']*100:.0f}%. Q1 2026: {q1_crm['capture_rate']*100:.0f}%.")
     L.append("")
