@@ -2663,6 +2663,335 @@ def gen_cs_exit_interviews() -> List[Dict]:
     ]
 
 
+# ----------------------------------------------------------------------------
+# Marketing Builder entity generators (Phase 2.11)
+# All deterministic — no random seed dependency.
+# ----------------------------------------------------------------------------
+
+def gen_mb_paid_performance() -> List[Dict]:
+    """Paid channel performance by period.
+
+    P-MB-01: April paid pipeline $1.18M of $1.5M target by April 21 (week 3).
+             LinkedIn CPL $142 flat across weeks 1-3; March CPL climbed 12% MoM.
+    P-MB-03: Full-April LinkedIn CPL $138; March $156; Q1 avg $174.
+             April 1 audience refresh on 4 campaigns covering 62% of paid budget.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "pipeline_target_usd": 1500000,
+            "pipeline_at_week3_usd": 1180000,
+            "week3_date": "2026-04-21",
+            "week3_cpl_linkedin": 142,
+            "full_month_cpl_linkedin": 138,
+            "prior_month_cpl": 156,
+            "q1_avg_cpl": 174,
+            "march_cpl_mom_climb_pct": 0.12,
+            "audience_refresh_date": "2026-04-01",
+            "campaigns_in_refresh": 4,
+            "budget_share_refreshed": 0.62,
+        },
+    ]
+
+
+def gen_mb_mql_sources() -> List[Dict]:
+    """MQL source breakdown by period.
+
+    P-MB-02: April 2026 — 312 of 740 MQLs from April 9 webinar (42.2%)
+             in 11 days. Highest concentration in mid-market.
+             Webinar SQL rate 19% vs paid social 11%.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "total_mqls": 740,
+            "sources": [
+                {
+                    "source": "webinar_apr9",
+                    "campaign_date": "2026-04-09",
+                    "mqls": 312,
+                    "share": round(312 / 740, 4),
+                    "window_days": 11,
+                    "segment_concentration": "mid-market",
+                    "sql_conversion_rate": 0.19,
+                },
+                {
+                    "source": "paid_social",
+                    "campaign_date": None,
+                    "mqls": None,
+                    "share": None,
+                    "window_days": None,
+                    "segment_concentration": None,
+                    "sql_conversion_rate": 0.11,
+                },
+            ],
+        },
+    ]
+
+
+def gen_mb_inbound_demos() -> List[Dict]:
+    """Inbound demo request volume by period.
+
+    P-MB-04: April 84 (47 mid-market + 37 enterprise) vs March 61.
+             Homepage CTA test live April 4; +22% form conversion lift.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "demo_requests": 84,
+            "mid_market": 47,
+            "enterprise": 37,
+            "cta_test_live_date": "2026-04-04",
+            "cta_conversion_lift_pct": 0.22,
+        },
+        {
+            "period": "2026-03",
+            "demo_requests": 61,
+            "mid_market": None,
+            "enterprise": None,
+            "cta_test_live_date": None,
+            "cta_conversion_lift_pct": None,
+        },
+    ]
+
+
+def gen_mb_seo_keywords() -> List[Dict]:
+    """Keyword ranking movements.
+
+    P-MB-05: "saas pricing models" position 7 → 2 in 9 days (week ending ~Apr 21).
+             4,400 monthly search volume. Refreshed April 12.
+    P-MB-08: "saas attribution", "b2b lead routing", "marketing ops checklist"
+             all moved into top 3 in week ending April 7, from page-2 positions.
+             All refreshed with structured FAQ sections in March.
+    """
+    return [
+        {
+            "keyword": "saas pricing models",
+            "position_before": 7,
+            "position_after": 2,
+            "days_to_move": 9,
+            "monthly_search_volume": 4400,
+            "page_refresh_date": "2026-04-12",
+            "week_ending": "2026-04-21",
+        },
+        {
+            "keyword": "saas attribution",
+            "position_before": "page 2",
+            "position_after": 2,
+            "days_to_move": None,
+            "monthly_search_volume": None,
+            "page_refresh_date": "2026-03",
+            "week_ending": "2026-04-07",
+        },
+        {
+            "keyword": "b2b lead routing",
+            "position_before": "page 2",
+            "position_after": 3,
+            "days_to_move": None,
+            "monthly_search_volume": None,
+            "page_refresh_date": "2026-03",
+            "week_ending": "2026-04-07",
+        },
+        {
+            "keyword": "marketing ops checklist",
+            "position_before": "page 2",
+            "position_after": 1,
+            "days_to_move": None,
+            "monthly_search_volume": None,
+            "page_refresh_date": "2026-03",
+            "week_ending": "2026-04-07",
+        },
+    ]
+
+
+def gen_mb_organic_traffic() -> List[Dict]:
+    """Organic traffic by page and period.
+
+    P-MB-07: Comparison hub April 12,400 sessions vs March 9,700 (+27.8%).
+             Competitor A page 4,200 sessions. AI Overview on "Competitor A vs"
+             queries fell from 71% to 38%.
+    """
+    return [
+        {
+            "page": "comparison_hub",
+            "period": "2026-04",
+            "sessions": 12400,
+            "prior_sessions": 9700,
+            "change_pct": round((12400 - 9700) / 9700, 4),
+            "top_subpage": "competitor_a",
+            "top_subpage_sessions": 4200,
+            "ai_overview_coverage_before": 0.71,
+            "ai_overview_coverage_after": 0.38,
+            "ai_overview_query_type": "Competitor A vs",
+        },
+    ]
+
+
+def gen_mb_content_attribution() -> List[Dict]:
+    """Content-attributable pipeline.
+
+    P-MB-06: 6 of 18 published Q2 pieces carry a touched-deal flag = $310K total.
+             Buyer's guide: $140K, 41% WoW view growth since gated download live.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "pieces_with_pipeline": 6,
+            "pieces_total_published": 18,
+            "pipeline_total_usd": 310000,
+            "top_piece": "buyers_guide",
+            "top_piece_pipeline_usd": 140000,
+            "top_piece_wow_view_growth_pct": 0.41,
+        },
+    ]
+
+
+def gen_mb_routing_ops() -> List[Dict]:
+    """Demo routing SLA compliance and speed-to-lead by period.
+
+    P-MB-09: April 412/433 = 95.2% inside 5-min SLA vs March 357/435 = 82.1%.
+             April 6 routing update added round-robin fallback for after-hours.
+    P-MB-14: Median speed-to-lead April 4.2 min vs March 11.6 min.
+             SQL conversion: 2.1x for under-5-min vs over-15-min touches.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "demos_routed": 412,
+            "demos_total": 433,
+            "sla_pct": round(412 / 433, 4),
+            "sla_threshold_minutes": 5,
+            "median_speed_to_lead_minutes": 4.2,
+            "routing_update_date": "2026-04-06",
+            "routing_update_description": "round-robin fallback for after-hours requests",
+            "sql_conversion_under5min_multiple": 2.1,
+        },
+        {
+            "period": "2026-03",
+            "demos_routed": 357,
+            "demos_total": 435,
+            "sla_pct": round(357 / 435, 4),
+            "sla_threshold_minutes": 5,
+            "median_speed_to_lead_minutes": 11.6,
+            "routing_update_date": None,
+            "routing_update_description": None,
+            "sql_conversion_under5min_multiple": None,
+        },
+    ]
+
+
+def gen_mb_attribution_accuracy() -> List[Dict]:
+    """Marketo-to-Salesforce attribution accuracy and pipeline coverage.
+
+    P-MB-10: Q2 47/2,240 sourced opps mismatch = 2.1% variance vs Q1 4.8%.
+             April 14 UTM cleanup on 12 campaigns.
+    P-MB-15: $2.4M of $2.7M April pipeline has clean attribution = 88.9%.
+             Q1 avg coverage 71%. Attribution mapping locked April 7, 14 campaign types.
+    """
+    return [
+        {
+            "period": "Q2_2026",
+            "sourced_opps_total": 2240,
+            "mismatch_opps": 47,
+            "variance_pct": round(47 / 2240, 4),
+            "utm_cleanup_date": "2026-04-14",
+            "campaigns_cleaned": 12,
+            "pipeline_with_clean_attribution_usd": 2400000,
+            "pipeline_total_usd": 2700000,
+            "attribution_coverage_pct": round(2400000 / 2700000, 4),
+            "attribution_mapping_date": "2026-04-07",
+            "campaign_types_covered": 14,
+        },
+        {
+            "period": "Q1_2026",
+            "sourced_opps_total": None,
+            "mismatch_opps": None,
+            "variance_pct": 0.048,
+            "utm_cleanup_date": None,
+            "campaigns_cleaned": None,
+            "pipeline_with_clean_attribution_usd": None,
+            "pipeline_total_usd": None,
+            "attribution_coverage_pct": 0.71,
+            "attribution_mapping_date": None,
+            "campaign_types_covered": None,
+        },
+    ]
+
+
+def gen_mb_mql_hygiene() -> List[Dict]:
+    """MQL field completeness at handoff.
+
+    P-MB-11: April 678/745 = 91.0% complete vs March 73%.
+             April 8 form-fill scoring threshold applied to 6 forms.
+    """
+    return [
+        {
+            "period": "2026-04",
+            "mqls_complete": 678,
+            "mqls_total": 745,
+            "completeness_pct": round(678 / 745, 4),
+            "form_scoring_date": "2026-04-08",
+            "forms_updated": 6,
+        },
+        {
+            "period": "2026-03",
+            "mqls_complete": None,
+            "mqls_total": None,
+            "completeness_pct": 0.73,
+            "form_scoring_date": None,
+            "forms_updated": None,
+        },
+    ]
+
+
+def gen_mb_sales_enablement_assets() -> List[Dict]:
+    """Sales enablement asset adoption (battlecard + ROI calculator).
+
+    P-MB-12: Battlecard library — April 480 opens from 38 of 47 active reps.
+             Competitor A card leads at 162 opens. Refresh shipped April 2.
+    P-MB-13: ROI calculator — 22 of 36 active mid-market deals by April 22 (14 days).
+             7 deals progressing to proposal. Deal size: $48K with vs $39K without.
+    """
+    return [
+        {
+            "asset_type": "battlecard",
+            "period": "2026-04",
+            "total_opens": 480,
+            "unique_reps": 38,
+            "total_reps": 47,
+            "top_card": "competitor_a",
+            "top_card_opens": 162,
+            "refresh_date": "2026-04-02",
+            "deals_with_asset": None,
+            "deals_total_active": None,
+            "deals_to_proposal": None,
+            "deal_size_with_asset_usd": None,
+            "deal_size_without_asset_usd": None,
+            "asset_live_date": None,
+            "days_since_launch": None,
+            "segment": None,
+        },
+        {
+            "asset_type": "roi_calculator",
+            "period": "2026-04",
+            "total_opens": None,
+            "unique_reps": None,
+            "total_reps": None,
+            "top_card": None,
+            "top_card_opens": None,
+            "refresh_date": None,
+            "deals_with_asset": 22,
+            "deals_total_active": 36,
+            "deals_to_proposal": 7,
+            "deal_size_with_asset_usd": 48000,
+            "deal_size_without_asset_usd": 39000,
+            "asset_live_date": "2026-04-08",
+            "days_since_launch": 14,
+            "segment": "mid-market",
+        },
+    ]
+
+
 def apply_deal_field_defaults(deals: List[Dict]) -> None:
     """Backfill new Phase 2.3 deal fields with safe defaults across all deals.
 
@@ -2792,6 +3121,18 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     crm_hygiene = gen_crm_hygiene()
     cs_exit_interviews = gen_cs_exit_interviews()
 
+    # Marketing Builder entity generators (Phase 2.11) — all deterministic
+    mb_paid_performance = gen_mb_paid_performance()
+    mb_mql_sources = gen_mb_mql_sources()
+    mb_inbound_demos = gen_mb_inbound_demos()
+    mb_seo_keywords = gen_mb_seo_keywords()
+    mb_organic_traffic = gen_mb_organic_traffic()
+    mb_content_attribution = gen_mb_content_attribution()
+    mb_routing_ops = gen_mb_routing_ops()
+    mb_attribution_accuracy = gen_mb_attribution_accuracy()
+    mb_mql_hygiene = gen_mb_mql_hygiene()
+    mb_sales_enablement_assets = gen_mb_sales_enablement_assets()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -2887,6 +3228,17 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "earned_media": earned_media,
         "crm_hygiene": crm_hygiene,
         "cs_exit_interviews": cs_exit_interviews,
+        # Marketing Builder entities (Phase 2.11)
+        "mb_paid_performance": mb_paid_performance,
+        "mb_mql_sources": mb_mql_sources,
+        "mb_inbound_demos": mb_inbound_demos,
+        "mb_seo_keywords": mb_seo_keywords,
+        "mb_organic_traffic": mb_organic_traffic,
+        "mb_content_attribution": mb_content_attribution,
+        "mb_routing_ops": mb_routing_ops,
+        "mb_attribution_accuracy": mb_attribution_accuracy,
+        "mb_mql_hygiene": mb_mql_hygiene,
+        "mb_sales_enablement_assets": mb_sales_enablement_assets,
     }
 
 

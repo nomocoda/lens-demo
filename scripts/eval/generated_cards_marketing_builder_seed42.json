@@ -1,0 +1,182 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "LinkedIn CPL holds flat while the industry climbs",
+    "anchor": "April CPL sits at $138 versus March at $156, bucking the 12% month-over-month industry trend.",
+    "connect": "The audience refresh applied April 1 covers 62% of paid budget across 4 campaigns.",
+    "body": "April CPL sits at $138 versus March at $156, bucking the 12% month-over-month industry trend. The audience refresh applied April 1 covers 62% of paid budget across 4 campaigns.",
+    "grounded_metrics": [
+      "linkedin_cpl_april",
+      "audience_refresh_coverage"
+    ],
+    "trace": "LinkedIn CPL efficiency against industry headwinds, tied to audience refresh timing."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Webinar campaign generates 42% of April MQLs in 11 days",
+    "anchor": "April 9 webinar produced 312 MQLs by day 11, concentrating in the mid-market segment.",
+    "connect": "Webinar-sourced MQLs convert to SQL at 19% versus paid social at 11% in the same window.",
+    "body": "April 9 webinar produced 312 MQLs by day 11, concentrating in the mid-market segment. Webinar-sourced MQLs convert to SQL at 19% versus paid social at 11% in the same window.",
+    "grounded_metrics": [
+      "webinar_mql_volume",
+      "mql_sql_conversion"
+    ],
+    "trace": "Single campaign dominance in monthly MQL volume with quality differential versus other channels."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Comparison hub sessions up 28% as AI Overview presence drops",
+    "anchor": "Hub sessions hit 12,400 in April versus 9,700 in March, with Competitor A page driving 4,200 sessions.",
+    "connect": "AI Overview presence on competitor comparison queries dropped from 71% to 38% after the hub refresh.",
+    "body": "Hub sessions hit 12,400 in April versus 9,700 in March, with Competitor A page driving 4,200 sessions. AI Overview presence on competitor comparison queries dropped from 71% to 38% after the hub refresh.",
+    "grounded_metrics": [
+      "comparison_hub_traffic",
+      "ai_overview_presence"
+    ],
+    "trace": "Organic traffic lift correlating with reduced AI Overview interference on comparison queries."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Three priority keywords move into top-3 positions in one week",
+    "anchor": "SaaS attribution, B2B lead routing, and marketing ops checklist all landed in top-3 spots week ending April 7.",
+    "connect": "All three started from page-2 positions and got structured FAQ sections added in March.",
+    "body": "SaaS attribution, B2B lead routing, and marketing ops checklist all landed in top-3 spots week ending April 7. All three started from page-2 positions and got structured FAQ sections added in March.",
+    "grounded_metrics": [
+      "seo_keyword_rankings",
+      "faq_structured_content"
+    ],
+    "trace": "Batch keyword ranking improvement following March content optimization strategy."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "SaaS pricing models post jumps from position 7 to position 2",
+    "anchor": "The keyword moved 5 positions in 9 days following the April 12 post refresh, targeting 4,400 monthly searches.",
+    "connect": "Three other priority keywords also broke into top-3 after similar FAQ-section updates.",
+    "body": "The keyword moved 5 positions in 9 days following the April 12 post refresh, targeting 4,400 monthly searches. Three other priority keywords also broke into top-3 after similar FAQ-section updates.",
+    "grounded_metrics": [
+      "saas_pricing_ranking",
+      "structured_faq_pattern"
+    ],
+    "trace": "Individual high-volume keyword success within the broader FAQ optimization pattern."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Inbound demo requests climb 38% month-over-month",
+    "anchor": "April generated 84 requests versus 61 in March, splitting 47 mid-market and 37 enterprise.",
+    "connect": "Homepage CTA test launched April 4 shows 22% demo-form conversion lift.",
+    "body": "April generated 84 requests versus 61 in March, splitting 47 mid-market and 37 enterprise. Homepage CTA test launched April 4 shows 22% demo-form conversion lift.",
+    "grounded_metrics": [
+      "inbound_demo_volume",
+      "homepage_cta_test"
+    ],
+    "trace": "Demo volume increase correlating with homepage conversion optimization timing."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Routing SLA compliance jumps from 82% to 95% in April",
+    "anchor": "412 of 433 demos routed inside the 5-minute threshold versus March at 357 of 435.",
+    "connect": "Round-robin fallback for after-hours requests went live April 6.",
+    "body": "412 of 433 demos routed inside the 5-minute threshold versus March at 357 of 435. Round-robin fallback for after-hours requests went live April 6.",
+    "grounded_metrics": [
+      "routing_sla_compliance",
+      "round_robin_fallback"
+    ],
+    "trace": "Routing infrastructure improvement driving SLA performance jump."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "MQL field completeness hits 91% after form scoring threshold",
+    "anchor": "678 of 745 April MQLs carry complete UTM, channel, and persona data versus March at 73%.",
+    "connect": "Form-fill scoring threshold deployed April 8 across 6 forms.",
+    "body": "678 of 745 April MQLs carry complete UTM, channel, and persona data versus March at 73%. Form-fill scoring threshold deployed April 8 across 6 forms.",
+    "grounded_metrics": [
+      "mql_field_completeness",
+      "form_scoring_threshold"
+    ],
+    "trace": "Data quality improvement following form validation infrastructure deployment."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Attribution variance drops to 2.1% in Q2",
+    "anchor": "Marketo-Salesforce sourcing mismatch sits at 47 of 2240 opportunities in Q2 versus Q1 at 4.8%.",
+    "connect": "UTM-stamping cleanup applied to 12 paid campaigns April 14.",
+    "body": "Marketo-Salesforce sourcing mismatch sits at 47 of 2240 opportunities in Q2 versus Q1 at 4.8%. UTM-stamping cleanup applied to 12 paid campaigns April 14.",
+    "grounded_metrics": [
+      "attribution_variance",
+      "utm_cleanup"
+    ],
+    "trace": "Attribution accuracy improvement following systematic UTM infrastructure cleanup."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Speed-to-lead drops from 11.6 minutes to 4.2 minutes",
+    "anchor": "Median inbound demo response time improved across April versus March baseline.",
+    "connect": "SQL conversion on under-5-minute touches runs at 2.1x the rate of over-15-minute touches.",
+    "body": "Median inbound demo response time improved across April versus March baseline. SQL conversion on under-5-minute touches runs at 2.1x the rate of over-15-minute touches.",
+    "grounded_metrics": [
+      "speed_to_lead",
+      "sql_conversion_by_response_time"
+    ],
+    "trace": "Response time improvement correlating with downstream conversion multiplier."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Clean attribution coverage climbs to 89% in April",
+    "anchor": "Pipeline with complete Marketo-to-Salesforce attribution chain covers $2.4M of $2.7M total.",
+    "connect": "Q1 average coverage ran at 71% before the shared attribution mapping locked April 7.",
+    "body": "Pipeline with complete Marketo-to-Salesforce attribution chain covers $2.4M of $2.7M total. Q1 average coverage ran at 71% before the shared attribution mapping locked April 7.",
+    "grounded_metrics": [
+      "attribution_coverage",
+      "shared_attribution_mapping"
+    ],
+    "trace": "Attribution completeness improvement following RevOps mapping standardization."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Battlecard adoption spans 38 of 47 active reps",
+    "anchor": "April library generated 480 opens with Competitor A card driving 162 opens.",
+    "connect": "Competitor A battlecard refresh shipped April 2.",
+    "body": "April library generated 480 opens with Competitor A card driving 162 opens. Competitor A battlecard refresh shipped April 2.",
+    "grounded_metrics": [
+      "battlecard_adoption",
+      "competitor_a_card"
+    ],
+    "trace": "Sales asset usage with concentration in refreshed competitive content."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ROI calculator appears in 22 of 36 active mid-market deals",
+    "anchor": "Calculator deployed April 8 shows attachment in 61% of active deals within 14 days.",
+    "connect": "Average deal size runs $48K with calculator versus $39K without.",
+    "body": "Calculator deployed April 8 shows attachment in 61% of active deals within 14 days. Average deal size runs $48K with calculator versus $39K without.",
+    "grounded_metrics": [
+      "roi_calculator_adoption",
+      "deal_size_with_calculator"
+    ],
+    "trace": "New sales tool adoption rate with correlation to deal value differential."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Content attribution covers $310K across 6 of 18 published pieces",
+    "anchor": "Q2 content-attributable opportunities concentrate in one-third of published content.",
+    "connect": "Top performer runs at $140K with the buyer's guide seeing 41% week-over-week view growth since gated download.",
+    "body": "Q2 content-attributable opportunities concentrate in one-third of published content. Top performer runs at $140K with the buyer's guide seeing 41% week-over-week view growth since gated download.",
+    "grounded_metrics": [
+      "content_attribution",
+      "buyers_guide_performance"
+    ],
+    "trace": "Content pipeline attribution concentration with gated asset driving top performance."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Paid pipeline pacing hits $1.18M of $1.5M monthly target",
+    "anchor": "Week 3 of April shows pipeline generation on track versus the monthly commitment.",
+    "connect": "LinkedIn CPL efficiency at $138 supports the volume pace versus March at $156.",
+    "body": "Week 3 of April shows pipeline generation on track versus the monthly commitment. LinkedIn CPL efficiency at $138 supports the volume pace versus March at $156.",
+    "grounded_metrics": [
+      "paid_pipeline_pacing",
+      "linkedin_cpl_efficiency"
+    ],
+    "trace": "Pipeline volume delivery supported by sustained channel cost efficiency."
+  }
+]

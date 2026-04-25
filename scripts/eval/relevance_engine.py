@@ -140,6 +140,11 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "competitive_intel", "discovery_calls", "icp_analysis",
         "messaging_performance", "launch_attribution", "launch_enablement",
         "earned_media", "crm_hygiene", "cs_exit_interviews",
+        # Marketing Builder entities (Phase 2.11)
+        "mb_paid_performance", "mb_mql_sources", "mb_inbound_demos",
+        "mb_seo_keywords", "mb_organic_traffic", "mb_content_attribution",
+        "mb_routing_ops", "mb_attribution_accuracy", "mb_mql_hygiene",
+        "mb_sales_enablement_assets",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1011,6 +1016,146 @@ def build_marketing_strategist_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_marketing_builder_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Marketing Builder (Demand Gen / MOps / Campaigns).
+
+    Cuts tuned to the four Marketing Builder Goal Clusters:
+    Demand Generation, Content and Organic Growth, Marketing Operations,
+    Sales Enablement Support. Cross-functional bridges to Revenue Developer
+    (speed-to-lead) and Revenue Operator (attribution chain) surfaced as
+    their own sections.
+    """
+    paid = ds.get("mb_paid_performance", [])
+    mql_src = ds.get("mb_mql_sources", [])
+    demos = ds.get("mb_inbound_demos", [])
+    seo = ds.get("mb_seo_keywords", [])
+    organic = ds.get("mb_organic_traffic", [])
+    content = ds.get("mb_content_attribution", [])
+    routing = ds.get("mb_routing_ops", [])
+    attr = ds.get("mb_attribution_accuracy", [])
+    hygiene = ds.get("mb_mql_hygiene", [])
+    assets = ds.get("mb_sales_enablement_assets", [])
+
+    apr_paid = next((r for r in paid if r["period"] == "2026-04"), {})
+    apr_mql = next((r for r in mql_src if r["period"] == "2026-04"), {})
+    apr_demos = next((r for r in demos if r["period"] == "2026-04"), {})
+    mar_demos = next((r for r in demos if r["period"] == "2026-03"), {})
+    kw_pricing = next((r for r in seo if r["keyword"] == "saas pricing models"), {})
+    kw_attr = next((r for r in seo if r["keyword"] == "saas attribution"), {})
+    kw_routing = next((r for r in seo if r["keyword"] == "b2b lead routing"), {})
+    kw_checklist = next((r for r in seo if r["keyword"] == "marketing ops checklist"), {})
+    comp_hub = next((r for r in organic if r["page"] == "comparison_hub"), {})
+    q2_content = next((r for r in content if r["period"] == "Q2_2026"), {})
+    apr_routing = next((r for r in routing if r["period"] == "2026-04"), {})
+    mar_routing = next((r for r in routing if r["period"] == "2026-03"), {})
+    q2_attr = next((r for r in attr if r["period"] == "Q2_2026"), {})
+    q1_attr = next((r for r in attr if r["period"] == "Q1_2026"), {})
+    apr_hygiene = next((r for r in hygiene if r["period"] == "2026-04"), {})
+    mar_hygiene = next((r for r in hygiene if r["period"] == "2026-03"), {})
+    battlecard = next((r for r in assets if r["asset_type"] == "battlecard"), {})
+    calculator = next((r for r in assets if r["asset_type"] == "roi_calculator"), {})
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — MARKETING BUILDER DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Marketo for marketing automation; Salesforce CRM for pipeline and attribution; HubSpot for inbound tracking; Highspot for sales asset management; LinkedIn for paid ABM.")
+    L.append("")
+
+    L.append("# Demand generation — paid channel")
+    if apr_paid:
+        L.append(f"- April paid pipeline pacing: ${apr_paid['pipeline_at_week3_usd']:,} of ${apr_paid['pipeline_target_usd']:,} monthly target landed by {apr_paid['week3_date']} (week 3).")
+        L.append(f"- LinkedIn CPL across weeks 1-3 of April: ${apr_paid['week3_cpl_linkedin']}. Full-month April CPL: ${apr_paid['full_month_cpl_linkedin']}. March CPL: ${apr_paid['prior_month_cpl']} (month-over-month climb {apr_paid['march_cpl_mom_climb_pct']*100:.0f}%). Q1 average CPL: ${apr_paid['q1_avg_cpl']}.")
+        L.append(f"- April 1 LinkedIn audience refresh applied to {apr_paid['campaigns_in_refresh']} campaigns covering {apr_paid['budget_share_refreshed']*100:.0f}% of paid budget.")
+    L.append("")
+
+    L.append("# Demand generation — MQL sources")
+    if apr_mql:
+        webinar_src = next((s for s in apr_mql.get("sources", []) if s["source"] == "webinar_apr9"), {})
+        paid_src = next((s for s in apr_mql.get("sources", []) if s["source"] == "paid_social"), {})
+        if webinar_src:
+            L.append(f"- April 2026 total MQLs: {apr_mql['total_mqls']}. Webinar campaign (April 9): {webinar_src['mqls']} MQLs in {webinar_src['window_days']} days = {webinar_src['share']*100:.0f}% of April total. Highest concentration in {webinar_src['segment_concentration']}.")
+            L.append(f"- Webinar-sourced MQL-to-SQL conversion rate: {webinar_src['sql_conversion_rate']*100:.0f}%. Paid social MQL-to-SQL: {paid_src['sql_conversion_rate']*100:.0f}% in the same window.")
+    L.append("")
+
+    L.append("# Demand generation — inbound demo requests")
+    if apr_demos and mar_demos:
+        L.append(f"- April 2026 inbound demo requests: {apr_demos['demo_requests']} ({apr_demos['mid_market']} mid-market, {apr_demos['enterprise']} enterprise). March 2026: {mar_demos['demo_requests']}.")
+        L.append(f"- Homepage CTA test live {apr_demos['cta_test_live_date']}. Demo-form conversion lift: {apr_demos['cta_conversion_lift_pct']*100:.0f}%.")
+    L.append("")
+
+    L.append("# Content and organic growth — SEO keyword rankings")
+    if kw_pricing:
+        L.append(f"- \"saas pricing models\": moved from position {kw_pricing['position_before']} to position {kw_pricing['position_after']} in {kw_pricing['days_to_move']} days (week ending {kw_pricing['week_ending']}). Monthly search volume: {kw_pricing['monthly_search_volume']:,}. Post refreshed {kw_pricing['page_refresh_date']}.")
+    top3_kws = [r for r in [kw_attr, kw_routing, kw_checklist] if r]
+    if top3_kws:
+        kw_names = ", ".join(f"\"{r['keyword']}\"" for r in top3_kws)
+        L.append(f"- {kw_names}: all moved into top-3 positions in week ending {top3_kws[0]['week_ending']}. All started from page-2 positions. All pages rewritten with structured FAQ sections in March.")
+    L.append("")
+
+    L.append("# Content and organic growth — comparison hub traffic")
+    if comp_hub:
+        L.append(f"- Comparison hub sessions: {comp_hub['sessions']:,} in April vs {comp_hub['prior_sessions']:,} in March ({comp_hub['change_pct']*100:.0f}% increase).")
+        L.append(f"- {comp_hub['top_subpage'].replace('_', ' ').title()} comparison page: {comp_hub['top_subpage_sessions']:,} sessions.")
+        L.append(f"- AI Overview presence on \"{comp_hub['ai_overview_query_type']}\" queries: {comp_hub['ai_overview_coverage_before']*100:.0f}% before comparison hub refresh, {comp_hub['ai_overview_coverage_after']*100:.0f}% after.")
+    L.append("")
+
+    L.append("# Content and organic growth — content pipeline attribution")
+    if q2_content:
+        L.append(f"- Q2 2026 content-attributable pipeline: {q2_content['pieces_with_pipeline']} of {q2_content['pieces_total_published']} published pieces carry a touched-deal flag. Total: ${q2_content['pipeline_total_usd']:,}.")
+        L.append(f"- Top piece (buyer's guide): ${q2_content['top_piece_pipeline_usd']:,} in pipeline. Week-over-week view growth since gated download went live: {q2_content['top_piece_wow_view_growth_pct']*100:.0f}%.")
+    L.append("")
+
+    L.append("# Marketing operations — inbound routing SLA")
+    if apr_routing and mar_routing:
+        L.append(f"- April 2026 inbound routing SLA (5-minute threshold): {apr_routing['demos_routed']} of {apr_routing['demos_total']} demos routed inside SLA = {apr_routing['sla_pct']*100:.0f}%. March: {mar_routing['demos_routed']} of {mar_routing['demos_total']} = {mar_routing['sla_pct']*100:.0f}%.")
+        if apr_routing.get("routing_update_date"):
+            L.append(f"- Routing update {apr_routing['routing_update_date']}: {apr_routing['routing_update_description']}.")
+    L.append("")
+
+    L.append("# Marketing operations — MQL field completeness")
+    if apr_hygiene and mar_hygiene:
+        L.append(f"- April 2026 MQL field completeness (UTM, channel, persona): {apr_hygiene['mqls_complete']} of {apr_hygiene['mqls_total']} MQLs complete = {apr_hygiene['completeness_pct']*100:.0f}%. March: {mar_hygiene['completeness_pct']*100:.0f}%.")
+        if apr_hygiene.get("form_scoring_date"):
+            L.append(f"- Form-fill scoring threshold went live {apr_hygiene['form_scoring_date']} across {apr_hygiene['forms_updated']} forms.")
+    L.append("")
+
+    L.append("# Marketing operations — attribution accuracy")
+    if q2_attr and q1_attr:
+        L.append(f"- Q2 2026 Marketo-Salesforce sourcing mismatch: {q2_attr['mismatch_opps']} of {q2_attr['sourced_opps_total']} sourced opportunities = {q2_attr['variance_pct']*100:.1f}% variance. Q1 2026 variance: {q1_attr['variance_pct']*100:.1f}%.")
+        if q2_attr.get("utm_cleanup_date"):
+            L.append(f"- UTM-stamping cleanup {q2_attr['utm_cleanup_date']} applied to {q2_attr['campaigns_cleaned']} paid campaigns.")
+    L.append("")
+
+    L.append("# Sales enablement support — battlecard adoption")
+    if battlecard:
+        L.append(f"- Battlecard library April 2026: {battlecard['total_opens']} opens from {battlecard['unique_reps']} of {battlecard['total_reps']} active reps. Competitor A card: {battlecard['top_card_opens']} opens.")
+        if battlecard.get("refresh_date"):
+            L.append(f"- Competitor A battlecard refresh shipped {battlecard['refresh_date']}.")
+    L.append("")
+
+    L.append("# Sales enablement support — ROI calculator adoption")
+    if calculator:
+        L.append(f"- ROI calculator (live {calculator['asset_live_date']}, first {calculator['days_since_launch']} days): {calculator['deals_with_asset']} of {calculator['deals_total_active']} active {calculator['segment']} deals carry a calculator-attached note. {calculator['deals_to_proposal']} progressing to proposal stage.")
+        L.append(f"- Average deal size: ${calculator['deal_size_with_asset_usd']:,} with calculator versus ${calculator['deal_size_without_asset_usd']:,} without.")
+    L.append("")
+
+    L.append("# Cross-functional: speed-to-lead (Marketing Builder → Revenue Developer)")
+    if apr_routing:
+        L.append(f"- Median speed-to-lead on inbound demos: {apr_routing['median_speed_to_lead_minutes']} minutes in April vs {mar_routing['median_speed_to_lead_minutes'] if mar_routing else 'N/A'} minutes in March.")
+        if apr_routing.get("sql_conversion_under5min_multiple"):
+            L.append(f"- SQL conversion on under-5-minute touches: {apr_routing['sql_conversion_under5min_multiple']}x the rate of over-15-minute touches in the same window.")
+    L.append("")
+
+    L.append("# Cross-functional: closed-loop attribution (Marketing Builder → Revenue Operator)")
+    if q2_attr and q1_attr:
+        L.append(f"- April pipeline with clean Marketo-to-Salesforce attribution chain: ${q2_attr['pipeline_with_clean_attribution_usd']:,} of ${q2_attr['pipeline_total_usd']:,} = {q2_attr['attribution_coverage_pct']*100:.0f}%. Q1 average coverage: {q1_attr['attribution_coverage_pct']*100:.0f}%.")
+        if q2_attr.get("attribution_mapping_date"):
+            L.append(f"- Shared attribution mapping with RevOps locked {q2_attr['attribution_mapping_date']}, covering {q2_attr['campaign_types_covered']} campaign types.")
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -1072,6 +1217,10 @@ _MARKETING_GOAL_CLUSTERS = (
 _MARKETING_STRATEGIST_GOAL_CLUSTERS = (
     "Messaging and Positioning; Sales Enablement; "
     "Launch and GTM Execution; Generating Qualified Pipeline"
+)
+_MARKETING_BUILDER_GOAL_CLUSTERS = (
+    "Demand Generation; Content and Organic Growth; "
+    "Marketing Operations; Sales Enablement Support"
 )
 _REVENUE_GOAL_CLUSTERS = (
     "Quarter Attainment and Forecast Reliability; Pipeline Coverage and Health; "
@@ -1139,6 +1288,20 @@ _ARCHETYPE_CONFIG = {
         ),
         "brief_filename": "marketing-strategist-brief.md",
         "user_prompt_subject": "Marketing Strategy",
+    },
+    "marketing_builder": {
+        "intelligence_area": "marketing",
+        "audience_label": "Demand Generation Manager at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Marketing Builder",
+        "goal_clusters": _MARKETING_BUILDER_GOAL_CLUSTERS,
+        "snapshot_label": "MARKETING BUILDER DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"April LinkedIn CPL $138\", "
+            "your card says $138 or rounds honestly, not $140."
+        ),
+        "brief_filename": "marketing-builder-brief.md",
+        "user_prompt_subject": "Marketing Execution",
     },
 }
 
@@ -1249,6 +1412,7 @@ def build_user_message(archetype: str) -> str:
         "revenue": "revenue data",
         "customer": "customer data",
         "marketing_strategist": "marketing strategy data",
+        "marketing_builder": "marketing execution data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -1440,6 +1604,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_customer_summary(ds)
     elif archetype == "marketing_strategist":
         summary = build_marketing_strategist_summary(ds)
+    elif archetype == "marketing_builder":
+        summary = build_marketing_builder_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,

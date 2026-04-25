@@ -421,10 +421,124 @@ MS_PATTERNS = [
 ]
 
 
+MB_PATTERNS = [
+    ("P-MB-01", "Paid pipeline $1.18M of $1.5M target by week 3", [
+        r"\$1\.18M", r"\$1\.5M.*target", r"target.*\$1\.5M",
+        r"1\.18.*1\.5", r"week.?3.*pacing", r"pacing.*week.?3",
+        r"78%.*target", r"paid.*pipeline.*pacing",
+        r"1\.18.*paid", r"paid.*1\.18",
+    ], ["pipeline_at_week3", "paid_pipeline_pacing", "week3_pacing"]),
+
+    ("P-MB-02", "Webinar generates 42% of April MQLs in 11 days", [
+        r"312.*740", r"740.*312", r"\b312\b.*MQL", r"MQL.*\b312\b",
+        r"\b42%\b.*MQL", r"MQL.*\b42%\b", r"webinar.*42%", r"42%.*webinar",
+        r"11 days.*MQL", r"MQL.*11 days",
+        r"19%.*SQL", r"SQL.*19%", r"webinar.*SQL", r"SQL.*webinar",
+    ], ["webinar_mql_share", "webinar_sql_conversion", "mql_source"]),
+
+    ("P-MB-03", "LinkedIn CPL $138 April vs $156 March vs $174 Q1", [
+        r"\$138.*CPL", r"CPL.*\$138", r"\$156.*March", r"March.*\$156",
+        r"\$174.*Q1", r"Q1.*\$174", r"CPL.*flat", r"flat.*CPL",
+        r"audience.*refresh.*April 1", r"April 1.*audience",
+        r"62%.*paid.*budget", r"paid.*budget.*62%",
+    ], ["linkedin_cpl", "cpl_trend", "audience_refresh"]),
+
+    ("P-MB-04", "Inbound demo requests 84 April vs 61 March", [
+        r"\b84\b.*demo", r"demo.*\b84\b", r"\b61\b.*demo", r"demo.*\b61\b",
+        r"84.*inbound", r"inbound.*84", r"\b47\b.*mid.?market", r"\b37\b.*enterprise",
+        r"22%.*conversion", r"conversion.*22%", r"CTA.*test",
+    ], ["inbound_demos", "demo_requests", "cta_conversion"]),
+
+    ("P-MB-05", "Pricing page moves from position 7 to position 2 in 9 days", [
+        r"position.*7.*position.*2", r"7.*to.*2.*position",
+        r"saas pricing models", r"position 2", r"position.*2.*9 days",
+        r"4,400.*search", r"search.*4,400", r"4400.*search.*volume",
+        r"pricing.*page.*position", r"position.*pricing.*page",
+    ], ["pricing_page_seo", "keyword_ranking_move", "seo_ranking"]),
+
+    ("P-MB-06", "Content-attributable pipeline $310K from 6 of 18 pieces", [
+        r"\$310K.*content", r"content.*\$310K",
+        r"6 of 18", r"6.*18.*piece", r"buyer.?s.?guide.*\$140K",
+        r"\$140K.*buyer", r"41%.*view", r"view.*41%",
+    ], ["content_pipeline", "content_attribution", "buyers_guide"]),
+
+    ("P-MB-07", "Comparison hub grows 28% to 12,400 sessions; AI Overview falls 71% to 38%", [
+        r"12,?400.*session", r"session.*12,?400",
+        r"9,?700.*session", r"session.*9,?700",
+        r"\b28%\b.*organic", r"organic.*\b28%\b",
+        r"AI Overview.*71%", r"71%.*AI Overview",
+        r"71%.*38%", r"38%.*AI Overview",
+        r"comparison hub", r"4,?200.*session.*competitor",
+    ], ["comparison_hub_traffic", "organic_traffic_growth", "ai_overview"]),
+
+    ("P-MB-08", "Three priority keywords move into top 3 in week ending April 7", [
+        r"saas attribution", r"b2b lead routing", r"marketing ops checklist",
+        r"three.*keyword", r"3.*keyword.*top.?3",
+        r"page.?2.*top.?3", r"top.?3.*April 7",
+        r"FAQ.*section", r"structured FAQ",
+    ], ["top3_keywords", "seo_keywords_move", "faq_sections"]),
+
+    ("P-MB-09", "Routing SLA 95% in April vs 82% in March", [
+        r"\b95%\b.*routing", r"routing.*\b95%\b",
+        r"\b82%\b.*routing", r"routing.*\b82%\b",
+        r"412.*433", r"433.*412", r"357.*435", r"435.*357",
+        r"5.?minute.*SLA", r"SLA.*5.?minute",
+        r"routing.*update.*April 6", r"April 6.*routing",
+    ], ["routing_sla", "sla_compliance", "inbound_routing"]),
+
+    ("P-MB-10", "Marketo-Salesforce attribution variance 2.1% Q2 vs 4.8% Q1", [
+        r"2\.1%.*variance", r"variance.*2\.1%",
+        r"4\.8%.*Q1", r"Q1.*4\.8%",
+        r"47.*2,?240", r"2,?240.*47", r"sourcing.*mismatch",
+        r"UTM.*cleanup", r"cleanup.*UTM",
+        r"attribution.*variance", r"variance.*attribution",
+    ], ["attribution_variance", "marketo_sfdc_mismatch", "utm_cleanup"]),
+
+    ("P-MB-11", "MQL field completeness 91% April vs 73% March", [
+        r"\b91%\b.*MQL", r"MQL.*\b91%\b",
+        r"\b73%\b.*MQL", r"MQL.*\b73%\b",
+        r"678.*745", r"745.*678", r"form.*scoring",
+        r"field.*complet", r"complet.*field",
+        r"completeness.*91", r"91.*completeness",
+    ], ["mql_completeness", "field_completeness", "form_scoring"]),
+
+    ("P-MB-12", "Battlecard library 480 opens from 38 of 47 reps", [
+        r"\b480\b.*battlecard", r"battlecard.*\b480\b",
+        r"38.*47.*rep", r"47.*38.*rep",
+        r"38 of 47", r"162.*Competitor A", r"Competitor A.*162",
+        r"battlecard.*open", r"open.*battlecard",
+    ], ["battlecard_opens", "battlecard_adoption", "rep_engagement"]),
+
+    ("P-MB-13", "ROI calculator in 22 of 36 mid-market deals; $48K vs $39K deal size", [
+        r"ROI calculator", r"roi calculator",
+        r"22.*36.*deal", r"36.*deal.*22", r"22 of 36",
+        r"\$48K.*\$39K", r"\$39K.*\$48K",
+        r"calculator.*deal.*size", r"deal.*size.*calculator",
+        r"7.*proposal", r"proposal.*7.*deal",
+    ], ["roi_calculator", "calculator_adoption", "deal_size_lift"]),
+
+    ("P-MB-14", "Speed-to-lead 4.2 minutes April vs 11.6 minutes March; 2.1x SQL lift", [
+        r"4\.2.*minute", r"minute.*4\.2",
+        r"11\.6.*minute", r"minute.*11\.6",
+        r"2\.1x.*SQL", r"SQL.*2\.1x",
+        r"speed.?to.?lead", r"first.*touch.*minute",
+    ], ["speed_to_lead", "median_speed", "sql_conversion_multiple"]),
+
+    ("P-MB-15", "Attribution coverage 88% ($2.4M of $2.7M); Q1 was 71%", [
+        r"\$2\.4M.*\$2\.7M", r"\$2\.7M.*\$2\.4M",
+        r"\b88%\b.*attribution", r"attribution.*\b88%\b",
+        r"71%.*Q1.*attribution", r"Q1.*71%.*coverage",
+        r"clean.*attribution.*chain", r"attribution.*chain",
+        r"14.*campaign.*type", r"campaign.*type.*14",
+    ], ["attribution_coverage", "closed_loop_attribution", "pipeline_coverage"]),
+]
+
+
 _ARCHETYPE_TABLE = {
     "revenue": (PATTERNS, "Revenue Leader", "revenue", "Phase 2.5"),
     "customer": (CL_PATTERNS, "Customer Leader", "customer", "Phase 2.6"),
     "marketing_strategist": (MS_PATTERNS, "Marketing Strategist", "marketing_strategist", "Phase 2.9"),
+    "marketing_builder": (MB_PATTERNS, "Marketing Builder", "marketing_builder", "Phase 2.11"),
 }
 
 
