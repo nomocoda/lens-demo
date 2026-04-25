@@ -159,6 +159,10 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         "ro_forecast_metrics", "ro_pipeline_governance", "ro_data_quality",
         "ro_tool_sync", "ro_stage_gate", "ro_lead_routing", "ro_attribution",
         "ro_qbr_changes", "ro_account_dedup", "ro_deal_review_presence",
+        # Customer Advocate entities (Phase 2.23)
+        "ca_active_book", "ca_renewal_pipeline", "ca_early_renewals",
+        "ca_segment_grr", "ca_lighthouse_qbr", "ca_qbr_log",
+        "ca_onboarding", "ca_advocate_pipeline",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1469,6 +1473,198 @@ def build_revenue_operator_summary(ds: Dict[str, list]) -> str:
     return "\n".join(L)
 
 
+def build_customer_advocate_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Customer Advocate (CSM / Account Manager).
+
+    Covers all 15 P-CA patterns across four goal clusters:
+    Account Health and Relationship Depth (P-CA-01 to P-CA-04),
+    Renewal Execution (P-CA-05 to P-CA-08),
+    Expansion Identification (P-CA-09 to P-CA-11),
+    Value Delivery and QBR (P-CA-12 to P-CA-13),
+    Cross-functional bridges (P-CA-14 to P-CA-15).
+    """
+    book = ds.get("ca_active_book", [{}])[0]
+    renewal_q3 = ds.get("ca_renewal_pipeline", [{}])[0]
+    early_ren = ds.get("ca_early_renewals", [{}])[0]
+    segment_grr = ds.get("ca_segment_grr", [])
+    lighthouse = ds.get("ca_lighthouse_qbr", [{}])[0]
+    qbr_log = ds.get("ca_qbr_log", [{}])[0]
+    onboarding = ds.get("ca_onboarding", [])
+    advocate = ds.get("ca_advocate_pipeline", [{}])[0]
+
+    grr_q2 = next((r for r in segment_grr if r.get("quarter") == "Q2_2026"), {})
+    grr_q1 = next((r for r in segment_grr if r.get("quarter") == "Q1_2026"), {})
+    onb_q2 = next((r for r in onboarding
+                   if r.get("cohort_quarter") == "Q2_2026" and "ttfv_median_days" in r), {})
+    onb_q1 = next((r for r in onboarding
+                   if r.get("cohort_quarter") == "Q1_2026" and "ttfv_median_days" in r), {})
+    handoff_q2 = next((r for r in onboarding
+                       if r.get("cohort_quarter") == "Q2_2026" and "handoff_completeness_pct" in r), {})
+    handoff_q1 = next((r for r in onboarding
+                       if r.get("cohort_quarter") == "Q1_2026" and "handoff_completeness_pct" in r), {})
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — CUSTOMER ADVOCATE DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. CSM book of 47 active accounts. Gainsight is the CS platform (health scores, playbooks); Salesforce for CRM records, stakeholder maps, and renewal pipeline; Mixpanel for product engagement and usage signals.")
+    L.append("")
+
+    # --- Goal 1: Account Health and Relationship Depth ---
+    L.append("# Account health and relationship depth")
+    if book:
+        L.append(f"- Active book: {book.get('total_active_accounts', 47)} accounts.")
+        L.append(
+            f"- Multi-thread contact depth (book-wide): average {book.get('contact_count_avg_current')} contacts per account this quarter, "
+            f"up from {book.get('contact_count_avg_prior_quarter')} last quarter. "
+            f"Accounts at 4-plus engaged contacts: {book.get('accounts_4plus_contacts_current')} of {book.get('total_active_accounts')}, "
+            f"up from {book.get('accounts_4plus_contacts_prior_quarter')} of {book.get('total_active_accounts')} last quarter. "
+            f"Accounts at 4-plus contacts renew at {book.get('renewal_rate_4plus_contacts', 0)*100:.0f}%, "
+            f"compared to {book.get('renewal_rate_1to2_contacts', 0)*100:.0f}% at 1-2 contacts."
+        )
+        L.append(
+            f"- Champion re-engagement: {book.get('champion_reengaged_april')} accounts where champion contacts had gone "
+            f"{book.get('champion_gap_threshold_days', 14)}-plus days without a logged interaction received a confirmed "
+            f"champion response in April, up from {book.get('champion_reengaged_march')} in March. "
+            f"{book.get('champion_reengaged_crossed_green_within_21d')} of those "
+            f"{book.get('champion_reengaged_april')} accounts crossed back to a green health score within 21 days of re-engagement."
+        )
+        strat_total = book.get('strategic_tier_total', 25)
+        strat_fresh = book.get('strategic_map_fresh_30d_current', 21)
+        strat_feb = book.get('strategic_map_fresh_30d_february', 14)
+        strat_feb_pct = book.get('strategic_map_fresh_pct_february', 0.56)
+        lift_pts = book.get('renewal_rate_lift_fresh_stakeholder_map_pts', 22)
+        L.append(
+            f"- Stakeholder map freshness (strategic tier, {strat_total} accounts): "
+            f"{strat_fresh} of {strat_total} updated within the last 30 days, "
+            f"up from {strat_feb} of {strat_total} ({strat_feb_pct*100:.0f}%) in February. "
+            f"Strategic accounts with fresh stakeholder maps renew {lift_pts} points higher than those without."
+        )
+        outreach = book.get('accounts_outreach_14d', 44)
+        total = book.get('total_active_accounts', 47)
+        L.append(
+            f"- Outreach coverage: {outreach} of {total} active accounts show a CSM-logged interaction within the past 14 calendar days. "
+            f"Highest two-week outreach coverage recorded since {book.get('outreach_14d_highest_since', 'Q4_2025').replace('_', ' ')}."
+        )
+    L.append("")
+
+    # --- Goal 2: Renewal Execution ---
+    L.append("# Renewal execution")
+    if renewal_q3:
+        L.append(
+            f"- Q3 2026 renewal pipeline: {renewal_q3.get('renewal_accounts_total')} accounts, "
+            f"${renewal_q3.get('renewal_arr_total', 0):,} total ARR. "
+            f"Executive sponsor touch logged in last 30 days: {renewal_q3.get('exec_sponsor_touch_last_30d')} of {renewal_q3.get('renewal_accounts_total')}. "
+            f"Renewals with executive engagement in the 90 days before renewal close at {renewal_q3.get('renewal_rate_with_exec_touch_90d', 0)*100:.0f}%, "
+            f"compared to {renewal_q3.get('renewal_rate_without_exec_touch', 0)*100:.0f}% without."
+        )
+    if early_ren:
+        L.append(
+            f"- Early-renewal pull-forward Q2 2026: {early_ren.get('early_renewal_accounts')} accounts originally tracking to Q3 or Q4 "
+            f"closed early renewals in Q2; combined ARR ${early_ren.get('early_renewal_arr', 0):,}. "
+            f"{early_ren.get('accounts_green_two_consecutive_months_before')} of {early_ren.get('early_renewal_accounts')} "
+            f"had been flagged green for two consecutive months before the early-commit conversation."
+        )
+    if grr_q2 and grr_q1:
+        L.append(
+            f"- Mid-market segment GRR: Q2 2026 {grr_q2.get('renewals_won')} of {grr_q2.get('renewals_total')} renewed "
+            f"({grr_q2.get('grr', 0)*100:.0f}% GRR), up from {grr_q1.get('renewals_won')} of {grr_q1.get('renewals_total')} in Q1 "
+            f"({grr_q1.get('grr', 0)*100:.0f}% GRR). "
+            f"ICP-aligned mid-market accounts carried {grr_q2.get('icp_aligned_lift_share', 0)*100:.0f}% of the Q2 lift."
+        )
+    if lighthouse:
+        L.append(
+            f"- Lighthouse executive QBR ({lighthouse.get('qbr_date')}): buying committee expanded from "
+            f"{lighthouse.get('contacts_before_qbr')} to {lighthouse.get('contacts_after_qbr')} contacts, "
+            f"adding {', '.join(lighthouse.get('new_contacts_added', []))}. "
+            f"Buying committees that grow during the renewal window close "
+            f"{lighthouse.get('buying_committee_growth_renewal_uplift_pts')} points higher than those that stay flat."
+        )
+    L.append("")
+
+    # --- Goal 3: Expansion Identification ---
+    L.append("# Expansion identification")
+    if book:
+        adoption_ceil = book.get('accounts_80pct_adoption_ceiling', 7)
+        adoption_arr = book.get('adoption_ceiling_expansion_arr_potential', 0)
+        adoption_exec = book.get('adoption_ceiling_exec_sponsor_on_expansion', 4)
+        L.append(
+            f"- Feature-adoption ceiling signals: {adoption_ceil} accounts crossed the 80% feature-adoption ceiling on their current tier in April; "
+            f"combined expansion ARR potential ${adoption_arr:,} based on next-tier list pricing. "
+            f"{adoption_exec} of {adoption_ceil} accounts carry a logged executive sponsor on the expansion conversation track."
+        )
+        contacts_5plus = book.get('accounts_5plus_contacts_current', 12)
+        contacts_5plus_prior = book.get('accounts_5plus_contacts_prior_quarter', 4)
+        exp_rate_5plus = book.get('expansion_rate_5plus_contacts_12mo', 0)
+        exp_rate_single = book.get('expansion_rate_single_thread_12mo', 0)
+        L.append(
+            f"- Multi-thread expansion depth (5-plus contacts): {contacts_5plus} active accounts carry 5-plus engaged contacts in CRM, "
+            f"up from {contacts_5plus_prior} last quarter. "
+            f"Accounts at 5-plus contacts expand at {exp_rate_5plus*100:.0f}% in the next 12 months, "
+            f"compared to {exp_rate_single*100:.0f}% at single-thread."
+        )
+        spike_accounts = book.get('accounts_usage_spike_14d', 8)
+        spike_on_track = book.get('usage_spike_on_expansion_track', 6)
+        spike_faster = book.get('expansion_close_cycle_faster_pct', 0)
+        L.append(
+            f"- Usage spike signals (40% week-over-week increase, last 14 days): {spike_accounts} accounts crossed the usage-spike threshold; "
+            f"{spike_on_track} of {spike_accounts} carry an active expansion track in CRM. "
+            f"Usage spikes preceding expansion conversations correlate with a {spike_faster*100:.0f}% faster close-cycle on the expansion deal."
+        )
+    L.append("")
+
+    # --- Goal 4: Value Delivery and QBR ---
+    L.append("# Value delivery and QBR")
+    if qbr_log:
+        strat = qbr_log.get('strategic_tier_total', 25)
+        completed = qbr_log.get('qbr_completed_with_value_story', 22)
+        pct = qbr_log.get('qbr_completion_pct', 0)
+        feb_pct = qbr_log.get('february_completion_pct', 0)
+        lift = qbr_log.get('renewal_commit_lift_pts_with_value_story', 18)
+        L.append(
+            f"- April QBR completion (strategic tier, {strat} accounts): {completed} of {strat} completed with a value-story summary logged in CRM "
+            f"({pct*100:.0f}%), up from {feb_pct*100:.0f}% in February. "
+            f"QBRs with structured value summaries correlate with {lift}-point higher renewal commit rates in the 90 days that follow."
+        )
+    if onb_q2 and onb_q1:
+        L.append(
+            f"- Time to first value: Q2 2026 median {onb_q2.get('ttfv_median_days')} days across {onb_q2.get('onboardings_total')} onboardings, "
+            f"down from {onb_q1.get('ttfv_median_days')} days across {onb_q1.get('onboardings_total')} Q1 onboardings. "
+            f"Accounts hitting first activated success criterion within {onb_q2.get('ttfv_threshold_days')} days renew "
+            f"{onb_q2.get('renewal_rate_lift_under_threshold_pts')} points higher."
+        )
+    L.append("")
+
+    # --- Cross-functional bridges ---
+    L.append("# Cross-functional bridges")
+    if handoff_q2 and handoff_q1:
+        q2_complete = handoff_q2.get('handoff_complete', 19)
+        q2_total = handoff_q2.get('closed_won_deals_total', 24)
+        q2_pct = handoff_q2.get('handoff_completeness_pct', 0)
+        q1_complete = handoff_q1.get('handoff_complete', 11)
+        q1_total = handoff_q1.get('closed_won_deals_total', 27)
+        faster = handoff_q2.get('ttfv_faster_days_complete_vs_incomplete', 19)
+        fields = ', '.join(handoff_q2.get('handoff_complete_fields', []))
+        L.append(
+            f"- CRM handoff completeness (closed-won to CSM): {q2_complete} of {q2_total} Q2 deals "
+            f"({q2_pct*100:.0f}%) carried full {fields} at handoff, "
+            f"up from {q1_complete} of {q1_total} in Q1. "
+            f"Onboardings with complete handoff context hit first activated success criterion "
+            f"{faster} days faster than those without."
+        )
+    if advocate:
+        pool = advocate.get('advocate_pool_current', 11)
+        pool_feb = advocate.get('advocate_pool_february', 5)
+        commits = advocate.get('q2_case_study_commits', 4)
+        distinct = advocate.get('q2_case_study_accounts_distinct', 4)
+        L.append(
+            f"- Marketing-Customer advocate pipeline: {commits} case-study commits from {distinct} distinct accounts in Q2. "
+            f"Advocate pool now {pool} named accounts with logged reference willingness, up from {pool_feb} in February."
+        )
+    L.append("")
+
+    return "\n".join(L)
+
+
 # ---------------------------------------------------------------------------
 # Prompt assembly
 # ---------------------------------------------------------------------------
@@ -1554,6 +1750,10 @@ _REVENUE_OPERATOR_GOAL_CLUSTERS = (
 _CUSTOMER_GOAL_CLUSTERS = (
     "Retained Revenue Landing to Forecast; Expansion Revenue Compounding NRR; "
     "Portfolio-Level Retention Risk Surfacing Ahead of Churn"
+)
+_CUSTOMER_ADVOCATE_GOAL_CLUSTERS = (
+    "Account Health and Relationship Depth; Renewal Execution; "
+    "Expansion Identification; Value Delivery and QBR"
 )
 
 
@@ -1670,6 +1870,20 @@ _ARCHETYPE_CONFIG = {
         "brief_filename": "revenue-operator-brief.md",
         "user_prompt_subject": "Revenue Operations",
     },
+    "customer_advocate": {
+        "intelligence_area": "customer",
+        "audience_label": "Customer Success Manager at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Customer Advocate",
+        "goal_clusters": _CUSTOMER_ADVOCATE_GOAL_CLUSTERS,
+        "snapshot_label": "CUSTOMER ADVOCATE DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Q2 mid-market GRR 94%\", "
+            "your card says 94% or rounds honestly to 94%, not 95%."
+        ),
+        "brief_filename": "customer-advocate-brief.md",
+        "user_prompt_subject": "Customer Success Management",
+    },
 }
 
 
@@ -1783,6 +1997,7 @@ def build_user_message(archetype: str) -> str:
         "revenue_generator": "account executive data",
         "revenue_developer": "sales development data",
         "revenue_operator": "revenue operations data",
+        "customer_advocate": "customer success management data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -2041,6 +2256,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_revenue_developer_summary(ds)
     elif archetype == "revenue_operator":
         summary = build_revenue_operator_summary(ds)
+    elif archetype == "customer_advocate":
+        summary = build_customer_advocate_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,

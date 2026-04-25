@@ -3576,6 +3576,176 @@ def gen_rd_enterprise_committee() -> List[Dict]:
 
 
 # ---------------------------------------------------------------------------
+# Customer Advocate entities (Phase 2.23)
+# ---------------------------------------------------------------------------
+
+def gen_ca_active_book() -> List[Dict]:
+    """Book-level portfolio stats for all 15 CA signals.
+
+    Single aggregate record with all computed cuts so build_customer_advocate_summary()
+    can surface exact numbers without iterating individual account rows.
+    """
+    return [{
+        "snapshot_date": "2026-04-24",
+        "total_active_accounts": 47,
+        # P-CA-01: multi-thread depth (book-wide, 4+ contacts threshold)
+        "contact_count_avg_current": 4.6,
+        "contact_count_avg_prior_quarter": 2.3,
+        "accounts_4plus_contacts_current": 38,
+        "accounts_4plus_contacts_prior_quarter": 18,
+        "renewal_rate_4plus_contacts": 0.91,
+        "renewal_rate_1to2_contacts": 0.67,
+        # P-CA-02: champion re-engagement events
+        "champion_reengaged_april": 9,
+        "champion_reengaged_march": 3,
+        "champion_gap_threshold_days": 14,
+        "champion_reengaged_crossed_green_within_21d": 7,
+        # P-CA-03: stakeholder map freshness (strategic tier only)
+        "strategic_tier_total": 25,
+        "strategic_map_fresh_30d_current": 21,
+        "strategic_map_fresh_30d_february": 14,
+        "strategic_map_fresh_pct_february": 0.56,
+        "renewal_rate_lift_fresh_stakeholder_map_pts": 22,
+        # P-CA-04: outreach coverage (14-day window)
+        "accounts_outreach_14d": 44,
+        "outreach_14d_highest_since": "Q4_2025",
+        # P-CA-09: feature adoption ceiling (expansion signal)
+        "accounts_80pct_adoption_ceiling": 7,
+        "adoption_ceiling_expansion_arr_potential": 290000,
+        "adoption_ceiling_exec_sponsor_on_expansion": 4,
+        # P-CA-10: 5+ contact multi-thread depth (expansion precursor)
+        "accounts_5plus_contacts_current": 12,
+        "accounts_5plus_contacts_prior_quarter": 4,
+        "expansion_rate_5plus_contacts_12mo": 0.30,
+        "expansion_rate_single_thread_12mo": 0.05,
+        # P-CA-11: usage spike signals (40% WoW increase, 14-day window)
+        "accounts_usage_spike_14d": 8,
+        "usage_spike_wow_threshold_pct": 0.40,
+        "usage_spike_on_expansion_track": 6,
+        "expansion_close_cycle_faster_pct": 0.33,
+    }]
+
+
+def gen_ca_renewal_pipeline() -> List[Dict]:
+    """Q3 renewal pipeline and executive engagement tracking (P-CA-05)."""
+    return [{
+        "quarter": "Q3_2026",
+        "renewal_accounts_total": 18,
+        "renewal_arr_total": 1800000,
+        "exec_sponsor_touch_last_30d": 14,
+        "renewal_rate_with_exec_touch_90d": 0.89,
+        "renewal_rate_without_exec_touch": 0.61,
+    }]
+
+
+def gen_ca_early_renewals() -> List[Dict]:
+    """Q2 early-renewal pull-forward commitments (P-CA-06)."""
+    return [{
+        "quarter": "Q2_2026",
+        "early_renewal_accounts": 6,
+        "early_renewal_arr": 420000,
+        "accounts_green_two_consecutive_months_before": 5,
+        "original_renewal_quarters": ["Q3_2026", "Q4_2026"],
+    }]
+
+
+def gen_ca_segment_grr() -> List[Dict]:
+    """Mid-market GRR Q2 vs Q1, with ICP alignment breakdown (P-CA-07)."""
+    return [
+        {
+            "quarter": "Q2_2026",
+            "segment": "mid-market",
+            "renewals_total": 33,
+            "renewals_won": 31,
+            "grr": 0.94,
+            "icp_aligned_lift_share": 0.86,
+        },
+        {
+            "quarter": "Q1_2026",
+            "segment": "mid-market",
+            "renewals_total": 33,
+            "renewals_won": 28,
+            "grr": 0.87,
+            "icp_aligned_lift_share": None,
+        },
+    ]
+
+
+def gen_ca_lighthouse_qbr() -> List[Dict]:
+    """Lighthouse executive QBR stakeholder expansion event (P-CA-08)."""
+    return [{
+        "account_name": "Lighthouse",
+        "qbr_date": "2026-04-22",
+        "contacts_before_qbr": 3,
+        "contacts_after_qbr": 6,
+        "new_contacts_added": ["COO", "two_business_unit_leads"],
+        "buying_committee_growth_renewal_uplift_pts": 28,
+    }]
+
+
+def gen_ca_qbr_log() -> List[Dict]:
+    """April QBR completion log for strategic-tier book (P-CA-12)."""
+    return [{
+        "month": "2026-04",
+        "strategic_tier_total": 25,
+        "qbr_completed_with_value_story": 22,
+        "qbr_completion_pct": 0.88,
+        "february_completion_pct": 0.64,
+        "renewal_commit_lift_pts_with_value_story": 18,
+    }]
+
+
+def gen_ca_onboarding() -> List[Dict]:
+    """Onboarding cohort TTFV and handoff completeness (P-CA-13, P-CA-14)."""
+    return [
+        # P-CA-13: Q2 and Q1 TTFV cohorts
+        {
+            "cohort_quarter": "Q2_2026",
+            "onboardings_total": 11,
+            "ttfv_median_days": 41,
+            "ttfv_threshold_days": 45,
+            "renewal_rate_lift_under_threshold_pts": 26,
+        },
+        {
+            "cohort_quarter": "Q1_2026",
+            "onboardings_total": 9,
+            "ttfv_median_days": 67,
+            "ttfv_threshold_days": 45,
+            "renewal_rate_lift_under_threshold_pts": 26,
+        },
+        # P-CA-14: CRM handoff completeness on closed-won deals
+        {
+            "cohort_quarter": "Q2_2026",
+            "closed_won_deals_total": 24,
+            "handoff_complete": 19,
+            "handoff_completeness_pct": 0.79,
+            "handoff_complete_fields": ["stakeholder_map", "real_buying_reason", "verbal_commitments"],
+            "ttfv_faster_days_complete_vs_incomplete": 19,
+        },
+        {
+            "cohort_quarter": "Q1_2026",
+            "closed_won_deals_total": 27,
+            "handoff_complete": 11,
+            "handoff_completeness_pct": 0.41,
+            "handoff_complete_fields": ["stakeholder_map", "real_buying_reason", "verbal_commitments"],
+            "ttfv_faster_days_complete_vs_incomplete": None,
+        },
+    ]
+
+
+def gen_ca_advocate_pipeline() -> List[Dict]:
+    """Marketing-Customer reference and advocate pipeline (P-CA-15)."""
+    return [{
+        "snapshot_date": "2026-04-24",
+        "advocate_pool_current": 11,
+        "advocate_pool_february": 5,
+        "q2_case_study_commits": 4,
+        "q2_case_study_accounts_distinct": 4,
+        "q2_case_study_accounts_not_asked_prior_90d": True,
+    }]
+
+
+# ---------------------------------------------------------------------------
 # Revenue Operator entities (Phase 2.20)
 # ---------------------------------------------------------------------------
 
@@ -3944,6 +4114,16 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     ro_account_dedup = gen_ro_account_dedup()
     ro_deal_review_presence = gen_ro_deal_review_presence()
 
+    # Customer Advocate entities (Phase 2.23) — all deterministic
+    ca_active_book = gen_ca_active_book()
+    ca_renewal_pipeline = gen_ca_renewal_pipeline()
+    ca_early_renewals = gen_ca_early_renewals()
+    ca_segment_grr = gen_ca_segment_grr()
+    ca_lighthouse_qbr = gen_ca_lighthouse_qbr()
+    ca_qbr_log = gen_ca_qbr_log()
+    ca_onboarding = gen_ca_onboarding()
+    ca_advocate_pipeline = gen_ca_advocate_pipeline()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -4083,6 +4263,15 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "ro_qbr_changes": ro_qbr_changes,
         "ro_account_dedup": ro_account_dedup,
         "ro_deal_review_presence": ro_deal_review_presence,
+        # Customer Advocate entities (Phase 2.23)
+        "ca_active_book": ca_active_book,
+        "ca_renewal_pipeline": ca_renewal_pipeline,
+        "ca_early_renewals": ca_early_renewals,
+        "ca_segment_grr": ca_segment_grr,
+        "ca_lighthouse_qbr": ca_lighthouse_qbr,
+        "ca_qbr_log": ca_qbr_log,
+        "ca_onboarding": ca_onboarding,
+        "ca_advocate_pipeline": ca_advocate_pipeline,
     }
 
 
