@@ -1,0 +1,242 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "Multi-thread contact depth doubled across the book this quarter",
+    "anchor": "Average contacts per account at 4.6 this quarter versus 2.3 last quarter, with 38 of 47 accounts now carrying 4-plus engaged contacts.",
+    "connect": "Accounts at 4-plus contacts renew at 91% compared to 67% at 1-2 contacts.",
+    "body": "Average contacts per account at 4.6 this quarter versus 2.3 last quarter, with 38 of 47 accounts now carrying 4-plus engaged contacts. Accounts at 4-plus contacts renew at 91% compared to 67% at 1-2 contacts.",
+    "grounded_metrics": [
+      "multi_thread_depth",
+      "renewal_correlation"
+    ],
+    "trace": "Multi-threading signal shows dramatic improvement in relationship depth with strong renewal correlation data."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Champion re-engagement converted 7 of 9 accounts back to green within 21 days",
+    "anchor": "April champion re-engagement targeted 9 accounts where contacts had gone 14-plus days silent; all received confirmed responses.",
+    "connect": "March champion re-engagement volume was 3 accounts total.",
+    "body": "April champion re-engagement targeted 9 accounts where contacts had gone 14-plus days silent; all received confirmed responses. March champion re-engagement volume was 3 accounts total.",
+    "grounded_metrics": [
+      "champion_reengagement",
+      "health_score_recovery"
+    ],
+    "trace": "Champion outreach effectiveness shows both increased volume and conversion rate to green status."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "44 of 47 accounts show CSM touch within the past two weeks",
+    "anchor": "Current two-week outreach coverage sits at the highest level since Q4 2025.",
+    "connect": "This represents 94% of the active book with recent CSM interaction.",
+    "body": "Current two-week outreach coverage sits at the highest level since Q4 2025. This represents 94% of the active book with recent CSM interaction.",
+    "grounded_metrics": [
+      "outreach_coverage",
+      "csm_interactions"
+    ],
+    "trace": "Outreach cadence data shows consistent engagement across nearly the entire book."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Strategic-tier stakeholder maps hit 84% freshness in April",
+    "anchor": "21 of 25 strategic accounts updated stakeholder maps within the last 30 days, up from 14 of 25 in February.",
+    "connect": "Strategic accounts with fresh stakeholder maps renew 22 points higher than those without.",
+    "body": "21 of 25 strategic accounts updated stakeholder maps within the last 30 days, up from 14 of 25 in February. Strategic accounts with fresh stakeholder maps renew 22 points higher than those without.",
+    "grounded_metrics": [
+      "stakeholder_map_freshness",
+      "strategic_tier_renewal"
+    ],
+    "trace": "Stakeholder map currency shows significant improvement with strong renewal correlation for strategic tier."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Q3 renewal pipeline carries $1.8M across 18 accounts",
+    "anchor": "Executive sponsor touch logged in last 30 days for 14 of 18 renewal accounts.",
+    "connect": "Renewals with executive engagement in the 90 days before close at 89% versus 61% without.",
+    "body": "Executive sponsor touch logged in last 30 days for 14 of 18 renewal accounts. Renewals with executive engagement in the 90 days before close at 89% versus 61% without.",
+    "grounded_metrics": [
+      "q3_renewal_pipeline",
+      "executive_engagement"
+    ],
+    "trace": "Q3 renewal pipeline shows strong executive engagement with clear correlation to close rates."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "6 accounts pulled renewal forward to Q2 for $420K combined ARR",
+    "anchor": "5 of 6 early-renewal accounts had been flagged green for two consecutive months before the early-commit conversation.",
+    "connect": "These accounts were originally tracking to Q3 or Q4 renewal windows.",
+    "body": "5 of 6 early-renewal accounts had been flagged green for two consecutive months before the early-commit conversation. These accounts were originally tracking to Q3 or Q4 renewal windows.",
+    "grounded_metrics": [
+      "early_renewal_pullforward",
+      "health_score_consistency"
+    ],
+    "trace": "Early renewal signal shows strong correlation between consistent green status and willingness to commit early."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market GRR improved 7 points to 94% in Q2",
+    "anchor": "31 of 33 mid-market accounts renewed in Q2 versus 28 of 33 in Q1.",
+    "connect": "ICP-aligned mid-market accounts carried 86% of the Q2 improvement.",
+    "body": "31 of 33 mid-market accounts renewed in Q2 versus 28 of 33 in Q1. ICP-aligned mid-market accounts carried 86% of the Q2 improvement.",
+    "grounded_metrics": [
+      "mid_market_grr",
+      "icp_alignment"
+    ],
+    "trace": "Mid-market retention improvement concentrates in ICP-aligned accounts suggesting fit correlation."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "7 accounts crossed 80% feature adoption ceiling in April",
+    "anchor": "Combined expansion potential sits at $290K based on next-tier list pricing.",
+    "connect": "4 of 7 carry a logged executive sponsor on the expansion conversation track.",
+    "body": "Combined expansion potential sits at $290K based on next-tier list pricing. 4 of 7 carry a logged executive sponsor on the expansion conversation track.",
+    "grounded_metrics": [
+      "feature_adoption_ceiling",
+      "expansion_potential"
+    ],
+    "trace": "Feature adoption ceiling signal shows clear expansion readiness with executive engagement already initiated."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "12 accounts now carry expansion-ready multi-thread depth at 5-plus contacts",
+    "anchor": "Up from 4 accounts last quarter at the 5-plus contact threshold.",
+    "connect": "Accounts at 5-plus contacts expand at 30% in the next 12 months compared to 5% at single-thread.",
+    "body": "Up from 4 accounts last quarter at the 5-plus contact threshold. Accounts at 5-plus contacts expand at 30% in the next 12 months compared to 5% at single-thread.",
+    "grounded_metrics": [
+      "expansion_multithread",
+      "expansion_conversion_rate"
+    ],
+    "trace": "Expansion-depth multi-threading shows significant growth with strong conversion correlation."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "8 accounts hit usage spike threshold in the past 14 days",
+    "anchor": "Usage spikes defined as 40% week-over-week increase; 6 of 8 carry active expansion tracks.",
+    "connect": "Usage spikes preceding expansion conversations correlate with 33% faster close-cycle.",
+    "body": "Usage spikes defined as 40% week-over-week increase; 6 of 8 carry active expansion tracks. Usage spikes preceding expansion conversations correlate with 33% faster close-cycle.",
+    "grounded_metrics": [
+      "usage_spike_signals",
+      "expansion_velocity"
+    ],
+    "trace": "Recent usage spike signals show strong expansion track conversion and velocity correlation."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Strategic QBR completion hit 88% with value stories captured",
+    "anchor": "22 of 25 strategic-tier QBRs completed in April with structured value summaries logged in CRM.",
+    "connect": "February QBR completion with value stories was 64%.",
+    "body": "22 of 25 strategic-tier QBRs completed in April with structured value summaries logged in CRM. February QBR completion with value stories was 64%.",
+    "grounded_metrics": [
+      "qbr_completion_strategic",
+      "value_story_capture"
+    ],
+    "trace": "QBR completion and value story capture both improved significantly over the quarter."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "QBRs with value summaries correlate with 18-point higher renewal commits",
+    "anchor": "Structured value documentation shows impact on renewal conversation outcomes in the 90 days that follow QBR completion.",
+    "connect": "This correlation spans both strategic and mid-market tiers in the historical data.",
+    "body": "Structured value documentation shows impact on renewal conversation outcomes in the 90 days that follow QBR completion. This correlation spans both strategic and mid-market tiers in the historical data.",
+    "grounded_metrics": [
+      "value_story_impact",
+      "renewal_correlation"
+    ],
+    "trace": "Value story capture shows measurable impact on renewal commitment rates across segments."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Time to first value dropped to 41 days median in Q2",
+    "anchor": "Q2 onboarding cohort of 11 accounts hit first activated success criterion at 41 days versus 67 days for 9 Q1 accounts.",
+    "connect": "Accounts hitting first value within 45 days renew 26 points higher.",
+    "body": "Q2 onboarding cohort of 11 accounts hit first activated success criterion at 41 days versus 67 days for 9 Q1 accounts. Accounts hitting first value within 45 days renew 26 points higher.",
+    "grounded_metrics": [
+      "time_to_first_value",
+      "onboarding_velocity"
+    ],
+    "trace": "Onboarding velocity improvement shows significant impact with clear renewal correlation threshold."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Handoff completeness improved to 79% of Q2 closed-won deals",
+    "anchor": "19 of 24 Q2 deals carried full stakeholder map, buying reason, and verbal commitments at CSM handoff.",
+    "connect": "Q1 handoff completeness was 11 of 27 deals at 41%.",
+    "body": "19 of 24 Q2 deals carried full stakeholder map, buying reason, and verbal commitments at CSM handoff. Q1 handoff completeness was 11 of 27 deals at 41%.",
+    "grounded_metrics": [
+      "crm_handoff_completeness",
+      "sales_to_csm"
+    ],
+    "trace": "Sales-to-CSM handoff quality shows significant improvement in context transfer completeness."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Complete handoffs accelerate first value by 19 days",
+    "anchor": "Onboardings with full stakeholder context hit activated success criterion 19 days faster than those without.",
+    "connect": "This correlation holds across both mid-market and strategic account tiers.",
+    "body": "Onboardings with full stakeholder context hit activated success criterion 19 days faster than those without. This correlation holds across both mid-market and strategic account tiers.",
+    "grounded_metrics": [
+      "handoff_impact",
+      "onboarding_acceleration"
+    ],
+    "trace": "Handoff completeness shows measurable impact on onboarding velocity across account segments."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Advocate pipeline doubled to 11 named accounts with reference willingness",
+    "anchor": "Up from 5 accounts in February, with 4 case-study commits secured in Q2.",
+    "connect": "All 4 case-study commits came from distinct accounts in the current quarter.",
+    "body": "Up from 5 accounts in February, with 4 case-study commits secured in Q2. All 4 case-study commits came from distinct accounts in the current quarter.",
+    "grounded_metrics": [
+      "advocate_pipeline",
+      "case_study_commits"
+    ],
+    "trace": "Customer advocacy momentum shows both pipeline growth and actual case study conversion."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Lighthouse QBR expanded buying committee from 3 to 6 contacts",
+    "anchor": "April 22 executive QBR added COO and two business unit leads to the stakeholder map.",
+    "connect": "Buying committees that grow during renewal windows close 28 points higher.",
+    "body": "April 22 executive QBR added COO and two business unit leads to the stakeholder map. Buying committees that grow during renewal windows close 28 points higher.",
+    "grounded_metrics": [
+      "lighthouse_qbr",
+      "committee_expansion"
+    ],
+    "trace": "Individual account example shows committee expansion during renewal cycle with strong correlation data."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Renewal pipeline carries 78% executive engagement in the last 30 days",
+    "anchor": "14 of 18 Q3 renewal accounts show logged executive sponsor touch within the month.",
+    "connect": "$1.8M total ARR across the Q3 renewal cohort.",
+    "body": "14 of 18 Q3 renewal accounts show logged executive sponsor touch within the month. $1.8M total ARR across the Q3 renewal cohort.",
+    "grounded_metrics": [
+      "renewal_executive_engagement",
+      "q3_renewal_value"
+    ],
+    "trace": "Q3 renewal pipeline shows strong executive engagement coverage with significant ARR concentration."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Multi-threading improvement spans both renewal and expansion thresholds",
+    "anchor": "38 accounts at 4-plus contacts for renewal readiness; 12 accounts at 5-plus contacts for expansion readiness.",
+    "connect": "Both thresholds increased from single digits last quarter.",
+    "body": "38 accounts at 4-plus contacts for renewal readiness; 12 accounts at 5-plus contacts for expansion readiness. Both thresholds increased from single digits last quarter.",
+    "grounded_metrics": [
+      "renewal_multithread",
+      "expansion_multithread"
+    ],
+    "trace": "Multi-threading progress shows accounts reaching both renewal protection and expansion readiness thresholds."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Expansion tracks active on 75% of usage-spike accounts",
+    "anchor": "6 of 8 accounts crossing the 40% usage increase threshold carry logged expansion conversations.",
+    "connect": "Usage spike correlation with faster expansion close-cycles sits at 33% velocity improvement.",
+    "body": "6 of 8 accounts crossing the 40% usage increase threshold carry logged expansion conversations. Usage spike correlation with faster expansion close-cycles sits at 33% velocity improvement.",
+    "grounded_metrics": [
+      "usage_spike_conversion",
+      "expansion_track_coverage"
+    ],
+    "trace": "Usage spike signal shows strong conversion to active expansion conversations with velocity benefit."
+  }
+]

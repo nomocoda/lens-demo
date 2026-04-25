@@ -3,240 +3,252 @@
     "intelligence_area": "customer",
     "title": "Multi-thread contact depth doubled across the book this quarter",
     "anchor": "Average contacts per account sits at 4.6 this quarter, up from 2.3 last quarter.",
-    "connect": "Accounts at 4-plus contacts renew at 91% versus 67% at single-thread depth.",
-    "body": "Average contacts per account sits at 4.6 this quarter, up from 2.3 last quarter. Accounts at 4-plus contacts renew at 91% versus 67% at single-thread depth.",
+    "connect": "38 of 47 accounts now carry 4-plus engaged contacts, compared to 18 of 47 last quarter.",
+    "body": "Average contacts per account sits at 4.6 this quarter, up from 2.3 last quarter. 38 of 47 accounts now carry 4-plus engaged contacts, compared to 18 of 47 last quarter.",
     "grounded_metrics": [
       "multi_thread_depth",
-      "renewal_rates_by_contact_count"
+      "contact_engagement"
     ],
-    "trace": "Multi-thread expansion from 18 to 38 accounts at the 4+ contact threshold represents a structural shift in relationship depth across the book."
+    "trace": "Multi-threading signal shows significant improvement in relationship depth across the portfolio."
   },
   {
     "intelligence_area": "customer",
-    "title": "Champion re-engagement events tripled in April",
-    "anchor": "9 accounts where champions had gone 14-plus days silent received confirmed responses in April, up from 3 in March.",
-    "connect": "7 of those 9 accounts crossed back to green health scores within 21 days of re-engagement.",
-    "body": "9 accounts where champions had gone 14-plus days silent received confirmed responses in April, up from 3 in March. 7 of those 9 accounts crossed back to green health scores within 21 days of re-engagement.",
+    "title": "Champion re-engagement events converted back to green health scores",
+    "anchor": "9 accounts where champions had gone quiet received confirmed responses in April.",
+    "connect": "7 of those 9 accounts crossed back to green health within 21 days of re-engagement.",
+    "body": "9 accounts where champions had gone quiet received confirmed responses in April. 7 of those 9 accounts crossed back to green health within 21 days of re-engagement.",
     "grounded_metrics": [
       "champion_reengagement",
       "health_score_recovery"
     ],
-    "trace": "Champion gap recovery shows the value of proactive outreach to dormant primary contacts across the book."
+    "trace": "Champion outreach activity in April showing strong conversion back to healthy status."
   },
   {
     "intelligence_area": "customer",
-    "title": "Strategic tier stakeholder maps hit 84% freshness",
-    "anchor": "21 of 25 strategic accounts show stakeholder map updates within the last 30 days, up from 14 of 25 in February.",
-    "connect": "Strategic accounts with fresh stakeholder maps renew 22 points higher than those without.",
-    "body": "21 of 25 strategic accounts show stakeholder map updates within the last 30 days, up from 14 of 25 in February. Strategic accounts with fresh stakeholder maps renew 22 points higher than those without.",
+    "title": "Strategic-tier stakeholder maps current at 84% coverage",
+    "anchor": "21 of 25 strategic accounts updated stakeholder maps within the last 30 days.",
+    "connect": "February coverage sat at 14 of 25 accounts for the same metric.",
+    "body": "21 of 25 strategic accounts updated stakeholder maps within the last 30 days. February coverage sat at 14 of 25 accounts for the same metric.",
     "grounded_metrics": [
-      "stakeholder_map_currency",
-      "strategic_tier_renewal_correlation"
+      "stakeholder_map_freshness",
+      "strategic_tier"
     ],
-    "trace": "Stakeholder map currency improvement from 56% to 84% in strategic tier directly correlates with renewal outcome predictability."
+    "trace": "Stakeholder map currency has improved significantly in the strategic tier."
   },
   {
     "intelligence_area": "customer",
-    "title": "Book coverage hits highest two-week interaction rate since Q4",
-    "anchor": "44 of 47 active accounts show CSM-logged interactions within the past 14 days.",
+    "title": "Two-week outreach coverage reaches highest level since Q4 2025",
+    "anchor": "44 of 47 active accounts show CSM-logged interaction within the past 14 calendar days.",
     "connect": "This marks the highest two-week outreach coverage recorded since Q4 2025.",
-    "body": "44 of 47 active accounts show CSM-logged interactions within the past 14 days. This marks the highest two-week outreach coverage recorded since Q4 2025.",
+    "body": "44 of 47 active accounts show CSM-logged interaction within the past 14 calendar days. This marks the highest two-week outreach coverage recorded since Q4 2025.",
     "grounded_metrics": [
       "outreach_coverage",
-      "interaction_frequency"
+      "csm_interaction_frequency"
     ],
-    "trace": "Book-wide interaction coverage at 94% represents consistent relationship maintenance across the full portfolio."
+    "trace": "Outreach rhythm has reached peak consistency based on historical comparison."
   },
   {
     "intelligence_area": "customer",
-    "title": "Q3 renewal pipeline carries $1.8M across 18 accounts",
-    "anchor": "Executive sponsor touch logged in last 30 days for 14 of 18 Q3 renewal accounts.",
-    "connect": "Renewals with executive engagement in the 90 days before close at 89% versus 61% without.",
-    "body": "Executive sponsor touch logged in last 30 days for 14 of 18 Q3 renewal accounts. Renewals with executive engagement in the 90 days before close at 89% versus 61% without.",
+    "title": "Q3 renewal pipeline carries executive sponsor engagement at 78%",
+    "anchor": "14 of 18 Q3 renewal accounts show executive sponsor touch logged in the last 30 days.",
+    "connect": "Total Q3 renewal ARR sits at $1,800,000 across the 18-account cohort.",
+    "body": "14 of 18 Q3 renewal accounts show executive sponsor touch logged in the last 30 days. Total Q3 renewal ARR sits at $1,800,000 across the 18-account cohort.",
     "grounded_metrics": [
       "q3_renewal_pipeline",
-      "executive_engagement_correlation"
+      "executive_engagement"
     ],
-    "trace": "Q3 pipeline executive coverage at 78% provides strong renewal predictability foundation for the upcoming quarter."
+    "trace": "Q3 renewal cohort showing strong executive relationship coverage."
   },
   {
     "intelligence_area": "customer",
-    "title": "Six accounts pulled renewals forward to Q2",
-    "anchor": "Combined ARR of $420K from accounts originally tracking to Q3 or Q4 closed early in Q2.",
-    "connect": "5 of 6 had been flagged green for two consecutive months before the early-commit conversation.",
-    "body": "Combined ARR of $420K from accounts originally tracking to Q3 or Q4 closed early in Q2. 5 of 6 had been flagged green for two consecutive months before the early-commit conversation.",
+    "title": "Early-renewal pull-forward delivered $420K in Q2 commitments",
+    "anchor": "6 accounts originally tracking to Q3 or Q4 closed early renewals in Q2.",
+    "connect": "5 of those 6 accounts had been flagged green for two consecutive months before the early-commit conversation.",
+    "body": "6 accounts originally tracking to Q3 or Q4 closed early renewals in Q2. 5 of those 6 accounts had been flagged green for two consecutive months before the early-commit conversation.",
     "grounded_metrics": [
       "early_renewal_pullforward",
       "health_score_correlation"
     ],
-    "trace": "Early renewal pattern shows green health scores sustained over two months predict pull-forward readiness."
+    "trace": "Early renewal activity correlates strongly with sustained green health status."
   },
   {
     "intelligence_area": "customer",
-    "title": "Mid-market GRR jumped seven points in Q2",
-    "anchor": "31 of 33 mid-market accounts renewed in Q2 for 94% GRR, up from 28 of 33 in Q1 at 87%.",
-    "connect": "ICP-aligned mid-market accounts carried 86% of the Q2 renewal lift.",
-    "body": "31 of 33 mid-market accounts renewed in Q2 for 94% GRR, up from 28 of 33 in Q1 at 87%. ICP-aligned mid-market accounts carried 86% of the Q2 renewal lift.",
+    "title": "Mid-market segment GRR climbed to 94% in Q2",
+    "anchor": "31 of 33 mid-market accounts renewed in Q2, up from 28 of 33 in Q1.",
+    "connect": "ICP-aligned mid-market accounts carried 86% of the Q2 retention improvement.",
+    "body": "31 of 33 mid-market accounts renewed in Q2, up from 28 of 33 in Q1. ICP-aligned mid-market accounts carried 86% of the Q2 retention improvement.",
     "grounded_metrics": [
       "mid_market_grr",
-      "icp_alignment_impact"
+      "icp_alignment"
     ],
-    "trace": "Mid-market segment improvement concentrated in ICP-aligned accounts suggests fit-driven retention strength."
+    "trace": "Mid-market renewal performance improved significantly with ICP-aligned accounts driving the lift."
   },
   {
     "intelligence_area": "customer",
-    "title": "Lighthouse QBR expanded buying committee from three to six contacts",
-    "anchor": "April 22 QBR added COO and two business unit leads to the existing three-person committee.",
+    "title": "Lighthouse buying committee expanded from 3 to 6 contacts during QBR",
+    "anchor": "April 22 QBR added COO and two business unit leads to the existing committee.",
     "connect": "Buying committees that grow during the renewal window close 28 points higher than those that stay flat.",
-    "body": "April 22 QBR added COO and two business unit leads to the existing three-person committee. Buying committees that grow during the renewal window close 28 points higher than those that stay flat.",
+    "body": "April 22 QBR added COO and two business unit leads to the existing committee. Buying committees that grow during the renewal window close 28 points higher than those that stay flat.",
     "grounded_metrics": [
       "lighthouse_qbr",
       "buying_committee_expansion"
     ],
-    "trace": "Individual account QBR outcome demonstrates the value of committee expansion during renewal cycles."
+    "trace": "Lighthouse account QBR successfully expanded the buying committee with senior stakeholders."
   },
   {
     "intelligence_area": "customer",
-    "title": "Seven accounts crossed the 80% feature-adoption ceiling in April",
-    "anchor": "Combined expansion ARR potential sits at $290K based on next-tier list pricing.",
-    "connect": "4 of 7 accounts carry a logged executive sponsor on the expansion conversation track.",
-    "body": "Combined expansion ARR potential sits at $290K based on next-tier list pricing. 4 of 7 accounts carry a logged executive sponsor on the expansion conversation track.",
+    "title": "7 accounts crossed feature-adoption ceiling with $290K expansion potential",
+    "anchor": "Accounts reached 80% feature adoption on their current tier in April.",
+    "connect": "4 of the 7 accounts carry a logged executive sponsor on the expansion conversation track.",
+    "body": "Accounts reached 80% feature adoption on their current tier in April. 4 of the 7 accounts carry a logged executive sponsor on the expansion conversation track.",
     "grounded_metrics": [
       "feature_adoption_ceiling",
-      "expansion_pipeline"
+      "expansion_potential"
     ],
-    "trace": "Feature-adoption ceiling signals represent structural readiness for next-tier expansion across seven accounts."
+    "trace": "Feature adoption ceiling signals indicate structural readiness for expansion conversations."
   },
   {
     "intelligence_area": "customer",
-    "title": "Multi-thread expansion depth tripled to 12 accounts",
-    "anchor": "12 active accounts carry 5-plus engaged contacts in CRM, up from 4 last quarter.",
-    "connect": "Accounts at 5-plus contacts expand at 30% in the next 12 months versus 5% at single-thread.",
-    "body": "12 active accounts carry 5-plus engaged contacts in CRM, up from 4 last quarter. Accounts at 5-plus contacts expand at 30% in the next 12 months versus 5% at single-thread.",
-    "grounded_metrics": [
-      "expansion_thread_depth",
-      "expansion_conversion_rates"
-    ],
-    "trace": "Expansion-depth multi-threading improvement from 4 to 12 accounts creates significant expansion pipeline foundation."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Usage spikes preceded active expansion tracks in six of eight accounts",
-    "anchor": "8 accounts crossed the 40% week-over-week usage increase threshold in the last 14 days.",
-    "connect": "Usage spikes preceding expansion conversations correlate with 33% faster close-cycles on expansion deals.",
-    "body": "8 accounts crossed the 40% week-over-week usage increase threshold in the last 14 days. Usage spikes preceding expansion conversations correlate with 33% faster close-cycles on expansion deals.",
-    "grounded_metrics": [
-      "usage_spike_signals",
-      "expansion_velocity"
-    ],
-    "trace": "Current usage spike signals with 75% expansion track capture rate suggest strong signal-to-opportunity conversion."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Strategic QBR completion with value stories reached 88%",
-    "anchor": "22 of 25 strategic accounts completed April QBRs with value-story summaries logged in CRM, up from 64% in February.",
-    "connect": "QBRs with structured value summaries correlate with 18-point higher renewal commit rates in the following 90 days.",
-    "body": "22 of 25 strategic accounts completed April QBRs with value-story summaries logged in CRM, up from 64% in February. QBRs with structured value summaries correlate with 18-point higher renewal commit rates in the following 90 days.",
-    "grounded_metrics": [
-      "qbr_completion_rates",
-      "value_story_capture"
-    ],
-    "trace": "QBR execution improvement from 64% to 88% with value capture represents significant renewal pipeline strength."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Time to first value compressed to 41 days in Q2",
-    "anchor": "Q2 median across 11 onboardings sits at 41 days, down from 67 days across 9 Q1 onboardings.",
-    "connect": "Accounts hitting first activated success criterion within 45 days renew 26 points higher.",
-    "body": "Q2 median across 11 onboardings sits at 41 days, down from 67 days across 9 Q1 onboardings. Accounts hitting first activated success criterion within 45 days renew 26 points higher.",
-    "grounded_metrics": [
-      "time_to_first_value",
-      "onboarding_renewal_correlation"
-    ],
-    "trace": "Onboarding velocity improvement of 26 days per cohort directly correlates with long-term retention outcomes."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Sales handoff completeness jumped to 79% in Q2",
-    "anchor": "19 of 24 Q2 closed-won deals carried full stakeholder maps, buying reasons, and verbal commitments at handoff, up from 11 of 27 in Q1.",
-    "connect": "Onboardings with complete handoff context hit first activated success criterion 19 days faster than those without.",
-    "body": "19 of 24 Q2 closed-won deals carried full stakeholder maps, buying reasons, and verbal commitments at handoff, up from 11 of 27 in Q1. Onboardings with complete handoff context hit first activated success criterion 19 days faster than those without.",
-    "grounded_metrics": [
-      "handoff_completeness",
-      "onboarding_velocity"
-    ],
-    "trace": "Handoff quality improvement from 41% to 79% creates measurable acceleration in customer onboarding outcomes."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Advocate pipeline doubled to 11 named accounts",
-    "anchor": "4 case-study commits from 4 distinct accounts in Q2 expanded the reference-willing pool.",
-    "connect": "Advocate pool now sits at 11 named accounts with logged reference willingness, up from 5 in February.",
-    "body": "4 case-study commits from 4 distinct accounts in Q2 expanded the reference-willing pool. Advocate pool now sits at 11 named accounts with logged reference willingness, up from 5 in February.",
-    "grounded_metrics": [
-      "advocate_pipeline",
-      "case_study_commits"
-    ],
-    "trace": "Advocate development from 5 to 11 accounts provides marketing with expanded customer-story foundation."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Executive engagement coverage reached 78% in Q3 renewal pipeline",
-    "anchor": "14 of 18 Q3 renewal accounts show executive sponsor touch logged within the last 30 days.",
-    "connect": "28-point renewal rate advantage for accounts with executive engagement in the 90 days before renewal.",
-    "body": "14 of 18 Q3 renewal accounts show executive sponsor touch logged within the last 30 days. 28-point renewal rate advantage for accounts with executive engagement in the 90 days before renewal.",
-    "grounded_metrics": [
-      "executive_coverage",
-      "q3_renewal_pipeline"
-    ],
-    "trace": "Q3 pipeline executive coverage at 78% positions the renewal cohort for strong close rates based on historical patterns."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Feature adoption expansion signals carry $290K potential ARR",
-    "anchor": "7 accounts at 80% feature-adoption ceiling represent next-tier pricing expansion opportunities.",
-    "connect": "Executive sponsor coverage sits at 57% across the feature-ceiling cohort.",
-    "body": "7 accounts at 80% feature-adoption ceiling represent next-tier pricing expansion opportunities. Executive sponsor coverage sits at 57% across the feature-ceiling cohort.",
-    "grounded_metrics": [
-      "feature_ceiling_signals",
-      "expansion_executive_coverage"
-    ],
-    "trace": "Feature-adoption ceiling cohort with 57% executive coverage suggests readiness for expansion conversation initiation."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Usage spike window shows 75% expansion track capture",
-    "anchor": "6 of 8 accounts crossing the 40% usage increase threshold carry active expansion tracks in CRM.",
-    "connect": "33% faster expansion close-cycles when usage spikes precede the expansion conversation.",
-    "body": "6 of 8 accounts crossing the 40% usage increase threshold carry active expansion tracks in CRM. 33% faster expansion close-cycles when usage spikes precede the expansion conversation.",
-    "grounded_metrics": [
-      "usage_spike_capture",
-      "expansion_velocity_correlation"
-    ],
-    "trace": "Current usage spike cohort with 75% expansion track conversion demonstrates strong signal-to-opportunity execution."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Onboarding cohort size increased 22% quarter over quarter",
-    "anchor": "11 onboardings in Q2 versus 9 in Q1, with median time to first value at 41 days.",
-    "connect": "Complete handoff context from sales correlates with 19-day faster activation.",
-    "body": "11 onboardings in Q2 versus 9 in Q1, with median time to first value at 41 days. Complete handoff context from sales correlates with 19-day faster activation.",
-    "grounded_metrics": [
-      "onboarding_volume",
-      "handoff_quality_impact"
-    ],
-    "trace": "Onboarding volume growth with improved handoff quality creates compound acceleration in customer activation."
-  },
-  {
-    "intelligence_area": "customer",
-    "title": "Multi-thread depth moved 20 accounts above the renewal threshold",
-    "anchor": "38 of 47 accounts carry 4-plus engaged contacts this quarter, up from 18 last quarter.",
-    "connect": "91% renewal rate at 4-plus contacts versus 67% at single-thread provides 24-point protection.",
-    "body": "38 of 47 accounts carry 4-plus engaged contacts this quarter, up from 18 last quarter. 91% renewal rate at 4-plus contacts versus 67% at single-thread provides 24-point protection.",
+    "title": "12 accounts now carry 5-plus engaged contacts for expansion readiness",
+    "anchor": "Multi-thread expansion depth tripled from 4 accounts last quarter to 12 currently.",
+    "connect": "Accounts at this engagement level expand at 30% in the next 12 months versus 5% at single-thread.",
+    "body": "Multi-thread expansion depth tripled from 4 accounts last quarter to 12 currently. Accounts at this engagement level expand at 30% in the next 12 months versus 5% at single-thread.",
     "grounded_metrics": [
       "multi_thread_expansion",
-      "renewal_protection"
+      "expansion_correlation"
     ],
-    "trace": "Book-wide multi-thread expansion from 18 to 38 accounts represents structural renewal risk reduction across the portfolio."
+    "trace": "Deep multi-threading correlates strongly with expansion conversion rates."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Usage spike signals appeared in 8 accounts over the last 14 days",
+    "anchor": "Accounts crossed the 40% week-over-week usage increase threshold.",
+    "connect": "6 of those 8 accounts carry an active expansion track in CRM currently.",
+    "body": "Accounts crossed the 40% week-over-week usage increase threshold. 6 of those 8 accounts carry an active expansion track in CRM currently.",
+    "grounded_metrics": [
+      "usage_spike_signals",
+      "expansion_track_correlation"
+    ],
+    "trace": "Recent usage spikes correlate with existing expansion opportunity development."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Strategic QBR completion with value stories reached 88% in April",
+    "anchor": "22 of 25 strategic accounts completed QBRs with value-story summaries logged in CRM.",
+    "connect": "February completion with structured value summaries ran at 64% for the same tier.",
+    "body": "22 of 25 strategic accounts completed QBRs with value-story summaries logged in CRM. February completion with structured value summaries ran at 64% for the same tier.",
+    "grounded_metrics": [
+      "qbr_completion",
+      "value_story_capture"
+    ],
+    "trace": "QBR execution and value capture has improved significantly in the strategic tier."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Time to first value compressed to 41 days for Q2 onboardings",
+    "anchor": "Q2 median sits at 41 days across 11 onboardings, down from 67 days across 9 Q1 onboardings.",
+    "connect": "Accounts hitting first activated success within 45 days renew 26 points higher than those that take longer.",
+    "body": "Q2 median sits at 41 days across 11 onboardings, down from 67 days across 9 Q1 onboardings. Accounts hitting first activated success within 45 days renew 26 points higher than those that take longer.",
+    "grounded_metrics": [
+      "time_to_first_value",
+      "onboarding_velocity"
+    ],
+    "trace": "Onboarding speed has improved significantly and correlates with long-term retention."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Handoff completeness from Sales reached 79% in Q2",
+    "anchor": "19 of 24 Q2 deals carried full stakeholder map, buying reason, and verbal commitments at handoff.",
+    "connect": "Q1 completeness sat at 11 of 27 deals for the same handoff criteria.",
+    "body": "19 of 24 Q2 deals carried full stakeholder map, buying reason, and verbal commitments at handoff. Q1 completeness sat at 11 of 27 deals for the same handoff criteria.",
+    "grounded_metrics": [
+      "handoff_completeness",
+      "sales_to_cs_bridge"
+    ],
+    "trace": "Sales-to-CS handoff quality has improved significantly between Q1 and Q2."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Complete handoff context accelerates first value by 19 days",
+    "anchor": "Onboardings with complete handoff context hit first activated success criterion 19 days faster.",
+    "connect": "This compares onboardings with full stakeholder maps and buying context versus those without.",
+    "body": "Onboardings with complete handoff context hit first activated success criterion 19 days faster. This compares onboardings with full stakeholder maps and buying context versus those without.",
+    "grounded_metrics": [
+      "handoff_impact",
+      "time_to_value_correlation"
+    ],
+    "trace": "Handoff completeness shows direct correlation with onboarding speed."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Case study advocate pool doubled from 5 to 11 named accounts",
+    "anchor": "11 accounts now carry logged reference willingness, up from 5 in February.",
+    "connect": "Q2 delivered 4 case-study commits from 4 distinct accounts.",
+    "body": "11 accounts now carry logged reference willingness, up from 5 in February. Q2 delivered 4 case-study commits from 4 distinct accounts.",
+    "grounded_metrics": [
+      "advocate_pool",
+      "case_study_pipeline"
+    ],
+    "trace": "Marketing-CS advocate pipeline has strengthened with expanded reference pool."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "4-plus contact accounts renew at 91% versus 67% at thin engagement",
+    "anchor": "Accounts with 4-plus engaged contacts show a 24-point renewal advantage.",
+    "connect": "38 of 47 accounts currently sit in the 4-plus contact tier.",
+    "body": "Accounts with 4-plus engaged contacts show a 24-point renewal advantage. 38 of 47 accounts currently sit in the 4-plus contact tier.",
+    "grounded_metrics": [
+      "contact_depth_correlation",
+      "renewal_performance"
+    ],
+    "trace": "Multi-threading depth shows strong correlation with renewal success rates."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Executive engagement correlates with 28-point renewal lift",
+    "anchor": "Renewals with executive touch in the 90 days before close at 89% versus 61% without.",
+    "connect": "14 of 18 Q3 renewal accounts currently show executive sponsor engagement in the last 30 days.",
+    "body": "Renewals with executive touch in the 90 days before close at 89% versus 61% without. 14 of 18 Q3 renewal accounts currently show executive sponsor engagement in the last 30 days.",
+    "grounded_metrics": [
+      "executive_engagement_correlation",
+      "renewal_success"
+    ],
+    "trace": "Executive relationship depth shows strong predictive value for renewal outcomes."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Fresh stakeholder maps correlate with 22-point renewal advantage",
+    "anchor": "Strategic accounts with stakeholder maps updated within 30 days renew 22 points higher.",
+    "connect": "21 of 25 strategic accounts currently maintain fresh stakeholder map currency.",
+    "body": "Strategic accounts with stakeholder maps updated within 30 days renew 22 points higher. 21 of 25 strategic accounts currently maintain fresh stakeholder map currency.",
+    "grounded_metrics": [
+      "stakeholder_map_correlation",
+      "renewal_impact"
+    ],
+    "trace": "Stakeholder map currency shows direct correlation with renewal performance in strategic accounts."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "QBRs with structured value summaries improve renewal commit rates by 18 points",
+    "anchor": "QBRs with logged value stories correlate with higher renewal commits in the following 90 days.",
+    "connect": "22 of 25 strategic accounts completed April QBRs with structured value capture.",
+    "body": "QBRs with logged value stories correlate with higher renewal commits in the following 90 days. 22 of 25 strategic accounts completed April QBRs with structured value capture.",
+    "grounded_metrics": [
+      "qbr_value_correlation",
+      "renewal_commit_impact"
+    ],
+    "trace": "Value story documentation during QBRs shows predictive impact on renewal commitment rates."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Usage spikes preceding expansion conversations close 33% faster",
+    "anchor": "Accounts with usage spike signals show acceleration in expansion deal velocity.",
+    "connect": "6 of 8 current usage-spike accounts carry active expansion tracks in CRM.",
+    "body": "Accounts with usage spike signals show acceleration in expansion deal velocity. 6 of 8 current usage-spike accounts carry active expansion tracks in CRM.",
+    "grounded_metrics": [
+      "usage_spike_velocity",
+      "expansion_close_speed"
+    ],
+    "trace": "Usage spike timing correlates with faster expansion deal progression."
   }
 ]
