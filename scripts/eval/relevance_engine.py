@@ -166,6 +166,9 @@ def load_dataset(output_dir: Path) -> Dict[str, list]:
         # Customer Operator entities (Phase 2.26)
         "co_health_model", "co_playbook_ops", "co_platform_integrations",
         "co_segmentation", "co_handoff_quality", "co_benchmark", "co_performance",
+        # Customer Technician entities (Phase 2.29)
+        "ct_ttfv_cohort", "ct_go_live_velocity", "ct_integration_and_activation",
+        "ct_handoff_quality", "ct_nps", "ct_support_and_blockers", "ct_product_event",
     ]
     data: Dict[str, list] = {}
     for e in required:
@@ -1958,6 +1961,205 @@ _CUSTOMER_OPERATOR_GOAL_CLUSTERS = (
     "Health Score Model Integrity; Playbook Governance and Adoption; "
     "Data Infrastructure and Integration"
 )
+_CUSTOMER_TECHNICIAN_GOAL_CLUSTERS = (
+    "Time-to-Value and Onboarding Velocity; Stakeholder Activation and Adoption; "
+    "Cross-functional Handoffs and Integration Quality"
+)
+
+
+def build_customer_technician_summary(ds: Dict[str, list]) -> str:
+    """Dense, factual snapshot for the Customer Technician (Implementation Manager).
+
+    Covers all 15 P-CT patterns across three goal clusters:
+    Time-to-Value and Onboarding Velocity (P-CT-01, P-CT-02, P-CT-03, P-CT-05, P-CT-08, P-CT-14),
+    Stakeholder Activation and Adoption (P-CT-04, P-CT-10, P-CT-11, P-CT-15),
+    Cross-functional Handoffs and Integration Quality (P-CT-06, P-CT-07, P-CT-09, P-CT-12, P-CT-13).
+    """
+    ttfv = ds.get("ct_ttfv_cohort", [{}])[0]
+    velocity = ds.get("ct_go_live_velocity", [])
+    integration = ds.get("ct_integration_and_activation", [{}])[0]
+    handoffs = ds.get("ct_handoff_quality", [])
+    nps_data = ds.get("ct_nps", [{}])[0]
+    support = ds.get("ct_support_and_blockers", [])
+    product_event = ds.get("ct_product_event", [{}])[0]
+
+    mm_velocity = next((r for r in velocity if r.get("segment") == "mid-market"), {})
+    ent_velocity = next((r for r in velocity if r.get("segment") == "enterprise"), {})
+    healthcare = next((r for r in velocity if r.get("vertical") == "healthcare"), {})
+
+    use_case_handoff = next((r for r in handoffs if "use_case" in r.get("driver", "")), {})
+    csm_handoff = next((r for r in handoffs if "handoff_brief" in str(r.get("handoff_brief_feature", ""))), {})
+
+    blocker = next((r for r in support if r.get("metric") == "product_blocker_resolution_median_days"), {})
+    support_response = next((r for r in support if r.get("metric") == "implementation_support_first_response"), {})
+
+    _MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"]
+
+    def _hr_date(iso: str) -> str:
+        try:
+            y, m, d = iso.split("-")
+            return f"{_MONTH_NAMES[int(m)-1]} {int(d)}, {y}"
+        except Exception:
+            return iso
+
+    def _hr_quarter(q: str) -> str:
+        return q.replace("_", " ")
+
+    L: List[str] = []
+    L.append("ATLAS SAAS — CUSTOMER TECHNICIAN DATA SNAPSHOT (as of 2026-04-24)")
+    L.append("")
+    L.append("Company profile: B2B SaaS, mid-market focus, approximately 250 employees. Implementation team manages onboarding across Tier-1 (simplest), Tier-2, and Enterprise complexity tiers. Tools: project management platform, product sandbox, Salesforce for handoff records, support queue for implementation-tagged tickets.")
+    L.append("")
+
+    # --- Goal 1: Time-to-Value and Onboarding Velocity ---
+    L.append("# Time-to-value and onboarding velocity")
+    if ttfv:
+        total = ttfv.get("cohort_implementations_total", 47)
+        connected_48h = ttfv.get("implementations_connected_first_integration_within_48h", 26)
+        mult = ttfv.get("retention_90day_multiplier_vs_late_integrators", 2.3)
+        tier2_curr = ttfv.get("tier_2_activation_current_quarter_pct", 0.78)
+        tier2_prior = ttfv.get("tier_2_activation_prior_quarter_pct", 0.54)
+        day_thresh = ttfv.get("tier_2_first_value_day_threshold", 14)
+        L.append(
+            f"- TTFV cohort ({total} implementations, Q1 2026): accounts connecting first integration within 48 hours "
+            f"of kickoff ({connected_48h} of {total}) retained at {mult}x the 90-day rate versus accounts that integrated "
+            f"after the first week."
+        )
+        L.append(
+            f"- Tier-2 complexity activation: {tier2_curr*100:.0f}% of Tier-2 implementations reached first value inside "
+            f"{day_thresh} days this quarter, up from {tier2_prior*100:.0f}% in Q4 across the same complexity segment."
+        )
+    if mm_velocity:
+        total_mm = mm_velocity.get("implementations_completed", 22)
+        curr_days = mm_velocity.get("avg_kickoff_to_golive_days_current", 45)
+        plan_days = mm_velocity.get("avg_kickoff_to_golive_days_plan", 51)
+        ahead = mm_velocity.get("days_ahead_of_plan", 6)
+        L.append(
+            f"- Mid-market go-live velocity ({total_mm} implementations completed Q1 2026): average kickoff-to-go-live "
+            f"moved from Day {plan_days} (plan) to Day {curr_days} — {ahead} days ahead of plan."
+        )
+    if ent_velocity:
+        total_ent = ent_velocity.get("implementations_completed", 14)
+        curr_config = ent_velocity.get("config_signoff_median_days_current", 11)
+        prior_config = ent_velocity.get("config_signoff_median_days_prior_quarter", 18)
+        template_date = _hr_date(ent_velocity.get("template_launch_date", "2026-03-01"))
+        L.append(
+            f"- Enterprise configuration sign-off ({total_ent} implementations Q1 2026): median moved from Day {prior_config} "
+            f"to Day {curr_config} after pre-kickoff configuration template launched {template_date}."
+        )
+    if healthcare:
+        total_hc = healthcare.get("implementations_completed", 11)
+        median_days = healthcare.get("kickoff_to_golive_median_days", 38)
+        L.append(
+            f"- Healthcare vertical: {total_hc} go-lives this quarter at a {median_days}-day kickoff-to-go-live median — "
+            f"fastest segment median in the portfolio."
+        )
+    if integration:
+        int_curr = integration.get("integration_milestone_completion_pct_current", 0.71)
+        int_prior = integration.get("integration_milestone_completion_pct_prior_quarter", 0.58)
+        active = integration.get("active_implementations_in_period", 38)
+        day_t = integration.get("integration_milestone_day_threshold", 10)
+        L.append(
+            f"- Data integration milestone completion: {int_curr*100:.0f}% of {active} active implementations cleared "
+            f"the integration milestone inside {day_t} days of kickoff this quarter, up from {int_prior*100:.0f}% "
+            f"in Q4."
+        )
+    L.append("")
+
+    # --- Goal 2: Stakeholder Activation and Adoption ---
+    L.append("# Stakeholder activation and adoption")
+    if ttfv:
+        multiuser_3 = ttfv.get("implementations_reaching_3_users_by_day_30", 31)
+        cohort_total = ttfv.get("cohort_implementations_total", 47)
+        mult_3user = ttfv.get("retention_90day_multiplier_3user_vs_single_user", 3.0)
+        L.append(
+            f"- Multi-stakeholder activation ({cohort_total}-account Q1 cohort): implementations crossing the "
+            f"3-user activation threshold by Day 30 ({multiuser_3} of {cohort_total}) showed 90-day retention "
+            f"{mult_3user}x stronger than single-user activations."
+        )
+    if integration:
+        checklist_curr = integration.get("checklist_completion_pct_current", 0.34)
+        checklist_prior = integration.get("checklist_completion_pct_prior", 0.22)
+        checklist_date = _hr_date(integration.get("checklist_template_launch_date", "2026-03-01"))
+        industry = integration.get("industry_baseline_checklist_completion_pct", 0.192)
+        L.append(
+            f"- Onboarding checklist completion: rose from {checklist_prior*100:.0f}% to "
+            f"{checklist_curr*100:.0f}% after the configuration template launched {checklist_date}, "
+            f"versus the UserGuiding industry baseline of {industry*100:.1f}%."
+        )
+    if integration:
+        kickoffs_total = integration.get("kickoffs_total", 51)
+        stakeholder_curr = integration.get("kickoffs_with_3plus_stakeholders_pct_current", 0.64)
+        stakeholder_prior = integration.get("kickoffs_with_3plus_stakeholders_pct_prior_quarter", 0.39)
+        L.append(
+            f"- Stakeholder breadth at kickoff: {stakeholder_curr*100:.0f}% of {kickoffs_total} kickoffs this quarter "
+            f"listed 3 or more named stakeholders on the project plan, versus {stakeholder_prior*100:.0f}% "
+            f"the prior quarter."
+        )
+    if product_event:
+        feature = product_event.get("product_feature", "Self-Serve Sandbox")
+        launch_date = _hr_date(product_event.get("feature_launch_date", "2026-03-12"))
+        cohort_sz = product_event.get("cohort_size", 36)
+        act_after = product_event.get("activation_pct_after_launch", 0.81)
+        act_before = product_event.get("activation_pct_before_launch", 0.62)
+        lift_pp = product_event.get("activation_lift_percentage_points", 19)
+        day_t2 = product_event.get("first_value_day_threshold", 14)
+        L.append(
+            f"- {feature} launch ({launch_date}): Tier-1 implementations reached first value inside {day_t2} days "
+            f"at {act_after*100:.0f}%, up from {act_before*100:.0f}% prior to launch across {cohort_sz} Tier-1 accounts "
+            f"({lift_pp} percentage point lift)."
+        )
+    L.append("")
+
+    # --- Goal 3: Cross-functional Handoffs and Integration Quality ---
+    L.append("# Cross-functional handoffs and integration quality")
+    if use_case_handoff:
+        cohort_uc = use_case_handoff.get("implementations_in_cohort", 34)
+        days_faster = use_case_handoff.get("complete_use_case_capture_golive_days_faster", 12)
+        L.append(
+            f"- Sales-to-implementation use-case capture: across {cohort_uc} implementations Q1 2026, accounts "
+            f"with complete pre-close use-case documentation reached go-live {days_faster} days earlier than "
+            f"accounts without one."
+        )
+    if nps_data:
+        seg = nps_data.get("segment", "mid-market")
+        surveyed = nps_data.get("surveyed_go_lives", 28)
+        nps_curr = nps_data.get("nps_current_quarter", 59)
+        nps_prior = nps_data.get("nps_prior_quarter", 41)
+        nps_lift = nps_data.get("nps_improvement_points", 18)
+        L.append(
+            f"- Implementation NPS ({seg}): moved from {nps_prior} to {nps_curr} (+{nps_lift} points) "
+            f"across {surveyed} surveyed go-lives this quarter — largest segment-level jump on record."
+        )
+    if blocker:
+        issues = blocker.get("issues_logged", 17)
+        curr_days = blocker.get("resolution_median_days_current", 4)
+        prior_days = blocker.get("resolution_median_days_prior_quarter", 9)
+        L.append(
+            f"- Product-blocker resolution: median tightened from {prior_days} days to {curr_days} days "
+            f"across {issues} implementation-tagged Engineering issues this quarter."
+        )
+    if csm_handoff:
+        golives = csm_handoff.get("golives_in_cohort", 26)
+        ack_pct = csm_handoff.get("handoff_brief_acknowledged_pct", 0.92)
+        ack_hours = csm_handoff.get("acknowledgement_window_hours", 48)
+        L.append(
+            f"- Implementation-to-CSM handoff brief: {ack_pct*100:.0f}% of {golives} enterprise go-lives "
+            f"had the structured handoff brief acknowledged by the receiving CSM inside {ack_hours} hours."
+        )
+    if support_response:
+        tickets = support_response.get("tickets_logged", 142)
+        curr_hrs = support_response.get("first_response_median_hours_current", 2.4)
+        prior_hrs = support_response.get("first_response_median_hours_prior", 6.0)
+        L.append(
+            f"- Implementation support response: first-response median tightened from {prior_hrs:.0f} hours "
+            f"to {curr_hrs} hours across {tickets} implementation-tagged support tickets this quarter, "
+            f"after the dedicated implementation support queue launched."
+        )
+    L.append("")
+
+    return "\n".join(L)
 
 
 _ARCHETYPE_CONFIG = {
@@ -2101,6 +2303,20 @@ _ARCHETYPE_CONFIG = {
         "brief_filename": "customer-operator-brief.md",
         "user_prompt_subject": "Customer Success Operations",
     },
+    "customer_technician": {
+        "intelligence_area": "customer",
+        "audience_label": "Implementation Manager at Atlas SaaS",
+        "voice_brief_label": "Voice Brief",
+        "leader_label": "Customer Technician",
+        "goal_clusters": _CUSTOMER_TECHNICIAN_GOAL_CLUSTERS,
+        "snapshot_label": "CUSTOMER TECHNICIAN DATA SNAPSHOT",
+        "snapshot_example": (
+            "If the snapshot says \"Tier-2 activation 78%\", "
+            "your card says 78% or rounds honestly to 78%, not 79%."
+        ),
+        "brief_filename": "customer-technician-brief.md",
+        "user_prompt_subject": "Implementation",
+    },
 }
 
 
@@ -2216,6 +2432,7 @@ def build_user_message(archetype: str) -> str:
         "revenue_operator": "revenue operations data",
         "customer_advocate": "customer success management data",
         "customer_operator": "customer success operations data",
+        "customer_technician": "implementation data",
     }[archetype]
     return (
         f"Generate Data Stories for the {cfg['user_prompt_subject']} intelligence area based on "
@@ -2478,6 +2695,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         summary = build_customer_advocate_summary(ds)
     elif archetype == "customer_operator":
         summary = build_customer_operator_summary(ds)
+    elif archetype == "customer_technician":
+        summary = build_customer_technician_summary(ds)
     else:
         summary = build_summary(ds)
     stable_prefix = build_stable_prefix(persona, archetype_brief,

@@ -4144,6 +4144,197 @@ def apply_deal_field_defaults(deals: List[Dict]) -> None:
         d.setdefault("stage_change_history", [])
 
 
+# ---------------------------------------------------------------------------
+# Customer Technician entities (Phase 2.29)
+# ---------------------------------------------------------------------------
+
+def gen_ct_ttfv_cohort() -> List[Dict]:
+    """TTFV speed, multi-user activation depth, and Tier-2 activation rate.
+
+    Covers P-CT-01 (48-hour integration cohort 2.3x 90-day retention),
+    P-CT-04 (3-user activation Day 30 = 3x retention),
+    P-CT-08 (Tier-2 78% within 14 days vs 54% prior).
+    """
+    return [{
+        "snapshot_date": "2026-04-24",
+        "cohort_quarter": "Q1_2026",
+        "cohort_implementations_total": 47,
+        # P-CT-01: 48-hour integration cohort and retention lift
+        "implementations_connected_first_integration_within_48h": 26,
+        "integration_48h_window_days": 48,
+        "retention_90day_multiplier_vs_late_integrators": 2.3,
+        # P-CT-04: multi-user activation and retention
+        "implementations_reaching_3_users_by_day_30": 31,
+        "day_30_multiuser_threshold": 3,
+        "retention_90day_multiplier_3user_vs_single_user": 3.0,
+        # P-CT-08: Tier-2 activation within 14 days
+        "tier_2_activation_current_quarter_pct": 0.78,
+        "tier_2_activation_prior_quarter_pct": 0.54,
+        "tier_2_first_value_day_threshold": 14,
+    }]
+
+
+def gen_ct_go_live_velocity() -> List[Dict]:
+    """Go-live velocity by segment and configuration sign-off speed.
+
+    Covers P-CT-02 (mid-market 6 days ahead of plan),
+    P-CT-05 (enterprise config sign-off Day 11 vs Day 18),
+    P-CT-14 (Healthcare vertical 38-day median).
+    """
+    return [
+        {
+            # P-CT-02: mid-market portfolio go-live velocity
+            "segment": "mid-market",
+            "quarter": "Q1_2026",
+            "implementations_completed": 22,
+            "avg_kickoff_to_golive_days_current": 45,
+            "avg_kickoff_to_golive_days_plan": 51,
+            "days_ahead_of_plan": 6,
+            "driver": "pre_kickoff_configuration_template",
+        },
+        {
+            # P-CT-05: enterprise configuration sign-off velocity
+            "segment": "enterprise",
+            "quarter": "Q1_2026",
+            "implementations_completed": 14,
+            "config_signoff_median_days_current": 11,
+            "config_signoff_median_days_prior_quarter": 18,
+            "template_used": "pre_kickoff_configuration_template",
+            "template_launch_date": "2026-03-01",
+        },
+        {
+            # P-CT-14: Healthcare vertical cycle leader
+            "vertical": "healthcare",
+            "quarter": "Q1_2026",
+            "implementations_completed": 11,
+            "kickoff_to_golive_median_days": 38,
+            "fastest_segment_in_portfolio": True,
+            "driver": "predictable_configuration_decisions_and_vertical_template",
+        },
+    ]
+
+
+def gen_ct_integration_and_activation() -> List[Dict]:
+    """Integration milestone completion rate, onboarding checklist, and stakeholder breadth.
+
+    Covers P-CT-03 (71% integration milestone within 10 days),
+    P-CT-10 (checklist completion 22% to 34%),
+    P-CT-11 (64% kickoffs with 3+ named stakeholders).
+    """
+    return [{
+        "snapshot_date": "2026-04-24",
+        "quarter": "Q1_2026",
+        "active_implementations_in_period": 38,
+        # P-CT-03: data integration milestone completion
+        "integration_milestone_completion_pct_current": 0.71,
+        "integration_milestone_completion_pct_prior_quarter": 0.58,
+        "integration_milestone_day_threshold": 10,
+        # P-CT-10: onboarding checklist completion
+        "checklist_completion_pct_current": 0.34,
+        "checklist_completion_pct_prior": 0.22,
+        "checklist_template_launch_date": "2026-03-01",
+        "industry_baseline_checklist_completion_pct": 0.192,
+        "industry_baseline_source": "UserGuiding_2026_Onboarding_Benchmark",
+        # P-CT-11: stakeholder breadth at kickoff
+        "kickoffs_total": 51,
+        "kickoffs_with_3plus_stakeholders_pct_current": 0.64,
+        "kickoffs_with_3plus_stakeholders_pct_prior_quarter": 0.39,
+        "stakeholder_threshold": 3,
+    }]
+
+
+def gen_ct_handoff_quality() -> List[Dict]:
+    """Sales-to-implementation and implementation-to-CSM handoff quality.
+
+    Covers P-CT-06 (complete use-case capture shortens go-live by 12 days),
+    P-CT-12 (92% enterprise handoff brief acknowledged within 48 hours).
+    """
+    return [
+        {
+            # P-CT-06: pre-close use-case capture effect on go-live speed
+            "measurement_period": "Q1_2026",
+            "implementations_in_cohort": 34,
+            "complete_use_case_capture_golive_days_faster": 12,
+            "capture_complete_count": 21,
+            "capture_incomplete_count": 13,
+            "driver": "sales_side_use_case_documentation_at_close",
+        },
+        {
+            # P-CT-12: implementation-to-CSM handoff brief acknowledgement
+            "measurement_period": "Q1_2026",
+            "segment": "enterprise",
+            "golives_in_cohort": 26,
+            "handoff_brief_acknowledged_pct": 0.92,
+            "acknowledgement_window_hours": 48,
+            "handoff_brief_feature": "structured_handoff_brief",
+        },
+    ]
+
+
+def gen_ct_nps() -> List[Dict]:
+    """Implementation NPS by segment.
+
+    Covers P-CT-07 (mid-market implementation NPS 41 to 59, +18 points).
+    """
+    return [{
+        "metric": "implementation_nps",
+        "quarter": "Q1_2026",
+        "segment": "mid-market",
+        "surveyed_go_lives": 28,
+        "nps_current_quarter": 59,
+        "nps_prior_quarter": 41,
+        "nps_improvement_points": 18,
+        "largest_segment_jump_on_record": True,
+    }]
+
+
+def gen_ct_support_and_blockers() -> List[Dict]:
+    """Product-blocker resolution velocity and implementation support response.
+
+    Covers P-CT-09 (product-blocker 9 days to 4 days),
+    P-CT-13 (implementation support first-response 6 hours to 2.4 hours).
+    """
+    return [
+        {
+            # P-CT-09: product-blocker resolution velocity
+            "metric": "product_blocker_resolution_median_days",
+            "quarter": "Q1_2026",
+            "issues_logged": 17,
+            "resolution_median_days_current": 4,
+            "resolution_median_days_prior_quarter": 9,
+            "driver": "dedicated_implementation_engineering_triage",
+        },
+        {
+            # P-CT-13: implementation support response velocity
+            "metric": "implementation_support_first_response",
+            "quarter": "Q1_2026",
+            "tickets_logged": 142,
+            "first_response_median_hours_current": 2.4,
+            "first_response_median_hours_prior": 6.0,
+            "change_driver": "dedicated_implementation_support_queue_launch",
+        },
+    ]
+
+
+def gen_ct_product_event() -> List[Dict]:
+    """Cross-entity product event: self-serve sandbox launch and Tier-1 activation lift.
+
+    Covers P-CT-15 (sandbox launch March 12 lifted Tier-1 activation by 19pp).
+    """
+    return [{
+        "event": "self_serve_sandbox_launch",
+        "product_feature": "Self-Serve Sandbox",
+        "feature_launch_date": "2026-03-12",
+        "tier": "tier_1",
+        "cohort_size": 36,
+        "activation_pct_after_launch": 0.81,
+        "activation_pct_before_launch": 0.62,
+        "activation_lift_percentage_points": 19,
+        "first_value_day_threshold": 14,
+        "driver": "pre_kickoff_exploration_enabled_by_sandbox",
+    }]
+
+
 # ----------------------------------------------------------------------------
 # Top-level build
 # ----------------------------------------------------------------------------
@@ -4322,6 +4513,15 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
     co_benchmark = gen_co_benchmark()
     co_performance = gen_co_performance()
 
+    # Customer Technician entities (Phase 2.29) — all deterministic
+    ct_ttfv_cohort = gen_ct_ttfv_cohort()
+    ct_go_live_velocity = gen_ct_go_live_velocity()
+    ct_integration_and_activation = gen_ct_integration_and_activation()
+    ct_handoff_quality = gen_ct_handoff_quality()
+    ct_nps = gen_ct_nps()
+    ct_support_and_blockers = gen_ct_support_and_blockers()
+    ct_product_event = gen_ct_product_event()
+
     # Background filler deals to reach ~600 total if below.
     # Invariants protected by filler:
     #   (1) closed enterprise deals are reserved for p03
@@ -4478,6 +4678,14 @@ def build_dataset(seed: int) -> Dict[str, List[Dict]]:
         "co_handoff_quality": co_handoff_quality,
         "co_benchmark": co_benchmark,
         "co_performance": co_performance,
+        # Customer Technician entities (Phase 2.29)
+        "ct_ttfv_cohort": ct_ttfv_cohort,
+        "ct_go_live_velocity": ct_go_live_velocity,
+        "ct_integration_and_activation": ct_integration_and_activation,
+        "ct_handoff_quality": ct_handoff_quality,
+        "ct_nps": ct_nps,
+        "ct_support_and_blockers": ct_support_and_blockers,
+        "ct_product_event": ct_product_event,
     }
 
 
