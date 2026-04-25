@@ -1,0 +1,206 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "LinkedIn CPL holds flat while March climbed 12%",
+    "anchor": "April CPL sits at $138 versus March at $156, with Q1 average at $174.",
+    "connect": "April 1 audience refresh hit 4 campaigns covering 62% of paid budget.",
+    "body": "April CPL sits at $138 versus March at $156, with Q1 average at $174. April 1 audience refresh hit 4 campaigns covering 62% of paid budget.",
+    "grounded_metrics": [
+      "linkedin_cpl_april",
+      "audience_refresh_coverage"
+    ],
+    "trace": "CPL efficiency improved despite platform inflation trends, audience refresh timing correlates with the improvement."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Paid pipeline pacing hits $1.18M by week 3 of April",
+    "anchor": "April pipeline at $1,180,000 of the $1,500,000 monthly target through 2026-04-21.",
+    "connect": "March inbound demo requests ran at 61 versus April at 84.",
+    "body": "April pipeline at $1,180,000 of the $1,500,000 monthly target through 2026-04-21. March inbound demo requests ran at 61 versus April at 84.",
+    "grounded_metrics": [
+      "april_paid_pipeline",
+      "demo_request_volume"
+    ],
+    "trace": "Paid pipeline ahead of pace with 10 days left in month, inbound demo volume up 38% supporting the acceleration."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Webinar campaign generates 312 MQLs in 11 days",
+    "anchor": "April 9 webinar produced 42% of April's total 740 MQLs, concentrated in mid-market.",
+    "connect": "Webinar MQL-to-SQL conversion runs at 19% versus paid social at 11%.",
+    "body": "April 9 webinar produced 42% of April's total 740 MQLs, concentrated in mid-market. Webinar MQL-to-SQL conversion runs at 19% versus paid social at 11%.",
+    "grounded_metrics": [
+      "webinar_mql_volume",
+      "mql_sql_conversion"
+    ],
+    "trace": "Single webinar campaign dominated monthly MQL production with higher conversion quality than other channels."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Pricing models post moves from position 7 to position 2",
+    "anchor": "SaaS pricing models keyword jumped in 9 days ending 2026-04-21, with 4,400 monthly search volume.",
+    "connect": "Post refresh happened 2026-04-12, FAQ section added in March update.",
+    "body": "SaaS pricing models keyword jumped in 9 days ending 2026-04-21, with 4,400 monthly search volume. Post refresh happened 2026-04-12, FAQ section added in March update.",
+    "grounded_metrics": [
+      "seo_ranking_movement",
+      "content_refresh"
+    ],
+    "trace": "Major keyword ranking improvement following content refresh, FAQ sections appear to be working for search performance."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Three keywords hit top-3 positions in one week",
+    "anchor": "SaaS attribution, B2B lead routing, and marketing ops checklist all moved from page 2 to top 3 by week ending 2026-04-07.",
+    "connect": "All three pages got FAQ sections added in March rewrite.",
+    "body": "SaaS attribution, B2B lead routing, and marketing ops checklist all moved from page 2 to top 3 by week ending 2026-04-07. All three pages got FAQ sections added in March rewrite.",
+    "grounded_metrics": [
+      "multi_keyword_ranking",
+      "faq_section_impact"
+    ],
+    "trace": "Cluster of ranking improvements all tied to March FAQ section additions, suggests consistent SEO strategy is working."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Comparison hub sessions up 28% in April",
+    "anchor": "Hub pulled 12,400 sessions in April versus 9,700 in March.",
+    "connect": "AI Overview presence dropped from 71% to 38% after refresh.",
+    "body": "Hub pulled 12,400 sessions in April versus 9,700 in March. AI Overview presence dropped from 71% to 38% after refresh.",
+    "grounded_metrics": [
+      "comparison_hub_traffic",
+      "ai_overview_presence"
+    ],
+    "trace": "Comparison hub traffic growth coincides with reduced AI Overview competition in search results."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Competitor A comparison page drives 4,200 sessions",
+    "anchor": "Single comparison page accounts for 34% of total comparison hub traffic in April.",
+    "connect": "Competitor A battlecard sees 162 opens from sales team.",
+    "body": "Single comparison page accounts for 34% of total comparison hub traffic in April. Competitor A battlecard sees 162 opens from sales team.",
+    "grounded_metrics": [
+      "competitor_comparison_traffic",
+      "battlecard_opens"
+    ],
+    "trace": "High search interest in Competitor A aligns with sales team battlecard usage, suggesting coordinated competitive focus."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Content carries $310K in Q2 pipeline across 6 pieces",
+    "anchor": "6 of 18 published pieces show touched-deal flags, concentrated in buyer's guide at $140K.",
+    "connect": "Gated download on buyer's guide shows 41% week-over-week view growth.",
+    "body": "6 of 18 published pieces show touched-deal flags, concentrated in buyer's guide at $140K. Gated download on buyer's guide shows 41% week-over-week view growth.",
+    "grounded_metrics": [
+      "content_pipeline_attribution",
+      "buyer_guide_performance"
+    ],
+    "trace": "Content attribution shows concentration in top-performing piece, buyer's guide momentum continuing after gate implementation."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Inbound routing SLA compliance hits 95% in April",
+    "anchor": "412 of 433 demos routed inside 5-minute threshold versus March at 82%.",
+    "connect": "Round-robin fallback for after-hours went live 2026-04-06.",
+    "body": "412 of 433 demos routed inside 5-minute threshold versus March at 82%. Round-robin fallback for after-hours went live 2026-04-06.",
+    "grounded_metrics": [
+      "routing_sla_compliance",
+      "after_hours_fallback"
+    ],
+    "trace": "Routing SLA performance improved significantly following after-hours fallback implementation."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "MQL field completeness jumps to 91% in April",
+    "anchor": "678 of 745 MQLs carry complete UTM, channel, and persona data versus March at 73%.",
+    "connect": "Form-fill scoring threshold deployed 2026-04-08 across 6 forms.",
+    "body": "678 of 745 MQLs carry complete UTM, channel, and persona data versus March at 73%. Form-fill scoring threshold deployed 2026-04-08 across 6 forms.",
+    "grounded_metrics": [
+      "mql_field_completeness",
+      "form_scoring_threshold"
+    ],
+    "trace": "MQL data quality improved substantially after form scoring implementation, better handoff to sales."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Marketo-Salesforce mismatch drops to 2.1% in Q2",
+    "anchor": "47 of 2,240 sourced opportunities show attribution variance, down from Q1 at 4.8%.",
+    "connect": "UTM cleanup hit 12 paid campaigns on 2026-04-14.",
+    "body": "47 of 2,240 sourced opportunities show attribution variance, down from Q1 at 4.8%. UTM cleanup hit 12 paid campaigns on 2026-04-14.",
+    "grounded_metrics": [
+      "attribution_variance",
+      "utm_cleanup"
+    ],
+    "trace": "Attribution accuracy improved significantly in Q2, UTM cleanup campaign contributed to better data integrity."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Pipeline attribution coverage reaches 89% in April",
+    "anchor": "April pipeline with clean attribution chain sits at $2.4M of $2.7M total versus Q1 average at 71%.",
+    "connect": "Shared attribution mapping with RevOps locked 2026-04-07 for 14 campaign types.",
+    "body": "April pipeline with clean attribution chain sits at $2.4M of $2.7M total versus Q1 average at 71%. Shared attribution mapping with RevOps locked 2026-04-07 for 14 campaign types.",
+    "grounded_metrics": [
+      "attribution_coverage",
+      "revops_mapping"
+    ],
+    "trace": "Attribution coverage jumped substantially after RevOps alignment, better visibility into campaign contribution."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Homepage demo form conversion lifts 22% after test",
+    "anchor": "CTA test launched 2026-04-04 showing conversion improvement.",
+    "connect": "April inbound demos reach 84 versus March at 61 requests.",
+    "body": "CTA test launched 2026-04-04 showing conversion improvement. April inbound demos reach 84 versus March at 61 requests.",
+    "grounded_metrics": [
+      "homepage_cta_test",
+      "demo_request_growth"
+    ],
+    "trace": "Homepage conversion test correlates with overall demo request volume growth month-over-month."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Battlecard adoption hits 38 of 47 active reps",
+    "anchor": "480 total opens across battlecard library in April, Competitor A card leads at 162 opens.",
+    "connect": "Competitor A battlecard refresh shipped 2026-04-02.",
+    "body": "480 total opens across battlecard library in April, Competitor A card leads at 162 opens. Competitor A battlecard refresh shipped 2026-04-02.",
+    "grounded_metrics": [
+      "battlecard_adoption",
+      "competitor_battlecard"
+    ],
+    "trace": "High battlecard usage rate among sales reps, Competitor A focus aligns with comparison page traffic patterns."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ROI calculator attached to 22 of 36 mid-market deals",
+    "anchor": "Calculator live for 14 days since 2026-04-08, with 7 deals progressing to proposal stage.",
+    "connect": "Average deal size runs $48K with calculator versus $39K without.",
+    "body": "Calculator live for 14 days since 2026-04-08, with 7 deals progressing to proposal stage. Average deal size runs $48K with calculator versus $39K without.",
+    "grounded_metrics": [
+      "roi_calculator_adoption",
+      "deal_size_correlation"
+    ],
+    "trace": "ROI calculator showing strong adoption and potential deal size correlation in early weeks since launch."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Speed-to-lead drops to 4.2 minutes in April",
+    "anchor": "Median inbound demo response time down from March at 11.6 minutes.",
+    "connect": "Under-5-minute touches convert to SQL at 2.1x the rate of over-15-minute touches.",
+    "body": "Median inbound demo response time down from March at 11.6 minutes. Under-5-minute touches convert to SQL at 2.1x the rate of over-15-minute touches.",
+    "grounded_metrics": [
+      "speed_to_lead",
+      "touch_timing_conversion"
+    ],
+    "trace": "Speed-to-lead improvement correlates with routing SLA compliance gains, conversion rate data supports the urgency."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Mid-market concentration shows in webinar and demo flow",
+    "anchor": "Webinar MQLs concentrated in mid-market segment, with 47 of 84 April demo requests from mid-market.",
+    "connect": "ROI calculator deployment targets mid-market deals specifically.",
+    "body": "Webinar MQLs concentrated in mid-market segment, with 47 of 84 April demo requests from mid-market. ROI calculator deployment targets mid-market deals specifically.",
+    "grounded_metrics": [
+      "mid_market_concentration",
+      "segment_focus"
+    ],
+    "trace": "Mid-market segment showing strong activity across multiple channels, aligned with calculator rollout strategy."
+  }
+]

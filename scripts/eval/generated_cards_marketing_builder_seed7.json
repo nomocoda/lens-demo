@@ -1,0 +1,218 @@
+[
+  {
+    "intelligence_area": "marketing",
+    "title": "LinkedIn CPL holds at $138 while March climbed 12%",
+    "anchor": "April audience refresh applied to 4 campaigns covering 62% of paid budget on April 1.",
+    "connect": "Q1 average CPL ran at $174 across the quarter.",
+    "body": "April audience refresh applied to 4 campaigns covering 62% of paid budget on April 1. Q1 average CPL ran at $174 across the quarter.",
+    "grounded_metrics": [
+      "april_linkedin_cpl",
+      "audience_refresh_coverage"
+    ],
+    "trace": "LinkedIn CPL efficiency signal against March baseline and Q1 average, with audience refresh timing as the potential driver."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Paid pipeline tracking at 79% of monthly target by week 3",
+    "anchor": "$1,180,000 of $1,500,000 monthly target landed by April 21.",
+    "connect": "MQL volume sits at 740 for the month with webinar driving 42% of total.",
+    "body": "$1,180,000 of $1,500,000 monthly target landed by April 21. MQL volume sits at 740 for the month with webinar driving 42% of total.",
+    "grounded_metrics": [
+      "april_paid_pipeline",
+      "monthly_target_pacing"
+    ],
+    "trace": "Pipeline pacing signal showing strong month-to-date performance against target."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Webinar campaign generates 312 MQLs in 11 days",
+    "anchor": "April 9 webinar accounts for 42% of April's total MQL volume.",
+    "connect": "Webinar MQLs convert to SQL at 19% versus 11% for paid social.",
+    "body": "April 9 webinar accounts for 42% of April's total MQL volume. Webinar MQLs convert to SQL at 19% versus 11% for paid social.",
+    "grounded_metrics": [
+      "webinar_mql_volume",
+      "webinar_sql_conversion"
+    ],
+    "trace": "Single campaign concentration showing both volume and quality advantage over other channels."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Inbound demo requests jump from 61 to 84 month over month",
+    "anchor": "April carries 47 mid-market and 37 enterprise demo requests.",
+    "connect": "Homepage CTA test launched April 4 shows 22% conversion lift.",
+    "body": "April carries 47 mid-market and 37 enterprise demo requests. Homepage CTA test launched April 4 shows 22% conversion lift.",
+    "grounded_metrics": [
+      "inbound_demo_volume",
+      "homepage_cta_test"
+    ],
+    "trace": "Demo request volume increase coinciding with homepage optimization test."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Pricing models post moves from position 7 to position 2 in 9 days",
+    "anchor": "4,400 monthly search volume keyword refreshed April 12.",
+    "connect": "Three other B2B keywords hit top-3 positions in the week ending April 7.",
+    "body": "4,400 monthly search volume keyword refreshed April 12. Three other B2B keywords hit top-3 positions in the week ending April 7.",
+    "grounded_metrics": [
+      "pricing_models_ranking",
+      "seo_keyword_momentum"
+    ],
+    "trace": "SEO ranking velocity on high-volume keyword showing content optimization working."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Comparison hub sessions climb 28% to 12,400 in April",
+    "anchor": "Competitor A comparison page drives 4,200 of total sessions.",
+    "connect": "AI Overview presence drops from 71% to 38% after comparison hub refresh.",
+    "body": "Competitor A comparison page drives 4,200 of total sessions. AI Overview presence drops from 71% to 38% after comparison hub refresh.",
+    "grounded_metrics": [
+      "comparison_hub_traffic",
+      "ai_overview_presence"
+    ],
+    "trace": "Organic traffic growth on competitive comparison content with reduced AI Overview interference."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Content attribution tracks $310K across 6 published pieces",
+    "anchor": "Buyer's guide carries $140,000 in touched-deal pipeline.",
+    "connect": "Gated download views climb 41% week over week since launch.",
+    "body": "Buyer's guide carries $140,000 in touched-deal pipeline. Gated download views climb 41% week over week since launch.",
+    "grounded_metrics": [
+      "content_pipeline_attribution",
+      "buyers_guide_performance"
+    ],
+    "trace": "Content-to-pipeline connection showing concentrated value in buyer's guide asset."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Inbound routing SLA jumps from 82% to 95% in April",
+    "anchor": "412 of 433 demos routed inside 5-minute threshold.",
+    "connect": "Round-robin fallback for after-hours requests went live April 6.",
+    "body": "412 of 433 demos routed inside 5-minute threshold. Round-robin fallback for after-hours requests went live April 6.",
+    "grounded_metrics": [
+      "routing_sla_compliance",
+      "routing_update_timing"
+    ],
+    "trace": "Marketing operations infrastructure improvement showing immediate SLA performance gain."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "MQL field completeness rises to 91% from March's 73%",
+    "anchor": "678 of 745 MQLs carry complete UTM, channel, and persona data.",
+    "connect": "Form-fill scoring threshold launched April 8 across 6 forms.",
+    "body": "678 of 745 MQLs carry complete UTM, channel, and persona data. Form-fill scoring threshold launched April 8 across 6 forms.",
+    "grounded_metrics": [
+      "mql_field_completeness",
+      "form_scoring_threshold"
+    ],
+    "trace": "Data quality improvement in MQL handoff process with form optimization driving completion rates."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Marketo-Salesforce attribution variance drops to 2.1%",
+    "anchor": "47 of 2,240 sourced opportunities show mismatch in Q2.",
+    "connect": "Q1 variance ran at 4.8% across the quarter.",
+    "body": "47 of 2,240 sourced opportunities show mismatch in Q2. Q1 variance ran at 4.8% across the quarter.",
+    "grounded_metrics": [
+      "attribution_variance_rate",
+      "utm_cleanup_timing"
+    ],
+    "trace": "Attribution system accuracy improving with UTM cleanup applied to 12 paid campaigns April 14."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Battlecard adoption reaches 38 of 47 active reps",
+    "anchor": "480 total opens in April with Competitor A card leading at 162.",
+    "connect": "Competitor A battlecard refresh shipped April 2.",
+    "body": "480 total opens in April with Competitor A card leading at 162. Competitor A battlecard refresh shipped April 2.",
+    "grounded_metrics": [
+      "battlecard_adoption_rate",
+      "competitor_a_card_usage"
+    ],
+    "trace": "Sales enablement asset utilization showing strong rep adoption with competitive content leading usage."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "ROI calculator touches 22 of 36 active mid-market deals",
+    "anchor": "Calculator launched April 8, tracking 14 days of adoption data.",
+    "connect": "Deal size averages $48,000 with calculator versus $39,000 without.",
+    "body": "Calculator launched April 8, tracking 14 days of adoption data. Deal size averages $48,000 with calculator versus $39,000 without.",
+    "grounded_metrics": [
+      "roi_calculator_adoption",
+      "deal_size_correlation"
+    ],
+    "trace": "Sales enablement tool showing rapid adoption and correlation with higher deal values in mid-market segment."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Speed-to-lead drops from 11.6 minutes to 4.2 minutes",
+    "anchor": "Median response time improvement on inbound demos month over month.",
+    "connect": "Under-5-minute touches convert to SQL at 2.1x the rate of over-15-minute touches.",
+    "body": "Median response time improvement on inbound demos month over month. Under-5-minute touches convert to SQL at 2.1x the rate of over-15-minute touches.",
+    "grounded_metrics": [
+      "speed_to_lead_median",
+      "sql_conversion_by_response_time"
+    ],
+    "trace": "Marketing-to-sales handoff velocity improvement with direct correlation to SQL conversion rates."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Attribution coverage reaches 89% of April pipeline",
+    "anchor": "$2,400,000 of $2,700,000 carries clean Marketo-to-Salesforce chain.",
+    "connect": "Q1 average coverage ran at 71% across the quarter.",
+    "body": "$2,400,000 of $2,700,000 carries clean Marketo-to-Salesforce chain. Q1 average coverage ran at 71% across the quarter.",
+    "grounded_metrics": [
+      "attribution_chain_coverage",
+      "shared_attribution_mapping"
+    ],
+    "trace": "Pipeline attribution completeness showing significant improvement with RevOps mapping locked April 7."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Mid-market segment drives webinar MQL concentration",
+    "anchor": "Webinar campaign generates highest MQL density in mid-market audience.",
+    "connect": "Mid-market accounts for 47 of 84 total April demo requests.",
+    "body": "Webinar campaign generates highest MQL density in mid-market audience. Mid-market accounts for 47 of 84 total April demo requests.",
+    "grounded_metrics": [
+      "webinar_segment_concentration",
+      "demo_requests_by_segment"
+    ],
+    "trace": "Segment signal showing mid-market resonance across both webinar content and inbound demo volume."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "FAQ sections drive three keywords to top-3 positions",
+    "anchor": "SaaS attribution, lead routing, and marketing ops checklist all rank in week ending April 7.",
+    "connect": "All three pages started from page-2 positions before March rewrites.",
+    "body": "SaaS attribution, lead routing, and marketing ops checklist all rank in week ending April 7. All three pages started from page-2 positions before March rewrites.",
+    "grounded_metrics": [
+      "structured_faq_seo_impact",
+      "page_two_to_top_three"
+    ],
+    "trace": "Content optimization pattern showing structured FAQ approach consistently moving B2B keywords from page 2 to top 3."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Seven mid-market deals progress to proposal with calculator",
+    "anchor": "ROI calculator attachment correlates with deal advancement in first 14 days.",
+    "connect": "22 of 36 active mid-market deals carry calculator-attached notes.",
+    "body": "ROI calculator attachment correlates with deal advancement in first 14 days. 22 of 36 active mid-market deals carry calculator-attached notes.",
+    "grounded_metrics": [
+      "calculator_proposal_progression",
+      "mid_market_tool_adoption"
+    ],
+    "trace": "Sales enablement tool showing progression correlation beyond just attachment rates in mid-market segment."
+  },
+  {
+    "intelligence_area": "marketing",
+    "title": "Shared attribution mapping covers 14 campaign types",
+    "anchor": "RevOps collaboration locked April 7 across campaign taxonomy.",
+    "connect": "Attribution chain coverage jumps from 71% to 89% in the same window.",
+    "body": "RevOps collaboration locked April 7 across campaign taxonomy. Attribution chain coverage jumps from 71% to 89% in the same window.",
+    "grounded_metrics": [
+      "shared_attribution_mapping",
+      "campaign_type_coverage"
+    ],
+    "trace": "Cross-functional alignment showing immediate attribution coverage improvement with standardized campaign taxonomy."
+  }
+]

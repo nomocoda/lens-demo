@@ -425,8 +425,9 @@ MB_PATTERNS = [
     ("P-MB-01", "Paid pipeline $1.18M of $1.5M target by week 3", [
         r"\$1\.18M", r"\$1\.5M.*target", r"target.*\$1\.5M",
         r"1\.18.*1\.5", r"week.?3.*pacing", r"pacing.*week.?3",
-        r"78%.*target", r"paid.*pipeline.*pacing",
+        r"78%.*target", r"79%.*target", r"paid.*pipeline.*pacing",
         r"1\.18.*paid", r"paid.*1\.18",
+        r"1,180,000", r"paid.*pipeline.*week.?3", r"week.?3.*paid.*pipeline",
     ], ["pipeline_at_week3", "paid_pipeline_pacing", "week3_pacing"]),
 
     ("P-MB-02", "Webinar generates 42% of April MQLs in 11 days", [
