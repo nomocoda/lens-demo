@@ -1,0 +1,220 @@
+[
+  {
+    "intelligence_area": "customer",
+    "title": "Q2 renewal forecast variance tightens to 1.7%",
+    "anchor": "Actual renewal ARR landed at $1.77M versus the $1.8M forecast, marking the tightest variance in four quarters.",
+    "connect": "Trailing four-quarter average variance runs at 8.2%.",
+    "body": "Actual renewal ARR landed at $1.77M versus the $1.8M forecast, marking the tightest variance in four quarters. Trailing four-quarter average variance runs at 8.2%.",
+    "grounded_metrics": [
+      "q2_renewal_variance",
+      "forecast_accuracy"
+    ],
+    "trace": "Q2 2026 delivered 1.7% variance versus historical 8.2% average, signaling improved forecast discipline."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market NRR accelerates to 112% in Q2",
+    "anchor": "Mid-market segment NRR sits at 112% for Q2 2026, pulling ahead of the trailing three-quarter average of 104.9%.",
+    "connect": "Multi-product customers in this segment drive the expansion engine at 124% NRR.",
+    "body": "Mid-market segment NRR sits at 112% for Q2 2026, pulling ahead of the trailing three-quarter average of 104.9%. Multi-product customers in this segment drive the expansion engine at 124% NRR.",
+    "grounded_metrics": [
+      "mid_market_nrr",
+      "multi_product_nrr"
+    ],
+    "trace": "Mid-market NRR jumped 7 points above trailing average, with multi-product adoption as the primary expansion driver."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Multi-product customers expand at 124% NRR versus single-product 102%",
+    "anchor": "Multi-product customers across 46 accounts delivered 124% NRR in Q2, while single-product customers across 74 accounts held at 102%.",
+    "connect": "Multi-product share represents 38.3% of the customer base currently.",
+    "body": "Multi-product customers across 46 accounts delivered 124% NRR in Q2, while single-product customers across 74 accounts held at 102%. Multi-product share represents 38.3% of the customer base currently.",
+    "grounded_metrics": [
+      "multi_product_nrr",
+      "single_product_nrr",
+      "product_mix"
+    ],
+    "trace": "22-point NRR spread between multi-product and single-product cohorts reveals the expansion engine mechanics."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "At-risk ARR concentration drops to $220K across 3 accounts",
+    "anchor": "April at-risk pool sits at $220K ARR across 3 accounts, down from March's $310K across 7 accounts.",
+    "connect": "Top-20-ARR accounts in the at-risk pool decreased from 5 to 2 over the same period.",
+    "body": "April at-risk pool sits at $220K ARR across 3 accounts, down from March's $310K across 7 accounts. Top-20-ARR accounts in the at-risk pool decreased from 5 to 2 over the same period.",
+    "grounded_metrics": [
+      "at_risk_arr",
+      "top_arr_concentration"
+    ],
+    "trace": "At-risk portfolio contracted by $90K and 4 accounts month-over-month, with improvement concentrated in top-ARR tier."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market time to first value compresses to 23 days",
+    "anchor": "Q2 2026 mid-market new-customer cohort reached first value at 23 days across 24 accounts.",
+    "connect": "Q1 2026 mid-market cohort required 38 days across 22 accounts.",
+    "body": "Q2 2026 mid-market new-customer cohort reached first value at 23 days across 24 accounts. Q1 2026 mid-market cohort required 38 days across 22 accounts.",
+    "grounded_metrics": [
+      "mid_market_ttfv",
+      "cohort_ttfv"
+    ],
+    "trace": "15-day TTFV improvement quarter-over-quarter in mid-market onboarding suggests process refinement."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Mid-market license utilization above 80% increases to 22 customers",
+    "anchor": "Mid-market customers above 80% license utilization reached 22 in Q2 2026, up from 14 in Q1.",
+    "connect": "Mid-market customers running Atlas Insights totals 24, with 18 expanding ARR during Q2.",
+    "body": "Mid-market customers above 80% license utilization reached 22 in Q2 2026, up from 14 in Q1. Mid-market customers running Atlas Insights totals 24, with 18 expanding ARR during Q2.",
+    "grounded_metrics": [
+      "license_utilization",
+      "atlas_insights_adoption"
+    ],
+    "trace": "8-customer increase in high-utilization mid-market accounts correlates with Atlas Insights product adoption."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Health score distribution shifts to 77% green in mid-market",
+    "anchor": "Mid-market health distribution shows 77% green (34 of 44 accounts) in Q2 2026 versus 70% green (31 of 44) in Q1.",
+    "connect": "Q1 green-health customers renewed at 97% while yellow-health customers renewed at 78%.",
+    "body": "Mid-market health distribution shows 77% green (34 of 44 accounts) in Q2 2026 versus 70% green (31 of 44) in Q1. Q1 green-health customers renewed at 97% while yellow-health customers renewed at 78%.",
+    "grounded_metrics": [
+      "health_distribution",
+      "health_renewal_correlation"
+    ],
+    "trace": "7-point improvement in green-health distribution with Q1 green cohort demonstrating 97% renewal rate."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Customer health reviews generate 8 expansion opportunities worth $340K",
+    "anchor": "April expansion opportunities sourced from customer health reviews total 8 opportunities representing $340K.",
+    "connect": "March customer-health-review opportunities reached 6, with sales accepting 5 of them (83%).",
+    "body": "April expansion opportunities sourced from customer health reviews total 8 opportunities representing $340K. March customer-health-review opportunities reached 6, with sales accepting 5 of them (83%).",
+    "grounded_metrics": [
+      "health_review_expansion",
+      "sales_acceptance_rate"
+    ],
+    "trace": "Health-review-sourced expansion opportunities increased by 2 opportunities month-over-month with strong sales acceptance."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Coverage tier retention spreads 14 points between high-touch and tech-touch",
+    "anchor": "High-touch coverage delivered 96% GRR across 22 accounts in Q2 while tech-touch coverage achieved 82% GRR across 98 accounts.",
+    "connect": "High-touch represents 18.3% of the customer base, concentrated in top-ARR accounts.",
+    "body": "High-touch coverage delivered 96% GRR across 22 accounts in Q2 while tech-touch coverage achieved 82% GRR across 98 accounts. High-touch represents 18.3% of the customer base, concentrated in top-ARR accounts.",
+    "grounded_metrics": [
+      "coverage_tier_grr",
+      "coverage_distribution"
+    ],
+    "trace": "14-point GRR spread between coverage tiers with high-touch serving the top-ARR segment exclusively."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "90-day retention improves to 88% across new-customer cohorts",
+    "anchor": "Q1 2026 all-segments new-customer cohort shows 88% retention at 90 days across 60 accounts with 26-day time to first value.",
+    "connect": "Q4 2025 cohort achieved 83% retention across 55 accounts with 38-day time to first value.",
+    "body": "Q1 2026 all-segments new-customer cohort shows 88% retention at 90 days across 60 accounts with 26-day time to first value. Q4 2025 cohort achieved 83% retention across 55 accounts with 38-day time to first value.",
+    "grounded_metrics": [
+      "cohort_retention",
+      "cohort_ttfv"
+    ],
+    "trace": "5-point improvement in 90-day retention correlates with 12-day TTFV improvement between cohorts."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Enterprise segment renewal performance holds at 94% GRR",
+    "anchor": "Q2 2026 enterprise renewing book achieved 94% GRR at 106% NRR across $432K ARR.",
+    "connect": "Enterprise NRR runs 6 points below mid-market's 112% over the same period.",
+    "body": "Q2 2026 enterprise renewing book achieved 94% GRR at 106% NRR across $432K ARR. Enterprise NRR runs 6 points below mid-market's 112% over the same period.",
+    "grounded_metrics": [
+      "enterprise_grr_nrr",
+      "segment_nrr_comparison"
+    ],
+    "trace": "Enterprise segment demonstrates strong retention but lags mid-market expansion velocity by 6 NRR points."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Customer health reviews outperform outbound expansion sourcing",
+    "anchor": "March customer-health-review expansion opportunities achieved 83% sales acceptance (5 of 6) versus outbound opportunities at 41% acceptance (7 of 17).",
+    "connect": "April health review opportunities increased to 8 total worth $340K.",
+    "body": "March customer-health-review expansion opportunities achieved 83% sales acceptance (5 of 6) versus outbound opportunities at 41% acceptance (7 of 17). April health review opportunities increased to 8 total worth $340K.",
+    "grounded_metrics": [
+      "health_review_acceptance",
+      "outbound_acceptance",
+      "expansion_sourcing"
+    ],
+    "trace": "Health review sourcing demonstrates 42-point higher sales acceptance rate than outbound expansion efforts."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "TTFV under 30 days correlates with 91% renewal rates",
+    "anchor": "Q1 2026 mid-market cohort customers reaching first value under 30 days renewed at 91% versus 74% for customers taking over 60 days.",
+    "connect": "Q2 2026 mid-market new-customer cohort averaged 23-day time to first value across 24 accounts.",
+    "body": "Q1 2026 mid-market cohort customers reaching first value under 30 days renewed at 91% versus 74% for customers taking over 60 days. Q2 2026 mid-market new-customer cohort averaged 23-day time to first value across 24 accounts.",
+    "grounded_metrics": [
+      "ttfv_renewal_correlation",
+      "q2_ttfv_performance"
+    ],
+    "trace": "17-point renewal rate advantage for sub-30-day TTFV with Q2 cohort positioning well at 23-day average."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Executive sponsor depth correlates with enterprise renewal signing",
+    "anchor": "April 2026 enterprise renewals show 7 of 10 signed renewals had executive sponsors whose depth deepened during Q1 2026.",
+    "connect": "Beacon Logistics signed their $280K renewal on April 21, ahead of the July 15 contract end date.",
+    "body": "April 2026 enterprise renewals show 7 of 10 signed renewals had executive sponsors whose depth deepened during Q1 2026. Beacon Logistics signed their $280K renewal on April 21, ahead of the July 15 contract end date.",
+    "grounded_metrics": [
+      "executive_sponsor_depth",
+      "early_renewal_signing"
+    ],
+    "trace": "70% of enterprise renewals correlate with Q1 executive sponsor engagement deepening, with early signing patterns."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Small-business segment shows 86% GRR with limited expansion",
+    "anchor": "Q2 2026 small-business renewing book delivered 86% GRR and 102% NRR across $252K ARR.",
+    "connect": "Small-business NRR trails mid-market by 10 points and enterprise by 4 points in Q2.",
+    "body": "Q2 2026 small-business renewing book delivered 86% GRR and 102% NRR across $252K ARR. Small-business NRR trails mid-market by 10 points and enterprise by 4 points in Q2.",
+    "grounded_metrics": [
+      "small_business_grr_nrr",
+      "segment_nrr_gaps"
+    ],
+    "trace": "Small-business segment demonstrates lowest retention and expansion performance across all segments."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Atlas Insights adoption drives 75% expansion rate in mid-market",
+    "anchor": "Mid-market customers running Atlas Insights total 24, with 18 expanding ARR during Q2 2026 for a 75% expansion rate.",
+    "connect": "Multi-product customers overall achieved 124% NRR across 46 accounts in Q2.",
+    "body": "Mid-market customers running Atlas Insights total 24, with 18 expanding ARR during Q2 2026 for a 75% expansion rate. Multi-product customers overall achieved 124% NRR across 46 accounts in Q2.",
+    "grounded_metrics": [
+      "atlas_insights_expansion",
+      "multi_product_performance"
+    ],
+    "trace": "Atlas Insights product adoption shows strong mid-market expansion correlation with 75% of adopters expanding."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Top-20-ARR accounts in at-risk pool require executive review",
+    "anchor": "Top-20-ARR at-risk accounts with executive sponsor review scheduled this week (Apr 20-26) total 2 accounts.",
+    "connect": "April at-risk pool contains 2 top-20-ARR accounts down from 5 in March.",
+    "body": "Top-20-ARR at-risk accounts with executive sponsor review scheduled this week (Apr 20-26) total 2 accounts. April at-risk pool contains 2 top-20-ARR accounts down from 5 in March.",
+    "grounded_metrics": [
+      "executive_review_schedule",
+      "top_arr_risk"
+    ],
+    "trace": "Both remaining top-ARR at-risk accounts have executive reviews scheduled, showing focused escalation."
+  },
+  {
+    "intelligence_area": "customer",
+    "title": "Multi-product NRR advantage widens to 8 points quarter-over-quarter",
+    "anchor": "Multi-product customers expanded from 116% NRR in Q1 to 124% NRR in Q2 while single-product customers held steady at 102%.",
+    "connect": "Multi-product share of the customer base sits at 38.3% currently.",
+    "body": "Multi-product customers expanded from 116% NRR in Q1 to 124% NRR in Q2 while single-product customers held steady at 102%. Multi-product share of the customer base sits at 38.3% currently.",
+    "grounded_metrics": [
+      "multi_product_nrr_trend",
+      "product_adoption_share"
+    ],
+    "trace": "Multi-product NRR acceleration of 8 points creates widening expansion advantage over single-product base."
+  }
+]

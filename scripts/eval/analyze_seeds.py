@@ -1,15 +1,20 @@
-"""Phase 2.5 multi-seed Revenue Leader analyzer.
+"""Phase 2.5 / 2.6 multi-seed analyzer (Revenue Leader + Customer Leader).
 
-Reads generated_cards_revenue_seed<N>.json for each seed, scores:
+Reads generated_cards_<archetype>_seed<N>.json for each seed, scores:
   - card count
   - voice violation count (em dash, "against" comparator, banned verdict words)
   - specificity status (engine drops are reported in stderr, this checks ungrounded numerics in saved cards)
-  - 15 Revenue Leader pattern coverage (P-RL-01..P-RL-15)
+  - 15 archetype-specific pattern coverage (P-RL-01..15 or P-CL-01..15)
 
 Patterns are detected by content keywords and grounded_metrics tags. The detection
-is intentionally permissive (any-of) so a card that legitimately tells P-RL-09 with
-different exact figures still counts.
+is intentionally permissive (any-of) so a card that legitimately tells the pattern
+with different exact figures still counts.
+
+Usage:
+  python analyze_seeds.py                       # default archetype=revenue
+  python analyze_seeds.py --archetype customer  # Phase 2.6 Customer Leader
 """
+import argparse
 import json
 import re
 import sys
@@ -129,6 +134,121 @@ PATTERNS = [
     ], ["mm_renewals", "mid_market_nrr", "renewal_arr", "q2_mm_renewal", "mm_nrr"]),
 ]
 
+# Customer Leader pattern detectors (P-CL-01..15) for Phase 2.6.
+# Same any-of permissive approach as the RL table above. Detectors target both
+# the literal P-CL anchor numbers and common phrasings the model reaches for.
+CL_PATTERNS = [
+    ("P-CL-01", "Q2 forecast accuracy 1.7%", [
+        r"\b1\.7%\b", r"\bwithin 2%\b", r"\bwithin 1\.7\b",
+        r"forecast.*(within|lands|closes|tightens|variance)",
+        r"\$1\.77M", r"\$1\.8M.*forecast", r"variance.*1\.7",
+    ], ["forecast_accuracy", "q2_forecast", "forecast_variance",
+        "forecast_arr", "renewal_forecast"]),
+
+    ("P-CL-02", "At-risk pool $310K to $220K", [
+        r"\$220K.*\$310K", r"\$310K.*\$220K", r"\$220K.*April",
+        r"at[- ]risk.*\$220K", r"at[- ]risk.*\$310K",
+        r"at[- ]risk.*shrink", r"at[- ]risk.*contract", r"at[- ]risk.*drop",
+        r"risk pool.*\$2", r"risk pool.*\$3",
+    ], ["at_risk_pool", "renewal_at_risk", "at_risk_arr"]),
+
+    ("P-CL-03", "April enterprise renewals + sponsor depth", [
+        r"enterprise renewal.*sign(ed|ing)", r"sponsor.*deepen",
+        r"deepen.*sponsor", r"executive sponsor.*sign",
+        r"3 enterprise renewals", r"april.*enterprise.*renewal",
+        r"4 sponsors", r"renewal.*signed.*executive",
+        r"enterprise.*signing.*sponsor",
+    ], ["enterprise_renewal", "sponsor_depth", "executive_sponsor",
+        "april_renewal"]),
+
+    ("P-CL-04", "Q2 mid-market GRR 91% on $1.8M", [
+        r"\bGRR.*91%\b", r"91%.*GRR", r"mid[- ]market.*91%",
+        r"91%.*mid[- ]market", r"91%.*gross retention",
+        r"\$1\.8M.*renewing", r"renewing.*\$1\.8M",
+    ], ["mm_grr", "q2_mm_grr", "mid_market_grr", "grr"]),
+
+    ("P-CL-05", "Beacon $280K early renewal", [
+        r"\bBeacon\b", r"\$280K.*renew", r"renew.*\$280K",
+        r"Beacon.*early", r"three months early", r"3 months early",
+    ], ["beacon", "early_renewal", "beacon_renewal"]),
+
+    ("P-CL-06", "Q2 MM NRR 112% vs trailing 105%", [
+        r"112%.*NRR", r"NRR.*112%", r"NRR.*112",
+        r"mid[- ]market.*NRR.*112", r"NRR.*105", r"105%.*NRR",
+        r"trailing.*NRR", r"7 points above trailing",
+        r"jumps 7 points", r"climbs to 112",
+    ], ["mm_nrr", "q2_mm_nrr", "mid_market_nrr"]),
+
+    ("P-CL-07", "Multi-product 124% vs single 102%", [
+        r"multi[- ]product.*124", r"124%.*multi", r"single[- ]product.*102",
+        r"102%.*single", r"22[- ]point.*NRR", r"NRR.*22[- ]point",
+        r"multi[- ]product.*single[- ]product", r"NRR.*22 percentage",
+        r"premium over single[- ]product", r"single[- ]product.*premium",
+    ], ["multi_product", "multi_product_nrr", "product_breadth",
+        "multiproduct_nrr"]),
+
+    ("P-CL-08", "MM TTFV 23 days vs 38", [
+        r"\b23 days\b", r"\b38 days\b", r"time to first value.*23",
+        r"TTFV.*23", r"TTFV.*38", r"first value.*23",
+        r"compress.*15 days", r"15 days quarter[- ]over[- ]quarter",
+    ], ["ttfv", "time_to_first_value", "mm_ttfv"]),
+
+    ("P-CL-09", "8 CS expansion $340K + 83% acceptance", [
+        r"\$340K.*health", r"health.*\$340K", r"\$340K.*expansion",
+        r"expansion.*\$340K", r"health review.*8", r"8 expansion",
+        r"83%.*accept", r"accept.*83%", r"expansion.*health",
+        r"health.*expansion", r"42 points above outbound",
+    ], ["health_review_expansion", "cs_sourced_expansion",
+        "health_review", "expansion_source", "expansion_acceptance"]),
+
+    ("P-CL-10", "22 MM 80% utilization", [
+        r"\b22 (mid[- ]market )?(account|customer|MM)", r"22.*80%",
+        r"80%.*utilization", r"utilization.*22", r"22 mid[- ]market",
+        r"license utilization.*22", r"57% quarter[- ]over[- ]quarter",
+    ], ["license_utilization", "mm_utilization", "license_util",
+        "utilization"]),
+
+    ("P-CL-11", "Q2 78% green, Q1 71% green", [
+        r"78%.*green", r"green.*78%", r"71%.*green", r"green.*71%",
+        r"77% green", r"green.*77%", r"health.*green.*78",
+        r"health score.*green", r"green health score",
+    ], ["health_score", "health_distribution", "green_health"]),
+
+    ("P-CL-12", "Q1 88% / Q4 83% retention", [
+        r"\b88%\b.*retention", r"retention.*88%", r"90[- ]day retention",
+        r"retention.*83", r"new customer.*88", r"all[- ]segments.*88",
+        r"cohort.*88", r"5 points.*onboarding",
+    ], ["cohort_retention", "ninety_day_retention", "retention_90d",
+        "new_customer_retention"]),
+
+    ("P-CL-13", "High-touch 96% vs tech-touch 82%", [
+        r"high[- ]touch.*96", r"96%.*high[- ]touch", r"tech[- ]touch.*82",
+        r"82%.*tech[- ]touch", r"14[- ]point.*high[- ]touch",
+        r"high[- ]touch.*tech[- ]touch", r"coverage tier.*14",
+        r"14 points above tech[- ]touch", r"14[- ]point.*advantage",
+        r"tier retention.*14", r"coverage.*spread.*14",
+    ], ["coverage_tier", "high_touch_grr", "tech_touch_grr",
+        "tier_grr", "tier_retention"]),
+
+    ("P-CL-14", "2 top-20 ARR + sponsor review this week", [
+        r"top[- ]20.*at[- ]risk", r"top[- ]ARR.*at[- ]risk",
+        r"sponsor review", r"executive sponsor.*review",
+        r"2 top[- ]ARR", r"2 of 2 top[- ]ARR", r"2 top[- ]20",
+        r"top[- ]20[- ]ARR", r"executive review",
+    ], ["top_20_at_risk", "sponsor_review", "executive_sponsor_review",
+        "top_arr_at_risk"]),
+
+    ("P-CL-15", "Custom Permissions launch + Beacon early-renewal", [
+        r"Custom Permissions", r"Audit Logs", r"June 15",
+        r"6/15", r"2026-06-15",
+        r"launch.*Beacon", r"Beacon.*launch",
+        r"launch.*early.*renewal", r"early.*renewal.*launch",
+        r"permissions.*ship", r"audit logs.*ship",
+    ], ["product_launch", "custom_permissions", "launch_renewal_link",
+        "audit_logs"]),
+]
+
+
 # Voice violations: words/phrases the seed cards must not contain.
 VIOLATION_PATTERNS = [
     ("em_dash", re.compile(r"\u2014")),
@@ -156,9 +276,9 @@ def card_text(card):
     return " ".join(str(card.get(f, "")) for f in CONTENT_FIELDS)
 
 
-def detect_patterns(cards):
+def detect_patterns(cards, patterns):
     found = {}
-    for name, label, regexes, tag_fragments in PATTERNS:
+    for name, label, regexes, tag_fragments in patterns:
         hit = False
         for card in cards:
             text = card_text(card)
@@ -190,22 +310,36 @@ def detect_violations(cards):
     return hits
 
 
+_ARCHETYPE_TABLE = {
+    "revenue": (PATTERNS, "Revenue Leader", "revenue", "Phase 2.5"),
+    "customer": (CL_PATTERNS, "Customer Leader", "customer", "Phase 2.6"),
+}
+
+
 def main():
+    ap = argparse.ArgumentParser(description="Multi-seed eval analyzer")
+    ap.add_argument("--archetype", choices=sorted(_ARCHETYPE_TABLE.keys()),
+                    default="revenue",
+                    help="Which archetype to score (default revenue)")
+    args = ap.parse_args()
+
+    patterns, leader_label, file_tag, phase_label = _ARCHETYPE_TABLE[args.archetype]
+
     summary_rows = []
-    cross_seed_pattern_count = {p[0]: 0 for p in PATTERNS}
+    cross_seed_pattern_count = {p[0]: 0 for p in patterns}
     total_violations = 0
 
     for seed in SEEDS:
-        path = EVAL_DIR / f"generated_cards_revenue_seed{seed}.json"
+        path = EVAL_DIR / f"generated_cards_{file_tag}_seed{seed}.json"
         if not path.exists():
             print(f"seed {seed}: MISSING {path}")
             continue
         cards = json.loads(path.read_text())
-        patterns = detect_patterns(cards)
+        seed_patterns = detect_patterns(cards, patterns)
         violations = detect_violations(cards)
         total_violations += len(violations)
-        covered = sum(1 for _, (hit, _) in patterns.items() if hit)
-        for name, (hit, _) in patterns.items():
+        covered = sum(1 for _, (hit, _) in seed_patterns.items() if hit)
+        for name, (hit, _) in seed_patterns.items():
             if hit:
                 cross_seed_pattern_count[name] += 1
 
@@ -214,12 +348,12 @@ def main():
             "seed": seed,
             "card_count": len(cards),
             "patterns_covered": covered,
-            "patterns_missed": [n for n, (hit, _) in patterns.items() if not hit],
+            "patterns_missed": [n for n, (hit, _) in seed_patterns.items() if not hit],
             "violations": violations,
             "first_two": first_two,
         })
 
-    print("\n=== Phase 2.5 Multi-Seed Revenue Leader Eval ===\n")
+    print(f"\n=== {phase_label} Multi-Seed {leader_label} Eval ===\n")
     print(f"{'Seed':<8}{'Cards':<8}{'Patterns':<10}{'Voice':<8}{'Missed':<30}")
     print("-" * 64)
     for row in summary_rows:
@@ -234,7 +368,7 @@ def main():
             print(f"    - {t}")
 
     print("\n=== Cross-seed pattern coverage ===")
-    for name, label, _, _ in PATTERNS:
+    for name, label, _, _ in patterns:
         count = cross_seed_pattern_count[name]
         flag = "" if count == len(SEEDS) else "  <-- gap"
         print(f"  {name} ({label}): {count}/{len(SEEDS)}{flag}")
@@ -252,7 +386,7 @@ def main():
 
     runs_full_coverage = sum(1 for r in summary_rows if r["patterns_covered"] == 15)
     print(f"\n=== Aggregate ===")
-    print(f"  runs at 15/15 RL coverage: {runs_full_coverage}/{len(summary_rows)}")
+    print(f"  runs at 15/15 {leader_label} coverage: {runs_full_coverage}/{len(summary_rows)}")
     print(f"  total voice violations across seeds: {total_violations}")
 
 
