@@ -116,7 +116,13 @@ The renewal forecast is a sales forecast for accounts already in the book. It ha
 
 **Quote 5:** "Where are we on the renewal forecast? What moved?"
 
-## 8. Adjacent roles and interfaces
+## 8. Signal shapes worth distinguishing
+
+The Customer Leader's mental model separates signals that look superficially similar but answer different questions. Cards must respect that separation. Conflating them collapses two cards into one and drops the more diagnostic of the two.
+
+**Cross-entity connection cards are distinct from segment-level summary cards.** A signal that says "Beacon Logistics renewed three months early on $280K" is a renewal-summary observation: one account, one outcome, one cleared risk. A signal that says "the custom permissions and audit logs Beacon flagged at their churn-risk review ship June 15, ahead of their early renewal" is a cross-entity connection card. It ties a product launch to a customer outcome through a documented account thread, and it answers a different question: not "did Beacon renew" but "what does the launch calendar mean for the renewal book?" Both observations can be true simultaneously; both deserve their own card when the underlying data supports the connection. When a product launch and a customer renewal share an account thread AND the launch is the proximate ask the customer made to renew, surface the connection as its own card rather than folding the launch into the renewal narrative. Card Generation Framework Layer 4.1 ("more specific card supersedes") applies when two cards say the same thing about the same data; it does not apply when two cards make different observations using overlapping data.
+
+## 9. Adjacent roles and interfaces
 
 **CEO and CFO (upward):** the Customer Leader reports NRR, GRR, and renewal forecast directly to the CEO and through to the board. The CFO's lens is valuation impact: NRR trends affect revenue multiples, and CS budget justification happens in this conversation.
 
