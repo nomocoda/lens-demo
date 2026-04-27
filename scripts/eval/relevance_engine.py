@@ -2637,14 +2637,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--dry-run", action="store_true",
                     help="Print the assembled prompt and dataset summary, do not call the API")
     ap.add_argument(
-        "--source", choices=["local-json", "hubspot-composio"],
+        "--source", choices=["local-json", "hubspot-composio", "orgforge"],
         default="local-json",
         help=(
             "Data source. local-json (default): load from --input directory of JSON files. "
             "hubspot-composio: read from live HubSpot via Composio proxy. Requires "
             "COMPOSIO_API_KEY in .env (from app.composio.dev/settings -> API Keys). "
             "Optionally set COMPOSIO_ENTITY_ID (default travis@nomocoda.com) and "
-            "COMPOSIO_ACCOUNT_ID to skip connection discovery."
+            "COMPOSIO_ACCOUNT_ID to skip connection discovery. "
+            "orgforge: read from the pre-generated OrgForge dataset "
+            "(~/Documents/Business/NomoCoda/Code/orgforge-data/). See orgforge_adapter.py."
         ),
     )
     args = ap.parse_args(argv)
@@ -2652,7 +2654,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     archetype = args.archetype
     cfg = _ARCHETYPE_CONFIG[archetype]
 
-    if args.source == "hubspot-composio":
+    if args.source == "orgforge":
+        from orgforge_adapter import load_orgforge_dataset  # noqa: E402
+        ds = load_orgforge_dataset()
+    elif args.source == "hubspot-composio":
         api_key = os.environ.get("COMPOSIO_API_KEY") or _load_env_key("COMPOSIO_API_KEY")
         if not api_key:
             print(

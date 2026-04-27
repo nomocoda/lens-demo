@@ -1,0 +1,13 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Company data snapshot shows no accessible revenue operations metrics",
+    "anchor": "The Atlas SaaS data boundary contains company profile information but no pipeline, forecast, or CRM figures are visible from this seat.",
+    "connect": "System access appears restricted for revenue operations data across Salesforce, Clari, and forecasting infrastructure.",
+    "body": "The Atlas SaaS data boundary contains company profile information but no pipeline, forecast, or CRM figures are visible from this seat. System access appears restricted for revenue operations data across Salesforce, Clari, and forecasting infrastructure.",
+    "grounded_metrics": [
+      "data_boundary_check"
+    ],
+    "trace": "All four revenue operator goal clusters (forecast accuracy, pipeline governance, process efficiency, lifecycle governance) show empty sections in the data snapshot, indicating no accessible metrics for card generation."
+  }
+]
