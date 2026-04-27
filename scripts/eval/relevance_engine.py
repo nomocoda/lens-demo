@@ -2637,7 +2637,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--dry-run", action="store_true",
                     help="Print the assembled prompt and dataset summary, do not call the API")
     ap.add_argument(
-        "--source", choices=["local-json", "hubspot-composio", "orgforge"],
+        "--source", choices=["local-json", "hubspot-composio", "salesforce-composio", "orgforge"],
         default="local-json",
         help=(
             "Data source. local-json (default): load from --input directory of JSON files. "
@@ -2645,6 +2645,8 @@ def main(argv: Optional[List[str]] = None) -> int:
             "COMPOSIO_API_KEY in .env (from app.composio.dev/settings -> API Keys). "
             "Optionally set COMPOSIO_ENTITY_ID (default travis@nomocoda.com) and "
             "COMPOSIO_ACCOUNT_ID to skip connection discovery. "
+            "salesforce-composio: read from live Salesforce via Composio native "
+            "actions. Requires COMPOSIO_API_KEY; optionally SALESFORCE_ENTITY_ID. "
             "orgforge: read from the pre-generated OrgForge dataset "
             "(~/Documents/Business/NomoCoda/Code/orgforge-data/). See orgforge_adapter.py."
         ),
@@ -2681,6 +2683,24 @@ def main(argv: Optional[List[str]] = None) -> int:
             api_key=api_key,
             entity_id=entity_id,
             connected_account_id=account_id,
+        )
+    elif args.source == "salesforce-composio":
+        api_key = os.environ.get("COMPOSIO_API_KEY") or _load_env_key("COMPOSIO_API_KEY")
+        if not api_key:
+            print(
+                "ERROR: COMPOSIO_API_KEY not set. Add it to .env "
+                "(from app.composio.dev/settings -> API Keys).",
+                file=sys.stderr,
+            )
+            return 1
+        sfdc_entity = (
+            os.environ.get("SALESFORCE_ENTITY_ID")
+            or _load_env_key("SALESFORCE_ENTITY_ID")
+        )
+        from salesforce_adapter import load_salesforce_dataset  # noqa: E402
+        ds = load_salesforce_dataset(
+            api_key=api_key,
+            entity_id=sfdc_entity,
         )
     else:
         ds = load_dataset(Path(args.input))

@@ -1,0 +1,13 @@
+[
+  {
+    "intelligence_area": "revenue",
+    "title": "Company data snapshot contains no revenue operations metrics",
+    "anchor": "The Atlas SaaS revenue operator data snapshot shows empty sections across all four goal clusters: forecast accuracy, pipeline governance, process efficiency, and lifecycle governance.",
+    "connect": "No CRM data, forecasting metrics, or operational indicators are visible in the current data boundary.",
+    "body": "The Atlas SaaS revenue operator data snapshot shows empty sections across all four goal clusters: forecast accuracy, pipeline governance, process efficiency, and lifecycle governance. No CRM data, forecasting metrics, or operational indicators are visible in the current data boundary.",
+    "grounded_metrics": [
+      "data_boundary_check"
+    ],
+    "trace": "All four revenue operations data sections in the snapshot are empty, providing no metrics to ground cards in."
+  }
+]

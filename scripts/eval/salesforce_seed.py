@@ -205,7 +205,7 @@ class _Client:
                     return json.loads(r.read())
             except urllib.error.HTTPError as exc:
                 txt = exc.read().decode("utf-8", errors="replace")[:400]
-                if exc.code in (429, 503) and attempt < attempts:
+                if exc.code in (429, 502, 503, 504) and attempt < attempts:
                     wait = 2 ** attempt
                     time.sleep(wait)
                     continue
