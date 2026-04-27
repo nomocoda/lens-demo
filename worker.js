@@ -1247,7 +1247,18 @@ export default {
       return new Response('Method not allowed', { status: 405 });
     }
 
-    if (!isAllowedOrigin(origin)) {
+    // Two auth modes:
+    //   - Browser callers: must come from an allowed Origin (CORS-protected)
+    //   - Server-to-server callers (lens-web Inngest handler): no Origin
+    //     header in fetch from Node, so they present a bearer token instead.
+    //   The shared secret lives as the LENS_API_INTERNAL_TOKEN Worker secret.
+    const auth = request.headers.get('Authorization') || '';
+    const expectedBearer = env.LENS_API_INTERNAL_TOKEN
+      ? `Bearer ${env.LENS_API_INTERNAL_TOKEN}`
+      : null;
+    const serverAuthOk = expectedBearer && auth === expectedBearer;
+
+    if (!serverAuthOk && !isAllowedOrigin(origin)) {
       return new Response('Forbidden', { status: 403 });
     }
 
