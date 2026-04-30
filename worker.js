@@ -21,7 +21,71 @@
 import PERSONA from './data/persona.md';
 import VOICE_BRIEF from './data/voice-brief.md';
 import MARKETING_LEADER_BRIEF from './data/marketing-leader-brief.md';
+import MARKETING_STRATEGIST_BRIEF from './data/marketing-strategist-brief.md';
+import MARKETING_BUILDER_BRIEF from './data/marketing-builder-brief.md';
+import REVENUE_LEADER_BRIEF from './data/revenue-leader-brief.md';
+import REVENUE_GENERATOR_BRIEF from './data/revenue-generator-brief.md';
+import REVENUE_DEVELOPER_BRIEF from './data/revenue-developer-brief.md';
+import REVENUE_OPERATOR_BRIEF from './data/revenue-operator-brief.md';
+import CUSTOMER_LEADER_BRIEF from './data/customer-leader-brief.md';
+import CUSTOMER_ADVOCATE_BRIEF from './data/customer-advocate-brief.md';
+import CUSTOMER_OPERATOR_BRIEF from './data/customer-operator-brief.md';
+import CUSTOMER_TECHNICIAN_BRIEF from './data/customer-technician-brief.md';
 import COMPANY_DATA from './data/atlas-saas.md';
+
+// ---------------------------------------------------------------------------
+// Archetype routing
+// ---------------------------------------------------------------------------
+// The /cards request payload carries an archetype slug (kebab-case, matching
+// lens-web's memberships.archetype + cards.archetype values). We look up the
+// matching Intelligence Brief and the role label that names the reader in
+// the system prompt and user message. Slugs are normalized: leading/trailing
+// whitespace stripped, lowercased, underscores converted to hyphens (lens-web
+// has a legacy snake_case default that we accept defensively). Unknown or
+// missing slugs fall back to DEFAULT_ARCHETYPE.
+//
+// Caching: each archetype gets its own static system-prompt prefix and so
+// its own Anthropic prompt-cache entry. Within a session for a given org,
+// the same archetype runs back-to-back across the three Intelligence Areas,
+// so cache hit rate after the first call stays high.
+
+const ARCHETYPE_BRIEFS = {
+  'marketing-leader': MARKETING_LEADER_BRIEF,
+  'marketing-strategist': MARKETING_STRATEGIST_BRIEF,
+  'marketing-builder': MARKETING_BUILDER_BRIEF,
+  'revenue-leader': REVENUE_LEADER_BRIEF,
+  'revenue-generator': REVENUE_GENERATOR_BRIEF,
+  'revenue-developer': REVENUE_DEVELOPER_BRIEF,
+  'revenue-operator': REVENUE_OPERATOR_BRIEF,
+  'customer-leader': CUSTOMER_LEADER_BRIEF,
+  'customer-advocate': CUSTOMER_ADVOCATE_BRIEF,
+  'customer-operator': CUSTOMER_OPERATOR_BRIEF,
+  'customer-technician': CUSTOMER_TECHNICIAN_BRIEF,
+};
+
+const ARCHETYPE_ROLE_LABELS = {
+  'marketing-leader': 'VP of Marketing',
+  'marketing-strategist': 'Marketing Strategist',
+  'marketing-builder': 'Marketing Builder',
+  'revenue-leader': 'VP of Sales',
+  'revenue-generator': 'Account Executive',
+  'revenue-developer': 'Sales Development Lead',
+  'revenue-operator': 'Revenue Operations Lead',
+  'customer-leader': 'VP of Customer Success',
+  'customer-advocate': 'Customer Success Manager',
+  'customer-operator': 'Customer Success Operator',
+  'customer-technician': 'Customer Success Technician',
+};
+
+const DEFAULT_ARCHETYPE = 'marketing-leader';
+
+function resolveArchetype(input) {
+  if (typeof input !== 'string') return DEFAULT_ARCHETYPE;
+  const slug = input.trim().toLowerCase().replaceAll('_', '-');
+  return Object.prototype.hasOwnProperty.call(ARCHETYPE_BRIEFS, slug)
+    ? slug
+    : DEFAULT_ARCHETYPE;
+}
 
 // ---------------------------------------------------------------------------
 // System prompt assembly (server-side only)
@@ -401,15 +465,15 @@ PRE-EMIT CHECK, RUN ON EVERY CARD:
 4. For any comparison sentence, verify it matches Shape A, B, C, or D exactly.
 5. Re-read each sentence as a neutral peer would. If any sentence sounds like a verdict on performance, rewrite as a plain present-tense fact.`;
 
-const SIGNAL_VS_REPORT_GUARD = `SIGNAL VS REPORT, SENTENCE 2 MUST WIDEN, NEVER EXPLAIN
+const SIGNAL_VS_REPORT_GUARD = `SIGNAL VS REPORT, THE CONNECT FIELD MUST WIDEN, NEVER EXPLAIN
 
-The body has exactly two sentences. They play DIFFERENT roles:
-- Sentence 1 (anchor): adds specificity INTERNAL to the primary signal.
-- Sentence 2 (connect): widens OUTWARD. It must not explain why sentence 1's signal changed.
+A card has two distinct narrative fields: anchor and connect. They play DIFFERENT roles:
+- anchor: adds specificity INTERNAL to the primary signal named in the title.
+- connect: widens OUTWARD. It must not explain why the anchor's signal changed.
 
-SENTENCE 2 MUST TAKE ONE OF FOUR SHAPES. These are the only acceptable shapes:
+THE CONNECT FIELD MUST TAKE ONE OF FOUR SHAPES. These are the only acceptable shapes:
 
-SHAPE A, A DIFFERENT METRIC (not a breakdown of sentence 1's signal):
+SHAPE A, A DIFFERENT METRIC (not a breakdown of the anchor's signal):
   ✓ "Content CAC sits at $6.8K over the same quarter."
 
 SHAPE B, HISTORICAL comparison of the SAME metric across periods:
@@ -422,9 +486,9 @@ SHAPE C, A CROSS-DOMAIN CORRELATE from a separate data source:
 SHAPE D, AN UNCERTAINTY statement (thread pulled, not tied):
   ✓ "Whether that's onboarding friction or contract-cycle timing is not yet clear."
 
-FORBIDDEN: sentence 2 must never explain sentence 1 via causal language OR sub-population decomposition.
+FORBIDDEN: connect must never explain the anchor via causal language OR sub-population decomposition.
 
-Causal words banned outright (if any appear in sentence 2, rewrite into Shape A/B/C/D):
+Causal words banned outright (if any appear in connect, rewrite into Shape A/B/C/D):
 because · because of · driven by · due to · as a result of · caused by · the cause is · stemming from · owing to · resulting from · attributable to · a function of · a consequence of · driving · drives · drove · fueling · pushing · causing · making (as causal: "making it higher") · producing · generating · this reflects · this shows · indicating · the reason is · what's happening is
 
 Sub-population decomposition patterns banned (even without a causal word, these read as causal):
@@ -434,41 +498,45 @@ Sub-population decomposition patterns banned (even without a causal word, these 
   ✗ "[Signal], with [sub-cohort] [participial clause explaining the primary signal]."
   ✗ Breaking the primary signal into [sub-cohort A] at X and [sub-cohort B] at Y.
 
-THE KEY TEST: Does sentence 2 answer "why did sentence 1 change?" If yes, rewrite. Sentence 2 must answer "what else is true?", a separate data point, a prior period of the same metric, a cross-domain signal, or an explicit uncertainty.
+THE KEY TEST: Does connect answer "why did the anchor change?" If yes, rewrite. Connect must answer "what else is true?", a separate data point, a prior period of the same metric, a cross-domain signal, or an explicit uncertainty.
 
 REWRITE EXAMPLE:
-Primary signal: "NRR sits at 112%, down from 118% two quarters ago."
+Primary signal in anchor: "NRR sits at 112%, down from 118% two quarters ago."
   ✗ "The enterprise cohort accounts for most of the movement, with mid-market showing softer expansion."  (decomposition, forbidden)
   ✓ "The two-year range has been 108% to 118%, with 112% sitting in the middle of that window."  (Shape B)
   ✓ "Gross retention held at 94% over the same period."  (Shape A, different metric)
   ✓ "Whether the shift is a contract-cycle artifact or a deeper renewal pattern is not yet clear."  (Shape D)
 
-REWRITE INSTRUCTION: before emitting each card, re-read sentence 2. If it explains sentence 1 or decomposes it into sub-populations, rewrite into Shape A, B, C, or D. The four shapes are the gate, not suggestions.`;
+REWRITE INSTRUCTION: before emitting each card, re-read the connect field. If it explains the anchor or decomposes it into sub-populations, rewrite into Shape A, B, C, or D. The four shapes are the gate, not suggestions.`;
 
-const COMPOSITION_COMPLETENESS_GUARD = `COMPOSITION COMPLETENESS, SCHEMA AND BODY STRUCTURE
+const COMPOSITION_COMPLETENESS_GUARD = `COMPOSITION COMPLETENESS, SCHEMA AND FIELD STRUCTURE
 
 This guard has two parts. Both must pass before emitting any card.
 
 PART A, JSON SCHEMA (hard validation, no exceptions):
 
-Each card object in the response array must have exactly two keys: "headline" and "body". No other keys. No duplicate keys (a card object with two "headline" keys or two "body" keys is malformed, the parser will reject it).
+Each card object in the response array must have exactly four keys: "title", "anchor", "connect", and "body". No other keys. No duplicate keys.
 
 Before emitting the JSON array:
-1. Scan each card object. Count the keys. Must equal 2.
-2. Verify the keys are exactly "headline" and "body" (lowercase, no variants).
+1. Scan each card object. Count the keys. Must equal 4.
+2. Verify the keys are exactly "title", "anchor", "connect", and "body" (lowercase, no variants).
 3. Verify no key appears twice inside the same object.
-4. Verify both values are strings (not objects, not arrays, not null).
+4. Verify all four values are strings (not objects, not arrays, not null).
+5. Verify "body" equals "anchor" followed by a single space followed by "connect", with no edits, no extra punctuation, no rewording. The body field is the anchor and connect joined; nothing more, nothing less.
 
 If any card object fails schema validation, rebuild it before emitting. Do not ship a malformed card hoping the parser will be lenient, the parser is strict and a malformed card breaks the render for the entire array.
 
-PART B, BODY COMPOSITION (two sentences, two distinct roles):
+PART B, FIELD COMPOSITION (each field plays a distinct role, they are not interchangeable):
 
-The "body" string must contain exactly two sentences, separated by a single space. Each sentence plays a distinct role, they are not interchangeable and they are not one idea split in half.
+- "title" is the headline. One sentence. Pure factual observation. A quantified change OR a discrete event. The shape of the fact is whatever the data naturally supports.
 
-- Sentence 1 is the ANCHOR. It adds specificity to the headline: when the signal shows up, where it concentrates, what moved inside the same surface.
-- Sentence 2 is the CONNECT. It widens the lens to something else: another internal data point, a historical benchmark, a cross-domain correlate, a cohort comparison.
+- "anchor" is exactly one sentence. It adds specificity to the title: when the signal shows up, where it concentrates, what moved inside the same surface.
 
-If sentence 2 just restates sentence 1 with different words, the composition has failed. If sentence 2 is a continuation of sentence 1's specifics (more about the same place and time), the composition has failed. The connect must reach outward.
+- "connect" is exactly one sentence. It widens the lens to something else: another internal data point, a historical benchmark, a cross-domain correlate, a cohort comparison. The connect must reach outward.
+
+- "body" is exactly the anchor sentence and connect sentence joined with a single space. Same content as those two fields, no edits.
+
+If connect just restates anchor with different words, the composition has failed. If connect is a continuation of anchor's specifics (more about the same place and time), the composition has failed.
 
 THE CONNECT CANNOT BE A HEDGE OR UNCERTAINTY NOTE. Sentences that speculate about cause, wonder what's driving the signal, or name what is "not yet clear" are not connect sentences, they are hedges. They widen to nothing. Banned shapes:
 
@@ -479,31 +547,34 @@ THE CONNECT CANNOT BE A HEDGE OR UNCERTAINTY NOTE. Sentences that speculate abou
 
 The connect must land on a CONCRETE data point the reader can hold: a specific figure, a named benchmark, a cohort comparison, a time comparison, a cross-domain number. "Not yet clear" is not a data point. Uncertainty is not a connect.
 
-Before emitting the body, verify:
-1. Exactly two sentences (two terminal punctuation marks, two distinct clauses).
-2. Sentence 1 anchors the headline with specificity internal to the signal.
-3. Sentence 2 connects outward, to a different metric, a benchmark, a cohort, or a time comparison.
+Before emitting each card, verify:
+1. anchor is exactly one sentence (one terminal punctuation mark, one clause).
+2. connect is exactly one sentence (one terminal punctuation mark, one clause).
+3. anchor adds specificity internal to the title's signal.
+4. connect widens outward, to a different metric, a benchmark, a cohort, or a time comparison.
+5. body equals anchor + " " + connect, byte for byte.
 
-A body with only one sentence, three or more sentences, or two sentences that both play the same role fails this guard.`;
+A card whose anchor or connect is missing, has multiple sentences, or whose two narrative fields play the same role fails this guard.`;
 
-const OUTPUT_HYGIENE_GUARD = `OUTPUT HYGIENE, PURE JSON, EXACTLY TWO KEYS, ZERO META-COMMENTARY
+const OUTPUT_HYGIENE_GUARD = `OUTPUT HYGIENE, PURE JSON, EXACTLY FOUR KEYS, ZERO META-COMMENTARY
 
 All the guards above describe INTERNAL checks. None of their reasoning, rule names, or audit results ever appear in the output. The reader sees only the final cards.
 
 HARD OUTPUT SHAPE:
 Your entire response is a JSON array. Nothing before it. Nothing after it. No markdown fencing (no \`\`\`json, no \`\`\`). No prose preamble. No "Looking at the role scoping..." No "I need to verify..." No trailing commentary. Just the raw JSON array as the first and only thing you emit.
 
-HARD SCHEMA, TWO KEYS PER CARD OBJECT, NEVER MORE:
-Every card object must have exactly these two keys: "headline" and "body". Nothing else. Forbidden keys that have appeared in failed outputs and MUST NOT be emitted:
-  ✗ "connect"  ✗ "freshness_audit"  ✗ "theme"  ✗ "source"  ✗ "reasoning"  ✗ "audit"  ✗ "notes"  ✗ "tags"  ✗ "rationale"  ✗ "type"  ✗ "category"  ✗ any other key.
+HARD SCHEMA, FOUR KEYS PER CARD OBJECT, NEVER MORE, NEVER FEWER:
+Every card object must have exactly these four keys: "title", "anchor", "connect", and "body". Nothing else. Forbidden keys that have appeared in failed outputs and MUST NOT be emitted:
+  ✗ "headline" (use "title")  ✗ "freshness_audit"  ✗ "theme"  ✗ "source"  ✗ "reasoning"  ✗ "audit"  ✗ "notes"  ✗ "tags"  ✗ "rationale"  ✗ "type"  ✗ "category"  ✗ any other key.
 
-If you find yourself wanting to label a card with which rule you applied, which theme it anchors on, or which audit it passed, resist. That information is INTERNAL. It belongs in your thinking, not your output. The card is just headline + body. The reader cannot see anything else and will not benefit from seeing your reasoning.
+If you find yourself wanting to label a card with which rule you applied, which theme it anchors on, or which audit it passed, resist. That information is INTERNAL. It belongs in your thinking, not your output. The card is just title + anchor + connect + body. The reader cannot see anything else and will not benefit from seeing your reasoning.
 
 PRE-EMIT CHECK:
 1. Does your response start with "["? If not, strip everything before it.
 2. Does your response end with "]"? If not, strip everything after it.
-3. Does every card object have exactly two keys, "headline" and "body"? If not, rebuild.
-4. Is there any prose anywhere in the response that isn't inside a "headline" or "body" string value? If yes, delete it.
+3. Does every card object have exactly four keys, "title", "anchor", "connect", "body"? If not, rebuild.
+4. Does "body" equal "anchor" + " " + "connect" exactly, byte for byte? If not, rebuild body.
+5. Is there any prose anywhere in the response that isn't inside one of the four string values? If yes, delete it.
 
 The output is the cards. Nothing else is the output.`;
 
@@ -655,7 +726,9 @@ ${PEOPLE_NAMING_GUARD}
 
 REWRITER WORKFLOW, APPLY TO EACH CARD IN THE INPUT ARRAY:
 
-1. Read the headline. Read each sentence of the body.
+Each input card has four fields: title, anchor, connect, body. Body is the joined form of anchor + " " + connect. Apply the checks below to title, anchor, and connect; then rebuild body so it equals anchor + " " + connect, byte for byte, after any rewrites.
+
+1. Read title. Read anchor. Read connect.
 2. FORWARD FRAMING CHECKS:
    - Scan for any banned verdict word from the FORWARD FRAMING list. If found, rewrite using the prescribed present-tense fact pattern.
    - Scan any sentence that compares a current figure to a reference figure. If the shape is not A, B, or C from the FORWARD FRAMING guard, rewrite into one of those shapes.
@@ -668,33 +741,35 @@ REWRITER WORKFLOW, APPLY TO EACH CARD IN THE INPUT ARRAY:
      ✗ "Prism champion departed" → ✓ "Prism champion role currently vacant" (state)
      ✗ "Deal stalled after discovery" → ✓ "Deal has been at discovery stage since April 8" (neutral)
      The general rule: an EVENT framing says "X happened, implying things got worse." A STATE framing says "X is currently true." Convert every past-event loss description into a present-state neutral fact.
-3. SIGNAL VS REPORT CHECK, SENTENCE 2 OF THE BODY:
-   - If sentence 2 uses any causal word from the banned list, rewrite into Shape A/B/C/D.
-   - If sentence 2 decomposes the primary signal into a sub-cohort, segment, or named subset ("Enterprise accounts show...", "Mid-market is where...", "Among NPS 7-8 accounts..."), rewrite into Shape A/B/C/D. Naming WHICH subset is affected is a form of causality even without causal connectives.
-   - If sentence 2 answers "why did sentence 1 change?", rewrite. Sentence 2 must answer "what else is true?".
-4. PEOPLE NAMING CHECK, APPLIES TO HEADLINE AND BOTH BODY SENTENCES:
+3. SIGNAL VS REPORT CHECK, APPLIED TO THE CONNECT FIELD:
+   - If connect uses any causal word from the banned list, rewrite into Shape A/B/C/D.
+   - If connect decomposes the anchor's signal into a sub-cohort, segment, or named subset ("Enterprise accounts show...", "Mid-market is where...", "Among NPS 7-8 accounts..."), rewrite into Shape A/B/C/D. Naming WHICH subset is affected is a form of causality even without causal connectives.
+   - If connect answers "why did the anchor change?", rewrite. Connect must answer "what else is true?".
+4. PEOPLE NAMING CHECK, APPLIES TO TITLE, ANCHOR, AND CONNECT:
    - Scan for any first name, last name, full name, or initials of an individual person. The Company Data brief lists named team members; cards must NOT name them.
    - Banned constructions even when they read as harmless biographical context: "Clara Mendes flagged...", "Diana's team...", "Jess leads the demo...", "Amir covers frontend...", "Clara raises this with Daniel."
    - Replace the named individual with their function or system: "engineering flagged...", "the product team ranks...", "the alpha demo is on the calendar for May 1...", "the auth coverage gap surfaced this week."
    - Named accounts and named competitors stay (Prism Analytics, FlowStack, Beacon Logistics, Ridgeline Health, etc.). Only INDIVIDUAL PEOPLE are stripped.
 5. COMPOSITION CHECK:
-   - If the card object has any key other than "headline" and "body", strip the extras.
-   - If the body has fewer than two or more than two sentences, rewrite to exactly two.
-   - ROLE ASSIGNMENT, classify each sentence before deciding which to rewrite:
-     - Sentence is an ANCHOR if it adds specificity INTERNAL to the headline's primary signal (when, where, what correlates within the same surface).
-     - Sentence is a CONNECT if it widens OUTWARD to a CONCRETE data point, a different metric with a number, a historical period with a figure, a cohort comparison with a rate, a named benchmark. A connect must land on a specific value. Hedges, uncertainty notes, "not yet clear," or speculation about cause are NOT connects, rewrite them into a concrete comparison.
-   - If BOTH sentences are connects (neither anchors the headline's specific situation), rewrite SENTENCE 1 into an anchor. Keep sentence 2 as the connect. Example: if the headline is "Sagebrush case study in legal review with NexGen write-up queued", a valid anchor for sentence 1 is "Legal review on Sagebrush reached day 12; NexGen draft hit first review last week." Sentence 2 then widens outward to a concrete comparison.
-   - If both sentences are anchors (both pile specificity on the headline's surface without widening), rewrite sentence 2 into a connect (Shape A/B/C/D).
-   - If both sentences just restate the headline in different words, rewrite both, sentence 1 becomes an anchor, sentence 2 becomes a connect.
+   - If the card object has any key other than "title", "anchor", "connect", "body", strip the extras. If any of the four required keys is missing, rebuild it.
+   - anchor must be exactly one sentence. connect must be exactly one sentence. If either has fewer or more than one sentence, rewrite.
+   - ROLE ASSIGNMENT, classify each narrative field before deciding which to rewrite:
+     - anchor adds specificity INTERNAL to the title's primary signal (when, where, what correlates within the same surface).
+     - connect widens OUTWARD to a CONCRETE data point, a different metric with a number, a historical period with a figure, a cohort comparison with a rate, a named benchmark. A connect must land on a specific value. Hedges, uncertainty notes, "not yet clear," or speculation about cause are NOT connects, rewrite them into a concrete comparison.
+   - If BOTH fields are connects (neither anchors the title's specific situation), rewrite anchor into a true anchor. Keep connect as the connect. Example: if the title is "Sagebrush case study in legal review with NexGen write-up queued", a valid anchor is "Legal review on Sagebrush reached day 12; NexGen draft hit first review last week." Connect then widens outward to a concrete comparison.
+   - If both fields are anchors (both pile specificity on the title's surface without widening), rewrite connect into a real connect (Shape A/B/C/D).
+   - If both fields just restate the title in different words, rewrite both: anchor becomes a true anchor, connect becomes a true connect.
+6. BODY REBUILD, FINAL STEP BEFORE EMITTING EACH CARD:
+   - After all anchor/connect rewrites are complete, set body = anchor + " " + connect, exactly. No edits, no extra punctuation, no rewording. The body field is purely the joined form.
 
 PRESERVATION RULES, STRICT:
 - Same card count as input. Do not add cards. Do not delete cards.
 - Same anchor topics. If the draft card was about Prism Analytics, the rewrite is still about Prism Analytics. If it was about the content channel, it stays about the content channel.
 - Same specifics. Preserve dollar amounts, percentages, day counts, account names, product names, campaign names, role names. Only rephrase the framing, not the facts.
-- If a card is already fully compliant, pass it through unchanged. Do not rewrite compliant language just to change it.
+- If a card is already fully compliant, pass it through unchanged. Do not rewrite compliant language just to change it. (Body must still equal anchor + " " + connect; if it does not, fix only body.)
 
 OUTPUT SHAPE, HARD:
-Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key other than "headline" and "body". Two keys per card, both string values. Violating this shape breaks the render, there is no graceful degradation on the client.`;
+Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key other than "title", "anchor", "connect", "body". Four keys per card, all string values. Violating this shape breaks the render, there is no graceful degradation on the client.`;
 
 function buildChatSystemPrompt() {
   return `${PERSONA}
@@ -812,22 +887,26 @@ Pull anchors from corners of the data that were NOT touched above. This is a har
 `;
 }
 
-// The card system prompt is fully static, no per-call variables, so every
-// /cards request hits the same Anthropic prompt cache entry regardless of
-// which bubble is being generated or what recent outputs need to be excluded.
-// Bubble name and recent-outputs block are carried in the user message
-// instead (see buildCardUserMessage), preserving cacheability across all 4
-// bubbles. See feedback_caching_priority.md for the economics behind this.
-function buildCardSystemPrompt() {
+// The card system prompt is static within a single archetype, so all bubbles
+// for a given archetype hit the same Anthropic prompt cache entry. The brief
+// and role label are the only per-archetype variables; both are bound at
+// function-call time, not template-literal interpolation, so the eval
+// prompt-builder can substitute its own choice of archetype the same way
+// the runtime does. Bubble name and recent-outputs exclusion block live in
+// the user message (see buildCardUserMessage) so the system prefix stays
+// fully cacheable. See feedback_caching_priority.md for the economics.
+function buildCardSystemPrompt(archetypeSlug = DEFAULT_ARCHETYPE) {
   // Layer order (locked 2026-04-24, per Cowork handoff and VP Marketing Voice
   // Brief Section 7): framing first, structural substance second, voice
   // immediately before the card composition task. OUTPUT_HYGIENE_GUARD remains
   // the final shape enforcement so the model emits pure JSON.
+  const BRIEF = ARCHETYPE_BRIEFS[archetypeSlug] ?? ARCHETYPE_BRIEFS[DEFAULT_ARCHETYPE];
+  const ROLE_LABEL = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   return `${PERSONA}
 
 ---
 
-${MARKETING_LEADER_BRIEF}
+${BRIEF}
 
 ---
 
@@ -879,15 +958,19 @@ ${VOICE_BRIEF}
 
 # Card Generation Instructions
 
-You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the VP of Marketing at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING above.
+You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the ${ROLE_LABEL} at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING above, and the Intelligence Brief above defines the goal clusters and signal pairings this archetype watches.
 
-## Card structure: Headline + Body
+## Card structure: Title + Anchor + Connect + Body
 
-Cards have two parts. No labels, no sections. The UI displays them directly.
+Cards have four fields. The UI displays title and body; anchor and connect carry the same content as body, split into their structural roles for downstream use.
 
-**Headline** (one sentence): Pure factual observation. A quantified change (delta, ratio, threshold, trend) OR a discrete event (something started, stopped, launched, ended). The shape of the fact is whatever the data naturally supports. Must fit in two lines at 375px mobile width. Aim for 6-12 words.
+**title** (one sentence): Pure factual observation. A quantified change (delta, ratio, threshold, trend) OR a discrete event (something started, stopped, launched, ended). The shape of the fact is whatever the data naturally supports. Must fit in two lines at 375px mobile width. Aim for 6-12 words.
 
-**Body** (two sentences): First sentence is the anchor. Adds specificity: when, where it is concentrated, what changed internally that correlates. Second sentence is the connect. Widens the lens: relates the pattern to another internal data point or a known benchmark.
+**anchor** (exactly one sentence): Adds specificity to the title: when, where it is concentrated, what changed internally that correlates.
+
+**connect** (exactly one sentence): Widens the lens. Relates the pattern to another internal data point, a historical period, a cross-domain correlate, or an explicit uncertainty (Shape A/B/C/D from the SIGNAL VS REPORT guard).
+
+**body** (two sentences): The anchor sentence and the connect sentence joined with a single space. body MUST equal anchor + " " + connect, byte for byte.
 
 ## Narrator voice in cards
 
@@ -898,7 +981,7 @@ Cards have two parts. No labels, no sections. The UI displays them directly.
 
 ## Headline test
 
-Every headline must pass: can you imagine the reader (whose role is named in the intro above, with scope defined in ROLE SCOPING) asking the question this card answers? If a person in that seat would never walk into a meeting and ask it, the headline is wrong.
+Every title must pass: can you imagine the reader (whose role is named in the intro above, with scope defined in ROLE SCOPING) asking the question this card answers? If a person in that seat would never walk into a meeting and ask it, the title is wrong.
 
 ## Rules
 
@@ -908,7 +991,7 @@ Every headline must pass: can you imagine the reader (whose role is named in the
 - Stay grounded in the company data above. Do not invent people, accounts, or vendors not in the brief.
 
 Respond with a JSON array of 3-5 card objects:
-[{ "headline": "...", "body": "..." }]
+[{ "title": "...", "anchor": "...", "connect": "...", "body": "..." }]
 
 Return ONLY the JSON array, no other text.
 
@@ -917,11 +1000,14 @@ Return ONLY the JSON array, no other text.
 ${OUTPUT_HYGIENE_GUARD}`;
 }
 
-// Per-call card inputs live in the user message so the system prompt stays
-// fully static and cacheable. Bubble name, recent-outputs exclusion block,
-// and any future per-request variables go here.
-function buildCardUserMessage(bubble, recentOutputs, role = 'VP of Marketing') {
+// Per-call card inputs live in the user message so the system prompt prefix
+// stays cacheable per archetype. Bubble name, recent-outputs exclusion block,
+// and any future per-request variables go here. Role label is derived from
+// the active archetype slug to keep the user message in sync with the brief
+// loaded into the system prompt.
+function buildCardUserMessage(bubble, recentOutputs, archetypeSlug = DEFAULT_ARCHETYPE) {
   const recentBlock = buildRecentOutputsBlock(recentOutputs);
+  const role = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   return `${recentBlock}Generate Data Stories for the "${bubble}" Intelligence Area. Focus on what's most relevant to the ${role} right now based on the company data.`;
 }
 
@@ -1117,7 +1203,14 @@ ${JSON.stringify(draftCards, null, 2)}`;
     const rewrittenCards = parseCardsArray(rewrittenText);
     if (!rewrittenCards || rewrittenCards.length !== draftCards.length) return draftResponseText;
     for (const card of rewrittenCards) {
-      if (typeof card.headline !== 'string' || typeof card.body !== 'string') return draftResponseText;
+      if (
+        typeof card.title !== 'string' ||
+        typeof card.anchor !== 'string' ||
+        typeof card.connect !== 'string' ||
+        typeof card.body !== 'string'
+      ) {
+        return draftResponseText;
+      }
     }
 
     // Rewrite validated. Wrap in Anthropic envelope so the client sees the
@@ -1136,10 +1229,55 @@ ${JSON.stringify(draftCards, null, 2)}`;
   }
 }
 
+// Final pass: enforce the canonical wire format on the cards inside the
+// Anthropic envelope before returning to the client.
+//
+//  - body is rebuilt server-side from anchor + " " + connect so it cannot
+//    drift from the two narrative fields.
+//  - headline is mirrored from title for back-compat with consumers that
+//    still read the legacy {headline, body} shape (the lens-demo mobile
+//    UI and lens-web's Inngest cards writer at the time of this commit).
+//    Once those consumers read title directly, the headline field can be
+//    dropped from this post-process.
+function normalizeCardEnvelope(envelopeText) {
+  try {
+    const envelope = JSON.parse(envelopeText);
+    const block = envelope.content?.find((b) => b.type === 'text');
+    if (!block) return envelopeText;
+    const cards = parseCardsArray(block.text);
+    if (!cards || cards.length === 0) return envelopeText;
+    const normalized = [];
+    for (const card of cards) {
+      if (
+        typeof card.title !== 'string' ||
+        typeof card.anchor !== 'string' ||
+        typeof card.connect !== 'string'
+      ) {
+        return envelopeText;
+      }
+      const anchor = card.anchor.trim();
+      const connect = card.connect.trim();
+      const body = `${anchor} ${connect}`;
+      normalized.push({
+        title: card.title,
+        anchor,
+        connect,
+        body,
+        headline: card.title,
+      });
+    }
+    block.text = JSON.stringify(normalized);
+    return JSON.stringify(envelope);
+  } catch {
+    return envelopeText;
+  }
+}
+
 async function handleCards(request, env, origin) {
   try {
     const body = await request.json();
     const bubble = body.bubble || 'customers';
+    const archetypeSlug = resolveArchetype(body.archetype);
     const recentOutputs = Array.isArray(body.recentOutputs) ? body.recentOutputs : [];
 
     const draftRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1155,14 +1293,14 @@ async function handleCards(request, env, origin) {
         system: [
           {
             type: 'text',
-            text: buildCardSystemPrompt(),
+            text: buildCardSystemPrompt(archetypeSlug),
             cache_control: { type: 'ephemeral' },
           },
         ],
         messages: [
           {
             role: 'user',
-            content: buildCardUserMessage(bubble, recentOutputs),
+            content: buildCardUserMessage(bubble, recentOutputs, archetypeSlug),
           },
         ],
       }),
@@ -1177,7 +1315,8 @@ async function handleCards(request, env, origin) {
       });
     }
 
-    const finalText = await applyCardRewriter(draftText, bubble, env);
+    const rewrittenText = await applyCardRewriter(draftText, bubble, env);
+    const finalText = normalizeCardEnvelope(rewrittenText);
     return new Response(finalText, {
       status: 200,
       headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) },

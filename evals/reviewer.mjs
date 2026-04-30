@@ -13,7 +13,7 @@
 //
 // Exits 0 on 20/20, 1 on any failure or runtime error. Ship-gate compatible.
 
-import { buildChatPrompt, buildCardPrompt, buildCardUserMessage, buildRewriterPrompt, LENS_MODEL, REWRITER_MODEL } from './prompt-builder.mjs';
+import { buildChatPrompt, buildCardPrompt, buildCardUserMessage, buildRewriterPrompt, roleLabelFor, LENS_MODEL, REWRITER_MODEL } from './prompt-builder.mjs';
 import { SCENARIOS } from './scenarios.mjs';
 
 const API_KEY = process.env.ANTHROPIC_API_KEY;
@@ -30,7 +30,11 @@ const args = process.argv.slice(2);
 const verbose = args.includes('--verbose');
 const trackFlag = args.indexOf('--track');
 const trackFilter = trackFlag !== -1 ? args[trackFlag + 1] : null;
-const idFilters = args.filter((a) => !a.startsWith('--') && a !== trackFilter);
+const archetypeFlag = args.indexOf('--archetype');
+const archetypeOverride = archetypeFlag !== -1 ? args[archetypeFlag + 1] : null;
+const idFilters = args.filter(
+  (a) => !a.startsWith('--') && a !== trackFilter && a !== archetypeOverride,
+);
 
 function selectScenarios() {
   let selected = SCENARIOS;
@@ -167,16 +171,24 @@ ${JSON.stringify(draftCards, null, 2)}`;
   const rewrittenCards = parseCardsArray(rewrittenText);
   if (!rewrittenCards || rewrittenCards.length !== draftCards.length) return draftText;
   for (const card of rewrittenCards) {
-    if (typeof card.headline !== 'string' || typeof card.body !== 'string') return draftText;
+    if (
+      typeof card.title !== 'string' ||
+      typeof card.anchor !== 'string' ||
+      typeof card.connect !== 'string' ||
+      typeof card.body !== 'string'
+    ) {
+      return draftText;
+    }
   }
   return JSON.stringify(rewrittenCards);
 }
 
 async function runLens(scenario, run, recentOutputs = []) {
   const bubble = run.bubble || 'customers';
+  const archetypeSlug = run.archetypeSlug || archetypeOverride || undefined;
   const system =
     scenario.mode === 'card'
-      ? cachedSystem(buildCardPrompt({ role: run.role }))
+      ? cachedSystem(buildCardPrompt({ role: run.role, archetypeSlug }))
       : cachedSystem(buildChatPrompt({ role: run.role }));
 
   // For card mode, prepend bubble + recentBlock context to the scenario's
@@ -184,13 +196,18 @@ async function runLens(scenario, run, recentOutputs = []) {
   // userMessage is the task framing (e.g., "Generate Data Stories focused on
   // the signal: churn rate is up 18%"). We inject Intelligence Area and the
   // recent-outputs exclusion block ahead of it — same bytes that used to live
-  // in the system prompt.
+  // in the system prompt. When the run pins an archetype, the role label
+  // defaults to that archetype's canonical label so the user message stays
+  // consistent with the brief loaded into the system prompt; an explicit
+  // run.role still wins for scenarios that test alternate seats within the
+  // same brief.
+  const userRole = run.role || (archetypeSlug ? roleLabelFor(archetypeSlug) : 'VP of Marketing');
   const messages =
     scenario.mode === 'card'
       ? [
           {
             role: 'user',
-            content: `${buildCardUserMessage({ bubble, recentOutputs, role: run.role || 'VP of Marketing' })}\n\n${run.userMessage}`,
+            content: `${buildCardUserMessage({ bubble, recentOutputs, role: userRole })}\n\n${run.userMessage}`,
           },
         ]
       : [

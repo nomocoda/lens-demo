@@ -15,8 +15,45 @@ const repoRoot = resolve(__dirname, '..');
 const workerSrc = readFileSync(resolve(repoRoot, 'worker.js'), 'utf8');
 const PERSONA = readFileSync(resolve(repoRoot, 'data/persona.md'), 'utf8');
 const VOICE_BRIEF = readFileSync(resolve(repoRoot, 'data/voice-brief.md'), 'utf8');
-const MARKETING_LEADER_BRIEF = readFileSync(resolve(repoRoot, 'data/marketing-leader-brief.md'), 'utf8');
 const COMPANY_DATA = readFileSync(resolve(repoRoot, 'data/atlas-saas.md'), 'utf8');
+
+// Mirrors worker.js's archetype routing. Slugs match memberships.archetype
+// in lens-web and the data/<slug>-brief.md filenames in this repo.
+const ARCHETYPE_BRIEFS = {
+  'marketing-leader': readFileSync(resolve(repoRoot, 'data/marketing-leader-brief.md'), 'utf8'),
+  'marketing-strategist': readFileSync(resolve(repoRoot, 'data/marketing-strategist-brief.md'), 'utf8'),
+  'marketing-builder': readFileSync(resolve(repoRoot, 'data/marketing-builder-brief.md'), 'utf8'),
+  'revenue-leader': readFileSync(resolve(repoRoot, 'data/revenue-leader-brief.md'), 'utf8'),
+  'revenue-generator': readFileSync(resolve(repoRoot, 'data/revenue-generator-brief.md'), 'utf8'),
+  'revenue-developer': readFileSync(resolve(repoRoot, 'data/revenue-developer-brief.md'), 'utf8'),
+  'revenue-operator': readFileSync(resolve(repoRoot, 'data/revenue-operator-brief.md'), 'utf8'),
+  'customer-leader': readFileSync(resolve(repoRoot, 'data/customer-leader-brief.md'), 'utf8'),
+  'customer-advocate': readFileSync(resolve(repoRoot, 'data/customer-advocate-brief.md'), 'utf8'),
+  'customer-operator': readFileSync(resolve(repoRoot, 'data/customer-operator-brief.md'), 'utf8'),
+  'customer-technician': readFileSync(resolve(repoRoot, 'data/customer-technician-brief.md'), 'utf8'),
+};
+
+const ARCHETYPE_ROLE_LABELS = {
+  'marketing-leader': 'VP of Marketing',
+  'marketing-strategist': 'Marketing Strategist',
+  'marketing-builder': 'Marketing Builder',
+  'revenue-leader': 'VP of Sales',
+  'revenue-generator': 'Account Executive',
+  'revenue-developer': 'Sales Development Lead',
+  'revenue-operator': 'Revenue Operations Lead',
+  'customer-leader': 'VP of Customer Success',
+  'customer-advocate': 'Customer Success Manager',
+  'customer-operator': 'Customer Success Operator',
+  'customer-technician': 'Customer Success Technician',
+};
+
+const DEFAULT_ARCHETYPE = 'marketing-leader';
+
+export const ARCHETYPE_SLUGS = Object.keys(ARCHETYPE_BRIEFS);
+
+export function roleLabelFor(archetypeSlug) {
+  return ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
+}
 
 function extractTaggedConst(src, name) {
   const re = new RegExp(`const\\s+${name}\\s*=\\s*\`([\\s\\S]*?)\`;`);
@@ -158,16 +195,18 @@ export function buildCardUserMessage({ bubble = 'customers', recentOutputs = [],
   return `${recentBlock}Generate Data Stories for the "${bubble}" Intelligence Area. Focus on what's most relevant to the ${role} right now based on the company data.`;
 }
 
-// The card system prompt is now fully static (no ${bubble}, no ${recentBlock})
-// so the prefix stays cacheable across all bubbles and calls. The role
-// override still swaps "VP of Marketing" for scenarios that test other
-// archetypes, which means scenarios with role overrides use a distinct cache
-// entry from the default VP of Marketing production prefix. Acceptable —
-// production only uses one role at a time.
-export function buildCardPrompt({ role = null } = {}) {
+// The card system prompt prefix is static within an archetype, so scenarios
+// against the same archetype share an Anthropic cache entry. The role
+// override still swaps the default role label for scenarios that test
+// alternate seats within the same archetype's prompt prefix; passing an
+// archetypeSlug switches to that archetype's brief and role label entirely.
+export function buildCardPrompt({ role = null, archetypeSlug = DEFAULT_ARCHETYPE } = {}) {
+  const BRIEF = ARCHETYPE_BRIEFS[archetypeSlug] ?? ARCHETYPE_BRIEFS[DEFAULT_ARCHETYPE];
+  const ROLE_LABEL = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   const out = interpolate(cardTemplate, {
     PERSONA,
-    MARKETING_LEADER_BRIEF,
+    BRIEF,
+    ROLE_LABEL,
     VOICE_BRIEF,
     IDENTITY_GUARDRAIL,
     DATA_BOUNDARY,
