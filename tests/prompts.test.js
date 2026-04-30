@@ -40,16 +40,107 @@ describe('Invariant 1 — source-of-truth docs load into system prompts', () => 
     });
   }
 
-  test('buildChatSystemPrompt interpolates PERSONA, VOICE_BRIEF, and COMPANY_DATA', () => {
+  test('buildChatSystemPrompt interpolates PERSONA, VOICE_BRIEF, and companyData', () => {
     assert.match(chatPrompt, /\$\{PERSONA\}/, 'chat prompt missing ${PERSONA}');
     assert.match(chatPrompt, /\$\{VOICE_BRIEF\}/, 'chat prompt missing ${VOICE_BRIEF}');
-    assert.match(chatPrompt, /\$\{COMPANY_DATA\}/, 'chat prompt missing ${COMPANY_DATA}');
+    assert.match(chatPrompt, /\$\{companyData\}/, 'chat prompt missing ${companyData}');
   });
 
-  test('buildCardSystemPrompt interpolates PERSONA, VOICE_BRIEF, and COMPANY_DATA', () => {
+  test('buildCardSystemPrompt interpolates PERSONA, VOICE_BRIEF, and companyData', () => {
     assert.match(cardPrompt, /\$\{PERSONA\}/, 'card prompt missing ${PERSONA}');
     assert.match(cardPrompt, /\$\{VOICE_BRIEF\}/, 'card prompt missing ${VOICE_BRIEF}');
-    assert.match(cardPrompt, /\$\{COMPANY_DATA\}/, 'card prompt missing ${COMPANY_DATA}');
+    assert.match(cardPrompt, /\$\{companyData\}/, 'card prompt missing ${companyData}');
+  });
+});
+
+// Invariant 1b — Per-org companyData pathway.
+//
+// /chat and /cards accept an optional `companyData` field on the request body
+// carrying the requesting org's connected-source snapshot (markdown, same
+// shape as data/atlas-saas.md). When omitted or invalid, the worker falls
+// back to the bundled Atlas SaaS fixture so demo.nomocoda.com and the eval
+// harness keep rendering Atlas cards. lens-web's Inngest cards function is
+// the production caller that will pass the per-org snapshot.
+//
+// Added 2026-04-30 as part of Activation Pipeline sub-objective 2 (replace
+// the static Atlas snapshot with per-org Composio data at synthesis time).
+// Static-source checks against worker.js — the eval harness already exercises
+// the bundled-Atlas pathway and the Cloudflare Worker runtime is not loaded
+// in unit tests.
+describe('Invariant 1b — per-org companyData pathway is wired through worker.js', () => {
+  test('worker.js declares resolveCompanyData', () => {
+    assert.match(
+      workerSrc,
+      /function\s+resolveCompanyData\s*\(/,
+      'resolveCompanyData function not found in worker.js',
+    );
+  });
+
+  test('resolveCompanyData enforces a length cap to bound prompt size', () => {
+    const fnMatch = /function\s+resolveCompanyData[\s\S]*?\n\}/.exec(workerSrc);
+    assert.ok(fnMatch, 'resolveCompanyData body not extractable');
+    assert.match(
+      fnMatch[0],
+      /MAX_COMPANY_DATA_BYTES/,
+      'resolveCompanyData must consult MAX_COMPANY_DATA_BYTES to cap input length',
+    );
+  });
+
+  test('resolveCompanyData falls back to bundled COMPANY_DATA when input is invalid', () => {
+    const fnMatch = /function\s+resolveCompanyData[\s\S]*?\n\}/.exec(workerSrc);
+    assert.ok(fnMatch, 'resolveCompanyData body not extractable');
+    const occurrences = (fnMatch[0].match(/return\s+COMPANY_DATA/g) || []).length;
+    assert.ok(
+      occurrences >= 3,
+      `resolveCompanyData should fall back to bundled COMPANY_DATA on each invalid-input branch ` +
+        `(non-string, empty after trim, oversized) — found ${occurrences} fallback returns`,
+    );
+  });
+
+  test('handleChat reads body.companyData and passes it to buildChatSystemPrompt', () => {
+    const fnMatch = /async function handleChat[\s\S]*?\n\}/.exec(workerSrc);
+    assert.ok(fnMatch, 'handleChat body not extractable');
+    assert.match(
+      fnMatch[0],
+      /resolveCompanyData\s*\(\s*body\.companyData\s*\)/,
+      'handleChat must call resolveCompanyData(body.companyData)',
+    );
+    assert.match(
+      fnMatch[0],
+      /buildChatSystemPrompt\s*\(\s*companyData\s*\)/,
+      'handleChat must pass the resolved companyData into buildChatSystemPrompt',
+    );
+  });
+
+  test('handleCards reads body.companyData and passes it to buildCardSystemPrompt', () => {
+    const fnMatch = /async function handleCards[\s\S]*?\n\}/.exec(workerSrc);
+    assert.ok(fnMatch, 'handleCards body not extractable');
+    assert.match(
+      fnMatch[0],
+      /resolveCompanyData\s*\(\s*body\.companyData\s*\)/,
+      'handleCards must call resolveCompanyData(body.companyData)',
+    );
+    assert.match(
+      fnMatch[0],
+      /buildCardSystemPrompt\s*\(\s*archetypeSlug\s*,\s*companyData\s*\)/,
+      'handleCards must pass archetypeSlug and the resolved companyData into buildCardSystemPrompt',
+    );
+  });
+
+  test('buildChatSystemPrompt accepts a companyData parameter defaulting to COMPANY_DATA', () => {
+    assert.match(
+      workerSrc,
+      /function\s+buildChatSystemPrompt\s*\(\s*companyData\s*=\s*COMPANY_DATA\s*\)/,
+      'buildChatSystemPrompt must accept companyData with COMPANY_DATA as the default',
+    );
+  });
+
+  test('buildCardSystemPrompt accepts a companyData parameter defaulting to COMPANY_DATA', () => {
+    assert.match(
+      workerSrc,
+      /function\s+buildCardSystemPrompt\s*\(\s*archetypeSlug\s*=\s*DEFAULT_ARCHETYPE\s*,\s*companyData\s*=\s*COMPANY_DATA\s*\)/,
+      'buildCardSystemPrompt must accept companyData with COMPANY_DATA as the default',
+    );
   });
 });
 

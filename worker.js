@@ -7,7 +7,10 @@
  *   POST /transcribe   → Speech-to-text (OpenAI Whisper)
  *
  * The browser sends only user messages. The system prompt, persona brief,
- * and company data are assembled here and never sent to the client.
+ * and persona/voice/guard layers are assembled here and never sent to the
+ * client. Server-to-server callers may include `companyData` on the request
+ * body to override the bundled Atlas SaaS fixture with a per-org snapshot;
+ * see resolveCompanyData for the contract.
  *
  * Setup:
  *   wrangler secret put ANTHROPIC_API_KEY
@@ -32,6 +35,30 @@ import CUSTOMER_ADVOCATE_BRIEF from './data/customer-advocate-brief.md';
 import CUSTOMER_OPERATOR_BRIEF from './data/customer-operator-brief.md';
 import CUSTOMER_TECHNICIAN_BRIEF from './data/customer-technician-brief.md';
 import COMPANY_DATA from './data/atlas-saas.md';
+
+// ---------------------------------------------------------------------------
+// Per-org company data
+// ---------------------------------------------------------------------------
+// /chat and /cards accept an optional `companyData` field on the request body
+// carrying the requesting org's actual connected-source snapshot (markdown,
+// same shape as data/atlas-saas.md). Server-to-server callers (lens-web's
+// Inngest cards function) assemble the per-org snapshot from the signals
+// table and pass it in. Demo and eval callers omit the field and fall back
+// to the bundled Atlas SaaS fixture.
+//
+// Invalid or oversized input falls back to the bundled fixture rather than
+// erroring, so the worker stays available even if a caller sends malformed
+// data, and demo.nomocoda.com keeps rendering Atlas cards regardless.
+
+const MAX_COMPANY_DATA_BYTES = 200_000;
+
+function resolveCompanyData(input) {
+  if (typeof input !== 'string') return COMPANY_DATA;
+  const trimmed = input.trim();
+  if (trimmed.length === 0) return COMPANY_DATA;
+  if (trimmed.length > MAX_COMPANY_DATA_BYTES) return COMPANY_DATA;
+  return trimmed;
+}
 
 // ---------------------------------------------------------------------------
 // Archetype routing
@@ -771,7 +798,7 @@ PRESERVATION RULES, STRICT:
 OUTPUT SHAPE, HARD:
 Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key other than "title", "anchor", "connect", "body". Four keys per card, all string values. Violating this shape breaks the render, there is no graceful degradation on the client.`;
 
-function buildChatSystemPrompt() {
+function buildChatSystemPrompt(companyData = COMPANY_DATA) {
   return `${PERSONA}
 
 ---
@@ -786,7 +813,7 @@ ${IDENTITY_GUARDRAIL}
 
 ${DATA_BOUNDARY}
 
-${COMPANY_DATA}
+${companyData}
 
 ---
 
@@ -895,7 +922,7 @@ Pull anchors from corners of the data that were NOT touched above. This is a har
 // the runtime does. Bubble name and recent-outputs exclusion block live in
 // the user message (see buildCardUserMessage) so the system prefix stays
 // fully cacheable. See feedback_caching_priority.md for the economics.
-function buildCardSystemPrompt(archetypeSlug = DEFAULT_ARCHETYPE) {
+function buildCardSystemPrompt(archetypeSlug = DEFAULT_ARCHETYPE, companyData = COMPANY_DATA) {
   // Layer order (locked 2026-04-24, per Cowork handoff and VP Marketing Voice
   // Brief Section 7): framing first, structural substance second, voice
   // immediately before the card composition task. OUTPUT_HYGIENE_GUARD remains
@@ -916,7 +943,7 @@ ${IDENTITY_GUARDRAIL}
 
 ${DATA_BOUNDARY}
 
-${COMPANY_DATA}
+${companyData}
 
 ---
 
@@ -1090,8 +1117,12 @@ async function handleChat(request, env, origin) {
 
     // The browser sends: { message: "user's question", history: [...] }
     // The Worker assembles the full Claude request with system prompt.
+    // Server-to-server callers may also include `companyData`: the per-org
+    // snapshot string. When omitted the worker falls back to the bundled
+    // Atlas SaaS fixture (see resolveCompanyData).
     const userMessage = body.message;
     const history = body.history || [];
+    const companyData = resolveCompanyData(body.companyData);
 
     if (!userMessage && history.length === 0) {
       return jsonError('Missing message', 400, origin);
@@ -1116,7 +1147,7 @@ async function handleChat(request, env, origin) {
         system: [
           {
             type: 'text',
-            text: buildChatSystemPrompt(),
+            text: buildChatSystemPrompt(companyData),
             cache_control: { type: 'ephemeral' },
           },
         ],
@@ -1279,6 +1310,11 @@ async function handleCards(request, env, origin) {
     const bubble = body.bubble || 'customers';
     const archetypeSlug = resolveArchetype(body.archetype);
     const recentOutputs = Array.isArray(body.recentOutputs) ? body.recentOutputs : [];
+    // companyData (optional) is the per-org snapshot string assembled by the
+    // caller (lens-web's Inngest cards function reads from the signals table
+    // and produces a markdown snapshot in the same shape as atlas-saas.md).
+    // When omitted or invalid, falls back to the bundled Atlas fixture.
+    const companyData = resolveCompanyData(body.companyData);
 
     const draftRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -1293,7 +1329,7 @@ async function handleCards(request, env, origin) {
         system: [
           {
             type: 'text',
-            text: buildCardSystemPrompt(archetypeSlug),
+            text: buildCardSystemPrompt(archetypeSlug, companyData),
             cache_control: { type: 'ephemeral' },
           },
         ],

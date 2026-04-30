@@ -4,6 +4,10 @@
 //
 // This is the reviewer agent's only way to know what ships. If worker.js
 // changes shape, update the extractors here.
+//
+// companyData defaults to the bundled Atlas SaaS fixture (matching worker.js
+// when callers omit body.companyData). Scenarios can pass an override to test
+// per-org snapshot prompts the way lens-web's Inngest cards function will.
 
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -143,13 +147,13 @@ function applyRoleOverride(prompt, role) {
   return out;
 }
 
-export function buildChatPrompt({ role = null } = {}) {
+export function buildChatPrompt({ role = null, companyData = COMPANY_DATA } = {}) {
   const out = interpolate(chatTemplate, {
     PERSONA,
     VOICE_BRIEF,
     IDENTITY_GUARDRAIL,
     DATA_BOUNDARY,
-    COMPANY_DATA,
+    companyData,
     FABRICATION_GUARD,
     SKEPTICISM_GUARD,
     ROLE_SCOPING,
@@ -200,7 +204,7 @@ export function buildCardUserMessage({ bubble = 'customers', recentOutputs = [],
 // override still swaps the default role label for scenarios that test
 // alternate seats within the same archetype's prompt prefix; passing an
 // archetypeSlug switches to that archetype's brief and role label entirely.
-export function buildCardPrompt({ role = null, archetypeSlug = DEFAULT_ARCHETYPE } = {}) {
+export function buildCardPrompt({ role = null, archetypeSlug = DEFAULT_ARCHETYPE, companyData = COMPANY_DATA } = {}) {
   const BRIEF = ARCHETYPE_BRIEFS[archetypeSlug] ?? ARCHETYPE_BRIEFS[DEFAULT_ARCHETYPE];
   const ROLE_LABEL = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   const out = interpolate(cardTemplate, {
@@ -210,7 +214,7 @@ export function buildCardPrompt({ role = null, archetypeSlug = DEFAULT_ARCHETYPE
     VOICE_BRIEF,
     IDENTITY_GUARDRAIL,
     DATA_BOUNDARY,
-    COMPANY_DATA,
+    companyData,
     FABRICATION_GUARD,
     ROLE_SCOPING,
     CARD_SELECTION_ROLE_SCOPED,
