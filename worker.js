@@ -21,7 +21,71 @@
 import PERSONA from './data/persona.md';
 import VOICE_BRIEF from './data/voice-brief.md';
 import MARKETING_LEADER_BRIEF from './data/marketing-leader-brief.md';
+import MARKETING_STRATEGIST_BRIEF from './data/marketing-strategist-brief.md';
+import MARKETING_BUILDER_BRIEF from './data/marketing-builder-brief.md';
+import REVENUE_LEADER_BRIEF from './data/revenue-leader-brief.md';
+import REVENUE_GENERATOR_BRIEF from './data/revenue-generator-brief.md';
+import REVENUE_DEVELOPER_BRIEF from './data/revenue-developer-brief.md';
+import REVENUE_OPERATOR_BRIEF from './data/revenue-operator-brief.md';
+import CUSTOMER_LEADER_BRIEF from './data/customer-leader-brief.md';
+import CUSTOMER_ADVOCATE_BRIEF from './data/customer-advocate-brief.md';
+import CUSTOMER_OPERATOR_BRIEF from './data/customer-operator-brief.md';
+import CUSTOMER_TECHNICIAN_BRIEF from './data/customer-technician-brief.md';
 import COMPANY_DATA from './data/atlas-saas.md';
+
+// ---------------------------------------------------------------------------
+// Archetype routing
+// ---------------------------------------------------------------------------
+// The /cards request payload carries an archetype slug (kebab-case, matching
+// lens-web's memberships.archetype + cards.archetype values). We look up the
+// matching Intelligence Brief and the role label that names the reader in
+// the system prompt and user message. Slugs are normalized: leading/trailing
+// whitespace stripped, lowercased, underscores converted to hyphens (lens-web
+// has a legacy snake_case default that we accept defensively). Unknown or
+// missing slugs fall back to DEFAULT_ARCHETYPE.
+//
+// Caching: each archetype gets its own static system-prompt prefix and so
+// its own Anthropic prompt-cache entry. Within a session for a given org,
+// the same archetype runs back-to-back across the three Intelligence Areas,
+// so cache hit rate after the first call stays high.
+
+const ARCHETYPE_BRIEFS = {
+  'marketing-leader': MARKETING_LEADER_BRIEF,
+  'marketing-strategist': MARKETING_STRATEGIST_BRIEF,
+  'marketing-builder': MARKETING_BUILDER_BRIEF,
+  'revenue-leader': REVENUE_LEADER_BRIEF,
+  'revenue-generator': REVENUE_GENERATOR_BRIEF,
+  'revenue-developer': REVENUE_DEVELOPER_BRIEF,
+  'revenue-operator': REVENUE_OPERATOR_BRIEF,
+  'customer-leader': CUSTOMER_LEADER_BRIEF,
+  'customer-advocate': CUSTOMER_ADVOCATE_BRIEF,
+  'customer-operator': CUSTOMER_OPERATOR_BRIEF,
+  'customer-technician': CUSTOMER_TECHNICIAN_BRIEF,
+};
+
+const ARCHETYPE_ROLE_LABELS = {
+  'marketing-leader': 'VP of Marketing',
+  'marketing-strategist': 'Marketing Strategist',
+  'marketing-builder': 'Marketing Builder',
+  'revenue-leader': 'VP of Sales',
+  'revenue-generator': 'Account Executive',
+  'revenue-developer': 'Sales Development Lead',
+  'revenue-operator': 'Revenue Operations Lead',
+  'customer-leader': 'VP of Customer Success',
+  'customer-advocate': 'Customer Success Manager',
+  'customer-operator': 'Customer Success Operator',
+  'customer-technician': 'Customer Success Technician',
+};
+
+const DEFAULT_ARCHETYPE = 'marketing-leader';
+
+function resolveArchetype(input) {
+  if (typeof input !== 'string') return DEFAULT_ARCHETYPE;
+  const slug = input.trim().toLowerCase().replaceAll('_', '-');
+  return Object.prototype.hasOwnProperty.call(ARCHETYPE_BRIEFS, slug)
+    ? slug
+    : DEFAULT_ARCHETYPE;
+}
 
 // ---------------------------------------------------------------------------
 // System prompt assembly (server-side only)
@@ -823,22 +887,26 @@ Pull anchors from corners of the data that were NOT touched above. This is a har
 `;
 }
 
-// The card system prompt is fully static, no per-call variables, so every
-// /cards request hits the same Anthropic prompt cache entry regardless of
-// which bubble is being generated or what recent outputs need to be excluded.
-// Bubble name and recent-outputs block are carried in the user message
-// instead (see buildCardUserMessage), preserving cacheability across all 4
-// bubbles. See feedback_caching_priority.md for the economics behind this.
-function buildCardSystemPrompt() {
+// The card system prompt is static within a single archetype, so all bubbles
+// for a given archetype hit the same Anthropic prompt cache entry. The brief
+// and role label are the only per-archetype variables; both are bound at
+// function-call time, not template-literal interpolation, so the eval
+// prompt-builder can substitute its own choice of archetype the same way
+// the runtime does. Bubble name and recent-outputs exclusion block live in
+// the user message (see buildCardUserMessage) so the system prefix stays
+// fully cacheable. See feedback_caching_priority.md for the economics.
+function buildCardSystemPrompt(archetypeSlug = DEFAULT_ARCHETYPE) {
   // Layer order (locked 2026-04-24, per Cowork handoff and VP Marketing Voice
   // Brief Section 7): framing first, structural substance second, voice
   // immediately before the card composition task. OUTPUT_HYGIENE_GUARD remains
   // the final shape enforcement so the model emits pure JSON.
+  const BRIEF = ARCHETYPE_BRIEFS[archetypeSlug] ?? ARCHETYPE_BRIEFS[DEFAULT_ARCHETYPE];
+  const ROLE_LABEL = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   return `${PERSONA}
 
 ---
 
-${MARKETING_LEADER_BRIEF}
+${BRIEF}
 
 ---
 
@@ -890,7 +958,7 @@ ${VOICE_BRIEF}
 
 # Card Generation Instructions
 
-You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the VP of Marketing at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING above.
+You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the ${ROLE_LABEL} at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING above, and the Intelligence Brief above defines the goal clusters and signal pairings this archetype watches.
 
 ## Card structure: Title + Anchor + Connect + Body
 
@@ -932,11 +1000,14 @@ Return ONLY the JSON array, no other text.
 ${OUTPUT_HYGIENE_GUARD}`;
 }
 
-// Per-call card inputs live in the user message so the system prompt stays
-// fully static and cacheable. Bubble name, recent-outputs exclusion block,
-// and any future per-request variables go here.
-function buildCardUserMessage(bubble, recentOutputs, role = 'VP of Marketing') {
+// Per-call card inputs live in the user message so the system prompt prefix
+// stays cacheable per archetype. Bubble name, recent-outputs exclusion block,
+// and any future per-request variables go here. Role label is derived from
+// the active archetype slug to keep the user message in sync with the brief
+// loaded into the system prompt.
+function buildCardUserMessage(bubble, recentOutputs, archetypeSlug = DEFAULT_ARCHETYPE) {
   const recentBlock = buildRecentOutputsBlock(recentOutputs);
+  const role = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   return `${recentBlock}Generate Data Stories for the "${bubble}" Intelligence Area. Focus on what's most relevant to the ${role} right now based on the company data.`;
 }
 
@@ -1206,6 +1277,7 @@ async function handleCards(request, env, origin) {
   try {
     const body = await request.json();
     const bubble = body.bubble || 'customers';
+    const archetypeSlug = resolveArchetype(body.archetype);
     const recentOutputs = Array.isArray(body.recentOutputs) ? body.recentOutputs : [];
 
     const draftRes = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1221,14 +1293,14 @@ async function handleCards(request, env, origin) {
         system: [
           {
             type: 'text',
-            text: buildCardSystemPrompt(),
+            text: buildCardSystemPrompt(archetypeSlug),
             cache_control: { type: 'ephemeral' },
           },
         ],
         messages: [
           {
             role: 'user',
-            content: buildCardUserMessage(bubble, recentOutputs),
+            content: buildCardUserMessage(bubble, recentOutputs, archetypeSlug),
           },
         ],
       }),
