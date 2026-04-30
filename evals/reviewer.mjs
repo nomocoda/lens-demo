@@ -167,7 +167,14 @@ ${JSON.stringify(draftCards, null, 2)}`;
   const rewrittenCards = parseCardsArray(rewrittenText);
   if (!rewrittenCards || rewrittenCards.length !== draftCards.length) return draftText;
   for (const card of rewrittenCards) {
-    if (typeof card.headline !== 'string' || typeof card.body !== 'string') return draftText;
+    if (
+      typeof card.title !== 'string' ||
+      typeof card.anchor !== 'string' ||
+      typeof card.connect !== 'string' ||
+      typeof card.body !== 'string'
+    ) {
+      return draftText;
+    }
   }
   return JSON.stringify(rewrittenCards);
 }
