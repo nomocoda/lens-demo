@@ -118,7 +118,8 @@ describe('Invariant 11 — identity guardrail present in both system prompts', (
   });
 });
 
-// Invariant 12 — prompt-block constants are interpolated, not orphaned.
+// Invariant 12 — prompt-block constants are interpolated into a shipping
+// template, not orphaned.
 //
 // Added 2026-04-22 after the 2026-04-20 LENS FRAMING incident, where a
 // prompt block had been written as bare text between two `const` declarations
@@ -128,14 +129,19 @@ describe('Invariant 11 — identity guardrail present in both system prompts', (
 // because they only exercise what's interpolated — a dropped block is
 // silently absent, not mis-applied.
 //
-// Two cheap checks catch the class of failure:
-//   (a) `node --check worker.js` rejects bare prompt-block text (it is
-//       invalid JavaScript outside a template literal or string).
-//   (b) Every top-level all-caps `const NAME = \`...\`` must appear at
-//       least twice in worker.js source — once as its declaration, and at
-//       least once as a usage (either `${NAME}` interpolation inside a
-//       builder template, or a bare value reference like `text: NAME`).
-//       A const that appears only in its declaration is orphaned.
+// Tightened 2026-04-30 to match the original BVS Layer 1 spec: the check
+// is no longer "appears at least twice in worker.js source" (that passed
+// even when a const was only mentioned in a comment, leaving it unshipped).
+// Now: every prompt-block const must either (a) appear interpolated as
+// `${NAME}` inside one of the three shipping templates — the chat system
+// prompt, the card system prompt, or the card-rewriter system prompt — or
+// (b) BE one of those shipping templates (CARD_REWRITER_SYSTEM is sent
+// directly as `text: CARD_REWRITER_SYSTEM` in applyCardRewriter, not via
+// interpolation).
+//
+// `node --check worker.js` is kept as a separate, cheap guard that catches
+// bare prompt-block text outside any string literal — the actual original
+// LENS_FRAMING failure mode (it would have been a JavaScript syntax error).
 describe('Invariant 12 — prompt-block constants are interpolated, not orphaned', () => {
   test('worker.js parses as valid JavaScript (node --check)', () => {
     const result = spawnSync(
@@ -152,7 +158,9 @@ describe('Invariant 12 — prompt-block constants are interpolated, not orphaned
 
   // Discover every top-level const whose name is ALL_CAPS and whose value
   // begins with a backtick (a template literal). This is the shape every
-  // prompt block uses in worker.js.
+  // prompt block uses in worker.js. Object-literal consts (e.g.
+  // ARCHETYPE_BRIEFS) and array-literal consts (e.g. ALLOWED_ORIGINS) do
+  // not match because their values do not start with a backtick.
   const constPattern = /^const ([A-Z][A-Z_0-9]+)\s*=\s*`/gm;
   const promptConsts = [];
   let m;
@@ -160,7 +168,32 @@ describe('Invariant 12 — prompt-block constants are interpolated, not orphaned
     promptConsts.push(m[1]);
   }
 
-  test('at least one prompt-block const is discovered (sanity check)', () => {
+  // Extract the three shipping templates: the chat system prompt, the card
+  // system prompt, and the card-rewriter system prompt. A prompt-block
+  // const must end up substituted into one of these to actually reach the
+  // production prompt sent to the model.
+  function extractTaggedConst(src, name) {
+    const re = new RegExp(`const\\s+${name}\\s*=\\s*\`([\\s\\S]*?)\`;`);
+    const match = re.exec(src);
+    if (!match) {
+      throw new Error(`could not extract const ${name} from worker.js`);
+    }
+    return match[1];
+  }
+  const cardRewriterTemplate = extractTaggedConst(workerSrc, 'CARD_REWRITER_SYSTEM');
+  const shippingTemplates = {
+    'buildChatSystemPrompt return template': chatPrompt,
+    'buildCardSystemPrompt return template': cardPrompt,
+    'CARD_REWRITER_SYSTEM template': cardRewriterTemplate,
+  };
+
+  // CARD_REWRITER_SYSTEM is itself a shipping template — applyCardRewriter
+  // sends it directly as the system prompt for the rewriter pass. It does
+  // not need to be interpolated; instead it must be referenced as a value
+  // in an Anthropic API call.
+  const SELF_SHIPPING_TEMPLATES = new Set(['CARD_REWRITER_SYSTEM']);
+
+  test('at least 5 prompt-block consts are discovered (sanity check)', () => {
     assert.ok(
       promptConsts.length >= 5,
       `expected 5+ prompt-block consts in worker.js, discovered ${promptConsts.length}: ${promptConsts.join(', ')}`,
@@ -168,16 +201,35 @@ describe('Invariant 12 — prompt-block constants are interpolated, not orphaned
   });
 
   for (const name of promptConsts) {
-    test(`${name} is referenced at least once outside its declaration`, () => {
-      const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const re = new RegExp(`\\b${escaped}\\b`, 'g');
-      const hits = (workerSrc.match(re) || []).length;
+    test(`${name} reaches a shipping prompt`, () => {
+      if (SELF_SHIPPING_TEMPLATES.has(name)) {
+        // Self-shipping const must be passed as a `text:` value somewhere
+        // in the Anthropic API request body. Look for the exact bare
+        // reference shape worker.js uses, ignoring its declaration.
+        const useRe = new RegExp(`text:\\s*${name}\\b`);
+        assert.match(
+          workerSrc,
+          useRe,
+          `${name} is a self-shipping prompt template but is never passed as ` +
+            `\`text: ${name}\` in any Anthropic API call. The rewriter pass ` +
+            `will not run if this reference is missing.`,
+        );
+        return;
+      }
+
+      const needle = '${' + name + '}';
+      const lands = Object.entries(shippingTemplates)
+        .filter(([, body]) => body.includes(needle))
+        .map(([label]) => label);
+
       assert.ok(
-        hits >= 2,
-        `${name} appears only in its own declaration (${hits} total reference). ` +
-          `Either interpolate it via \${${name}} in a builder template, pass it as a ` +
-          `value somewhere, or delete the const. Orphaned prompt blocks are silently ` +
-          `absent from the production prompt — Layer 3 behavioral evals cannot see them.`,
+        lands.length > 0,
+        `${name} is declared but is never interpolated as ${needle} into any ` +
+          `shipping template. Searched the chat system prompt, the card system ` +
+          `prompt, and the CARD_REWRITER_SYSTEM template. An uninterpolated ` +
+          `prompt-block const is silently absent from the production prompt — ` +
+          `Layer 3 behavioral evals cannot see this. Either interpolate it ` +
+          `into a shipping template, or delete the const.`,
       );
     });
   }
