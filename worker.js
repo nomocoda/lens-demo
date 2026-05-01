@@ -23,6 +23,11 @@
 
 import PERSONA from './data/persona.md';
 import VOICE_BRIEF from './data/voice-brief.md';
+import {
+  CHART_FORMAT_DESCRIPTIONS,
+  CHART_SPEC_EXAMPLES,
+  validateChartSpec,
+} from './chart-spec.js';
 import MARKETING_LEADER_BRIEF from './data/marketing-leader-brief.md';
 import MARKETING_STRATEGIST_BRIEF from './data/marketing-strategist-brief.md';
 import MARKETING_BUILDER_BRIEF from './data/marketing-builder-brief.md';
@@ -596,25 +601,27 @@ Before emitting each card, verify:
 
 A card whose anchor or connect is missing, has multiple sentences, or whose two narrative fields play the same role fails this guard.`;
 
-const OUTPUT_HYGIENE_GUARD = `OUTPUT HYGIENE, PURE JSON, EXACTLY FOUR KEYS, ZERO META-COMMENTARY
+const OUTPUT_HYGIENE_GUARD = `OUTPUT HYGIENE, PURE JSON, FOUR REQUIRED KEYS PLUS OPTIONAL CHART, ZERO META-COMMENTARY
 
 All the guards above describe INTERNAL checks. None of their reasoning, rule names, or audit results ever appear in the output. The reader sees only the final cards.
 
 HARD OUTPUT SHAPE:
 Your entire response is a JSON array. Nothing before it. Nothing after it. No markdown fencing (no \`\`\`json, no \`\`\`). No prose preamble. No "Looking at the role scoping..." No "I need to verify..." No trailing commentary. Just the raw JSON array as the first and only thing you emit.
 
-HARD SCHEMA, FOUR KEYS PER CARD OBJECT, NEVER MORE, NEVER FEWER:
-Every card object must have exactly these four keys: "title", "anchor", "connect", and "body". Nothing else. Forbidden keys that have appeared in failed outputs and MUST NOT be emitted:
-  ✗ "headline" (use "title")  ✗ "freshness_audit"  ✗ "theme"  ✗ "source"  ✗ "reasoning"  ✗ "audit"  ✗ "notes"  ✗ "tags"  ✗ "rationale"  ✗ "type"  ✗ "category"  ✗ any other key.
+HARD SCHEMA, FOUR REQUIRED KEYS PER CARD OBJECT, ONE OPTIONAL:
+Every card object must have exactly these four required keys: "title", "anchor", "connect", "body". A card MAY also include a fifth optional key, "chart", whose value is a chart spec object as defined in the CHART EMISSION GUARD below. No other keys are permitted. Forbidden keys that have appeared in failed outputs and MUST NOT be emitted:
+  ✗ "headline" (use "title")  ✗ "freshness_audit"  ✗ "theme"  ✗ "source"  ✗ "reasoning"  ✗ "audit"  ✗ "notes"  ✗ "tags"  ✗ "rationale"  ✗ "type"  ✗ "category"  ✗ any other key beyond title/anchor/connect/body/chart.
 
-If you find yourself wanting to label a card with which rule you applied, which theme it anchors on, or which audit it passed, resist. That information is INTERNAL. It belongs in your thinking, not your output. The card is just title + anchor + connect + body. The reader cannot see anything else and will not benefit from seeing your reasoning.
+If you find yourself wanting to label a card with which rule you applied, which theme it anchors on, or which audit it passed, resist. That information is INTERNAL. It belongs in your thinking, not your output. The card is title + anchor + connect + body, with chart only when the CHART EMISSION GUARD's Visualization Principle calls for it.
 
 PRE-EMIT CHECK:
 1. Does your response start with "["? If not, strip everything before it.
 2. Does your response end with "]"? If not, strip everything after it.
-3. Does every card object have exactly four keys, "title", "anchor", "connect", "body"? If not, rebuild.
+3. Does every card object have the four required keys "title", "anchor", "connect", "body"? If not, rebuild.
 4. Does "body" equal "anchor" + " " + "connect" exactly, byte for byte? If not, rebuild body.
-5. Is there any prose anywhere in the response that isn't inside one of the four string values? If yes, delete it.
+5. For any card carrying a "chart" key, does its value pass the CHART EMISSION GUARD's schema check? If not, drop the chart field; never emit a malformed chart.
+6. Are any keys present beyond {title, anchor, connect, body, chart}? If yes, delete them.
+7. Is there any prose anywhere in the response that isn't inside one of the JSON values? If yes, delete it.
 
 The output is the cards. Nothing else is the output.`;
 
@@ -743,6 +750,83 @@ The answer body can be as candid as the data requires. The closing cannot end th
 FINAL SCOPE RE-AUDIT, RUN AFTER ADDING THE CLOSER, BEFORE EMITTING.
 
 Once the forward closer is written, re-run the ROLE SCOPING FINAL AUDIT (above) on the ENTIRE response, body and closer together. Every sentence, including the freshly-added forward redirect, must pass the audit. A closer that pulls in a prohibited figure to brighten the close still fails role scoping. Strip prohibited figures from the closer and use an in-scope substitute (a count, a ratio expressed without dollars, a channel-mix percentage that is permitted for the tier). If the audit strips the closer entirely, write a new closer that stays in-scope.`;
+
+// CHART_EMISSION_GUARD teaches the model when (and when not) to attach a chart
+// spec to a card, and the schema the spec must satisfy. Schema constants and
+// canonical examples live in chart-spec.js so the prompt few-shots, the
+// runtime validator, and the renderer all index off the same definitions.
+//
+// The renderer auto-mounts via MutationObserver on `data-lens-chart-spec` in
+// index.html (see Chart Rendering 2). This guard's only job is to make the
+// model emit a valid spec under the Visualization Principle. The validator in
+// chart-spec.js is a safety net: any malformed spec is dropped from the card
+// payload in normalizeCardEnvelope before the response reaches the client.
+const CHART_EMISSION_GUARD = `CHART EMISSION, VISUAL ONLY WHEN PROSE CANNOT CARRY THE SHAPE
+
+Every card carries title + anchor + connect + body. A card MAY also carry an optional "chart" field, a structured chart spec the renderer turns into a small inline visual sitting between body and Sources. This guard governs when to attach one and what shape the spec must take.
+
+THE VISUALIZATION PRINCIPLE, APPLIED AT EMISSION TIME:
+
+The smallest visual that makes the reader say "ah, now I see it." If prose lands without a chart, no chart. If a single sentence plus a number lands, no chart. Charts appear only when seeing the SHAPE adds something prose cannot, a comparison the reader needs to see across categories, a trend the reader needs to see in a curve, a falloff between stages the reader needs to see geometrically, a side-by-side detail too dense for one prose sentence.
+
+DEFAULT STATE: NO CHART. Most cards do not carry one. Adding a chart is a deliberate choice, not decoration.
+
+WHEN TO REACH FOR A CHART, AND ONLY THEN:
+- The card body names a multi-category comparison the reader benefits from seeing geometrically (paid social vs paid search vs partner vs events): bar.
+- The card body names a trend over more than two ordered points the reader benefits from seeing as a curve (12 weeks of trial-to-paid conversion, six months of NPS): line.
+- The card body names one headline number with one direct comparison the reader benefits from seeing typeset boldly (trial-to-paid sits at 6.8% versus 5.4% prior 30 days): stat.
+- The card body names a multi-stage progression with falloff between stages (SQL→Demo→Proposal→Closed): funnel.
+- The card body names a side-by-side detail across two-to-five attributes that does not fit cleanly in one prose sentence (segment × win rate × delta versus prior quarter): table.
+
+WHEN NOT TO CHART, EVEN IF DATA IS PRESENT:
+- The card body is one observation plus one comparison and prose carries it: no chart.
+- The card body is a qualitative signal (analyst coverage, brand mentions, named-account threshold crossings) that is not naturally numeric across multiple values: no chart.
+- The card has only one data point: no chart. (A one-point line is not a line; a one-bar bar chart is a stat at best.)
+- The data exceeds the format's cap (more than 12 categories, more than 30 line points, more than 7 funnel stages, more than 10 table rows): pick a different format or omit the chart, NEVER truncate.
+- The chart would duplicate what the prose already says without adding shape: no chart. Visuals never decorate.
+
+THE FIVE V1 FORMATS:
+
+${Object.entries(CHART_FORMAT_DESCRIPTIONS).map(([k, v]) => `- ${k}: ${v}`).join('\n')}
+
+SCHEMA, A DISCRIMINATED UNION ON "format":
+
+The chart field is an object whose shape depends on its "format" value. The validator rejects unknown keys, missing required keys, length mismatches between categories and series.values, rising values inside a funnel, type mismatches between row cells and column formats, and any field beyond the schema. Do NOT invent decorative options (color, axis style, gridline density, legend position, animation duration, theme, palette, stacking, sort). The renderer does not honor them; the validator rejects them.
+
+CAPS, ENFORCED BY THE VALIDATOR:
+- bar:    1-12 categories  ×  1-3 series; series.values length must match categories length.
+- line:   2-30 points      ×  1-3 series; series.values length must match points length.
+- stat:   single value, with optional comparison object.
+- funnel: 2-7 stages; values must be NON-INCREASING (a funnel that rises is not a funnel).
+- table:  2-5 columns      ×  2-10 rows; each row carries one value per column; numeric-format columns must be finite numbers, text columns must be non-empty strings.
+
+OPTIONAL ENVELOPE FIELDS (any format):
+- title: optional, ≤80 chars; usually omitted because the card title carries the headline.
+- caption: optional, ≤140 chars; one line of context (data window, source-blend note, definition).
+- valueFormat: 'number' | 'percent' | 'currency' | 'duration'; defaults to 'number', applies across the chart's numeric values.
+
+WORKED EXAMPLES, ONE PER FORMAT (use these as the shape for every spec you emit):
+
+${Object.entries(CHART_SPEC_EXAMPLES).map(([fmt, ex]) => `${fmt}:\n${JSON.stringify(ex, null, 2)}`).join('\n\n')}
+
+PRE-EMIT CHECK FOR THE CHART FIELD:
+1. Did you actually need a chart? If the body lands as prose, omit the chart field. Most cards do.
+2. Is the format the smallest visual that conveys the shape? (One direct comparison: stat, not bar. One trend line: line, not table.)
+3. Does the data fit within the cap for that format? If not, pick a different format or omit the chart entirely. Never truncate to fit.
+4. For funnel: are values non-increasing? If they rise, the format is wrong.
+5. For table: does every row's value type-check against its column's format (numeric formats need numbers, text needs non-empty strings)?
+6. Are you tempted to add a key beyond the schema? Stop. The validator will reject and the chart will be dropped.
+7. The chart spec must be a proper JSON object embedded in the card object, not a stringified blob. The card emits {... "chart": {"format": "bar", ...}} not {... "chart": "{\\"format\\":\\"bar\\",...}"}.
+
+The chart field is OPTIONAL. The card MUST emit title + anchor + connect + body whether or not it carries a chart. A card without a chart is the default; a card with a chart is the exception when the shape genuinely adds clarity prose cannot.`;
+
+// CHART_REWRITER_NOTE keeps charts intact through the compliance rewriter.
+// The rewriter runs on Opus and reshapes language; chart specs are
+// pre-validated structured data that does not need rewriting. This note
+// tells the rewriter to round-trip the chart field byte for byte.
+const CHART_REWRITER_NOTE = `CHART FIELD PRESERVATION
+
+Each card object you receive may carry an optional "chart" field, a structured chart spec object (one of: bar, line, stat, funnel, table). PRESERVE this field unchanged in your output. The chart spec is structured data that has already been generated under its own schema; it does not need rewriting. If a card carries a chart, your output for that card must carry the same chart with identical contents. If a card does not carry a chart, do not invent one.`;
 
 // CHAT_VOICE_GUARD reinforces the spine bans for chat output specifically.
 // FORWARD_FRAMING_GUARD already names "gap", "against", and many directional
@@ -875,7 +959,7 @@ Each input card has four fields: title, anchor, connect, body. Body is the joine
    - Replace the named individual with their function or system: "engineering flagged...", "the product team ranks...", "the alpha demo is on the calendar for May 1...", "the auth coverage gap surfaced this week."
    - Named accounts and named competitors stay (Prism Analytics, FlowStack, Beacon Logistics, Ridgeline Health, etc.). Only INDIVIDUAL PEOPLE are stripped.
 5. COMPOSITION CHECK:
-   - If the card object has any key other than "title", "anchor", "connect", "body", strip the extras. If any of the four required keys is missing, rebuild it.
+   - The card object may have these keys ONLY: "title", "anchor", "connect", "body" (all required), and "chart" (optional, structured object, see CHART FIELD PRESERVATION below). Any other key is forbidden, strip it. If any of the four required string keys is missing, rebuild it. The chart key, when present, is preserved unchanged.
    - anchor must be exactly one sentence. connect must be exactly one sentence. If either has fewer or more than one sentence, rewrite.
    - ROLE ASSIGNMENT, classify each narrative field before deciding which to rewrite:
      - anchor adds specificity INTERNAL to the title's primary signal (when, where, what correlates within the same surface).
@@ -893,7 +977,11 @@ PRESERVATION RULES, STRICT:
 - If a card is already fully compliant, pass it through unchanged. Do not rewrite compliant language just to change it. (Body must still equal anchor + " " + connect; if it does not, fix only body.)
 
 OUTPUT SHAPE, HARD:
-Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key other than "title", "anchor", "connect", "body". Four keys per card, all string values. Violating this shape breaks the render, there is no graceful degradation on the client.`;
+Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key beyond {"title", "anchor", "connect", "body", "chart"}. The four required string keys plus an optional "chart" object key are the entire allowed set. Violating this shape breaks the render, there is no graceful degradation on the client.
+
+---
+
+${CHART_REWRITER_NOTE}`;
 
 function buildChatSystemPrompt(companyData = COMPANY_DATA) {
   return `${PERSONA}
@@ -1088,9 +1176,9 @@ ${VOICE_BRIEF}
 
 You are Lens, generating Data Stories for the Intelligence Area named in the user message. The reader is the ${ROLE_LABEL} at Atlas SaaS. What this role can see and what falls outside their seat is defined in ROLE SCOPING above, and the Intelligence Brief above defines the goal clusters and signal pairings this archetype watches.
 
-## Card structure: Title + Anchor + Connect + Body
+## Card structure: Title + Anchor + Connect + Body, optionally Chart
 
-Cards have four fields. The UI displays title and body; anchor and connect carry the same content as body, split into their structural roles for downstream use.
+Cards have four required fields. The UI displays title and body; anchor and connect carry the same content as body, split into their structural roles for downstream use. A fifth field, "chart", is OPTIONAL and only attached when the Visualization Principle in the CHART EMISSION GUARD calls for it (most cards do not carry a chart).
 
 **title** (one sentence): Pure factual observation. A quantified change (delta, ratio, threshold, trend) OR a discrete event (something started, stopped, launched, ended). The shape of the fact is whatever the data naturally supports. Must fit in two lines at 375px mobile width. Aim for 6-12 words.
 
@@ -1099,6 +1187,8 @@ Cards have four fields. The UI displays title and body; anchor and connect carry
 **connect** (exactly one sentence): Widens the lens. Relates the pattern to another internal data point, a historical period, a cross-domain correlate, or an explicit uncertainty (Shape A/B/C/D from the SIGNAL VS REPORT guard).
 
 **body** (two sentences): The anchor sentence and the connect sentence joined with a single space. body MUST equal anchor + " " + connect, byte for byte.
+
+**chart** (optional object): A chart spec per the CHART EMISSION GUARD's discriminated-union schema. Attach ONLY when seeing the shape adds clarity prose cannot. Omit otherwise.
 
 ## Narrator voice in cards
 
@@ -1118,10 +1208,14 @@ Every title must pass: can you imagine the reader (whose role is named in the in
 - Cross-domain connections are the highest-value cards.
 - Stay grounded in the company data above. Do not invent people, accounts, or vendors not in the brief.
 
-Respond with a JSON array of 3-5 card objects:
-[{ "title": "...", "anchor": "...", "connect": "...", "body": "..." }]
+Respond with a JSON array of 3-5 card objects. Each card has the four required string fields, plus an optional chart object when warranted:
+[{ "title": "...", "anchor": "...", "connect": "...", "body": "..." }, { "title": "...", "anchor": "...", "connect": "...", "body": "...", "chart": { "format": "bar", "categories": [...], "series": [...] } }]
 
 Return ONLY the JSON array, no other text.
+
+---
+
+${CHART_EMISSION_GUARD}
 
 ---
 
@@ -1371,7 +1465,7 @@ ${JSON.stringify(draftCards, null, 2)}`;
 //    UI and lens-web's Inngest cards writer at the time of this commit).
 //    Once those consumers read title directly, the headline field can be
 //    dropped from this post-process.
-function normalizeCardEnvelope(envelopeText) {
+export function normalizeCardEnvelope(envelopeText) {
   try {
     const envelope = JSON.parse(envelopeText);
     const block = envelope.content?.find((b) => b.type === 'text');
@@ -1390,13 +1484,26 @@ function normalizeCardEnvelope(envelopeText) {
       const anchor = card.anchor.trim();
       const connect = card.connect.trim();
       const body = `${anchor} ${connect}`;
-      normalized.push({
+      const out = {
         title: card.title,
         anchor,
         connect,
         body,
         headline: card.title,
-      });
+      };
+      // Chart field, optional. Validate via chart-spec.js's discriminated-
+      // union schema. Invalid specs are dropped (not fatal to the card)
+      // so the renderer never sees malformed JSON. Logged via console.warn
+      // so wrangler tail catches drift.
+      if (card.chart !== undefined) {
+        const result = validateChartSpec(card.chart);
+        if (result.ok) {
+          out.chart = result.spec;
+        } else {
+          console.warn('[chart] dropped invalid chart spec on card "' + card.title + '"', result.errors);
+        }
+      }
+      normalized.push(out);
     }
     block.text = JSON.stringify(normalized);
     return JSON.stringify(envelope);
