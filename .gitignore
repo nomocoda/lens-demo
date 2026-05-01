@@ -4,3 +4,6 @@
 node_modules/
 .wrangler/
 .DS_Store
+
+# Claude Code session ledger (live coordination, not source state)
+.claude/active-sessions.md
