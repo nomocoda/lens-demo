@@ -4,9 +4,9 @@
 
 ## 1. Who this archetype actually is
 
-The Revenue Leader in B2B SaaS is the person who carries the number for the company. Their accountability is binary in a way most leadership roles are not: did the team hit the commit, and does the forecast they're committing upward this quarter still hold next quarter. A good day looks like coverage strong enough that the forecast feels boring, three large deals moving on the timeline they promised, and a Friday pipeline review where every AE's commit holds up to a stage-history audit. A bad day is a stage-skipped deal slipping out of the quarter, a coverage chart that just dropped under 3x, or a CFO email asking why ARR pacing is 8 points behind plan.
+The Revenue Leader in B2B SaaS is the person who carries the number for the company. Their accountability is binary in a way most leadership roles are not: did the team hit the commit, and does the forecast they're committing upward this quarter still hold next quarter. A good day looks like coverage strong enough that the forecast feels boring, three large deals moving on the timeline they promised, and a Friday pipeline review where every AE's commit holds up to a stage-history audit. A bad day is a stage-skipped deal pushing into the next quarter, a coverage chart that just landed under 3x, or a CFO email asking why ARR pacing sits 8 points away from plan.
 
-This is the person who describes their job as "making the number predictable" and who privately understands that most of the variance in a quarter comes from a handful of deals at the top of the funnel and a handful of decisions at the bottom. They sit at the intersection of pipeline coverage, deal execution, win/loss patterns, and competitive dynamics. They live in the forecast spreadsheet, the deal review agenda, and the win/loss readouts. They think in pipeline coverage ratios, stage-conversion rates, and weighted forecasts, but they also think in narratives, because the CEO and the board want a story that explains the math. They describe their role not as "sales" but as "the function that turns pipeline into committed revenue."
+This is the person who describes their job as "making the number predictable" and who privately understands that most of the variance in a quarter comes from a handful of deals at the top of the funnel and a handful of decisions at the bottom. They sit at the intersection of pipeline coverage, deal execution, deal-outcome patterns, and competitive dynamics. They live in the forecast spreadsheet, the deal review agenda, and the deal-outcome readouts. They think in pipeline coverage ratios, stage-conversion rates, and weighted forecasts, but they also think in narratives, because the CEO and the board want a story that explains the math. They describe their role not as "sales" but as "the function that turns pipeline into committed revenue."
 
 ## 2. Real roles that map to this archetype
 
@@ -34,9 +34,9 @@ This is the person who describes their job as "making the number predictable" an
 
 ## 3. What they spend their time on
 
-**Daily:** Revenue Leaders open the forecast first. They check what moved overnight: stage changes, close-date moves, new opps in the >$100K threshold, stalled deals. They walk through the day's deal reviews, sit in on at least one customer meeting, and close the day with a forecast roll-up to the CEO if it's near quarter-end.
+**Daily:** Revenue Leaders open the forecast first. They check what moved overnight: stage changes, close-date moves, new opps in the >$100K threshold, stuck deals. They walk through the day's deal reviews, sit in on at least one customer meeting, and close the day with a forecast roll-up to the CEO if it's near quarter-end.
 
-**Weekly:** The weekly rhythm centers on pipeline review with the AE team and forecast call with the executive team. They pressure-test every commit-stage deal: stage progression, last contact, decision criteria, procurement timing, competitive context. They also run win/loss review (deals closed in the week, why won, why lost), competitive intelligence updates from AEs, and a marketing-sourced pipeline read.
+**Weekly:** The weekly rhythm centers on pipeline review with the AE team and forecast call with the executive team. They pressure-test every commit-stage deal: stage progression, last contact, decision criteria, procurement timing, competitive context. They also run deal-outcome review (deals closed in the week, why won, why lost), competitive intelligence updates from AEs, and a marketing-sourced pipeline read.
 
 **Monthly:** End-of-month commit verification with Finance, ARR pacing review, segment-level performance audit (enterprise vs mid-market vs SMB), and a deeper competitive analysis on head-to-head deal patterns. Renewal forecast review with Customer Success.
 
@@ -84,9 +84,9 @@ A renewal that comes in at 105% NRR when the segment averaged 112% last quarter 
 
 **Activity metrics presented as health.** Calls made, emails sent, meetings booked, all inputs. The Revenue Leader is measured on closed-won ARR and committed-pipeline accuracy. A dashboard that surfaces activity as a primary signal misunderstands the role.
 
-**Last-touch attribution offered as ICP feedback.** The deals that closed got there through a sequence of touches; pinning win/loss on the most recent one is a Marketing-side argument the Revenue Leader has heard too many times. Patterns matter; single-touch causality doesn't.
+**Last-touch attribution offered as ICP feedback.** The deals that closed got there through a sequence of touches; pinning deal-outcome on the most recent one is a Marketing-side argument the Revenue Leader has heard too many times. Patterns matter; single-touch causality doesn't.
 
-**A coverage ratio framed as "good" or "bad" against an external benchmark.** Coverage is contextual: enterprise pipeline at 4x in a long-cycle segment is healthy; mid-market pipeline at 4x in a fast-cycle segment is light. Grading is the leader's job, not the dashboard's.
+**A coverage ratio framed as "good" or "bad" versus an external benchmark.** Coverage is contextual: enterprise pipeline at 4x in a long-cycle segment is healthy; mid-market pipeline at 4x in a fast-cycle segment is light. Grading is the leader's job, not the dashboard's.
 
 **Forecast accuracy metrics that include deals the team didn't actually commit to.** The forecast is what the team committed; missed deals that weren't on the commit-line aren't forecast errors, they're stretch outcomes. Conflating the two erodes trust in the metric.
 
@@ -100,7 +100,7 @@ A renewal that comes in at 105% NRR when the segment averaged 112% last quarter 
 
 **Quote 4:** "Q3 is going to look ugly unless coverage builds in the next two weeks."
 
-**Quote 5:** "If we keep losing head-to-head against Beacon, that's not a sales problem. That's a positioning problem."
+**Quote 5:** "If we keep losing head-to-head versus Beacon, that's not a sales problem. That's a positioning problem."
 
 ## 8. Signal shapes worth distinguishing
 
@@ -110,7 +110,7 @@ The Revenue Leader's mental model separates signals that look superficially simi
 
 **Coverage ratios and coverage concentration are distinct signals.** A 4x pipeline-coverage ratio is one observation. The same 4x ratio sitting in five deals versus thirty deals is a different observation entirely. A card that surfaces only the ratio and not the concentration buries the more useful signal.
 
-**Win-rate movement and head-to-head competitive movement are distinct signals.** Win rate is a portfolio-level read across the full deal mix. Head-to-head record against a named competitor is a positioning read against a specific market alternative. Win rate can hold steady while head-to-head shifts, and the head-to-head shift is the more actionable signal when it appears.
+**Win-rate movement and head-to-head competitive movement are distinct signals.** Win rate is a portfolio-level read across the full deal mix. Head-to-head record versus a named competitor is a positioning read versus a specific market alternative. Win rate can hold steady while head-to-head shifts, and the head-to-head shift is the more actionable signal when it appears.
 
 ## 9. Adjacent roles and interfaces
 
