@@ -27,7 +27,7 @@
 
 Atlas is run by a small executive team and two co-founders. Each leader owns a functional domain. Lens describes the company and its leaders; who the current Lens user is, and what falls inside their seat, comes from the role declared in the operating instructions, not from this section.
 
-**Sophie Zhang, VP of Marketing.** Owns demand gen, content, product marketing, brand, and growth. Reports to the CEO. Manages a team of 18. Primary systems: HubSpot, Salesforce (marketing views), Google Analytics, LinkedIn Ads, Google Ads, SEMrush. The marketing function is accountable for pipeline contribution (expected to source 30%+), CAC efficiency (blended CAC $18.2K, up from $14.8K), MQL-to-SQL conversion, content-influenced pipeline, competitive positioning against FlowStack, and GTM execution for Atlas Assist.
+**Sophie Zhang, VP of Marketing.** Owns demand gen, content, product marketing, brand, and growth. Reports to the CEO. Manages a team of 18. Primary systems: HubSpot, Salesforce (marketing views), Google Analytics, LinkedIn Ads, Google Ads, SEMrush. The marketing function is accountable for pipeline contribution (expected to source 30%+), CAC efficiency (blended CAC $18.2K, up from $14.8K), MQL-to-SQL conversion, content-influenced pipeline, competitive positioning versus FlowStack, and GTM execution for Atlas Assist.
 
 **Kevin O'Malley, VP of Sales.** Owns pipeline conversion and the revenue number. Leading the Ridgeline Health deal personally. Primary systems: Salesforce (opportunity and forecast views), Gong, Outreach. The revenue function is accountable for pipeline coverage, deal velocity, quota attainment, expansion, and rep-level performance. Source of truth for weighted pipeline dollar figures, coverage ratios, quota attainment, and the revenue forecast.
 
@@ -80,34 +80,34 @@ Sophie's marketing org reports (the 18-person marketing function):
   - Google Ads: $14,900 (flat)
   - Events: $28,600 (SaaStr and two regional conferences)
   - Partner referrals: $4,200 (small volume, best unit economics)
-- **Channel ROI divergence:** The gap between content CAC and paid CAC was 2.4x six months ago. It's 3.3x now. Paid is not getting worse in absolute terms; content is getting better.
+- **Channel ROI divergence:** The spread between content CAC and paid CAC ran 2.4x six months ago; it runs 3.3x now. Paid stays stable in absolute terms; content runs more efficient.
 
 ### Lead volume and conversion
 
 - **MQLs (Q1):** 2,840 total, up 18% YoY.
 - **MQL-to-SQL conversion:** 11.2%, down from 13.4% two quarters ago. Inside B2B SaaS benchmark of 10-15% but trending toward the floor.
 - **SQL-to-closed-won:** 22% (stable).
-- **Conversion by source (Q1):** Content leads convert to SQL at 17%. Paid leads convert at 7%. The gap is widening.
+- **Conversion by source (Q1):** Content leads convert to SQL at 17%. Paid leads convert at 7%. The spread keeps widening.
 
 ### Content-influenced pipeline
 
 - **Top content asset by attribution:** The "Workflow Automation ROI Calculator" (launched 2023) touches 38% of all closed-won deals. No other single asset is above 11%. Redundancy is thin if the calculator's traffic changes.
 - **Blog traffic (Q1):** 84,400 sessions, up 12% QoQ. Organic and SEO driving most of the growth.
 - **Gated content conversion:** 6.8% visitor-to-MQL on the calculator page. Gated-tool benchmark is 4-6%.
-- **Content gap:** No long-form content on Atlas Assist yet. Alpha is May 1. The Content Marketing Manager role has been open 3 weeks.
+- **Content open ground:** No long-form content on Atlas Assist yet. Alpha is May 1. The Content Marketing Manager role has been open 3 weeks.
 
 ### Dark funnel and word-of-mouth
 
 - **Closed-won deals with no attributed first touch (Q1):** 8 deals, $640K combined ARR. That's 22% of closed-won by count, 31% by revenue.
 - **Self-reported source (post-close survey):** "Heard about Atlas from a peer" is 28% of new customers, up from 18% a year ago.
 - **Community signal:** Atlas mentions on r/workflowautomation and LinkedIn (unprompted) are up 40% QoQ. No paid amplification driving it.
-- **Attribution read:** 31% of revenue is coming from deals the model can't source. Either a working channel Atlas is underinvesting in, or a measurement gap.
+- **Attribution read:** 31% of revenue is coming from deals the model can't source. Either a working channel Atlas is underinvesting in, or measurement that runs partial.
 
 ### Competitive displacement
 
 - **Competitive displacement rate (closed-won, last 90 days):** Atlas displaced FlowStack in 4 deals, displaced Workato in 2, replaced internal spreadsheet solutions in 11. Atlas lost 3 deals to FlowStack in the same window.
 - **Win rate vs. FlowStack:** 57%, down from 62% six months ago.
-- **Common reason cited in FlowStack losses:** Pricing (FlowStack is discounting aggressively) and FlowStack Copilot (launched 3 weeks ago).
+- **Common reason cited in FlowStack-displaced deals:** Pricing (FlowStack is discounting aggressively) and FlowStack Copilot (launched 3 weeks ago).
 - **Common reason cited in Atlas wins vs. FlowStack:** Time-to-value (Atlas onboards faster) and HIPAA BAA (FlowStack doesn't have one).
 
 ### GTM execution
@@ -153,7 +153,7 @@ Revenue-domain signals for Atlas SaaS. Raw P&L consolidation lives with Megan (F
 ### Pipeline health
 
 - **Q2 new ARR target:** $1.4M (company-wide).
-- **Pipeline coverage:** 2.1x ($2.94M weighted against $1.4M target). Benchmark is 3-4x.
+- **Pipeline coverage:** 2.1x ($2.94M weighted; $1.4M target). Benchmark is 3-4x.
 - **Marketing-sourced slice of Q2 pipeline:** $890K weighted, 30% of total.
 - **Gap to target:** $980K, of which Ridgeline Health ($380K) is the marquee deal.
 - **Q1 actual new ARR:** $980K (target was $1.1M, 89% of plan).
@@ -302,9 +302,9 @@ These are not pre-written cards. They're examples of the kinds of cross-domain c
 
 - **Atlas Assist launch ↔ platform rewrite timeline ↔ SaaStr panel:** Three interlocking dates. If the rewrite slips, the May 1 alpha slips, the May 15 announcement slips, the SaaStr panel loses its demo. One engineering timeline shapes the entire GTM quarter.
 
-- **FlowStack Copilot launch ↔ win rate vs. FlowStack ↔ Atlas Assist positioning:** Win rate against FlowStack dropped from 62% to 57% after Copilot shipped. Atlas Assist is the messaging response. Positioning is the lever.
+- **FlowStack Copilot launch ↔ win rate vs. FlowStack ↔ Atlas Assist positioning:** Win rate versus FlowStack ran 62% before Copilot shipped; sits at 57% now. Atlas Assist is the messaging response. Positioning is the lever.
 
-- **Word-of-mouth growth ↔ attribution gap ↔ budget allocation:** 31% of closed-won revenue has no first-touch attribution. Community mentions up 40% QoQ. Either a working channel Atlas is underinvesting in, or a measurement gap. The diagnosis drives the action.
+- **Word-of-mouth growth ↔ attribution open ground ↔ budget allocation:** 31% of closed-won revenue has no first-touch attribution. Community mentions up 40% QoQ. Either a working channel Atlas is underinvesting in, or measurement that runs partial. The diagnosis drives the action.
 
 - **Content asset concentration ↔ channel fragility:** The ROI calculator touches 38% of closed-won deals. No other single asset is above 11%. One page carries a disproportionate share of pipeline sourcing.
 
