@@ -5,5 +5,10 @@
   "scripts": {
     "test": "node --test 'tests/**/*.test.js'",
     "eval": "env -u ANTHROPIC_API_KEY node --env-file=.env evals/reviewer.mjs"
+  },
+  "devDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.15.4"
   }
 }
