@@ -8,16 +8,30 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
 
 // Active surfaces only. Archived lens-*.html files are out of scope by design.
-// marketing-leader-brief.md is imported into worker.js and loaded into every
-// prompt build, so it gets the same hygiene treatment as the other data/*.md
-// bundle files.
+// All 11 archetype briefs in data/*-brief.md are imported into worker.js and
+// loaded into the chat/card prompts whenever the matching archetype is
+// active. Iter-3 (2026-05-01) extended this list from 6 to all 13 active
+// data/*.md files after Voice's brief-audit task surfaced em-dash and
+// against/gap/loss contamination across briefs that had been silently
+// slipping into live model output. Every brief loaded into a shipping
+// prompt now gets the full hygiene scan.
 const ACTIVE_FILES = [
   'index.html',
   'worker.js',
   'data/persona.md',
   'data/voice-brief.md',
   'data/atlas-saas.md',
+  'data/customer-advocate-brief.md',
+  'data/customer-leader-brief.md',
+  'data/customer-operator-brief.md',
+  'data/customer-technician-brief.md',
+  'data/marketing-builder-brief.md',
   'data/marketing-leader-brief.md',
+  'data/marketing-strategist-brief.md',
+  'data/revenue-developer-brief.md',
+  'data/revenue-generator-brief.md',
+  'data/revenue-leader-brief.md',
+  'data/revenue-operator-brief.md',
 ];
 
 function readActive(path) {

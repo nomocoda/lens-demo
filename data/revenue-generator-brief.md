@@ -4,9 +4,9 @@
 
 ## 1. Who this archetype actually is
 
-The Revenue Generator in B2B SaaS is the quota-carrying account executive — the individual who owns a territory or named-account list and is measured on closed-won ARR, net new logos, and expansion within their book. Their accountability is concrete in a way that most roles are not: the number is their number, and it is visible to everyone every week. A good day is a contract moving to legal, a champion re-engaged on a deal that had gone quiet, and a discovery call that qualifies into a pipeline opportunity. A bad day is a deal slipping out of the quarter, a buying committee going silent, or a competitive evaluation they learned about too late.
+The Revenue Generator in B2B SaaS is the quota-carrying account executive, the individual who owns a territory or named-account list and is measured on closed-won ARR, net new logos, and expansion within their book. Their accountability is concrete in a way that most roles are not: the number is their number, and it is visible to everyone every week. A good day is a contract moving to legal, a champion re-engaged on a deal that had gone quiet, and a discovery call that qualifies into a pipeline opportunity. A bad day is a deal pushing into the next quarter, a buying committee going silent, or a competitive evaluation they learned about too late.
 
-This is the person who describes their job as "running a small business inside a company." They track their own territory like a P&L: pipeline coverage against quota, deal age by stage, champion strength on the top-five deals. They think in close probabilities and stage velocity, but they also think in relationships — who on the buying committee has gone quiet, which executive sponsor needs a proof point before signing. They live in the CRM deal view, the demo calendar, and the negotiation email chain. They need intelligence that tells them which deal to focus on today and what is moving across their territory without being asked.
+This is the person who describes their job as "running a small business inside a company." They track their own territory like a P&L: pipeline coverage versus quota, deal age by stage, champion strength on the top-five deals. They think in close probabilities and stage velocity, but they also think in relationships, who on the buying committee has gone quiet, which executive sponsor needs a proof point before signing. They live in the CRM deal view, the demo calendar, and the negotiation email chain. They need intelligence that tells them which deal to focus on today and what is moving across their territory without being asked.
 
 ## 2. Real roles that map to this archetype
 
@@ -27,10 +27,10 @@ This is the person who describes their job as "running a small business inside a
 - Renewals AE: when the role owns upsell and expansion alongside renewal; functionally an AE on expansion deals
 
 **Titles that sound similar but don't fit:**
-- CRO / VP Sales: the Revenue Leader archetype — operates at segment level, not deal level
-- SDR / BDR: the Revenue Developer archetype — owns pipeline creation, not deal closure
-- RevOps / Sales Ops: the Revenue Operator archetype — owns system and data quality, not quota
-- VP Customer Success: the Customer Leader archetype — owns retention and expansion portfolio
+- CRO / VP Sales: the Revenue Leader archetype, operates at segment level, not deal level
+- SDR / BDR: the Revenue Developer archetype, owns pipeline creation, not deal closure
+- RevOps / Sales Ops: the Revenue Operator archetype, owns system and data quality, not quota
+- VP Customer Success: the Customer Leader archetype, owns retention and expansion portfolio
 
 ## 3. What they spend their time on
 
@@ -38,9 +38,9 @@ This is the person who describes their job as "running a small business inside a
 
 **Weekly:** The weekly rhythm centers on pipeline review with the manager and preparation for whatever deal-review format the company uses. They pressure-test their own commit: stage progression for each deal, last meaningful interaction with the champion, procurement timeline. They also update deal records (next steps, stage notes, contact roles), review battlecard freshness for active competitive deals, and check if any SDR-sourced opportunities in their territory need acceptance.
 
-**Monthly:** Deal-aging cleanup (clear or close deals that have sat in a stage past threshold), territory pipeline coverage check against quota, outbound sequence refresh for cold territory accounts, and a win/loss pattern read on the deals that closed or died in the month.
+**Monthly:** Deal-aging cleanup (clear or close deals that have sat in a stage past threshold), territory pipeline coverage check versus quota, outbound sequence refresh for cold territory accounts, and a deal-outcome pattern read on the deals that closed or died in the month.
 
-**Quarterly:** Quarter-close intensity (final two weeks: every commit deal reviewed with manager daily). Then territory planning for the next quarter: coverage gap analysis, ICP account prioritization, cross-functional handoff prep (CSM for newly closed accounts, SDR for accounts returning to outbound).
+**Quarterly:** Quarter-close intensity (final two weeks: every commit deal reviewed with manager daily). Then territory planning for the next quarter: coverage open-ground analysis, ICP account prioritization, cross-functional handoff prep (CSM for newly closed accounts, SDR for accounts returning to outbound).
 
 ## 4. What they read and listen to
 
@@ -59,7 +59,7 @@ This is the person who describes their job as "running a small business inside a
 - Gartner Buyer Behavior Research (buying committee size and dynamics)
 - Bridge Group SaaS AE Metrics Report (quota attainment, ramp time, activity benchmarks)
 - Clari Revenue Benchmarks (deal velocity, stage conversion)
-- Gong / Chorus win/loss pattern analysis
+- Gong / Chorus deal-outcome pattern analysis
 
 ## 5. What they complain about (and where it hurts)
 
@@ -70,7 +70,7 @@ The AE lands a great demo, gets verbal enthusiasm, and then three days pass with
 A 3.4x pipeline looks healthy. But when four of the top deals are at the same company or in the same vertical, losing one shifts the whole quarter. The AE needs the concentration surfaced, not buried in the ratio. *Goal-pursuit friction: Goal 2 (Pipeline Quality and Coverage).*
 
 **3. CRM hygiene takes time away from selling.**
-Logging calls, updating next steps, capturing outcome reasons — the AE understands the value but feels the friction when it competes with actual deal work. When the system catches up to activity automatically, they notice. When it does not, they fall behind and the manager asks about it. *Goal-pursuit friction: Goal 3 (Deal Execution Efficiency).*
+Logging calls, updating next steps, capturing outcome reasons, the AE understands the value but feels the friction when it competes with actual deal work. When the system catches up to activity automatically, they notice. When it does not, they fall behind and the manager asks about it. *Goal-pursuit friction: Goal 3 (Deal Execution Efficiency).*
 
 **4. Competitor intel arrives too late.**
 The AE is deep in evaluation with a champion, and learns from the champion's silence that a competitor entered three days ago. The battlecard helps, but the timing lag is the real problem. *Goal-pursuit friction: Goal 4 (Competitive Winning).*
@@ -82,9 +82,9 @@ A newly onboarded account hits a usage milestone that signals expansion, and the
 
 **Individual rep performance surfaced as their own scorecard.** The AE knows their number. A card that surfaces their personal quota attainment or activity rate relative to peers is a management conversation, not an intelligence conversation. This archetype operates at deal and territory level; rep-versus-rep comparison is the manager's role.
 
-**Activity metrics offered as deal health.** Calls made, emails sent, meetings booked — the AE tracks these as inputs, not as news. A card that surfaces "you made 42 calls this week" adds no intelligence. The signal is whether the activity produced a stage change or a champion response.
+**Activity metrics offered as deal health.** Calls made, emails sent, meetings booked, the AE tracks these as inputs, not as news. A card that surfaces "you made 42 calls this week" adds no intelligence. The signal is whether the activity produced a stage change or a champion response.
 
-**Pipeline coverage as a verdict.** A 3.4x coverage ratio is a data point, not a grade. Whether it is enough depends on conversion rate, deal velocity, and concentration — factors the AE knows better than any dashboard. Grading coverage as "strong" or "light" against a benchmark is the manager's job, not Lens's.
+**Pipeline coverage as a verdict.** A 3.4x coverage ratio is a data point, not a grade. Whether it is enough depends on conversion rate, deal velocity, and concentration, factors the AE knows better than any dashboard. Grading coverage as "strong" or "light" versus a benchmark is the manager's job, not Lens's.
 
 **Competitive intel without specificity.** An AE in a head-to-head deal needs the specific counter-narrative for that competitor's objection, not a generic win-rate trend. Lens delivers the pattern; the human applies the counter.
 
@@ -106,11 +106,11 @@ A newly onboarded account hits a usage milestone that signals expansion, and the
 
 The Revenue Generator's mental model separates signals that look superficially similar but answer different questions. Cards must respect that separation. Conflating them collapses two cards into one and drops the more diagnostic of the two.
 
-**Multi-thread depth on large deals is distinct from multi-thread depth across all deals.** A signal about deals above a specific ACV threshold naming 4-plus engaged contacts is a buying-committee-complexity signal. A blanket "thread depth improved across the portfolio" is a different — and less actionable — read. The threshold matters because buying committee dynamics above $250K are structurally different from sub-$100K deals.
+**Multi-thread depth on large deals is distinct from multi-thread depth across all deals.** A signal about deals above a specific ACV threshold naming 4-plus engaged contacts is a buying-committee-complexity signal. A blanket "thread depth improved across the portfolio" is a different, and less actionable, read. The threshold matters because buying committee dynamics above $250K are structurally different from sub-$100K deals.
 
 **Proposal-stage-time is distinct from full-cycle velocity.** An improvement in how fast deals clear the proposal stage names a procurement or pricing-conversation dynamic. An improvement in full create-to-close time names a qualification and discovery dynamic. Both can improve simultaneously or independently; each deserves its own card when they do.
 
-**Win rate on a named competitor is distinct from portfolio-level win rate.** An AE's overall win rate reflects territory mix and ICP concentration as much as competitive dynamics. Win rate against a specific competitor names a positioning-and-execution signal the overall rate obscures. When head-to-head rate moves, the specific card move or demo strategy is the insight, not the aggregate.
+**Win rate on a named competitor is distinct from portfolio-level win rate.** An AE's overall win rate reflects territory mix and ICP concentration as much as competitive dynamics. Win rate versus a specific competitor names a positioning-and-execution signal the overall rate obscures. When head-to-head rate moves, the specific card move or demo strategy is the insight, not the aggregate.
 
 **Battlecard utilization and win rate are distinct signals.** Battlecard opens in active competitive deals is a behavior signal. Win rate on those deals is an outcome signal. Both can trend independently: high utilization with flat win rate suggests the content needs refreshing. Rising win rate without rising utilization suggests something else is driving the improvement.
 
@@ -122,8 +122,8 @@ The Revenue Generator's mental model separates signals that look superficially s
 
 **Marketing Strategist:** Battlecard and positioning partner. The AE uses competitive battlecards in head-to-head deals; when the content is stale or wrong, the AE is the first to know. Battlecard utilization rates surface back to the Strategist as signal.
 
-**Customer Advocate (CSM):** Handoff and expansion partner. The AE hands newly closed accounts to the CSM for onboarding; the CSM flags expansion-ready accounts back to the AE. The timing of that flag is the friction point — too late means a competitor fills the gap first.
+**Customer Advocate (CSM):** Handoff and expansion partner. The AE hands newly closed accounts to the CSM for onboarding; the CSM flags expansion-ready accounts back to the AE. The timing of that flag is the friction point, too late means a competitor fills the slot first.
 
 **Revenue Operator (RevOps):** Data quality and tooling partner. The AE depends on RevOps for stage definitions, CRM hygiene standards, sequence tooling, and attribution accuracy. When routing breaks or sequences do not load, the AE loses selling time.
 
-**Product / CPO:** Feature-request escalation path. Late-stage enterprise deals sometimes require roadmap commitments to close. The AE escalates to the revenue leader, who escalates to product. The outcome — commitment or no commitment — determines whether the deal closes.
+**Product / CPO:** Feature-request escalation path. Late-stage enterprise deals sometimes require roadmap commitments to close. The AE escalates to the revenue leader, who escalates to product. The outcome, commitment or no commitment, determines whether the deal closes.

@@ -6,11 +6,11 @@
 
 The Customer Leader is the executive accountable for the retained and expanded revenue base. They own NRR, GRR, and the renewal forecast, and they report those numbers to the CEO, CFO, and board every quarter. At mid-market B2B SaaS companies, they carry the title VP of Customer Success, CCO, or Head of CS. Their defining accountability is proving that the customers already in the door are staying, growing, and generating compounding revenue, not just service satisfaction.
 
-A good week is a renewal forecast that closes exactly where it was committed, an expansion deal sourced from a CSM who caught a usage signal before the customer raised it, and a board deck slide on NRR that moves from 108% to 111%. A bad week is discovering that an account the health score marked green just sent a cancellation notice, or that the largest renewal in the quarter has stalled. The Customer Leader lives at the intersection of relationship and revenue: they must prove that their team is a growth engine while managing a function that is fundamentally relational, qualitative, and hard to quantify.
+A good week is a renewal forecast that closes exactly where it was committed, an expansion deal sourced from a CSM who caught a usage signal before the customer raised it, and a board deck slide on NRR that moves from 108% to 111%. A bad week is discovering that an account the health score marked green just sent a cancellation notice, or that the largest renewal in the quarter sits at standstill. The Customer Leader lives at the intersection of relationship and revenue: they must prove that their team is a growth engine while managing a function that is fundamentally relational, qualitative, and hard to quantify.
 
 The role sits in structural tension in 2026. ChurnZero's 2025 Customer Revenue Leadership Study (793 senior CS leaders) found 74% report that most of their company's revenue comes from existing customers, while CS teams lack the data infrastructure sales has had for a decade. Customer Success Collective's State of CS 2025 describes a "fog of expectations" where everything not handled by Support defaults to CS. CCO workload satisfaction dropped 20 points to just 34%. They are simultaneously the most strategically important post-sale function and the most structurally underfunded one.
 
-Practitioner language from Gainsight Pulse, Gain Grow Retain, and the CS Insider community reveals a consistent self-image: the Customer Leader wants to be the person who makes retention feel like compound interest, invisible when it's working, catastrophic when it breaks. The question they ask most often is not "how is each customer doing?" — they have CSMs for that. The question is: "Where is the risk hiding that my scorecards aren't showing me?"
+Practitioner language from Gainsight Pulse, Gain Grow Retain, and the CS Insider community reveals a consistent self-image: the Customer Leader wants to be the person who makes retention feel like compound interest, invisible when it's working, catastrophic when it breaks. The question they ask most often is not "how is each customer doing?", they have CSMs for that. The question is: "Where is the risk hiding that my scorecards aren't showing me?"
 
 ## 2. Real roles that map to this archetype
 
@@ -73,12 +73,12 @@ Practitioner language from Gainsight Pulse, Gain Grow Retain, and the CS Insider
 ## 5. What they complain about (and where it hurts)
 
 **1. Silent churn: the account the health score said was fine.**
-The most universally cited fear in CS executive communities. An account marked green sends a cancellation notice with two weeks left on the contract. The health score worked on the metrics it was built on and missed everything it wasn't built to see: the champion who quietly stopped attending QBRs, the budget review that IT started internally, the new CTO who brought a competing tool from their last company. The Customer Leader can defend a forecast variance when they saw the risk; they cannot defend the variance they didn't see. *Goal-pursuit friction: retention accountability — the core outcome the role is evaluated on.*
+The most universally cited fear in CS executive communities. An account marked green sends a cancellation notice with two weeks left on the contract. The health score worked on the metrics it was built on and missed everything it wasn't built to see: the champion who quietly stopped attending QBRs, the budget review that IT started internally, the new CTO who brought a competing tool from their last company. The Customer Leader can defend a forecast variance when they saw the risk; they cannot defend the variance they didn't see. *Goal-pursuit friction: retention accountability, the core outcome the role is evaluated on.*
 
 **2. Proving CS is a revenue engine when Finance sees a cost center.**
 CS teams generated, influenced, or defended a significant portion of company revenue through renewals and expansions, but the CS P&L shows headcount cost, travel, and platform spend. The Customer Leader has to translate "we retained 96% of ARR" into a valuation argument (NRR above 110% correlates with 6x+ revenue multiples per SaaS Capital data) while Finance is looking at CSM salary lines. *Goal-pursuit friction: board credibility and proving CS ROI.*
 
-**3. The data gap: flying blind at the portfolio level.**
+**3. The data void: flying blind at the portfolio level.**
 74% of CS leaders say most company revenue comes from existing customers, but CS teams lack the data infrastructure sales has had for a decade. Product telemetry lives in a data warehouse CS can't access without SQL or a data team. CRM data is incomplete because AEs didn't update fields after close. The Customer Leader is accountable for a renewal forecast built on data they partially can't see. *Cross-functional friction: with Revenue Operator (CRM data architecture) and Product Builder (product telemetry access).*
 
 **4. Expansion ownership disputes with Sales.**
@@ -98,7 +98,7 @@ The renewal forecast is a sales forecast for accounts already in the book. It ha
 
 **Conflating CS with support.** The Customer Leader owns retention and expansion revenue, not ticket resolution. When a product or reporting frame positions CS primarily as the team that handles complaints, it misidentifies the role's accountability. This is the "cost center" framing the Customer Leader has spent years fighting internally.
 
-**Promising "AI-powered churn prediction" without acknowledging the model trust gap.** CS leaders want AI that reduces tedious work; they're skeptical of AI that claims to replace relationship judgment. "Predict churn" language specifically triggers the "we tried that and it got the wrong answer" response.
+**Promising "AI-powered churn prediction" without acknowledging the model trust deficit.** CS leaders want AI that reduces tedious work; they're skeptical of AI that claims to replace relationship judgment. "Predict churn" language specifically triggers the "we tried that and it got the wrong answer" response.
 
 **Suggesting CS leaders don't understand the revenue math.** The Customer Leader has memorized the SaaS Capital NRR-to-valuation table. Explaining it to them reads as condescending.
 
@@ -126,14 +126,14 @@ The Customer Leader's mental model separates signals that look superficially sim
 
 **CEO and CFO (upward):** the Customer Leader reports NRR, GRR, and renewal forecast directly to the CEO and through to the board. The CFO's lens is valuation impact: NRR trends affect revenue multiples, and CS budget justification happens in this conversation.
 
-**Revenue Leader / CRO (horizontal — highest-friction peer relationship):** shared accountability for NRR in larger orgs where CRO owns both pre-sale and post-sale revenue. Friction points are expansion ownership (who gets credit for an upsell surfaced by a CSM but closed by an AE), ICP alignment (when Sales closes deals outside the ideal customer profile, CS inherits the renewal risk), and renewal forecast integration with the overall revenue forecast.
+**Revenue Leader / CRO (horizontal, highest-friction peer relationship):** shared accountability for NRR in larger orgs where CRO owns both pre-sale and post-sale revenue. Friction points are expansion ownership (who gets credit for an upsell surfaced by a CSM but closed by an AE), ICP alignment (when Sales closes deals outside the ideal customer profile, CS inherits the renewal risk), and renewal forecast integration with the overall revenue forecast.
 
-**Marketing Leader (horizontal — advocacy and expansion campaigns):** CS feeds Marketing with customer stories, case studies, and references. Marketing's campaigns set expectations the Customer Leader inherits; expansion campaigns require CS-to-Marketing coordination to reach the right accounts at the right moment in the renewal cycle.
+**Marketing Leader (horizontal, advocacy and expansion campaigns):** CS feeds Marketing with customer stories, case studies, and references. Marketing's campaigns set expectations the Customer Leader inherits; expansion campaigns require CS-to-Marketing coordination to reach the right accounts at the right moment in the renewal cycle.
 
-**Product Leader (horizontal — feedback loop and roadmap):** the most consequential long-term interface. CS collects customer feedback continuously; Product needs it structured. Product telemetry lives in a data warehouse CS can't access without engineering support. "Is this a product problem or a success problem?" is the defining diagnostic question at this interface.
+**Product Leader (horizontal, feedback loop and roadmap):** the most consequential long-term interface. CS collects customer feedback continuously; Product needs it structured. Product telemetry lives in a data warehouse CS can't access without engineering support. "Is this a product problem or a success problem?" is the defining diagnostic question at this interface.
 
-**Customer Operator (downward — systems and intelligence infrastructure):** the Customer Leader depends on the Customer Operator for health scoring that can be trusted, playbooks that execute consistently, and dashboards that make the renewal forecast readable.
+**Customer Operator (downward, systems and intelligence infrastructure):** the Customer Leader depends on the Customer Operator for health scoring that can be trusted, playbooks that execute consistently, and dashboards that make the renewal forecast readable.
 
-**Customer Advocate / CSM (downward — front-line execution):** CSMs produce the relationship signals, expansion leads, and renewal execution that the Customer Leader reports upward. The Customer Leader's board story is built on what CSMs see at the account level.
+**Customer Advocate / CSM (downward, front-line execution):** CSMs produce the relationship signals, expansion leads, and renewal execution that the Customer Leader reports upward. The Customer Leader's board story is built on what CSMs see at the account level.
 
-**Customer Technician / Onboarding (downward — time to value):** onboarding is the first CS milestone, and time to first value is the earliest retention predictor. A failed onboarding is a renewal risk the Customer Leader inherits at 90 days.
+**Customer Technician / Onboarding (downward, time to value):** onboarding is the first CS milestone, and time to first value is the earliest retention predictor. A failed onboarding is a renewal risk the Customer Leader inherits at 90 days.

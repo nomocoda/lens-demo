@@ -32,15 +32,15 @@ The Marketing Strategist operates at the intersection of what the market believe
 - Marketing Builder (demand gen / MOPs / campaigns altitude): executes campaigns the Marketing Strategist positions
 - VP of Sales Enablement (this is a distinct role where enablement is a separate function from marketing)
 
-**Seniority notes:** The Marketing Strategist archetype begins when the person is the final accountability point for positioning and competitive response on a product or product line. A PMM who reports to a VP of PMM who owns positioning is a junior-to-mid Marketing Strategist. The archetype is most cleanly observed when the person owns the battlecard, the launch brief, and the sales win/loss analysis.
+**Seniority notes:** The Marketing Strategist archetype begins when the person is the final accountability point for positioning and competitive response on a product or product line. A PMM who reports to a VP of PMM who owns positioning is a junior-to-mid Marketing Strategist. The archetype is most cleanly observed when the person owns the battlecard, the launch brief, and the sales deal-outcome analysis.
 
 ## 3. What they spend their time on
 
-**Weekly:** Win/loss review — which deals closed, which were lost, which involved competitors, and what the close reasons say. Competitive landscape scan — new announcements, funding rounds, product changes from Beacon Systems, Northstar Platform, and Verge IO. Battlecard and enablement asset updates where new data warrants a rewrite. Message resonance check — does the discovery call data (Gong, call-tracking) show the intended frames landing?
+**Weekly:** deal-outcome review, which deals closed, which were lost, which involved competitors, and what the close reasons say. Competitive landscape scan, new announcements, funding rounds, product changes from Beacon Systems, Northstar Platform, and Verge IO. Battlecard and enablement asset updates where new data warrants a rewrite. Message resonance check, does the discovery call data (Gong, call-tracking) show the intended frames landing?
 
-**Monthly:** Full competitive positioning assessment. ICP validation — are this month's new customers the customers we wrote the positioning for? Launch readiness scoring for upcoming product releases. Earned media analysis from recent launches. Cross-functional sync with CS on exit interview themes and retention signals that feed positioning.
+**Monthly:** Full competitive positioning assessment. ICP validation, are this month's new customers the customers we wrote the positioning for? Launch readiness scoring for upcoming product releases. Earned media analysis from recent launches. Cross-functional sync with CS on exit interview themes and retention signals that feed positioning.
 
-**Quarterly:** Major message refresh if win rate data or competitive trends demand it. Full launch retrospective — did the GTM execution meet plan on pipeline generation, asset adoption, and media coverage? ICP definition review with Sales and CS leadership.
+**Quarterly:** Major message refresh if win rate data or competitive trends demand it. Full launch retrospective, did the GTM execution meet plan on pipeline generation, asset adoption, and media coverage? ICP definition review with Sales and CS leadership.
 
 **Ad hoc:** Competitive response briefs when a competitor raises a funding round, announces a major product, or starts appearing in a new segment of deals. Sales escalations on competitive deals where the rep needs real-time support beyond the battlecard.
 
@@ -49,7 +49,7 @@ The Marketing Strategist operates at the intersection of what the market believe
 **Podcasts:**
 - *Product Marketing Alliance* podcast, the dominant PMM community resource
 - *The Competitive Intelligence Alliance* podcast (CI practitioners)
-- *Win/Loss Analysis — The Customer Interview Podcast* (win/loss research and CI)
+- *Deal-Outcome Analysis, The Customer Interview Podcast* (deal-outcome research and CI)
 - *B2B Marketing & Revenue* by Insight Platforms (positioning and message research)
 - *Category Pirates* newsletter/podcast (category design, narrative positioning)
 
@@ -70,7 +70,7 @@ The Marketing Strategist operates at the intersection of what the market believe
 ## 5. What they complain about (and where it hurts)
 
 **1. Close reasons are lies or blanks.**
-The Marketing Strategist's win/loss visibility depends on AEs entering structured close reasons in CRM. In practice, 60-70% of deals lack a reliable close reason field. When they do, "price" is overrepresented because it's the easiest answer and no one challenges it. "Lost to Competitor A" with no further context gives the Marketing Strategist nothing to work with. *Goal-pursuit friction: messaging effectiveness and competitive position — the core accountability the archetype is judged on.*
+The Marketing Strategist's deal-outcome visibility depends on AEs entering structured close reasons in CRM. In practice, 60-70% of deals lack a reliable close reason field. When they do, "price" is overrepresented because it's the easiest answer and no one challenges it. "Lost to Competitor A" with no further context gives the Marketing Strategist nothing to work with. *Goal-pursuit friction: messaging effectiveness and competitive position, the core accountability the archetype is judged on.*
 
 **2. Battlecards nobody opens.**
 A battlecard is worthless if it lives in a shared drive. The Marketing Strategist can spend three weeks building a 15-page Competitor A competitive response and not know for six months that 80% of reps never opened it. They need utilization data. Without it they're guessing whether the enablement work is changing outcomes. *Goal-pursuit friction: sales enablement ROI and win rate lift.*
@@ -89,7 +89,7 @@ The Marketing Strategist is the person ensuring that positioning, battlecards, a
 
 ## 6. What would offend them
 
-**Treating win/loss data as a solved problem.** Every Marketing Strategist has been burned by win/loss data that was unreliable. Framing clean win/loss attribution as a baseline expectation rather than a hard-won outcome reads as naive.
+**Treating deal-outcome data as a solved problem.** Every Marketing Strategist has been burned by deal-outcome data that was unreliable. Framing clean deal-outcome attribution as a baseline expectation rather than a hard-won outcome reads as naive.
 
 **Recommending they go "talk to customers" as a solution.** They know. They've done the interviews. What they need is systematic signal that doesn't require manual effort to extract.
 
@@ -105,7 +105,7 @@ The Marketing Strategist is the person ensuring that positioning, battlecards, a
 
 **Quote 2:** "If no one opens the battlecard, it might as well not exist."
 
-**Quote 3:** "The ICP we said we were going after — is it actually who's closing?"
+**Quote 3:** "The ICP we said we were going after, is it actually who's closing?"
 
 **Quote 4:** "How much pipeline did the launch actually create, or are we just claiming credit for deals that were already in motion?"
 
@@ -115,24 +115,24 @@ The Marketing Strategist is the person ensuring that positioning, battlecards, a
 
 The Marketing Strategist's mental model separates signals that look similar but answer different questions at different strategic altitudes.
 
-**Competitive win rate is distinct from battlecard utilization.** A 12-point win rate lift on Competitor A deals is an outcome signal (positioning worked or the competitor slipped). Battlecard utilization climbing to 61% of Competitor A opps is a behavior signal (reps are using the enablement). The two can move independently: utilization can be high while win rate stagnates (the battlecard isn't effective), or win rate can lift in a window where utilization didn't change (market conditions, not enablement, drove the outcome). Surface both when the data supports both; do not fold one into the other.
+**Competitive win rate is distinct from battlecard utilization.** A 12-point win rate lift on Competitor A deals is an outcome signal (positioning worked or the competitor faltered). Battlecard utilization climbing to 61% of Competitor A opps is a behavior signal (reps are using the enablement). The two can move independently: utilization can be high while win rate stagnates (the battlecard isn't effective), or win rate can lift in a window where utilization didn't change (market conditions, not enablement, drove the outcome). Surface both when the data supports both; do not fold one into the other.
 
-**Competitor emergence is distinct from competitive outcome.** Verge IO appearing in 24% of Q2 deals is a market-presence signal — they are getting into more conversations. It is NOT a win rate signal, which requires knowing how many of those deals closed and whether they won. Both observations are worth surfacing independently when the data supports the distinction.
+**Competitor emergence is distinct from competitive outcome.** Verge IO appearing in 24% of Q2 deals is a market-presence signal, they are getting into more conversations. It is NOT a win rate signal, which requires knowing how many of those deals closed and whether they won. Both observations are worth surfacing independently when the data supports the distinction.
 
-**Message resonance is distinct from positioning win rate.** "Speed-to-value" re-stated on 62% of discovery calls is a resonance signal from Gong transcript analysis — prospects are picking up the frame. Whether that frame ultimately produces better close rates is a downstream outcome that takes a quarter to measure. Resonance and win rate can differ: a frame that resonates strongly in discovery may still fail at the evaluation stage for other reasons.
+**Message resonance is distinct from positioning win rate.** "Speed-to-value" re-stated on 62% of discovery calls is a resonance signal from Gong transcript analysis, prospects are picking up the frame. Whether that frame ultimately produces better close rates is a downstream outcome that takes a quarter to measure. Resonance and win rate can differ: a frame that resonates strongly in discovery may still fail at the evaluation stage for other reasons.
 
-**Launch pipeline is distinct from launch-attributable pipeline share.** $420K of new pipeline from the April 8 launch is an absolute signal. That launch-attributable pipeline crossed 18% of Q2 net new is a relative signal — the launch's contribution to the total pipeline mix has grown. Both are worth a card when the data supports both, because they answer different questions for the Marketing Strategist (how much did this launch produce vs. how important is the launch motion to total revenue contribution).
+**Launch pipeline is distinct from launch-attributable pipeline share.** $420K of new pipeline from the April 8 launch is an absolute signal. That launch-attributable pipeline crossed 18% of Q2 net new is a relative signal, the launch's contribution to the total pipeline mix has grown. Both are worth a card when the data supports both, because they answer different questions for the Marketing Strategist (how much did this launch produce vs. how important is the launch motion to total revenue contribution).
 
 ## 9. Adjacent roles and interfaces
 
 **Marketing Leader / CMO (upward):** The Marketing Strategist's work feeds the CMO's positioning narrative and board communications. They typically report into the Marketing Leader but operate with high autonomy on competitive and launch work.
 
-**Revenue Leader / CRO (horizontal — highest-friction peer):** Win/loss attribution, ICP validation, battlecard effectiveness, and competitive response all require alignment with the CRO. The Marketing Strategist owns the positioning that Sales executes; the CRO owns whether Sales uses it. Attribution methodology disputes live here.
+**Revenue Leader / CRO (horizontal, highest-friction peer):** deal-outcome attribution, ICP validation, battlecard effectiveness, and competitive response all require alignment with the CRO. The Marketing Strategist owns the positioning that Sales executes; the CRO owns whether Sales uses it. Attribution methodology disputes live here.
 
-**Revenue Generator / AE (horizontal — primary consumer of battlecards):** AEs are the Marketing Strategist's front-line signal source (what they actually say in competitive deals) and their primary enablement audience (they are the ones who either open the battlecard or don't). Gong transcript data is the closest the Marketing Strategist gets to seeing real-time message resonance.
+**Revenue Generator / AE (horizontal, primary consumer of battlecards):** AEs are the Marketing Strategist's front-line signal source (what they actually say in competitive deals) and their primary enablement audience (they are the ones who either open the battlecard or don't). Gong transcript data is the closest the Marketing Strategist gets to seeing real-time message resonance.
 
-**Customer Leader / VP CS (horizontal — CS themes feed positioning):** Exit interview themes, churn pattern analysis, and expansion friction signals from CS produce positioning inputs the Marketing Strategist can't get from win/loss CRM data alone. The interface is usually informal (a monthly themes readout from CS) rather than a structured data pipeline.
+**Customer Leader / VP CS (horizontal, CS themes feed positioning):** Exit interview themes, churn pattern analysis, and expansion friction signals from CS produce positioning inputs the Marketing Strategist can't get from deal-outcome CRM data alone. The interface is usually informal (a monthly themes readout from CS) rather than a structured data pipeline.
 
-**Marketing Builder / Demand Gen (downward from strategy altitude):** The Marketing Strategist sets the message; the Marketing Builder executes the campaigns against it. Mis-alignment here is common: the demand gen team runs campaigns on last quarter's positioning while PMM has already moved to a new frame.
+**Marketing Builder / Demand Gen (downward from strategy altitude):** The Marketing Strategist sets the message; the Marketing Builder executes the campaigns versus it. Mis-alignment here is common: the demand gen team runs campaigns on last quarter's positioning while PMM has already moved to a new frame.
 
-**Product Leader / PM (horizontal — launch input and feedback):** The Marketing Strategist translates product capability into market-facing value propositions. They depend on the Product Leader for launch timing and feature clarity; the Product Leader depends on them for positioning and sales readiness.
+**Product Leader / PM (horizontal, launch input and feedback):** The Marketing Strategist translates product capability into market-facing value propositions. They depend on the Product Leader for launch timing and feature clarity; the Product Leader depends on them for positioning and sales readiness.

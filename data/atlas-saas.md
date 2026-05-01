@@ -130,7 +130,7 @@ Sophie's marketing org reports (the 18-person marketing function):
 
 ### Reference customers and case studies
 
-- **Published case studies (last 12 months):** 6. Two feature NexGen Financial. Gaps in healthcare, construction, and education verticals.
+- **Published case studies (last 12 months):** 6. Two feature NexGen Financial. Open ground in healthcare, construction, and education verticals.
 - **Reference customer requests (Q1):** 22. Declined 6 due to lack of available accounts in the requested vertical.
 - **Case study pipeline:**
   - NexGen Financial expansion write-up (Q2 publish)
@@ -155,7 +155,7 @@ Revenue-domain signals for Atlas SaaS. Raw P&L consolidation lives with Megan (F
 - **Q2 new ARR target:** $1.4M (company-wide).
 - **Pipeline coverage:** 2.1x ($2.94M weighted; $1.4M target). Benchmark is 3-4x.
 - **Marketing-sourced slice of Q2 pipeline:** $890K weighted, 30% of total.
-- **Gap to target:** $980K, of which Ridgeline Health ($380K) is the marquee deal.
+- **Still to find:** $980K, with Ridgeline Health ($380K) as the marquee deal.
 - **Q1 actual new ARR:** $980K (target was $1.1M, 89% of plan).
 - **Q1 churned ARR:** $340K.
 
@@ -336,7 +336,7 @@ pipeline contribution, demand gen efficiency, CAC payback, MQL volume, MQL-to-SQ
 
 - "expansion revenue" → use "growth from existing customers"
 - "opportunity" or "risk" as Signal labels → Signals are neutral
-- retired NomoCoda phrase combining "implementation" with "gap" → rephrase without it
+- retired NomoCoda phrase pairing "implementation" with a banned verdict-noun (the three-letter problem-framing word) → rephrase without it
 - em dashes anywhere → restructure the sentence
 
 ---
