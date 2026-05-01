@@ -113,7 +113,8 @@ These pairs translate the made-up language currently showing up in Story Cards i
 
 **7. Spend pacing**
 - Don't: "Q2 spend pacing is currently tracking against established budget parameters."
-- Do: "Spend pacing tightened on paid this week. The lever sits next in events."
+- Don't: "Spend pacing tightened on paid this week." ("tightened" is one of the insider verbs above.)
+- Do: "Paid spend runs at 88% of plan this week. The lever sits next in events."
 
 **8. Measurement posture**
 - Don't: "We are leveraging data-driven insights to inform strategic decisions."
