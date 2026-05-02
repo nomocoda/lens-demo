@@ -28,10 +28,10 @@ const ACTIVE_FILES = [
   'data/marketing-builder-brief.md',
   'data/marketing-leader-brief.md',
   'data/marketing-strategist-brief.md',
-  'data/revenue-developer-brief.md',
-  'data/revenue-generator-brief.md',
-  'data/revenue-leader-brief.md',
-  'data/revenue-operator-brief.md',
+  'data/sales-developer-brief.md',
+  'data/sales-generator-brief.md',
+  'data/sales-leader-brief.md',
+  'data/sales-operator-brief.md',
 ];
 
 function readActive(path) {
