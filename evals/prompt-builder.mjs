@@ -27,10 +27,10 @@ const ARCHETYPE_BRIEFS = {
   'marketing-leader': readFileSync(resolve(repoRoot, 'data/marketing-leader-brief.md'), 'utf8'),
   'marketing-strategist': readFileSync(resolve(repoRoot, 'data/marketing-strategist-brief.md'), 'utf8'),
   'marketing-builder': readFileSync(resolve(repoRoot, 'data/marketing-builder-brief.md'), 'utf8'),
-  'revenue-leader': readFileSync(resolve(repoRoot, 'data/revenue-leader-brief.md'), 'utf8'),
-  'revenue-generator': readFileSync(resolve(repoRoot, 'data/revenue-generator-brief.md'), 'utf8'),
-  'revenue-developer': readFileSync(resolve(repoRoot, 'data/revenue-developer-brief.md'), 'utf8'),
-  'revenue-operator': readFileSync(resolve(repoRoot, 'data/revenue-operator-brief.md'), 'utf8'),
+  'sales-leader': readFileSync(resolve(repoRoot, 'data/sales-leader-brief.md'), 'utf8'),
+  'sales-generator': readFileSync(resolve(repoRoot, 'data/sales-generator-brief.md'), 'utf8'),
+  'sales-developer': readFileSync(resolve(repoRoot, 'data/sales-developer-brief.md'), 'utf8'),
+  'sales-operator': readFileSync(resolve(repoRoot, 'data/sales-operator-brief.md'), 'utf8'),
   'customer-leader': readFileSync(resolve(repoRoot, 'data/customer-leader-brief.md'), 'utf8'),
   'customer-advocate': readFileSync(resolve(repoRoot, 'data/customer-advocate-brief.md'), 'utf8'),
   'customer-operator': readFileSync(resolve(repoRoot, 'data/customer-operator-brief.md'), 'utf8'),
@@ -41,10 +41,10 @@ const ARCHETYPE_ROLE_LABELS = {
   'marketing-leader': 'VP of Marketing',
   'marketing-strategist': 'Marketing Strategist',
   'marketing-builder': 'Marketing Builder',
-  'revenue-leader': 'VP of Sales',
-  'revenue-generator': 'Account Executive',
-  'revenue-developer': 'Sales Development Lead',
-  'revenue-operator': 'Revenue Operations Lead',
+  'sales-leader': 'VP of Sales',
+  'sales-generator': 'Account Executive',
+  'sales-developer': 'Sales Development Lead',
+  'sales-operator': 'Revenue Operations Lead',
   'customer-leader': 'VP of Customer Success',
   'customer-advocate': 'Customer Success Manager',
   'customer-operator': 'Customer Success Operator',
@@ -96,6 +96,7 @@ const ROLE_SCOPING = extractTaggedConst(workerSrc, 'ROLE_SCOPING');
 const CARD_SELECTION_ROLE_SCOPED = extractTaggedConst(workerSrc, 'CARD_SELECTION_ROLE_SCOPED');
 const FORWARD_FRAMING_GUARD = extractTaggedConst(workerSrc, 'FORWARD_FRAMING_GUARD');
 const CHAT_CLOSING_GUARD = extractTaggedConst(workerSrc, 'CHAT_CLOSING_GUARD');
+const CHAT_VOICE_GUARD = extractTaggedConst(workerSrc, 'CHAT_VOICE_GUARD');
 const PEOPLE_NAMING_GUARD = extractTaggedConst(workerSrc, 'PEOPLE_NAMING_GUARD');
 const SIGNAL_VS_REPORT_GUARD = extractTaggedConst(workerSrc, 'SIGNAL_VS_REPORT_GUARD');
 const COMPOSITION_COMPLETENESS_GUARD = extractTaggedConst(workerSrc, 'COMPOSITION_COMPLETENESS_GUARD');
@@ -103,18 +104,22 @@ const FRESHNESS_GUARD = extractTaggedConst(workerSrc, 'FRESHNESS_GUARD');
 const OUTPUT_HYGIENE_GUARD = extractTaggedConst(workerSrc, 'OUTPUT_HYGIENE_GUARD');
 const SOURCE_DISCLOSURE_GUARD = extractTaggedConst(workerSrc, 'SOURCE_DISCLOSURE_GUARD');
 const ARCHETYPE_PERSISTENCE_GUARD = extractTaggedConst(workerSrc, 'ARCHETYPE_PERSISTENCE_GUARD');
+const CHART_EMISSION_GUARD = extractTaggedConst(workerSrc, 'CHART_EMISSION_GUARD');
+const PROVENANCE_GUARD = extractTaggedConst(workerSrc, 'PROVENANCE_GUARD');
+const CHART_REWRITER_NOTE = extractTaggedConst(workerSrc, 'CHART_REWRITER_NOTE');
 const chatTemplate = extractReturnTemplate(workerSrc, 'buildChatSystemPrompt');
 const cardTemplate = extractReturnTemplate(workerSrc, 'buildCardSystemPrompt');
 
-// The rewriter system prompt interpolates three guard constants. Extract the
-// raw template and then interpolate the guards so the eval sees the exact
-// string the worker would send.
+// The rewriter system prompt interpolates guard constants. Extract the raw
+// template and interpolate the guards so the eval sees the exact string the
+// worker would send.
 const rawRewriterTemplate = extractTaggedConst(workerSrc, 'CARD_REWRITER_SYSTEM');
 const CARD_REWRITER_SYSTEM = rawRewriterTemplate
   .replaceAll('${FORWARD_FRAMING_GUARD}', FORWARD_FRAMING_GUARD)
   .replaceAll('${SIGNAL_VS_REPORT_GUARD}', SIGNAL_VS_REPORT_GUARD)
   .replaceAll('${COMPOSITION_COMPLETENESS_GUARD}', COMPOSITION_COMPLETENESS_GUARD)
-  .replaceAll('${PEOPLE_NAMING_GUARD}', PEOPLE_NAMING_GUARD);
+  .replaceAll('${PEOPLE_NAMING_GUARD}', PEOPLE_NAMING_GUARD)
+  .replaceAll('${CHART_REWRITER_NOTE}', CHART_REWRITER_NOTE);
 
 export function buildRewriterPrompt() {
   return CARD_REWRITER_SYSTEM;
@@ -154,9 +159,13 @@ export function buildChatPrompt({ role = null, companyData = COMPANY_DATA } = {}
     IDENTITY_GUARDRAIL,
     DATA_BOUNDARY,
     companyData,
+    // buildPermissionScopeBlock(permissionScopes) evaluates to '' when scopes
+    // are null (eval always runs in demo mode with no per-user scopes).
+    'buildPermissionScopeBlock(permissionScopes)': '',
     FABRICATION_GUARD,
     SKEPTICISM_GUARD,
     ROLE_SCOPING,
+    CHAT_VOICE_GUARD,
     CHAT_CLOSING_GUARD,
     PEOPLE_NAMING_GUARD,
     SOURCE_DISCLOSURE_GUARD,
@@ -214,6 +223,9 @@ export function buildCardPrompt({ role = null, archetypeSlug = DEFAULT_ARCHETYPE
     IDENTITY_GUARDRAIL,
     DATA_BOUNDARY,
     companyData,
+    // buildPermissionScopeBlock(permissionScopes) evaluates to '' when scopes
+    // are null (eval always runs in demo mode with no per-user scopes).
+    'buildPermissionScopeBlock(permissionScopes)': '',
     FABRICATION_GUARD,
     ROLE_SCOPING,
     CARD_SELECTION_ROLE_SCOPED,
@@ -223,6 +235,8 @@ export function buildCardPrompt({ role = null, archetypeSlug = DEFAULT_ARCHETYPE
     COMPOSITION_COMPLETENESS_GUARD,
     FRESHNESS_GUARD,
     OUTPUT_HYGIENE_GUARD,
+    CHART_EMISSION_GUARD,
+    PROVENANCE_GUARD,
   });
   return applyRoleOverride(out, role);
 }

@@ -105,9 +105,10 @@ describe('Invariant 1b — per-org companyData pathway is wired through worker.j
       /resolveCompanyData\s*\(\s*body\.companyData\s*\)/,
       'handleChat must call resolveCompanyData(body.companyData)',
     );
+    // Regex allows additional arguments after companyData (e.g. permissionScopes).
     assert.match(
       fnMatch[0],
-      /buildChatSystemPrompt\s*\(\s*companyData\s*\)/,
+      /buildChatSystemPrompt\s*\(\s*companyData[\s\S]*?\)/,
       'handleChat must pass the resolved companyData into buildChatSystemPrompt',
     );
   });
@@ -120,25 +121,30 @@ describe('Invariant 1b — per-org companyData pathway is wired through worker.j
       /resolveCompanyData\s*\(\s*body\.companyData\s*\)/,
       'handleCards must call resolveCompanyData(body.companyData)',
     );
+    // Regex allows additional arguments after companyData (e.g. permissionScopes).
     assert.match(
       fnMatch[0],
-      /buildCardSystemPrompt\s*\(\s*archetypeSlug\s*,\s*companyData\s*\)/,
+      /buildCardSystemPrompt\s*\(\s*archetypeSlug\s*,\s*companyData[\s\S]*?\)/,
       'handleCards must pass archetypeSlug and the resolved companyData into buildCardSystemPrompt',
     );
   });
 
   test('buildChatSystemPrompt accepts a companyData parameter defaulting to COMPANY_DATA', () => {
+    // Closing paren not required — the function may accept additional params
+    // (e.g. permissionScopes) after companyData.
     assert.match(
       workerSrc,
-      /function\s+buildChatSystemPrompt\s*\(\s*companyData\s*=\s*COMPANY_DATA\s*\)/,
+      /function\s+buildChatSystemPrompt\s*\(\s*companyData\s*=\s*COMPANY_DATA/,
       'buildChatSystemPrompt must accept companyData with COMPANY_DATA as the default',
     );
   });
 
   test('buildCardSystemPrompt accepts a companyData parameter defaulting to COMPANY_DATA', () => {
+    // Closing paren not required — the function may accept additional params
+    // (e.g. permissionScopes) after companyData.
     assert.match(
       workerSrc,
-      /function\s+buildCardSystemPrompt\s*\(\s*archetypeSlug\s*=\s*DEFAULT_ARCHETYPE\s*,\s*companyData\s*=\s*COMPANY_DATA\s*\)/,
+      /function\s+buildCardSystemPrompt\s*\(\s*archetypeSlug\s*=\s*DEFAULT_ARCHETYPE\s*,\s*companyData\s*=\s*COMPANY_DATA/,
       'buildCardSystemPrompt must accept companyData with COMPANY_DATA as the default',
     );
   });

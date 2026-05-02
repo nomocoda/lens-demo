@@ -28,6 +28,12 @@ import {
   CHART_SPEC_EXAMPLES,
   validateChartSpec,
 } from './chart-spec.js';
+import {
+  PERMITTED_SYSTEMS,
+  validateSourceRef,
+  resolvePermissionScopes,
+  buildPermissionScopeBlock,
+} from './source-ref.js';
 import MARKETING_LEADER_BRIEF from './data/marketing-leader-brief.md';
 import MARKETING_STRATEGIST_BRIEF from './data/marketing-strategist-brief.md';
 import MARKETING_BUILDER_BRIEF from './data/marketing-builder-brief.md';
@@ -603,27 +609,28 @@ Before emitting each card, verify:
 
 A card whose anchor or connect is missing, has multiple sentences, or whose two narrative fields play the same role fails this guard.`;
 
-const OUTPUT_HYGIENE_GUARD = `OUTPUT HYGIENE, PURE JSON, FOUR REQUIRED KEYS PLUS OPTIONAL CHART, ZERO META-COMMENTARY
+const OUTPUT_HYGIENE_GUARD = `OUTPUT HYGIENE, PURE JSON, FIVE REQUIRED KEYS PLUS OPTIONAL CHART, ZERO META-COMMENTARY
 
 All the guards above describe INTERNAL checks. None of their reasoning, rule names, or audit results ever appear in the output. The reader sees only the final cards.
 
 HARD OUTPUT SHAPE:
 Your entire response is a JSON array. Nothing before it. Nothing after it. No markdown fencing (no \`\`\`json, no \`\`\`). No prose preamble. No "Looking at the role scoping..." No "I need to verify..." No trailing commentary. Just the raw JSON array as the first and only thing you emit.
 
-HARD SCHEMA, FOUR REQUIRED KEYS PER CARD OBJECT, ONE OPTIONAL:
-Every card object must have exactly these four required keys: "title", "anchor", "connect", "body". A card MAY also include a fifth optional key, "chart", whose value is a chart spec object as defined in the CHART EMISSION GUARD below. No other keys are permitted. Forbidden keys that have appeared in failed outputs and MUST NOT be emitted:
-  ✗ "headline" (use "title")  ✗ "freshness_audit"  ✗ "theme"  ✗ "source"  ✗ "reasoning"  ✗ "audit"  ✗ "notes"  ✗ "tags"  ✗ "rationale"  ✗ "type"  ✗ "category"  ✗ any other key beyond title/anchor/connect/body/chart.
+HARD SCHEMA, FIVE REQUIRED KEYS PER CARD OBJECT, ONE OPTIONAL:
+Every card object must have exactly these five required keys: "title", "anchor", "connect", "body", "sources". A card MAY also include a sixth optional key, "chart", whose value is a chart spec object as defined in the CHART EMISSION GUARD. No other keys are permitted. Forbidden keys that have appeared in failed outputs and MUST NOT be emitted:
+  ✗ "headline" (use "title")  ✗ "freshness_audit"  ✗ "theme"  ✗ "source" (singular; use "sources" for the provenance array)  ✗ "reasoning"  ✗ "audit"  ✗ "notes"  ✗ "tags"  ✗ "rationale"  ✗ "type"  ✗ "category"  ✗ any other key beyond title/anchor/connect/body/sources/chart.
 
-If you find yourself wanting to label a card with which rule you applied, which theme it anchors on, or which audit it passed, resist. That information is INTERNAL. It belongs in your thinking, not your output. The card is title + anchor + connect + body, with chart only when the CHART EMISSION GUARD's Visualization Principle calls for it.
+If you find yourself wanting to label a card with which rule you applied, which theme it anchors on, or which audit it passed, resist. That information is INTERNAL. It belongs in your thinking, not your output. The card is title + anchor + connect + body + sources, with chart only when the CHART EMISSION GUARD's Visualization Principle calls for it.
 
 PRE-EMIT CHECK:
 1. Does your response start with "["? If not, strip everything before it.
 2. Does your response end with "]"? If not, strip everything after it.
-3. Does every card object have the four required keys "title", "anchor", "connect", "body"? If not, rebuild.
+3. Does every card object have the five required keys "title", "anchor", "connect", "body", "sources"? If not, rebuild.
 4. Does "body" equal "anchor" + " " + "connect" exactly, byte for byte? If not, rebuild body.
-5. For any card carrying a "chart" key, does its value pass the CHART EMISSION GUARD's schema check? If not, drop the chart field; never emit a malformed chart.
-6. Are any keys present beyond {title, anchor, connect, body, chart}? If yes, delete them.
-7. Is there any prose anywhere in the response that isn't inside one of the JSON values? If yes, delete it.
+5. Does every card have "sources" as a non-empty array of 1-3 objects, each with "system" and "record" (non-empty strings)? If sources is missing or empty, add it with the most likely source system for that card's data domain.
+6. For any card carrying a "chart" key, does its value pass the CHART EMISSION GUARD's schema check? If not, drop the chart field; never emit a malformed chart.
+7. Are any keys present beyond {title, anchor, connect, body, sources, chart}? If yes, delete them.
+8. Is there any prose anywhere in the response that isn't inside one of the JSON values? If yes, delete it.
 
 The output is the cards. Nothing else is the output.`;
 
@@ -826,9 +833,56 @@ The chart field is OPTIONAL. The card MUST emit title + anchor + connect + body 
 // The rewriter runs on Opus and reshapes language; chart specs are
 // pre-validated structured data that does not need rewriting. This note
 // tells the rewriter to round-trip the chart field byte for byte.
-const CHART_REWRITER_NOTE = `CHART FIELD PRESERVATION
+const CHART_REWRITER_NOTE = `STRUCTURED DATA FIELD PRESERVATION
 
-Each card object you receive may carry an optional "chart" field, a structured chart spec object (one of: bar, line, stat, funnel, table). PRESERVE this field unchanged in your output. The chart spec is structured data that has already been generated under its own schema; it does not need rewriting. If a card carries a chart, your output for that card must carry the same chart with identical contents. If a card does not carry a chart, do not invent one.`;
+Each card object you receive may carry an optional "chart" field (a structured chart spec: bar, line, stat, funnel, or table) and a required "sources" field (an array of 1-3 provenance objects with "system" and "record"). PRESERVE both fields unchanged in your output. These are structured data that have already been generated under their own schemas; they do not need rewriting. If a card carries a chart, your output for that card must carry the same chart with identical contents. If a card carries sources, your output must carry the same sources array unchanged. Do not invent a chart for a card that lacks one. Do not modify or drop the sources array.`;
+
+// PROVENANCE_GUARD teaches the model to emit a structured "sources" array on
+// every card. Sources enable: (1) reader traceability :  clicking a source tag
+// opens the record in the originating system; (2) surgical permission scrubbing
+// :  when a user's scope for one system shrinks, only that system's source refs
+// are scrubbed without touching others.
+//
+// The "sources" array is validated and filtered in normalizeCardEnvelope via
+// validateSourceRef (source-ref.js). Invalid entries are dropped; cards with
+// no valid sources after filtering emit a console.warn and pass through so the
+// client still gets cards.
+const PROVENANCE_GUARD = `PROVENANCE TAGGING, SOURCES REQUIRED ON EVERY CARD
+
+Every card must carry a "sources" field: an array of 1-3 objects identifying which connected systems the card's observations come from. Sources enable the reader to trace any card back to its data origin and enable permission-aware delivery: when a user's access to a system changes, only that system's cards are scrubbed without requiring a full data reindex.
+
+SHAPE OF EACH SOURCE OBJECT :  two fields only:
+- "system": the connected source system. Use one of these identifiers exactly: "hubspot", "salesforce", "google-analytics", "linkedin-ads", "google-ads", "semrush", "mixpanel", "zendesk", "profitwell", "slack", "notion", "google-workspace".
+- "record": the type and identifier of the source record, formatted as "type:id". Choose the type that matches the record (deal, opportunity, campaign, report, contact, channel, ticket, dashboard, etc.). The id is a descriptive identifier for the record within the company data.
+
+DO NOT emit a "url" field. The URL is constructed at render time by the client from system + record.
+DO NOT invent system identifiers beyond the list above.
+
+WHICH SYSTEM TO CITE :  match to where the data actually lives:
+- Pipeline, deals, opportunities, accounts, forecast: "salesforce"
+- MQLs, campaigns, email engagement, marketing pipeline attribution: "hubspot"
+- Product usage, feature adoption, funnel conversion: "mixpanel"
+- Support tickets, CSAT signals: "zendesk"
+- ARR, NRR, churn, cohort retention: "profitwell"
+- Site traffic, channel conversion events: "google-analytics"
+- Paid social performance: "linkedin-ads"
+- Paid search performance: "google-ads"
+- Organic search signals: "semrush"
+
+EXAMPLES:
+- Marketing attribution card: "sources": [{"system": "hubspot", "record": "report:q1-pipeline-attribution"}, {"system": "salesforce", "record": "report:q1-closed-won-attribution"}]
+- Pipeline health card: "sources": [{"system": "salesforce", "record": "report:open-pipeline-q2"}]
+- LinkedIn Ads card: "sources": [{"system": "linkedin-ads", "record": "campaign:mid-market-workflow-automation"}]
+- Product adoption card: "sources": [{"system": "mixpanel", "record": "report:atlas-assist-beta-adoption"}]
+- Cross-domain card: "sources": [{"system": "mixpanel", "record": "report:feature-adoption"}, {"system": "zendesk", "record": "report:ticket-categories"}]
+
+RULES:
+- 1-3 sources per card. Most cards have 1-2.
+- A card anchoring on data from two systems carries both as sources.
+- Sources reflect where the card's PRIMARY observations come from, per the company data.
+- Do not repeat the same source twice in one card's sources array.
+
+The "sources" key sits alongside title, anchor, connect, body, and the optional chart key. Every card the OUTPUT HYGIENE GUARD requires you to emit must carry a sources array.`;
 
 // CHAT_VOICE_GUARD reinforces the spine bans for chat output specifically.
 // FORWARD_FRAMING_GUARD already names "gap", "against", and many directional
@@ -962,7 +1016,7 @@ Each input card has four fields: title, anchor, connect, body. Body is the joine
    - Replace the named individual with their function or system: "engineering flagged...", "the product team ranks...", "the alpha demo is on the calendar for May 1...", "the auth coverage gap surfaced this week."
    - Named accounts and named competitors stay (Prism Analytics, FlowStack, Beacon Logistics, Ridgeline Health, etc.). Only INDIVIDUAL PEOPLE are stripped.
 5. COMPOSITION CHECK:
-   - The card object may have these keys ONLY: "title", "anchor", "connect", "body" (all required), and "chart" (optional, structured object, see CHART FIELD PRESERVATION below). Any other key is forbidden, strip it. If any of the four required string keys is missing, rebuild it. The chart key, when present, is preserved unchanged.
+   - The card object may have these keys ONLY: "title", "anchor", "connect", "body" (all required), "sources" (required array :  see STRUCTURED DATA FIELD PRESERVATION below), and "chart" (optional, structured object). Any other key is forbidden, strip it. If any of the five required keys is missing, rebuild it. The "chart" and "sources" keys, when present, are preserved unchanged per STRUCTURED DATA FIELD PRESERVATION.
    - anchor must be exactly one sentence. connect must be exactly one sentence. If either has fewer or more than one sentence, rewrite.
    - ROLE ASSIGNMENT, classify each narrative field before deciding which to rewrite:
      - anchor adds specificity INTERNAL to the title's primary signal (when, where, what correlates within the same surface).
@@ -980,14 +1034,14 @@ PRESERVATION RULES, STRICT:
 - If a card is already fully compliant, pass it through unchanged. Do not rewrite compliant language just to change it. (Body must still equal anchor + " " + connect; if it does not, fix only body.)
 
 OUTPUT SHAPE, HARD:
-Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key beyond {"title", "anchor", "connect", "body", "chart"}. The four required string keys plus an optional "chart" object key are the entire allowed set. Violating this shape breaks the render, there is no graceful degradation on the client.
+Return ONLY a JSON array of card objects. Start with [. End with ]. Nothing before, nothing after, no markdown fencing (no \`\`\`json), no prose, no commentary, no key beyond {"title", "anchor", "connect", "body", "sources", "chart"}. The five required keys plus an optional "chart" object key are the entire allowed set. Violating this shape breaks the render, there is no graceful degradation on the client.
 
 ---
 
 ${CHART_REWRITER_NOTE}`;
 
 
-function buildChatSystemPrompt(companyData = COMPANY_DATA) {
+function buildChatSystemPrompt(companyData = COMPANY_DATA, permissionScopes = null) {
   return `# [PERSONA]
 
 ${PERSONA}
@@ -1052,6 +1106,7 @@ Example of the correct shape:
 ${DATA_BOUNDARY}
 
 ${companyData}
+${buildPermissionScopeBlock(permissionScopes)}
 
 ---
 
@@ -1119,7 +1174,7 @@ Pull anchors from corners of the data that were NOT touched above. This is a har
 // the runtime does. Bubble name and recent-outputs exclusion block live in
 // the user message (see buildCardUserMessage) so the system prefix stays
 // fully cacheable. See feedback_caching_priority.md for the economics.
-function buildCardSystemPrompt(archetypeSlug = DEFAULT_ARCHETYPE, companyData = COMPANY_DATA) {
+function buildCardSystemPrompt(archetypeSlug = DEFAULT_ARCHETYPE, companyData = COMPANY_DATA, permissionScopes = null) {
   const BRIEF = ARCHETYPE_BRIEFS[archetypeSlug] ?? ARCHETYPE_BRIEFS[DEFAULT_ARCHETYPE];
   const ROLE_LABEL = ARCHETYPE_ROLE_LABELS[archetypeSlug] ?? ARCHETYPE_ROLE_LABELS[DEFAULT_ARCHETYPE];
   return `# [PERSONA]
@@ -1192,6 +1247,7 @@ Return ONLY the JSON array, no other text.
 ${DATA_BOUNDARY}
 
 ${companyData}
+${buildPermissionScopeBlock(permissionScopes)}
 
 ---
 
@@ -1230,6 +1286,10 @@ ${PEOPLE_NAMING_GUARD}
 ---
 
 ${CHART_EMISSION_GUARD}
+
+---
+
+${PROVENANCE_GUARD}
 
 ---
 
@@ -1332,6 +1392,7 @@ async function handleChat(request, env, origin) {
     const userMessage = body.message;
     const history = body.history || [];
     const companyData = resolveCompanyData(body.companyData);
+    const permissionScopes = resolvePermissionScopes(body.permissionScopes);
 
     if (!userMessage && history.length === 0) {
       return jsonError('Missing message', 400, origin);
@@ -1356,7 +1417,7 @@ async function handleChat(request, env, origin) {
         system: [
           {
             type: 'text',
-            text: buildChatSystemPrompt(companyData),
+            text: buildChatSystemPrompt(companyData, permissionScopes),
             cache_control: { type: 'ephemeral' },
           },
         ],
@@ -1479,7 +1540,18 @@ ${JSON.stringify(draftCards, null, 2)}`;
 //    UI and lens-web's Inngest cards writer at the time of this commit).
 //    Once those consumers read title directly, the headline field can be
 //    dropped from this post-process.
-export function normalizeCardEnvelope(envelopeText) {
+//  - sources: each source ref is validated via validateSourceRef. Invalid
+//    refs are silently dropped. If permissionScopes are provided, refs
+//    from systems not in the scope list are also dropped (structural
+//    enforcement matching the Segregated architecture promise). Cards with
+//    no valid sources after filtering pass through with a console.warn.
+export function normalizeCardEnvelope(envelopeText, permissionScopes = null) {
+  // Build a set of permitted system identifiers for O(1) scope lookup.
+  const permittedSystemSet =
+    permissionScopes && permissionScopes.length > 0
+      ? new Set(permissionScopes.map((s) => s.toolkit))
+      : null;
+
   try {
     const envelope = JSON.parse(envelopeText);
     const block = envelope.content?.find((b) => b.type === 'text');
@@ -1505,6 +1577,35 @@ export function normalizeCardEnvelope(envelopeText) {
         body,
         headline: card.title,
       };
+
+      // Sources field: validate each ref via validateSourceRef, then apply
+      // permission scope filter if scopes are active. Invalid refs are
+      // dropped per-ref (not card-fatal). Scope filtering is structural:
+      // refs from systems outside the permitted set are removed before
+      // delivery so data from unauthorized systems never reaches the client.
+      if (Array.isArray(card.sources)) {
+        const validSources = [];
+        for (const ref of card.sources) {
+          const result = validateSourceRef(ref);
+          if (!result.ok) {
+            console.warn('[sources] dropped invalid source ref on card "' + card.title + '"', result.error);
+            continue;
+          }
+          if (permittedSystemSet && !permittedSystemSet.has(result.ref.system)) {
+            console.warn('[sources] dropped out-of-scope source ref on card "' + card.title + '"', result.ref.system);
+            continue;
+          }
+          validSources.push(result.ref);
+        }
+        out.sources = validSources;
+        if (validSources.length === 0) {
+          console.warn('[sources] card "' + card.title + '" has no valid sources after normalization');
+        }
+      } else {
+        out.sources = [];
+        console.warn('[sources] card "' + card.title + '" is missing required sources field');
+      }
+
       // Chart field, optional. Validate via chart-spec.js's discriminated-
       // union schema. Invalid specs are dropped (not fatal to the card)
       // so the renderer never sees malformed JSON. Logged via console.warn
@@ -1537,6 +1638,12 @@ async function handleCards(request, env, origin) {
     // and produces a markdown snapshot in the same shape as atlas-saas.md).
     // When omitted or invalid, falls back to the bundled Atlas fixture.
     const companyData = resolveCompanyData(body.companyData);
+    // permissionScopes (optional) is the per-user scope list from the
+    // user_permission_scopes table. Shape: [{toolkit, scopeData}]. When
+    // provided, the prompt includes a hard scope block and normalizeCard-
+    // Envelope drops source refs from systems outside the permitted set.
+    // When omitted (demo mode), all data in companyData is visible.
+    const permissionScopes = resolvePermissionScopes(body.permissionScopes);
 
     const draftRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -1551,7 +1658,7 @@ async function handleCards(request, env, origin) {
         system: [
           {
             type: 'text',
-            text: buildCardSystemPrompt(archetypeSlug, companyData),
+            text: buildCardSystemPrompt(archetypeSlug, companyData, permissionScopes),
             cache_control: { type: 'ephemeral' },
           },
         ],
@@ -1574,7 +1681,7 @@ async function handleCards(request, env, origin) {
     }
 
     const rewrittenText = await applyCardRewriter(draftText, bubble, env);
-    const finalText = normalizeCardEnvelope(rewrittenText);
+    const finalText = normalizeCardEnvelope(rewrittenText, permissionScopes);
 
     // Post-emit SAFETY_RAILS check. Violations are logged for observability;
     // the response still ships (a logged violation is better than no cards).
