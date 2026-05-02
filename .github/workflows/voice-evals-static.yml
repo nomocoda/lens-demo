@@ -1,0 +1,67 @@
+name: Voice Evals (Static)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  safety-rails-unit:
+    name: Safety Rails — unit tests (hard gate)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - name: Run Safety Rails unit tests
+        run: node --test 'tests/safety-rails.test.js'
+
+  voice-evals:
+    name: Voice Evals — advisory scoring
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: safety-rails-unit
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - name: Run voice evals
+        id: evals
+        run: |
+          node evals/run.mjs 2>&1 | tee eval-output.txt
+          echo "output<<EOF" >> $GITHUB_OUTPUT
+          cat eval-output.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        continue-on-error: true
+      - name: Post eval results as PR comment
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const output = `${{ steps.evals.outputs.output }}`;
+            const body = [
+              '## Voice Evals (advisory)',
+              '',
+              'These scores are informational only. Only Safety Rails violations block merge.',
+              '',
+              '```',
+              output.slice(0, 60000),
+              '```',
+            ].join('\n');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            });

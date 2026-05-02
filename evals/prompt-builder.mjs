@@ -157,7 +157,6 @@ export function buildChatPrompt({ role = null, companyData = COMPANY_DATA } = {}
     FABRICATION_GUARD,
     SKEPTICISM_GUARD,
     ROLE_SCOPING,
-    FORWARD_FRAMING_GUARD,
     CHAT_CLOSING_GUARD,
     PEOPLE_NAMING_GUARD,
     SOURCE_DISCLOSURE_GUARD,
