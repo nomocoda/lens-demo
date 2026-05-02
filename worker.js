@@ -26,10 +26,10 @@ import VOICE_BRIEF from './data/voice-brief.md';
 import MARKETING_LEADER_BRIEF from './data/marketing-leader-brief.md';
 import MARKETING_STRATEGIST_BRIEF from './data/marketing-strategist-brief.md';
 import MARKETING_BUILDER_BRIEF from './data/marketing-builder-brief.md';
-import REVENUE_LEADER_BRIEF from './data/revenue-leader-brief.md';
-import REVENUE_GENERATOR_BRIEF from './data/revenue-generator-brief.md';
-import REVENUE_DEVELOPER_BRIEF from './data/revenue-developer-brief.md';
-import REVENUE_OPERATOR_BRIEF from './data/revenue-operator-brief.md';
+import SALES_LEADER_BRIEF from './data/sales-leader-brief.md';
+import SALES_GENERATOR_BRIEF from './data/sales-generator-brief.md';
+import SALES_DEVELOPER_BRIEF from './data/sales-developer-brief.md';
+import SALES_OPERATOR_BRIEF from './data/sales-operator-brief.md';
 import CUSTOMER_LEADER_BRIEF from './data/customer-leader-brief.md';
 import CUSTOMER_ADVOCATE_BRIEF from './data/customer-advocate-brief.md';
 import CUSTOMER_OPERATOR_BRIEF from './data/customer-operator-brief.md';
@@ -81,10 +81,10 @@ const ARCHETYPE_BRIEFS = {
   'marketing-leader': MARKETING_LEADER_BRIEF,
   'marketing-strategist': MARKETING_STRATEGIST_BRIEF,
   'marketing-builder': MARKETING_BUILDER_BRIEF,
-  'revenue-leader': REVENUE_LEADER_BRIEF,
-  'revenue-generator': REVENUE_GENERATOR_BRIEF,
-  'revenue-developer': REVENUE_DEVELOPER_BRIEF,
-  'revenue-operator': REVENUE_OPERATOR_BRIEF,
+  'sales-leader': SALES_LEADER_BRIEF,
+  'sales-generator': SALES_GENERATOR_BRIEF,
+  'sales-developer': SALES_DEVELOPER_BRIEF,
+  'sales-operator': SALES_OPERATOR_BRIEF,
   'customer-leader': CUSTOMER_LEADER_BRIEF,
   'customer-advocate': CUSTOMER_ADVOCATE_BRIEF,
   'customer-operator': CUSTOMER_OPERATOR_BRIEF,
@@ -95,10 +95,10 @@ const ARCHETYPE_ROLE_LABELS = {
   'marketing-leader': 'VP of Marketing',
   'marketing-strategist': 'Marketing Strategist',
   'marketing-builder': 'Marketing Builder',
-  'revenue-leader': 'VP of Sales',
-  'revenue-generator': 'Account Executive',
-  'revenue-developer': 'Sales Development Lead',
-  'revenue-operator': 'Revenue Operations Lead',
+  'sales-leader': 'VP of Sales',
+  'sales-generator': 'Account Executive',
+  'sales-developer': 'Sales Development Lead',
+  'sales-operator': 'Revenue Operations Lead',
   'customer-leader': 'VP of Customer Success',
   'customer-advocate': 'Customer Success Manager',
   'customer-operator': 'Customer Success Operator',
@@ -254,7 +254,7 @@ Step 2, If the active role is Manager/IC tier, scan the drafted response for any
 - Coverage ratios (e.g. "2.1x coverage," "3x benchmark")
 - ARR figures (e.g. "$14.2M ARR," "NRR 112%")
 - Quarterly revenue targets or actuals (e.g. "$1.4M target," "Q1 actual $980K")
-- Quota attainment (e.g. "89% of plan," "$980K against $1.1M")
+- Quota attainment (e.g. "89% of plan," "$980K versus $1.1M")
 - Revenue projections (e.g. "tracking to $1.1M," "on pace for $X")
 - CAC dollar values (e.g. "$6.8K content CAC," "$22.4K paid CAC"), these are revenue-system-derived figures
 - Pipeline sourcing share percentages tied to revenue attribution (e.g. "30% of total pipeline from marketing sources," "42% marketing-sourced"), even when expressed as a percentage, the underlying figure comes from the revenue system
@@ -298,13 +298,13 @@ Framing patterns by role (not exhaustive, apply the logic, not just the list):
     ✓ "Healthcare-vertical accounts are the segment with the fastest content-to-demo conversion this quarter, running at 14%." (customer-response framing)
 - VP of Revenue / VP of Sales / CRO lens: a Revenue Leader's concerns span three goal clusters, and a card set for this role should draw from across them rather than collapsing to one axis:
   (1) Quarter Attainment and Forecast Reliability, commit-category deal movement, slip patterns between forecast call and close, commit-field hygiene in the CRM, concentration of committed dollar value in a small handful of deals, quarter-end dependency. Anchor in the integrity of the commit, not in top-of-funnel volume.
-  (2) Pipeline Coverage and Health, the specific required framings are: coverage ratio against next-quarter target (3x is the investor line); deal aging and stage compression IN THE OPEN PIPE; single-threading concentration across open deals; source concentration across the open pipe; segment mix in open pipeline; velocity patterns IN THE OPEN PIPE. Anchor in the health of the engine feeding the next quarter. DO NOT use closed-deal cycle times ("Q1 median cycle ran at 68 days") as the anchor, that is a historical deal-motion stat, not an open-pipe health signal. If the signal is cycle-time, reframe it as stage compression or aging on OPEN deals.
+  (2) Pipeline Coverage and Health, the specific required framings are: coverage ratio versus next-quarter target (3x is the investor line); deal aging and stage compression IN THE OPEN PIPE; single-threading concentration across open deals; source concentration across the open pipe; segment mix in open pipeline; velocity patterns IN THE OPEN PIPE. Anchor in the health of the engine feeding the next quarter. DO NOT use closed-deal cycle times ("Q1 median cycle ran at 68 days") as the anchor, that is a historical deal-motion stat, not an open-pipe health signal. If the signal is cycle-time, reframe it as stage compression or aging on OPEN deals.
   (3) Win Rate and Competitive Position, the specific required framings are: win rate by segment, competitor, or deal size; loss patterns that signal positioning or execution problems; competitor displacement and losses; discount discipline that protects ASP. Anchor in deal outcomes once a deal has entered the funnel. DO NOT substitute cycle-time or velocity framings ("sales cycle length by segment," "deals take N days to close"), those are Pipeline Health signals, not Win Rate signals. A Win Rate card reports who won, who lost, against whom, and at what ASP discipline, not how long the motion took.
   When the signal targets one cluster, the anchor stays in that cluster. DO NOT collapse a forecast-reliability signal into a coverage-ratio card, DO NOT collapse a win-rate signal into a cycle-time card, and DO NOT collapse a pipeline-health signal into a closed-deal-velocity card. The clusters are three distinct stories a Revenue Leader is watching in parallel.
 - VP of Customer Success / CCO lens: a Customer Leader's concerns span three goal clusters, and a card set for this role should draw from across them rather than collapsing to one axis. The Customer Leader seat watches the PORTFOLIO across the whole book, not individual accounts (that is the CSM's altitude). A card that lists "18 accounts carrying $X combined ARR" or names individual accounts like "Tidewater and Halcyon" has collapsed to CSM altitude. Reframe to portfolio-structural patterns or retention curves.
-  (1) Renewal Forecast Reliability and Retention Variance, at-risk ARR dollar-volume and its movement within the quarter, late-stage renewal status changes weighted by ARR-band concentration, segment-level retention variance against segment share of total ARR, renewal cycle-time against trailing-quarter baseline. Anchor in the forecast the board sees and the variance story when it moves, not in top-line churn math.
-  (2) Expansion Revenue Compounding NRR, the specific required framings are: expansion ARR as a percent of new ARR against a stage benchmark range; multi-product adoption breadth driving NRR bands; CSQL handoff economics (creation volume, Sales acceptance rate, conversion to closed expansion); usage-limit proximity against historical upgrade-conversion curves; ARPA trend separated from contraction; license-utilization distributions mapped to expansion conversion. Anchor in the compounding-engine story, CS as revenue engine over a multi-quarter window. DO NOT substitute "expansion rate" as a bare comparison ("accounts expand at 2.1x the rate"), that is a cohort-rate comparison, not an expansion-engine framing. DO NOT substitute raw expansion-pipeline dollar totals ("$420K in expansion pipeline"), surface the engine mechanics (share of new ARR, multi-product breadth, usage-limit proximity, ARPA trend) instead.
-  (3) Portfolio-Level Retention Risk Surfacing Ahead of Churn Events, the specific required framings are: coverage-tier retention divergence weighted by tier share of ARR; top-ARR concentration against early-warning signal coverage; cohort retention by vintage, vertical, or channel; health-distribution calibration against realized renewal (green-marked accounts that churned, red-marked accounts that renewed); value-realization evidence against retention curves; onboarding TTFV compounding into cohort retention multiple quarters later. DO NOT collapse into an individual-account list or a set of named at-risk accounts ("Tidewater is at risk," "18 accounts carrying $1.8M"); that is CSM altitude, not Customer Leader altitude. The Customer Leader's story is the curve, the cohort, the tier, the distribution, never the account list.
+  (1) Renewal Forecast Reliability and Retention Variance, at-risk ARR dollar-volume and its movement within the quarter, late-stage renewal status changes weighted by ARR-band concentration, segment-level retention variance versus segment share of total ARR, renewal cycle-time versus trailing-quarter baseline. Anchor in the forecast the board sees and the variance story when it moves, not in top-line churn math.
+  (2) Expansion Revenue Compounding NRR, the specific required framings are: expansion ARR as a percent of new ARR versus a stage benchmark range; multi-product adoption breadth driving NRR bands; CSQL handoff economics (creation volume, Sales acceptance rate, conversion to closed expansion); usage-limit proximity versus historical upgrade-conversion curves; ARPA trend separated from contraction; license-utilization distributions mapped to expansion conversion. Anchor in the compounding-engine story, CS as revenue engine over a multi-quarter window. DO NOT substitute "expansion rate" as a bare comparison ("accounts expand at 2.1x the rate"), that is a cohort-rate comparison, not an expansion-engine framing. DO NOT substitute raw expansion-pipeline dollar totals ("$420K in expansion pipeline"), surface the engine mechanics (share of new ARR, multi-product breadth, usage-limit proximity, ARPA trend) instead.
+  (3) Portfolio-Level Retention Risk Surfacing Ahead of Churn Events, the specific required framings are: coverage-tier retention divergence weighted by tier share of ARR; top-ARR concentration versus early-warning signal coverage; cohort retention by vintage, vertical, or channel; health-distribution calibration versus realized renewal (green-marked accounts that churned, red-marked accounts that renewed); value-realization evidence versus retention curves; onboarding TTFV compounding into cohort retention multiple quarters later. DO NOT collapse into an individual-account list or a set of named at-risk accounts ("Tidewater is at risk," "18 accounts carrying $1.8M"); that is CSM altitude, not Customer Leader altitude. The Customer Leader's story is the curve, the cohort, the tier, the distribution, never the account list.
   When the signal targets one cluster, the anchor stays in that cluster. DO NOT collapse a renewal-forecast signal into an expansion-ARR card, and DO NOT collapse a portfolio-cohort signal into an at-risk-renewal card. The clusters are three distinct stories a Customer Leader is watching in parallel.
 - VP of Engineering / VP of Product lens: feature-level root cause signals, roadmap exposure, release timing against the signal, defect or adoption patterns, incident correlation.
 
@@ -326,7 +326,7 @@ BEFORE/AFTER, portfolio altitude (these examples are CLUSTER-1-flavored, they pa
 ✗ "Renewal forecast carries $1.8M ARR across 18 accounts flagged for attention." (account count + dollar total = CSM worklist)
 ✓ "Late-stage renewal variance in the mid-market tier widens to 11 percentage points in Q1; trailing four quarters ran at 6." (altitude-correct, Cluster 1 anchor)
 ✗ "Prism Analytics ($165K) and Tidewater Insurance ($310K) account for 17% of the renewal volume." (named accounts paired with dollar amounts)
-✓ "Top-ARR-decile renewals concentrate 34% of Q2 renewal dollars against 12% of renewal count. Q1 concentration ran at 26%." (altitude-correct, Cluster 1 anchor)
+✓ "Top-ARR-decile renewals concentrate 34% of Q2 renewal dollars versus 12% of renewal count. Q1 concentration ran at 26%." (altitude-correct, Cluster 1 anchor)
 ✗ "18 at-risk accounts carry $1.8M in ARR this quarter." (the exact CSM-worklist pattern)
 ✓ "At-risk ARR share sits at 8% of the renewal base in Q2; trailing four quarters averaged 4%." (altitude-correct, Cluster 1 anchor)
 
@@ -335,16 +335,16 @@ CUSTOMER LEADER CLUSTER DISCIPLINE, apply when the user request explicitly targe
 When the user message includes "portfolio-level retention," "retention risk patterns," "ahead of churn events," "structural patterns across the book," "cohort retention," "health-distribution," "value-realization," or "early-warning signal coverage", the request is for Cluster 3 (Portfolio-Level Retention Risk Surfacing Ahead of Churn Events). Cluster 1 and Cluster 2 framings must NOT appear as anchors in this set, even when they pass the altitude test.
 
 BANNED AS A CLUSTER 3 ANCHOR (these are Cluster 1 framings, fine for forecast-reliability requests, wrong here):
-  "At-risk ARR share sits at X%" · "At-risk ARR share is X%" · "Late-stage renewal variance in [tier] widens" · "Late-stage renewal status changes" · "Renewal forecast reliability" · "Top-ARR-decile renewals concentrate X% of [Q[1-4]] renewal dollars" (when the connect is just a prior-quarter comparison without the early-warning-coverage or health-calibration dimension) · "Renewal cycle-time against trailing-quarter baseline" · any "X% of the renewal base in Q[1-4]" framing · any "renewal commits" framing
+  "At-risk ARR share sits at X%" · "At-risk ARR share is X%" · "Late-stage renewal variance in [tier] widens" · "Late-stage renewal status changes" · "Renewal forecast reliability" · "Top-ARR-decile renewals concentrate X% of [Q[1-4]] renewal dollars" (when the connect is just a prior-quarter comparison without the early-warning-coverage or health-calibration dimension) · "Renewal cycle-time versus trailing-quarter baseline" · any "X% of the renewal base in Q[1-4]" framing · any "renewal commits" framing
 
 BANNED AS A CLUSTER 3 ANCHOR (these are Cluster 2 framings, fine for expansion-engine requests, wrong here):
   "Expansion ARR represents X% of new ARR" · "Multi-product adoption breadth drives NRR" · "NPS 9-10 accounts expand at Nx the rate" · "Usage-limit proximity signals expansion" (this is the Cluster 2 framing; Cluster 3 uses usage-limit proximity differently, see exemplar below) · "ARPA trend" · "license-utilization mapped to expansion" · any expansion-rate cohort comparison
 
 CLUSTER 3 EXEMPLAR ANCHORS, pattern-match on these for portfolio-pattern requests. The shape always reveals a STRUCTURAL pattern that compounds over MULTIPLE quarters, surfaced AHEAD of the renewal event:
 
-  ✓ "Health-score calibration shows green-marked accounts churning at 18% over the trailing four quarters; red-marked accounts renewed at 22% over the same window." (calibration against realized renewal, the bands themselves predict poorly)
+  ✓ "Health-score calibration shows green-marked accounts churning at 18% over the trailing four quarters; red-marked accounts renewed at 22% over the same window." (calibration versus realized renewal, the bands themselves predict poorly)
   ✓ "Coverage-tier retention divergence sits at 14 percentage points between enterprise (68%) and SMB (96%) over the trailing four quarters; enterprise carries 41% of book ARR." (tier retention divergence weighted by ARR share)
-  ✓ "Top-ARR-decile early-warning signal coverage runs at 38%, meaning 62% of the highest-revenue accounts have no telemetry, NPS response, or health flag in the last 90 days." (top-ARR concentration AGAINST signal coverage, not against renewal dollars)
+  ✓ "Top-ARR-decile early-warning signal coverage runs at 38%, meaning 62% of the highest-revenue accounts have no telemetry, NPS response, or health flag in the last 90 days." (top-ARR concentration VERSUS signal coverage, not versus renewal dollars)
   ✓ "Q3 2024 vintage cohort retention sits at 78% at the 18-month mark; the Q1 2024 cohort sat at 89% at the same maturity." (cohort retention by vintage)
   ✓ "Onboarding TTFV under 21 days correlates with 94% renewal at month 18; TTFV over 60 days correlates with 71%." (TTFV compounding into long-horizon retention)
   ✓ "Healthcare vertical retention runs 12 points below the book average across the trailing six quarters; healthcare represents 23% of new-logo ARR over the same window." (cohort retention by vertical, weighted)
@@ -359,15 +359,15 @@ Banned phrase patterns anywhere in the headline OR anchor sentence when the card
   "Q[1-4] median cycle" (as a closed-deal stat) · "deal cycles run at N days" (as a historical closed-deal figure) · "mid-market deal cycles" (anchoring on closed-deal time) · "sales cycle length" · "deals take N days to close" (as anchor) · "median cycle time"
 These framings are closed-deal motion stats. Pipeline Health requires OPEN-pipe anchors (stage compression on open deals, aging distribution in open stages, single-threading across open deals). Win Rate requires outcome anchors (who won, who lost, against whom, at what ASP), not motion anchors.
 
-BANNED FOR REVENUE LEADER CARDS (these are Customer Leader stories): NRR as an anchor metric, gross retention, expansion ARR as a percent of new ARR, multi-product adoption breadth, ARPA trend, usage-limit proximity to expansion, cohort retention by vintage, health-score calibration, at-risk-renewal portfolios, CSQL handoff economics. A Revenue Leader card never anchors on these. Expansion PIPELINE (what expansion opportunities are in the pipe right now, coverage against expansion target) is permissible; expansion-as-cohort-behavior is not.
+BANNED FOR REVENUE LEADER CARDS (these are Customer Leader stories): NRR as an anchor metric, gross retention, expansion ARR as a percent of new ARR, multi-product adoption breadth, ARPA trend, usage-limit proximity to expansion, cohort retention by vintage, health-score calibration, at-risk-renewal portfolios, CSQL handoff economics. A Revenue Leader card never anchors on these. Expansion PIPELINE (what expansion opportunities are in the pipe right now, coverage versus expansion target) is permissible; expansion-as-cohort-behavior is not.
 
 BEFORE/AFTER, open-pipe framing:
 ✗ "Mid-market deal cycles run at 68 days in Q1." (closed-deal cycle as anchor)
-✓ "Mid-market deals currently in commit stage have aged a median of 41 days against the trailing-quarter commit-stage-aging median of 28."
+✓ "Mid-market deals currently in commit stage have aged a median of 41 days versus the trailing-quarter commit-stage-aging median of 28."
 ✗ "Q1 median cycle ran at 68 days; Q4 ran at 52." (historical deal-motion stat)
 ✓ "Stage compression in open mid-market deals stretches from discovery to commit at a 2.1x multiple of the prior-quarter pattern."
 ✗ "Net revenue retention holds at 112% currently." (Customer Leader metric on a Revenue card)
-✓ "Expansion pipeline coverage against next-quarter expansion target sits at 1.4x; the investor line for expansion coverage at Atlas's stage is 2x."
+✓ "Expansion pipeline coverage versus next-quarter expansion target sits at 1.4x; the investor line for expansion coverage at Atlas's stage is 2x."
 
 CARD-SET CLUSTER DISCIPLINE, every card in a cluster-focused set stays in that cluster.
 
@@ -420,7 +420,7 @@ Input signal: "the Content Marketing Manager role has been open for three weeks 
 ✗ "With the Content Marketing Manager seat open, output sits at last-quarter's level." (subordinate clause references the seat)
 ✗ "Content output stays at Q4's pace while the search runs." (subordinate clause references staffing)
 ✓ "Content publishing pace sits at Q4's level through the first three weeks of Q1." (headline fully in outcome)
-  Anchor: "Blog publishing runs at 4 posts per week against the Q4 run rate of 4.1. Asset concentration sits in ABM-funnel content, with no net-new long-form in the period."
+  Anchor: "Blog publishing runs at 4 posts per week versus the Q4 run rate of 4.1. Asset concentration sits in ABM-funnel content, with no net-new long-form in the period."
   Connect: "Content-attributed pipeline share holds at Q4's level across the same window."
 
 This rule fires whenever the input signal includes a workforce cut, regardless of role. A Revenue Leader card about "deal velocity and the open AE seat" anchors in velocity, not the seat. A Product Leader card about "release pace and the open PM role" anchors in release pace, not the role.`;
@@ -775,7 +775,7 @@ Each input card has four fields: title, anchor, connect, body. Body is the joine
 2. FORWARD FRAMING CHECKS:
    - Scan for any banned verdict word from the FORWARD FRAMING list. If found, rewrite using the prescribed present-tense fact pattern.
    - Scan any sentence that compares a current figure to a reference figure. If the shape is not A, B, or C from the FORWARD FRAMING guard, rewrite into one of those shapes.
-   - Check for IMPLICIT SHORTFALL through juxtaposition. Example: "coverage sits at 2.1x against the $1.4M Q2 target, with 3-4x as the standard", the 2.1x being below 3-4x reads as a shortfall even with the word "against." If the reference figure is framed as a standard/target/benchmark that the current figure falls below, rewrite so the reference is removed, OR rewrite so both levels are presented without evaluative comparison.
+   - Check for IMPLICIT SHORTFALL through juxtaposition. Example: "coverage sits at 2.1x versus the $1.4M Q2 target, with 3-4x as the standard", the 2.1x being below 3-4x reads as a shortfall even with a neutral connector. If the reference figure is framed as a standard/target/benchmark that the current figure falls below, rewrite so the reference is removed, OR rewrite so both levels are presented without evaluative comparison.
    - For any NEGATIVE-direction delta (something decreased, slowed, reduced), apply the asymmetric rule: rewrite as "at X% of prior period" or side-by-side levels ("Q1 at 8.2%; Q4 at 9.7%"). Reference the PRIOR PERIOD, not the loss event, never "pre-departure level", "pre-exit level", "pre-churn level" (these reference the loss itself). Never "down X%", "dropped X%", "declining", "fell", "softened", "slowed", "cooled", "went quiet", "has been silent", "silent for X weeks", "stopped responding", including any synonym.
    - EVENT-BASED BACKWARD FRAMING (this is the subtle one the model loves to slip in). Any sentence describing a PAST EVENT that implies loss, departure, removal, or pause IS backward framing even without a banned verb. Examples that must be rewritten:
      ✗ "Champion left in March" → ✓ "Champion role open since March" (state, not event)
