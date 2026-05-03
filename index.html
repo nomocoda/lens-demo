@@ -2880,22 +2880,21 @@ function scrollActiveTabToTop(tab) {
 // FEED RENDERING
 // =========================================================================
 function buildFeedData() {
-  const items = [];
-  const categoryOrder = ['marketing', 'revenue', 'customers'];
-  categoryOrder.forEach(bubble => {
+  // DEMO: interleave cards across domains so the feed feels like a mixed signal stream.
+  // Collect per-domain queues, then round-robin: M → S → CS → M → S → CS …
+  const buckets = ['marketing', 'revenue', 'customers'].map(bubble => {
     const data = insightData[bubble];
-    if (!data) return;
+    if (!data) return [];
     const removed = removedFromStories[bubble] || new Set();
-    data.cards.forEach((card, origIdx) => {
-      if (removed.has(origIdx)) return;
-      items.push({ bubble, origIdx, card });
-    });
+    return data.cards
+      .map((card, origIdx) => ({ bubble, origIdx, card }))
+      .filter(({ origIdx }) => !removed.has(origIdx));
   });
-  items.sort((a, b) => {
-    if (a.card.isNew && !b.card.isNew) return -1;
-    if (!a.card.isNew && b.card.isNew) return 1;
-    return 0;
-  });
+  const items = [];
+  const maxLen = Math.max(...buckets.map(b => b.length));
+  for (let i = 0; i < maxLen; i++) {
+    buckets.forEach(bucket => { if (bucket[i]) items.push(bucket[i]); });
+  }
   return items;
 }
 
@@ -2907,7 +2906,7 @@ function renderRow(bubble, origIdx, card, opts = {}) {
   return `
     <div class="feed-row ${readClass}" data-bubble="${bubble}" data-index="${origIdx}" onclick="${onclick}" ${hidden}>
       <div class="row-body">
-        <div class="row-badge-row"><div class="row-badge">${catTitle}</div>${card.archetype ? `<span class="card-archetype">${card.archetype}</span>` : ''}</div>
+        <div class="row-badge">${catTitle}</div>
         <div class="row-title">${card.headline}</div>
         <div class="row-preview">${card.body}</div>
         <div class="row-meta">Created &middot; ${card.createdAt || '-'}</div>
@@ -3233,13 +3232,10 @@ function openCardOverlay(bubble, origIdx, opts) {
 
   document.getElementById('overlay-category').textContent = data.title;
   const srcHtml = renderSourceLinks(card.sources);
+  const overlayBodyText = card.body + (card.connect ? `<br><br>${card.connect}` : '');
   document.getElementById('overlay-body').innerHTML = `
-    ${card.archetype ? `<div class="card-archetype" style="margin-bottom:6px;">${card.archetype}</div>` : ''}
     <div class="overlay-headline">${card.headline}</div>
-    <div class="card-section-label">What Lens sees</div>
-    <div class="overlay-text">${card.body}</div>
-    ${card.stat_callout ? `<div class="stat-callout"><span class="stat-callout-value">${card.stat_callout.value}</span><span class="stat-callout-label">${card.stat_callout.label}</span></div>` : ''}
-    ${card.connect ? `<div class="card-section-label highlight">What this means</div><div class="overlay-text">${card.connect}</div>` : ''}
+    <div class="overlay-text">${overlayBodyText}</div>
     ${renderChartSlot(card.chart)}
     ${srcHtml ? `<div class="overlay-sources">${srcHtml}</div>` : ''}
     <div class="m-card-info-bottom">
@@ -3321,13 +3317,11 @@ function openDetail(screen, bubble, origIdx, savedIdx) {
   const emptyEl = document.getElementById(screen === 'save' ? 'd-empty-save' : 'd-empty-stories');
   const pane = screen === 'save' ? 'd-save' : 'd-stories';
   const srcHtml = renderSourceLinks(card.sources);
+  const detailBodyText = card.body + (card.connect ? `<br><br>${card.connect}` : '');
   cardEl.innerHTML = `
-    <div class="row-badge-row"><div class="row-badge">${catTitle}</div>${card.archetype ? `<span class="card-archetype">${card.archetype}</span>` : ''}</div>
+    <div class="row-badge">${catTitle}</div>
     <div class="d-card-title">${card.headline}</div>
-    <div class="card-section-label">What Lens sees</div>
-    <div class="d-card-body">${card.body}</div>
-    ${card.stat_callout ? `<div class="stat-callout"><span class="stat-callout-value">${card.stat_callout.value}</span><span class="stat-callout-label">${card.stat_callout.label}</span></div>` : ''}
-    ${card.connect ? `<div class="card-section-label highlight">What this means</div><div class="d-card-body">${card.connect}</div>` : ''}
+    <div class="d-card-body">${detailBodyText}</div>
     ${renderChartSlot(card.chart)}
     ${srcHtml ? `<div class="overlay-sources d-card-sources">${srcHtml}</div>` : ''}
     <div class="d-card-info-bottom">
