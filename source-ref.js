@@ -11,6 +11,22 @@
 // Connected systems Lens reads from in the Atlas SaaS demo fiction and in
 // production lens-web. Matches the "Connected systems" list in atlas-saas.md
 // and the source-system identifiers in SOURCE_DISCLOSURE_GUARD.
+//
+// PRINCIPLE — APPLICATION LAYER, NOT INFRASTRUCTURE LAYER
+//
+// This list contains the systems where teams do their work and make decisions,
+// not the underlying infrastructure that data flows through to get there.
+//
+// Stripe knows a charge happened. Salesforce knows what it means as a revenue
+// event. Gainsight knows what it means for account health. ProfitWell knows
+// what it means for MRR. Lens cites the system where the signal becomes
+// intelligible and actionable — the downstream application — not the upstream
+// processor or pipeline that produced the raw event.
+//
+// Payment processors (Stripe, Brex), data warehouses, ETL pipelines, webhooks,
+// and raw database exports are therefore never valid source systems. If their
+// data is relevant, it has already landed in one of the systems below, and
+// that system is what gets cited.
 export const PERMITTED_SYSTEMS = [
   'hubspot',
   'salesforce',
