@@ -2750,10 +2750,10 @@ const insightData = {
         connect: 'The number is strong. What it\u2019s telling you about where expansion is and isn\u2019t yet coming from is worth understanding before next quarter\u2019s plan.',
         sources: [{ system: 'Stripe', record: 'Expansion MRR' }, { system: 'Salesforce', record: 'Account Expansion' }, { system: 'Gainsight', record: 'Portfolio Health' }] },
       { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Leader',
-        headline: 'Seventeen of your strongest advocates have not been asked to advocate yet',
+        headline: 'Seventeen of your strongest advocates meet criteria for case study participants',
         body: '17 accounts scored NPS 9 or 10 in the last survey cycle. None have an active case study, reference call, or referral request logged in your CRM or CS platform.',
         stat_callout: { value: '17', label: 'high-NPS accounts with no active referral or case study request' },
-        connect: 'These accounts are ready to tell your story. The ask hasn\u2019t been made.',
+        connect: 'These accounts are ready to tell your story.',
         sources: [{ system: 'Gainsight', record: 'NPS Survey Results' }, { system: 'Salesforce', record: 'Reference Program' }, { system: 'Delighted', record: 'Advocate Tracking' }] },
       { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Advocate',
         headline: 'Two accounts are showing a pattern worth getting ahead of',
@@ -2892,9 +2892,11 @@ function buildFeedData() {
   });
   const pinned = buckets[0].splice(0, 2);
   const items = [...pinned];
-  const maxLen = Math.max(...buckets.map(b => b.length));
+  // After the two pinned marketing cards, cycle revenue → customers → marketing
+  const remainingBuckets = [buckets[1], buckets[2], buckets[0]];
+  const maxLen = Math.max(...remainingBuckets.map(b => b.length));
   for (let i = 0; i < maxLen; i++) {
-    buckets.forEach(bucket => { if (bucket[i]) items.push(bucket[i]); });
+    remainingBuckets.forEach(bucket => { if (bucket[i]) items.push(bucket[i]); });
   }
   return items;
 }
