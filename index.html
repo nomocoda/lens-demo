@@ -1166,6 +1166,48 @@ body {
   opacity: 0.6;
   margin-right: 4px;
 }
+.card-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-meta);
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+.card-section-label.highlight { color: var(--emerald); }
+.stat-callout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--lens-surface);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 10px 0;
+}
+.stat-callout-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--lens);
+  white-space: nowrap;
+}
+.stat-callout-label {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.4;
+}
+.card-archetype {
+  font-size: 12px;
+  color: var(--text-meta);
+  font-weight: 500;
+}
+.row-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 7px;
+}
+.row-badge-row .row-badge { margin-bottom: 0; }
 .source-link {
   font-size: 13px;
   font-weight: 600;
@@ -2624,42 +2666,116 @@ if (new URLSearchParams(location.search).get('chartDemo') === '1') {
 const insightData = {
   marketing: {
     title: 'Marketing',
-    // 15 placeholder titles locked April 24, 2026 against VP Marketing Voice Spine.
-    // 15 cards locked April 24, 2026. Ordered to scatter themes, adjacent cards
-    // intentionally jump between brand, pipeline, channel, ICP, launch, and intent
-    // so the feed feels like a real signal stream rather than a sorted report.
     cards: [
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Three target accounts showed enough interest this week for a sales conversation.', body: 'Each account hit five-plus high-intent touchpoints this week: pricing-page views, demo-request opens, and ungated content downloads. Two are in the named-account program; the third is a fresh ABM target added in March.', sources: [{ system: '6sense', record: 'Account Intent Score' }, { system: 'HubSpot', record: 'High-Intent Activity Log' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Searches for the company name have gone up every week for six weeks in a row.', body: 'Branded search volume rose 14% week-over-week through the run, ending 92% above the six-week starting point. The lift concentrates in North America and the UK; EMEA stayed flat over the same window.', sources: [{ system: 'Google Search Console', record: 'Branded Search Trend' }, { system: 'Ahrefs', record: 'Brand Volume Report' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Digital ads cost less than planned, and the savings are going to events.', body: 'Digital ad spend through April came in $84K under the quarterly plan of $340K. The reallocation funded two added speaking slots at SaaS Connect in May and a sponsored breakfast at SignalSummit.', sources: [{ system: 'Marketo', record: 'Q2 Marketing Budget' }, { system: 'Asana', record: 'Events Calendar Q2' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Recent mid-market customers share traits pointing to a new ideal customer.', body: 'Eleven of the past fourteen mid-market wins came from companies running both Snowflake and dbt; the prior pattern showed Snowflake adoption alone. The newer cohort also moved through procurement faster: 32 days median compared to 51.', sources: [{ system: 'Salesforce', record: 'Mid-Market Wins Q1-Q2' }, { system: 'Clearbit', record: 'Tech Stack Enrichment' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'The launch is two weeks out and the marketing campaign is ready to go.', body: 'All eight planned assets for the Atlas Assist launch are approved and scheduled: three webinars, two analyst briefings, a press release, a customer story, and the nurture email sequence. The first piece drops May 1; the launch lands May 15.', sources: [{ system: 'Notion', record: 'Atlas Assist Launch Plan' }, { system: 'Marketo', record: 'Campaign Schedule' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Marketing deals are closing faster this week than any week this quarter.', body: 'Marketing-sourced deals closed in 38 days on average this week, compared to 52 days quarter-to-date. Mid-market accounts make up the bulk of the speed-up: seven of the nine closes came from that segment.', sources: [{ system: 'Salesforce', record: 'Opportunity Velocity Report' }, { system: 'HubSpot', record: 'Lead Source Attribution' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Analysts wrote about the company more in two weeks than the prior month.', body: 'Nine analyst notes referenced Atlas across the past two weeks; the full prior month had six. Forrester and G2 lead the count with three pieces each, most tied to the platform release notes from April 9.', sources: [{ system: 'Notion', record: 'Analyst Coverage Tracker' }, { system: 'Brandwatch', record: 'Industry Coverage Feed' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Paid social is producing more pipeline than paid search this quarter.', body: 'Paid social generated $620K in new pipeline through April; paid search generated $380K over the same window. The order flipped from Q1, when paid search led $720K to $410K.', chart: { format: 'bar', caption: 'Pipeline by paid channel: Q1 versus Q2.', valueFormat: 'currency', categories: ['Paid Social', 'Paid Search'], series: [{ name: 'Q1', values: [410, 720] }, { name: 'Q2', values: [620, 380] }], axisLabel: '$K' }, sources: [{ system: 'HubSpot', record: 'Channel Pipeline Q2' }, { system: 'Google Ads', record: 'Q1 vs Q2 Spend' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Sales development has room to handle more leads than it is getting right now.', body: 'Inbound lead volume averaged 142 per week through April, compared to 210 per week in February. The shift concentrates in mid-market, the segment the Q1 demand campaigns prioritized before wind-down.', sources: [{ system: 'HubSpot', record: 'Inbound Volume Trend' }, { system: 'Salesforce', record: 'Mid-Market SQL Flow' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'The company was mentioned more than its three biggest competitors this month.', body: 'Atlas was named in 1,840 industry conversations in April; the next-named competitor came in at 1,210. LinkedIn posts and podcast transcripts make up most of the lead; press coverage is roughly even.', sources: [{ system: 'Brandwatch', record: 'Share of Voice April' }, { system: 'LinkedIn', record: 'Mention Tracker' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Customers are most open to references and case studies on two product lines.', body: '76% of Atlas Insights customers opted in to references this quarter; 71% on Atlas Workflow. The next-highest product line sits at 28%.', sources: [{ system: 'Gainsight', record: 'Reference Opt-In Q2' }, { system: 'Salesforce', record: 'Product Line Customer Roster' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Enterprise deals are closing at a higher rate this quarter than usual.', body: '31% win rate on enterprise opportunities closed this quarter, compared to a trailing four-quarter average of 22%. Average deal size on the wins is also up: $187K versus $142K over the same trailing window.', sources: [{ system: 'Salesforce', record: 'Enterprise Win Rate Q2' }, { system: 'Salesforce', record: 'Deal Size Trend' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'More visitors typed the website address directly than searched for it this month.', body: 'Direct traffic accounted for 42% of new sessions in April; organic search accounted for 38%. The lines crossed around April 8, the same week the launch teaser hit major industry newsletters.', sources: [{ system: 'Google Analytics', record: 'Channel Mix April' }, { system: 'HubSpot', record: 'Newsletter Placement Log' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Sales accepted more mid-market leads this month than in any of the last three.', body: '147 mid-market SQLs in April through the 23rd, compared to a January-March monthly average of 98. The lift tracks to a higher acceptance rate on the new ABM program: 62% accepted versus 41% for non-ABM mid-market leads.', sources: [{ system: 'Salesforce', record: 'SQL Acceptance Report' }, { system: 'HubSpot', record: 'ABM Pipeline Q2' }] },
-      { isNew: true, createdAt: 'April 24, 2026', headline: 'Deals from last quarter\u2019s events are closing faster than the quarter before.', body: 'Q1 event-sourced opportunities are closing in 47 days on average, compared to 71 days for Q4-sourced events. SaaS Connect alone produced twelve of the faster closes.', sources: [{ system: 'Salesforce', record: 'Event Attribution Report' }, { system: 'HubSpot', record: 'Event-Sourced Pipeline' }] }
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Leader',
+        headline: 'Your paid acquisition is getting more efficient this month',
+        body: 'Spend is up 18% month-over-month, but qualified trial starts from paid sources are up 31%. Cost per qualified trial dropped $47 since mid-April.',
+        stat_callout: { value: '\u2013$47', label: 'cost per qualified trial vs. last month' },
+        connect: 'Something shifted in how paid traffic is converting. Worth understanding whether it\u2019s channel mix, a landing page effect, or upstream targeting before Q3 budgets lock.',
+        sources: [{ system: 'Google Ads', record: 'Paid Campaign Performance' }, { system: 'HubSpot', record: 'Trial Conversion' }, { system: 'Stripe', record: 'Trial Starts' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Leader',
+        headline: 'Three high-fit accounts outside your pipeline are paying close attention',
+        body: 'LinkedIn company-page engagement from ICP-tier accounts is up 4x over three weeks. Six of the top 12 engaging companies are in active pipeline. Three are not.',
+        connect: 'Those three have been watching your content for weeks without a first touch. That window tends to close on its own.',
+        sources: [{ system: 'LinkedIn', record: 'Company Page Analytics' }, { system: 'HubSpot', record: 'Pipeline Status' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Strategist',
+        headline: 'One content theme is moving deals faster than the others',
+        body: '67% of MQLs that progressed to SQL in the last 45 days had engaged with competitive positioning content before the first sales call. Deals without that engagement converted at 31%.',
+        stat_callout: { value: '67%', label: 'vs 31% \u2014 MQL-to-SQL rate with competitive content engagement' },
+        connect: 'Your competitive narrative is showing up as a pipeline accelerant, not just a late-stage tool. The question is how early it can be introduced.',
+        sources: [{ system: 'HubSpot', record: 'Content Engagement' }, { system: 'Salesforce', record: 'MQL-to-SQL Conversion' }, { system: 'Gong', record: 'Call Activity' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Builder',
+        headline: 'Your highest-intent keyword cluster has a handoff timing gap',
+        body: 'Clicks on your \u2018alternatives\u2019 keyword group are up 40% in 30 days, but this segment converts to pipeline at half the rate of branded terms. SDR response time on this source averages 9.2 hours.',
+        connect: 'The intent signal is strong. What\u2019s slowing it down sits on the other side of the handoff.',
+        sources: [{ system: 'Google Ads', record: 'Keyword Performance' }, { system: 'HubSpot', record: 'Lead Source' }, { system: 'Salesforce', record: 'SDR Response Time' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Builder',
+        headline: 'Last month\u2019s webinar series is still generating pipeline six weeks later',
+        body: '14 attendees have returned to the pricing page at least twice since the series ended. Four have started trials. Average time from attendance to trial start: 32 days.',
+        connect: 'Conversion isn\u2019t happening at the webinar \u2014 it\u2019s happening a month later. That changes where your nurture sequence needs to do its work.',
+        sources: [{ system: 'Zoom', record: 'Webinar Attendees' }, { system: 'HubSpot', record: 'Nurture Engagement' }, { system: 'Stripe', record: 'Trial Starts' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Leader',
+        headline: 'Organic and paid are contributing to pipeline at the same rate for the first time',
+        body: 'Organic search traffic is up 22% and paid volume is up 18%. Both are converting to pipeline at comparable rates \u2014 a ratio that was 3:1 paid-to-organic last quarter.',
+        connect: 'Your content investment is starting to carry weight alongside paid. What that means for Q3 budget allocation is worth a look before the numbers are set.',
+        sources: [{ system: 'Google Search Console', record: 'Organic Traffic' }, { system: 'Google Ads', record: 'Paid Traffic' }, { system: 'HubSpot', record: 'Pipeline Attribution' }] }
     ]
   },
   revenue: {
-    title: 'Revenue',
+    title: 'Sales',
     cards: [
-      { isNew: true, createdAt: 'April 18, 2026', headline: 'Marketing-sourced pipeline is tracking at 30% of Q2 total.', body: '$890K weighted versus a $1.4M company target, with 11 days of the quarter in. Coverage overall sits at 2.1x.', sources: [{ system: 'Salesforce', record: 'Q2 Pipeline Report' }, { system: 'HubSpot', record: 'Lead Source Q2' }] },
-      { isNew: true, createdAt: 'April 16, 2026', headline: 'Open mid-market pipeline has aged past 45 days on 34% of deals.', body: 'At end of Q1 that band sat at 18%. Procurement review steps across the category are extending late-stage time-in-stage, not early-stage. Win rate on stage-3 deals past 60 days runs at 22%, versus 41% for deals under 45 days.', sources: [{ system: 'Salesforce', record: 'Pipeline Aging Report' }, { system: 'Salesforce', record: 'Stage Conversion Q2' }] },
-      { isNew: true, createdAt: 'April 14, 2026', headline: 'Q1 forecast called $2.1M and closed at $1.8M, 86% of commit.', body: 'Mid-market called $1.2M and closed $900K; enterprise called $700K and closed $720K; small-business called $200K and closed $180K. The three-quarter forecast-to-close average sits at 89%, versus a 95% target.', sources: [{ system: 'Salesforce', record: 'Q1 Forecast vs Actual' }, { system: 'Salesforce', record: 'Forecast Reliability Trend' }] }
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Sales Leader',
+        headline: 'Multi-stakeholder deals are winning at twice the rate but not getting twice the attention',
+        body: 'Deals with 3+ stakeholders close at 41%. Single-stakeholder deals close at 22%. Activity data shows AEs are spending 60% of their time on single-stakeholder opportunities.',
+        stat_callout: { value: '41%', label: 'vs 22% close rate \u2014 3+ stakeholder deals vs single-stakeholder' },
+        connect: 'The resource allocation story doesn\u2019t match the win-rate story. The deals most likely to close aren\u2019t necessarily getting the most attention.',
+        sources: [{ system: 'Salesforce', record: 'Win Rate by Stakeholder Count' }, { system: 'Gong', record: 'AE Activity Data' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Sales Leader',
+        headline: 'Four pipeline deals are entering a window that has moved fast in the past',
+        body: 'Over the last 90 days, deals where champion contact went dark for 7+ days closed lost at a 78% rate. Four current pipeline deals have had no champion touchpoint in 8 or more days.',
+        stat_callout: { value: '4', label: 'active deals with no champion contact in 8+ days' },
+        connect: 'The window on those four is narrow. The pattern has been consistent enough that timing matters here.',
+        sources: [{ system: 'Salesforce', record: 'Pipeline Activity' }, { system: 'Outreach', record: 'Sequence Activity' }, { system: 'Gmail', record: 'Champion Touchpoints' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Sales Generator',
+        headline: 'Getting to a demo in the first five days changes how these deals end',
+        body: 'Close rate on deals that reached a product demo within 5 days of the first call: 34%. Deals that waited 10+ days: 11%. That gap has held across two consecutive quarters.',
+        stat_callout: { value: '34%', label: 'vs 11% close rate \u2014 demo within 5 days vs 10+ days' },
+        connect: 'There\u2019s something in the early demo this data keeps pointing to \u2014 whether it\u2019s qualification, momentum, or speed to value is worth understanding.',
+        sources: [{ system: 'Salesforce', record: 'Opportunity Close Rate' }, { system: 'Calendly', record: 'Demo Scheduling' }, { system: 'Gong', record: 'Call Analysis' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Sales Generator',
+        headline: 'Three of your best-fit prospects were in the same room last week',
+        body: 'LinkedIn activity shows executives from Meridian Health, Sova Analytics, and Thornwood Capital all attended the same industry summit. None of the three have active outreach sequences.',
+        connect: 'They were talking to each other about the same problems you solve. That reference is warm right now.',
+        sources: [{ system: 'LinkedIn', record: 'Executive Activity' }, { system: 'Salesforce', record: 'Prospect Status' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Sales Developer',
+        headline: 'One outreach framing is pulling ahead by a wide margin',
+        body: 'Sequences opening with a reference to reporting and visibility gaps are generating 24% reply rates over the last 60 days. Sequences that lead with product features: 9%.',
+        stat_callout: { value: '24%', label: 'vs 9% reply rate \u2014 problem-led vs product-led opening' },
+        connect: 'The messaging that\u2019s working leads with the problem, not the product. That signal is consistent enough to be intentional.',
+        sources: [{ system: 'Outreach', record: 'Sequence Performance' }, { system: 'Salesforce', record: 'Reply Rate Analysis' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Sales Developer',
+        headline: 'Six Q1 accounts just signaled they may be ready to hear from you again',
+        body: 'Six companies that went cold after Q1 outreach have each posted a new senior hire in the last three weeks \u2014 two VP Sales, two VP Marketing, one CRO, one Head of Revenue Operations.',
+        connect: 'New leadership often means new budget cycles and new willingness to evaluate. The timing gives you a genuine reason to reach back out.',
+        sources: [{ system: 'LinkedIn', record: 'Hiring Activity' }, { system: 'Salesforce', record: 'Cold Accounts' }] }
     ]
   },
   customers: {
-    title: 'Customers',
+    title: 'Customer success',
     cards: [
-      { isNew: true, createdAt: 'April 17, 2026', headline: 'Net revenue retention sits at 112% this quarter, compared to 118% two quarters ago.', body: 'Expansion ARR this quarter concentrated in the mid-market cohort at 74% of the total. Gross retention held at 91% over the same window. The next 90 days of expansion pipeline sits at $420K across 11 accounts.', sources: [{ system: 'Salesforce', record: 'NRR Cohort Report' }, { system: 'Salesforce', record: 'Expansion Pipeline Q2' }] },
-      { isNew: true, createdAt: 'April 15, 2026', headline: 'Custom role-based access controls and audit logs Beacon Logistics flagged at churn ship June 15, ahead of their July 15 renewal.', body: 'Beacon cited custom role-based access controls, audit logs, and API controls in their churn-risk review three months ago. The platform release that delivers them remains on its June 15 milestone. Atlas Assist runs on the same architecture; its May 1 alpha demo serves as the milestone check.', sources: [{ system: 'Jira', record: 'Platform Rewrite Epic' }, { system: 'Gainsight', record: 'Beacon Churn-Risk Review' }] },
-      { isNew: false, createdAt: 'April 10, 2026', headline: 'Accounts using under 40% of licensed seats carry 18% of portfolio ARR.', body: 'At end of Q4 that band sat at 13%. Six accounts in the band renew in the next 90 days, totaling $280K ARR. Portfolio gross retention through Q1 held at 91%.', sources: [{ system: 'Gainsight', record: 'Health Score Band' }, { system: 'Salesforce', record: 'Renewal Forecast' }] }
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Leader',
+        headline: 'Expansion is growing, and it is more concentrated than the headline suggests',
+        body: 'Expansion MRR is up 22% this quarter. 74% of that growth came from 3 accounts. The remaining 67 accounts with expansion potential are flat.',
+        stat_callout: { value: '74%', label: 'of expansion MRR concentrated in 3 accounts this quarter' },
+        connect: 'The number is strong. What it\u2019s telling you about where expansion is and isn\u2019t yet coming from is worth understanding before next quarter\u2019s plan.',
+        sources: [{ system: 'Stripe', record: 'Expansion MRR' }, { system: 'Salesforce', record: 'Account Expansion' }, { system: 'Gainsight', record: 'Portfolio Health' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Leader',
+        headline: 'Seventeen of your strongest advocates have not been asked to advocate yet',
+        body: '17 accounts scored NPS 9 or 10 in the last survey cycle. None have an active case study, reference call, or referral request logged in your CRM or CS platform.',
+        stat_callout: { value: '17', label: 'high-NPS accounts with no active referral or case study request' },
+        connect: 'These accounts are ready to tell your story. The ask hasn\u2019t been made.',
+        sources: [{ system: 'Gainsight', record: 'NPS Survey Results' }, { system: 'Salesforce', record: 'Reference Program' }, { system: 'Delighted', record: 'Advocate Tracking' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Advocate',
+        headline: 'Two accounts are showing a pattern worth getting ahead of',
+        body: 'Product analytics show Calloway Group and Stein &amp; Partners both dropped weekly active sessions by 40%+ over 30 days. Your last two churned accounts followed the same usage pattern 6 to 8 weeks before their cancellation dates.',
+        connect: 'This is a signal, not a certainty. Both accounts are early enough in that window that there\u2019s still time to change the trajectory.',
+        sources: [{ system: 'Mixpanel', record: 'Session Activity' }, { system: 'Salesforce', record: 'Account Health' }, { system: 'Gainsight', record: 'Churn Patterns' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Advocate',
+        headline: 'One of your accounts just expanded without a conversation',
+        body: 'Hartwell Consulting added 14 new user seats in the last 10 days, all self-provisioned. Usage of the analytics module tripled in the same window. No CSM touchpoint has been logged in 22 days.',
+        stat_callout: { value: '+14', label: 'seats added by Hartwell Consulting, self-provisioned' },
+        connect: 'The expansion is happening organically \u2014 strong product signal. The conversation about formalizing it and understanding what\u2019s driving it hasn\u2019t happened yet.',
+        sources: [{ system: 'Stripe', record: 'Seat Expansion' }, { system: 'Mixpanel', record: 'Feature Usage' }, { system: 'Gainsight', record: 'CSM Activity' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Operator',
+        headline: 'One feature is generating a disproportionate share of support volume',
+        body: '31% of inbound support tickets over the last six weeks trace back to the workflow automation feature shipped in March. That feature category represented less than 4% of ticket volume before the release.',
+        connect: 'Something about how this feature is being understood or used isn\u2019t matching how it was built. That pattern has more than one possible explanation.',
+        sources: [{ system: 'Zendesk', record: 'Support Ticket Volume' }, { system: 'Mixpanel', record: 'Feature Adoption' }, { system: 'Linear', record: 'Release Notes' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Customer Operator',
+        headline: 'Your fastest-growing accounts share two feature habits the others do not',
+        body: 'The 10 accounts with the highest usage growth over the last quarter all actively use custom reporting and API integrations. Adoption of both across the rest of your base is under 15%.',
+        connect: 'Whether engaged accounts find these features or these features create engagement is worth understanding. Either way, there is an onboarding story here.',
+        sources: [{ system: 'Mixpanel', record: 'Feature Usage Patterns' }, { system: 'Gainsight', record: 'Account Growth' }, { system: 'Stripe', record: 'Usage Metrics' }] }
     ]
   }
 };
@@ -2681,10 +2797,10 @@ let activeDetailPane = null; // 'overlay' | 'd-stories' | 'd-save'
 
 // DEMO: 5 seed saved cards pointing at insightData indices. Launch: user's real saved cards persisted in Mem0, no cross-user leakage. See DEMO_FIDELITY.md #4, #17
 const savedCards = [
-  { sourceBubble: 'marketing', sourceIndex: 1,  createdAt: 'April 23, 2026' },
-  { sourceBubble: 'marketing', sourceIndex: 6,  createdAt: 'April 22, 2026' },
-  { sourceBubble: 'marketing', sourceIndex: 10, createdAt: 'April 21, 2026' },
-  { sourceBubble: 'marketing', sourceIndex: 13, createdAt: 'April 20, 2026' }
+  { sourceBubble: 'marketing', sourceIndex: 0, createdAt: 'May 3, 2026' },
+  { sourceBubble: 'marketing', sourceIndex: 2, createdAt: 'May 3, 2026' },
+  { sourceBubble: 'revenue',   sourceIndex: 0, createdAt: 'May 3, 2026' },
+  { sourceBubble: 'customers', sourceIndex: 0, createdAt: 'May 3, 2026' }
 ];
 
 const removedFromStories = {};
@@ -2791,7 +2907,7 @@ function renderRow(bubble, origIdx, card, opts = {}) {
   return `
     <div class="feed-row ${readClass}" data-bubble="${bubble}" data-index="${origIdx}" onclick="${onclick}" ${hidden}>
       <div class="row-body">
-        <div class="row-badge">${catTitle}</div>
+        <div class="row-badge-row"><div class="row-badge">${catTitle}</div>${card.archetype ? `<span class="card-archetype">${card.archetype}</span>` : ''}</div>
         <div class="row-title">${card.headline}</div>
         <div class="row-preview">${card.body}</div>
         <div class="row-meta">Created &middot; ${card.createdAt || '-'}</div>
@@ -2966,8 +3082,8 @@ function onMobileSearchInput(q) { filterActiveMobileList(q); }
 let mobileActiveFilters = new Set();
 const MOBILE_FILTER_DOMAINS = [
   { key: 'marketing', label: 'Marketing' },
-  { key: 'revenue',   label: 'Revenue' },
-  { key: 'customers', label: 'Customers' }
+  { key: 'revenue',   label: 'Sales' },
+  { key: 'customers', label: 'Customer success' }
 ];
 
 function renderMobileFilterPanel(panel) {
@@ -3118,8 +3234,12 @@ function openCardOverlay(bubble, origIdx, opts) {
   document.getElementById('overlay-category').textContent = data.title;
   const srcHtml = renderSourceLinks(card.sources);
   document.getElementById('overlay-body').innerHTML = `
+    ${card.archetype ? `<div class="card-archetype" style="margin-bottom:6px;">${card.archetype}</div>` : ''}
     <div class="overlay-headline">${card.headline}</div>
+    <div class="card-section-label">What Lens sees</div>
     <div class="overlay-text">${card.body}</div>
+    ${card.stat_callout ? `<div class="stat-callout"><span class="stat-callout-value">${card.stat_callout.value}</span><span class="stat-callout-label">${card.stat_callout.label}</span></div>` : ''}
+    ${card.connect ? `<div class="card-section-label highlight">What this means</div><div class="overlay-text">${card.connect}</div>` : ''}
     ${renderChartSlot(card.chart)}
     ${srcHtml ? `<div class="overlay-sources">${srcHtml}</div>` : ''}
     <div class="m-card-info-bottom">
@@ -3202,9 +3322,12 @@ function openDetail(screen, bubble, origIdx, savedIdx) {
   const pane = screen === 'save' ? 'd-save' : 'd-stories';
   const srcHtml = renderSourceLinks(card.sources);
   cardEl.innerHTML = `
-    <div class="row-badge">${catTitle}</div>
+    <div class="row-badge-row"><div class="row-badge">${catTitle}</div>${card.archetype ? `<span class="card-archetype">${card.archetype}</span>` : ''}</div>
     <div class="d-card-title">${card.headline}</div>
+    <div class="card-section-label">What Lens sees</div>
     <div class="d-card-body">${card.body}</div>
+    ${card.stat_callout ? `<div class="stat-callout"><span class="stat-callout-value">${card.stat_callout.value}</span><span class="stat-callout-label">${card.stat_callout.label}</span></div>` : ''}
+    ${card.connect ? `<div class="card-section-label highlight">What this means</div><div class="d-card-body">${card.connect}</div>` : ''}
     ${renderChartSlot(card.chart)}
     ${srcHtml ? `<div class="overlay-sources d-card-sources">${srcHtml}</div>` : ''}
     <div class="d-card-info-bottom">
