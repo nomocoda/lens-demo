@@ -2667,6 +2667,16 @@ const insightData = {
   marketing: {
     title: 'Marketing',
     cards: [
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Builder',
+        headline: 'Last month\u2019s webinar series is still generating pipeline six weeks later',
+        body: '14 attendees have returned to the pricing page at least twice since the series ended. Four have started trials. Average time from attendance to trial start: 32 days.',
+        connect: 'Conversion isn\u2019t happening at the webinar \u2014 it\u2019s happening a month later. That changes where your nurture sequence needs to do its work.',
+        sources: [{ system: 'Zoom', record: 'Webinar Attendees' }, { system: 'HubSpot', record: 'Nurture Engagement' }, { system: 'Stripe', record: 'Trial Starts' }] },
+      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Leader',
+        headline: 'Organic and paid are contributing to pipeline at the same rate for the first time',
+        body: 'Organic search traffic is up 22% and paid volume is up 18%. Both are converting to pipeline at comparable rates \u2014 a ratio that was 3:1 paid-to-organic last quarter.',
+        connect: 'Your content investment is starting to carry weight alongside paid. What that means for Q3 budget allocation is worth a look before the numbers are set.',
+        sources: [{ system: 'Google Search Console', record: 'Organic Traffic' }, { system: 'Google Ads', record: 'Paid Traffic' }, { system: 'HubSpot', record: 'Pipeline Attribution' }] },
       { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Leader',
         headline: 'Your paid acquisition is getting more efficient this month',
         body: 'Spend is up 18% month-over-month, but qualified trial starts from paid sources are up 31%. Cost per qualified trial dropped $47 since mid-April.',
@@ -2688,17 +2698,7 @@ const insightData = {
         headline: 'Your highest-intent keyword cluster has a handoff timing gap',
         body: 'Clicks on your \u2018alternatives\u2019 keyword group are up 40% in 30 days, but this segment converts to pipeline at half the rate of branded terms. SDR response time on this source averages 9.2 hours.',
         connect: 'The intent signal is strong. What\u2019s slowing it down sits on the other side of the handoff.',
-        sources: [{ system: 'Google Ads', record: 'Keyword Performance' }, { system: 'HubSpot', record: 'Lead Source' }, { system: 'Salesforce', record: 'SDR Response Time' }] },
-      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Builder',
-        headline: 'Last month\u2019s webinar series is still generating pipeline six weeks later',
-        body: '14 attendees have returned to the pricing page at least twice since the series ended. Four have started trials. Average time from attendance to trial start: 32 days.',
-        connect: 'Conversion isn\u2019t happening at the webinar \u2014 it\u2019s happening a month later. That changes where your nurture sequence needs to do its work.',
-        sources: [{ system: 'Zoom', record: 'Webinar Attendees' }, { system: 'HubSpot', record: 'Nurture Engagement' }, { system: 'Stripe', record: 'Trial Starts' }] },
-      { isNew: true, createdAt: 'May 3, 2026', archetype: 'Marketing Leader',
-        headline: 'Organic and paid are contributing to pipeline at the same rate for the first time',
-        body: 'Organic search traffic is up 22% and paid volume is up 18%. Both are converting to pipeline at comparable rates \u2014 a ratio that was 3:1 paid-to-organic last quarter.',
-        connect: 'Your content investment is starting to carry weight alongside paid. What that means for Q3 budget allocation is worth a look before the numbers are set.',
-        sources: [{ system: 'Google Search Console', record: 'Organic Traffic' }, { system: 'Google Ads', record: 'Paid Traffic' }, { system: 'HubSpot', record: 'Pipeline Attribution' }] }
+        sources: [{ system: 'Google Ads', record: 'Keyword Performance' }, { system: 'HubSpot', record: 'Lead Source' }, { system: 'Salesforce', record: 'SDR Response Time' }] }
     ]
   },
   revenue: {
@@ -2797,8 +2797,8 @@ let activeDetailPane = null; // 'overlay' | 'd-stories' | 'd-save'
 
 // DEMO: 5 seed saved cards pointing at insightData indices. Launch: user's real saved cards persisted in Mem0, no cross-user leakage. See DEMO_FIDELITY.md #4, #17
 const savedCards = [
-  { sourceBubble: 'marketing', sourceIndex: 0, createdAt: 'May 3, 2026' },
   { sourceBubble: 'marketing', sourceIndex: 2, createdAt: 'May 3, 2026' },
+  { sourceBubble: 'marketing', sourceIndex: 4, createdAt: 'May 3, 2026' },
   { sourceBubble: 'revenue',   sourceIndex: 0, createdAt: 'May 3, 2026' },
   { sourceBubble: 'customers', sourceIndex: 0, createdAt: 'May 3, 2026' }
 ];
@@ -2881,7 +2881,7 @@ function scrollActiveTabToTop(tab) {
 // =========================================================================
 function buildFeedData() {
   // DEMO: interleave cards across domains so the feed feels like a mixed signal stream.
-  // Collect per-domain queues, then round-robin: M → S → CS → M → S → CS …
+  // First two marketing cards are pinned at positions 1 and 2; the rest round-robin M → S → CS.
   const buckets = ['marketing', 'revenue', 'customers'].map(bubble => {
     const data = insightData[bubble];
     if (!data) return [];
@@ -2890,7 +2890,8 @@ function buildFeedData() {
       .map((card, origIdx) => ({ bubble, origIdx, card }))
       .filter(({ origIdx }) => !removed.has(origIdx));
   });
-  const items = [];
+  const pinned = buckets[0].splice(0, 2);
+  const items = [...pinned];
   const maxLen = Math.max(...buckets.map(b => b.length));
   for (let i = 0; i < maxLen; i++) {
     buckets.forEach(bucket => { if (bucket[i]) items.push(bucket[i]); });
